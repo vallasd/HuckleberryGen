@@ -1,0 +1,99 @@
+//
+//  EnumCasesVC.swift
+//  HuckleberryGen
+//
+//  Created by David Vallas on 10/2/15.
+//  Copyright © 2015 Phoenix Labs. All rights reserved.
+//
+
+import Cocoa
+
+class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTableRowSelectable, HGTableItemEditable, HGTableRowAppendable {
+    
+    @IBOutlet weak var tableview: HGTableView!
+    
+    let enumCell: HGCellType = HGCellType.FieldCell2
+    let hgtable: HGTable = HGTable()
+    
+    // MARK: HGTableDisplayable
+    
+    private var editingLocation: HGCellLocation?
+    
+    func tableview(fortable table: HGTable) -> HGTableView! {
+        return tableview
+    }
+    
+    func numberOfRows(fortable table: HGTable) -> Int {
+        return table.parentRow == notSelected ? 0 : HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.count
+    }
+    
+    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+        return 50.0
+    }
+    
+    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+        return enumCell
+    }
+    
+    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+        
+        let casE = HuckleberryGen.store.hgmodel.enums[table.parentRow].cases[row]
+        return HGCellData.fieldCell2(
+            field0: HGFieldData(title: casE.name),
+            field1: HGFieldData(title: String(row))
+        )
+    }
+    
+    // MARK: HGTableObservable
+    
+    func observeNotification(fortable table: HGTable) -> String {
+        return HGNotif.shared.notifNewEnumSelected
+    }
+    
+    // MARK: HGTableRowSelectable
+    
+    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+        return true
+    }
+    
+    // MARK: HGTableItemEditable
+    
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
+        if type == .Field && tag == 0 { return .Yes } // Attribute Name
+        if type == .Image && tag == 0 { return .AskUser } // Attribute Type
+        return .No
+    }
+    
+    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
+        if tag == 0 && data is HGFieldData {
+            var casE = HuckleberryGen.store.hgmodel.enums[table.parentRow].cases[row]
+            casE.name = data.title
+            HuckleberryGen.store.hgmodel.enums[table.parentRow].cases[row] = casE
+        }
+    }
+    
+    // MARK: HGTableRowAppendable
+    
+    func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
+        return table.parentRow != notSelected
+    }
+    
+    func hgtable(willAddRowToTable table: HGTable) {
+        HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.append(EnumCase.new)
+    }
+    
+    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
+        return .Yes
+    }
+    
+    func hgtable(table: HGTable, willDeleteRow row: Int) {
+        HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.removeAtIndex(row)
+    }
+    
+    // MARK: View Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+}
