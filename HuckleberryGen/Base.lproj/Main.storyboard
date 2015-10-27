@@ -703,14 +703,9 @@
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="5d3-eT-aCl"/>
                                 <toolbarItem reference="3my-Xg-2s9"/>
                                 <toolbarItem reference="aT8-5y-1HR"/>
                                 <toolbarItem reference="6Tx-Gr-5rh"/>
-                                <toolbarItem reference="N9s-xX-c77"/>
-                                <toolbarItem reference="9Mm-2K-P3Z"/>
-                                <toolbarItem reference="OBE-As-rvg"/>
-                                <toolbarItem reference="Vso-H6-Aw0"/>
                                 <toolbarItem reference="Cx7-0x-RWq"/>
                             </defaultToolbarItems>
                         </toolbar>

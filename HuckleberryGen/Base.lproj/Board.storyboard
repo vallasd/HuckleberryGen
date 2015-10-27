@@ -311,7 +311,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <animations/>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hF1-Qq-dYs">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hF1-Qq-dYs">
                                     <rect key="frame" x="1" y="158" width="438" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>

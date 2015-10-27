@@ -122,7 +122,7 @@
 		036455C11BA264E40096B255 /* HGCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellType.swift; sourceTree = "<group>"; };
 		03660ADC1BBDED6600DE41D5 /* NSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		03660ADE1BBE03FC00DE41D5 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumCasesVC.swift; sourceTree = "<group>"; };
+		03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnumCasesVC.swift; path = ../../Main/SubViewControllers/EnumCasesVC.swift; sourceTree = "<group>"; };
 		036C7C021B5143A0004EC724 /* HuckleberryGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HuckleberryGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036C7C051B5143A0004EC724 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		036C7C071B5143A0004EC724 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -171,14 +171,14 @@
 		03A20B3B1B99E4C900149AF5 /* ImportHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportHandler.swift; path = ../Boards/ImportHandler.swift; sourceTree = "<group>"; };
 		03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicenseInfoBoard.swift; sourceTree = "<group>"; };
 		03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeBoard.swift; sourceTree = "<group>"; };
-		03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionBoard.swift; sourceTree = "<group>"; };
+		03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionBoard.swift; path = ../TableBoard/SelectionBoard.swift; sourceTree = "<group>"; };
 		03A20B471B99E4C900149AF5 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		03D3FF6B1B848FCD001B9F48 /* HGEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGEvent.swift; sourceTree = "<group>"; };
-		03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeVC.swift; sourceTree = "<group>"; };
-		03F25ED51B9BFEE90048B0A0 /* EntityDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityDetailVC.swift; sourceTree = "<group>"; };
-		03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityVC.swift; sourceTree = "<group>"; };
-		03F25ED71B9BFEE90048B0A0 /* EnumVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumVC.swift; sourceTree = "<group>"; };
-		03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipVC.swift; sourceTree = "<group>"; };
+		03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttributeVC.swift; path = ../../Main/SubViewControllers/AttributeVC.swift; sourceTree = "<group>"; };
+		03F25ED51B9BFEE90048B0A0 /* EntityDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityDetailVC.swift; path = ../../Main/SubViewControllers/EntityDetailVC.swift; sourceTree = "<group>"; };
+		03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityVC.swift; path = ../../Main/SubViewControllers/EntityVC.swift; sourceTree = "<group>"; };
+		03F25ED71B9BFEE90048B0A0 /* EnumVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnumVC.swift; path = ../../Main/SubViewControllers/EnumVC.swift; sourceTree = "<group>"; };
+		03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelationshipVC.swift; path = ../../Main/SubViewControllers/RelationshipVC.swift; sourceTree = "<group>"; };
 		03F25EE21B9C16EA0048B0A0 /* HGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCell.swift; sourceTree = "<group>"; };
 		03F25EE61B9C16EA0048B0A0 /* HGSplit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGSplit.swift; sourceTree = "<group>"; };
 		03F25EE71B9C16EA0048B0A0 /* HGTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTable.swift; sourceTree = "<group>"; };
@@ -217,6 +217,7 @@
 		0322FA271B583BAA00CB132B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				03A20B3E1B99E4C900149AF5 /* Tables */,
 				03A20B351B99E4C900149AF5 /* Board */,
 				03A20B461B99E4C900149AF5 /* MainWindow */,
 			);
@@ -454,7 +455,6 @@
 			children = (
 				03A20B361B99E4C900149AF5 /* BoardNAV */,
 				03A20B391B99E4C900149AF5 /* Boards */,
-				03A20B3E1B99E4C900149AF5 /* TableBoard */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -472,6 +472,7 @@
 		03A20B391B99E4C900149AF5 /* Boards */ = {
 			isa = PBXGroup;
 			children = (
+				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
 				03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */,
 				03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */,
 				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
@@ -480,24 +481,7 @@
 			path = Boards;
 			sourceTree = "<group>";
 		};
-		03A20B3E1B99E4C900149AF5 /* TableBoard */ = {
-			isa = PBXGroup;
-			children = (
-				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
-				03F25ED21B9BFEE90048B0A0 /* SubViewControllers */,
-			);
-			path = TableBoard;
-			sourceTree = "<group>";
-		};
-		03A20B461B99E4C900149AF5 /* MainWindow */ = {
-			isa = PBXGroup;
-			children = (
-				03A20B471B99E4C900149AF5 /* MainWindowController.swift */,
-			);
-			path = MainWindow;
-			sourceTree = "<group>";
-		};
-		03F25ED21B9BFEE90048B0A0 /* SubViewControllers */ = {
+		03A20B3E1B99E4C900149AF5 /* Tables */ = {
 			isa = PBXGroup;
 			children = (
 				03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */,
@@ -507,8 +491,16 @@
 				03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */,
 				03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */,
 			);
-			name = SubViewControllers;
-			path = ../../Main/SubViewControllers;
+			name = Tables;
+			path = Board/TableBoard;
+			sourceTree = "<group>";
+		};
+		03A20B461B99E4C900149AF5 /* MainWindow */ = {
+			isa = PBXGroup;
+			children = (
+				03A20B471B99E4C900149AF5 /* MainWindowController.swift */,
+			);
+			path = MainWindow;
 			sourceTree = "<group>";
 		};
 		03F25EE11B9C16EA0048B0A0 /* HGCell */ = {
