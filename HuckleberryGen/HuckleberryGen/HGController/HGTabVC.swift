@@ -17,16 +17,12 @@ class HGTabVC: NSTabViewController {
     }
     
     override func keyDown(theEvent: NSEvent) {
-        executeCommand(fromKeyEvent: theEvent)
+        let command = theEvent.command()
+        switch command {
+        case .TabLeft: tabView.selectPreviousTabViewItem(self)
+        case .TabRight: tabView.selectNextTabViewItem(self)
+        default: break // Do Nothing
+        }
     }
-    
-    func executeCommand(fromKeyEvent event: NSEvent) {
-        
-        let command = event.command()
-        
-        if command == .HGCommandTabLeft { tabView.selectPreviousTabViewItem(self)  }
-        else if command == .HGCommandTabRight { tabView.selectNextTabViewItem(self) }
-    }
-    
 }
 

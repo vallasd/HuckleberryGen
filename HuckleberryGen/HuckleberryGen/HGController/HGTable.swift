@@ -9,40 +9,46 @@
 import Cocoa
 import Foundation
 
-/// allows HGTable to display TableView data
+/// Protocol that allows HGTable to display data in rows.
 protocol HGTableDisplayable: AnyObject {
-    /// HGTable holds a weak reference to an NSTableView in order to handle NSTableView datasource and delegate methods internally, pass the tableview you wish to format with HGTable
+    /// Pass the tableview you wish to format with HGTable.  HGTable holds a weak reference to an HGTableView in order to handle NSTableView datasource and delegate methods internally.
     func tableview(fortable table: HGTable) -> HGTableView!
+    /// Pass the number of records managed for HGTable by the data source object.
     func numberOfRows(fortable table: HGTable) -> Int
+    /// Pass the height of a specific row in the HGTableView.
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat
+    /// Pass the HGCellType for a specific row in the HGTable
     func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType
+    /// Pass the HGCellData for a specific row in the HGTable.  The data will be used to populate the cell appropriately.
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData
 }
 
-/// allows HGTable to observe notification and update Table every time notification is sent, if notification passes an Int, will update parentRow to the Int (also passes notSelected, when row was deselected
+/// Protocol that allows HGTable to observe notification and reload Table when a notification is sent.
 protocol HGTableObservable: HGTableDisplayable {
+    /// Pass the notification name that the HGTable should observe, table will reload data when the notification is observed.
     func observeNotification(fortable table: HGTable) -> String
 }
 
-/// will post notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
-protocol HGTablePostable: HGTableDisplayable {
+/// Protocol that allows user to select and highlight individual rows on HGTable.
+protocol HGTableRowSelectable: HGTableDisplayable {
+    // Pass Boolean value to inform HGTable whether row should be selectable
+    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
+}
+
+/// Protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
+protocol HGTablePostable: HGTableRowSelectable {
+    /// Pass the notification name that the HGTable should POST when a new row is selected.
     func selectNotification(fortable table: HGTable) -> String
 }
 
-/// allows user to select and highlight individual rows on HGTable
-protocol HGTableRowSelectable: HGTableDisplayable {
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
-//    func hgtable(table: HGTable, didSelectRow row: Int)
-}
-
-/// allows user to edit fields in the HGCell of HGTable
+/// Protocol that allows user to edit fields of the HGCell in an HGTable
 protocol HGTableItemEditable: HGTableDisplayable {
     /// If HGOption is .No, will not attempt to edit HGCellItemType. If HGOption is .Yes, will allow user to Edit Item or Highlight an Image.  If HGOption is .AskUser, will delegate didSelectRowForOption if class conforms to HGTableItemOptionEditable protocol.
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData)
 }
 
-/////// allows user to edit items in the HGCell of HGTable by calling another HGTable that will give selection choices for user, overrides HGTableEditable protocol when necessary
+/// allows user to edit items in the HGCell of HGTable by calling another HGTable that will give selection choices for user, overrides HGTableEditable protocol when necessary
 protocol HGTableItemOptionable: HGTableItemEditable {
     func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType)
 }
@@ -55,16 +61,15 @@ protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(table: HGTable, willDeleteRow row: Int)
 }
 
-/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView. This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands will work.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.
-
-class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDelegate, HGTableViewDelegate {
-    
-    // MARK: Public Delegates
+/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  
+class HGTable: NSObject {
     
     private(set) var selectedLocations: [HGCellLocation] = []
     private(set) var parentRow: Int = notSelected
     
-    /// metadelegate will set all other delegates for HGTable if the delegate class conforms to the specific protocol, if you have multiple HGTables in your class, you may also individually assign delegates as needed
+    // MARK: HGTable Delegates
+    
+    /// Meta delegate for HGTable.  If the delegate conforms to any of the protocols used by HGTable, HGTable will call the functions in that delegate. Current protocols used by HGTable are:  HGTableDisplayable, HGTableObservable, HGTablePostable, HGTableRowSelectable, HGTableItemEditable, HGTableItemOptionable, HGTableRowAppendable
     weak var delegate: HGTableDisplayable? {
         didSet {
             displayDelegate = delegate
@@ -77,13 +82,15 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         }
     }
     
-    private weak var displayDelegate: HGTableDisplayable? {
+    /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
+    private(set) weak var displayDelegate: HGTableDisplayable? {
         didSet {
             tableview = displayDelegate?.tableview(fortable: self)
         }
     }
     
-    private weak var observeDelegate: HGTableObservable? {
+    /// Delegate for AnyObject which conforms to protocol HGTableObservable
+    private(set) weak var observeDelegate: HGTableObservable? {
         willSet {
             HGNotif.shared.removeObserver(self)
         }
@@ -92,21 +99,37 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         }
     }
     
-    private weak var selectDelegate: HGTablePostable? {
+    /// Delegate for AnyObject which conforms to protocol HGTablePostable
+    private(set) weak var selectDelegate: HGTablePostable? {
         didSet {
             selectNotification = selectDelegate?.selectNotification(fortable: self) ?? nil
         }
     }
     
-    private weak var rowSelectDelegate: HGTableRowSelectable?
-    private weak var itemEditDelegate: HGTableItemEditable?
-    private weak var itemOptionDelegate: HGTableItemOptionable?
-    private weak var rowAppenedDelegate: HGTableRowAppendable?
+    /// Delegate for AnyObject which conforms to protocol HGTableRowSelectable
+    private(set) weak var rowSelectDelegate: HGTableRowSelectable?
+    /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
+    private(set) weak var itemEditDelegate: HGTableItemEditable?
+    /// Delegate for AnyObject which conforms to protocol HGTableItemOptionable
+    private(set) weak var itemOptionDelegate: HGTableItemOptionable?
+    /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
+    private(set) weak var rowAppenedDelegate: HGTableRowAppendable?
+    
+    // MARK: Private Properties
     
     private var tableCellIdentifiers: [TableCellIdentifier] = []
-    
     private weak var lastImageCell: HGCell?
     private var selectNotification: String?
+    
+    /// Weak reference to NSTableView.  Holds this reference so it can delegate re
+    private weak var tableview: HGTableView! {
+        didSet {
+            tableview.identifier = "MainTableView"
+            tableview.setDelegate(self)
+            tableview.setDataSource(self)
+            tableview.extendedDelegate = self
+        }
+    }
     
     // MARK: Public Methods
     
@@ -123,28 +146,45 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         tableview.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))
     }
 
-    // MARK: TableViews
+    // MARK: Cell Nib Loading
     
-    /// NSTableView used for and given by displayDelegate
-    private weak var tableview: NSTableView! {
-        didSet {
-            tableview.identifier = "MainTableView"
-            tableview.setDelegate(self)
-            tableview.setDataSource(self)
-            if let tableview = tableview as? HGTableView {
-                tableview.extendedDelegate = self
-            }
+    /// Registers HGCell's Nib with TableView one time
+    private func register(cellType: HGCellType, forTableView tableView: NSTableView) {
+        let tci = TableCellIdentifier(tableId: tableView.identifier, cellId: cellType.identifier)
+        if tableCellIdentifiers.contains(tci) { return }
+        let nib = NSNib(nibNamed: cellType.identifier, bundle: nil)
+        tableView.registerNib(nib, forIdentifier: cellType.identifier)
+        tableCellIdentifiers.append(tci)
+    }
+    
+    // MARK: Observers
+    private func addObserver(name: String?) {
+        if let name = name {
+            HGNotif.shared.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
+                if let row = notif.object as? Int { self?.parentRow = row }
+                self?.update()
+            })
         }
     }
+    
+    // MARK: Deinit
+    deinit {
+        HGNotif.shared.removeObserver(self)
+    }
+}
 
-    // MARK: NSTableViewDataSource
+// MARK: NSTableViewDataSource
+extension HGTable: NSTableViewDataSource {
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         let rows = displayDelegate?.numberOfRows(fortable: self) ?? 0
         return rows
     }
     
-    // MARK: NSTableViewDelegate
+}
+
+// MARK: NSTableViewDelegate
+extension HGTable: NSTableViewDelegate {
     
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return displayDelegate?.hgtable(self, heightForRow: row) ?? 50.0
@@ -159,8 +199,10 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         cell.update(withRow: row, cellData: data)
         return cell
     }
-    
-    // MARK: HGTableViewDelegate
+}
+
+// MARK: HGTableViewDelegate
+extension HGTable: HGTableViewDelegate {
     
     func hgtableview(hgtableview: HGTableView, shouldSelectRow row: Int) -> Bool {
         return rowSelectDelegate?.hgtable(self, shouldSelectRow: row) ?? false
@@ -172,13 +214,21 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
     
     func hgtableview(hgtableview: HGTableView, shouldDeleteRow row: Int) -> Bool {
         let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRow: row)
-    
+        
+        if answer == .AskUser {
+            BoardHandler.startBoard(BoardType.Decision, blur: true)
+            let db = BoardHandler.currentVC as! DecisionBoard
+            db.question.stringValue = "Do you really want to delete?"
+            db.delegate = self
+            return false
+        }
+        
         return answer == .No ? false : true
     }
     
     func hgtableview(hgtableview: HGTableView, didSelectRow row: Int) {
         selectedLocations = HGCellLocation.locations(fromIndexSet: hgtableview.selectedRows)
-//        rowSelectDelegate?.hgtable(self, didSelectRow: row)
+        //        rowSelectDelegate?.hgtable(self, didSelectRow: row)
         if let sn = selectNotification { HGNotif.shared.postNotification(sn, withObject: row) }
     }
     
@@ -190,7 +240,10 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         rowAppenedDelegate?.hgtable(self, willDeleteRow: row)
     }
     
-    // MARK: HGCellDelegate
+}
+
+// MARK: HGCellDelegate
+extension HGTable: HGCellDelegate {
     
     func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool {
         let shouldEdit = itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? .No
@@ -230,30 +283,16 @@ class HGTable: NSObject, NSTableViewDataSource, NSTableViewDelegate, HGCellDeleg
         itemEditDelegate?.hgtable(self, didEditRow: cell.row, tag: tag, withData: data)
     }
     
-    // MARK: Nib Loading Controls
-    
-    /// Registers HGCell's Nib with TableView and Stores a
-    private func register(cellType: HGCellType, forTableView tableView: NSTableView) {
-        let tci = TableCellIdentifier(tableId: tableView.identifier, cellId: cellType.identifier)
-        if tableCellIdentifiers.contains(tci) { return }
-        let nib = NSNib(nibNamed: cellType.identifier, bundle: nil)
-        tableView.registerNib(nib, forIdentifier: cellType.identifier)
-        tableCellIdentifiers.append(tci)
-    }
-    
-    // MARK: Observations of Notifications
+}
 
-    private func addObserver(name: String?) {
-        if let name = name {
-            HGNotif.shared.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
-                if let row = notif.object as? Int { self?.parentRow = row }
-                self?.update()
-            })
+extension HGTable: DecisionBoardDelegate {
+    
+    func decisionBoard(db db: DecisionBoard, selectedDecision: DecisionType) {
+        
+        if selectedDecision == .Yes {
+            
         }
     }
     
-    deinit {
-        HGNotif.shared.removeObserver(self)
-    }
-    
 }
+

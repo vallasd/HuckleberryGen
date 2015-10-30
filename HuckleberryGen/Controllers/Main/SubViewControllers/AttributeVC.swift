@@ -8,7 +8,7 @@
 //
 import Cocoa
 
-class AttributeVC: NSViewController, HGTableDisplayable, HGTablePostable, HGTableRowSelectable, HGTableRowAppendable, HGTableItemEditable, HGTableItemOptionable, SelectionBoardDelegate, SelectionBoardImageSource {
+class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTableRowSelectable, HGTableRowAppendable, HGTableItemEditable, HGTableItemOptionable, SelectionBoardDelegate, SelectionBoardImageSource {
     
     @IBOutlet weak var tableview: HGTableView!
     
@@ -46,9 +46,9 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTablePostable, HGTabl
         )
     }
     
-    // MARK: HGTablePostable
+    // MARK: HGTableObservable
     
-    func selectNotification(fortable table: HGTable) -> String {
+    func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEntitySelected
     }
     

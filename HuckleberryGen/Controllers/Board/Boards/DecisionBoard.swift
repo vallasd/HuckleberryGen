@@ -25,10 +25,12 @@ class DecisionBoard: NSViewController {
     
     @IBAction func yesPressed(sender: NSButton) {
         decision = .Yes
+        BoardHandler.endBoard()
     }
     
     @IBAction func noPressed(sender: NSButton) {
         decision = .No
+        BoardHandler.endBoard()
     }
     
     private var decision: DecisionType = .Cancel
@@ -43,6 +45,6 @@ class DecisionBoard: NSViewController {
 extension DecisionBoard: NavControllerPushable {
     
     var nextBoard: BoardType? { return nil }
-    var nextString: String? { return nil }
+    var nextString: String? { return "Cancel" }
     var nextLocation: BoardLocation { return .bottomRight }
 }

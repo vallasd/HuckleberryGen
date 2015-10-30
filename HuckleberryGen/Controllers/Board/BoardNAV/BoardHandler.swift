@@ -20,6 +20,7 @@ enum BoardType: Int16 {
     case Model
     case Import
     case Selection
+    case Decision
     
     var string: String {
         switch self {
@@ -29,6 +30,7 @@ enum BoardType: Int16 {
         case Model: return "ImportModelBoard"
         case Import: return "SelectionBoard"
         case Selection: return "SelectionBoard"
+        case Decision: return "DecisionBoard"
         }
     }
 }

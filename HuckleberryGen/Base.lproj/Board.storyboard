@@ -110,7 +110,7 @@
         <!--Decision Board-->
         <scene sceneID="WU4-2E-Twt">
             <objects>
-                <viewController id="n7m-Mw-mVj" customClass="DecisionBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DecisionBoard" id="n7m-Mw-mVj" customClass="DecisionBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="0AG-jK-mQr">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>

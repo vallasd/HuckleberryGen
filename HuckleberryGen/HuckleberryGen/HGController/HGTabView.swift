@@ -12,18 +12,11 @@ import Cocoa
 class HGTabView: NSTabView {
     
     override func keyDown(theEvent: NSEvent) {
-        executeCommand(fromKeyEvent: theEvent)
+        let command = theEvent.command()
+        switch command {
+        case .TabLeft: selectPreviousTabViewItem(self)
+        case .TabRight: selectNextTabViewItem(self)
+        default: break // Do Nothing
+        }
     }
-    
-    func executeCommand(fromKeyEvent event: NSEvent) {
-        let command = event.command()
-        if command == .HGCommandTabLeft { selectPreviousTabViewItem(nil)  }
-        else if command == .HGCommandTabRight { selectNextTabViewItem(nil) }
-
-    }
-    
-    
-//    func set(state: NSTabState) {
-//        selectedTabViewItem?.setValue(state, forKey: "tabState")
-//    }
 }

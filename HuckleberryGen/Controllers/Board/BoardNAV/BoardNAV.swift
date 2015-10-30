@@ -9,6 +9,7 @@
 import Cocoa
 
 enum BoardLocation: Int {
+    case bottomLeft
     case bottomRight
     case bottomCenter
 }
@@ -144,9 +145,11 @@ class NavController: NSViewController {
             else if vc.nextBoard != nil { next.title = "next" }
             else { next.title = "Finished" }
             
-            if vc.nextLocation == .bottomRight { rightNext() }
-            else if vc.nextLocation == .bottomCenter { centerNext() }
-            
+            switch vc.nextLocation {
+            case .bottomLeft: leftNext()
+            case .bottomCenter: centerNext()
+            case .bottomRight: rightNext()
+            }
         } else {
             next.title = "Finished"
             if back.hidden { centerNext() }
@@ -156,6 +159,11 @@ class NavController: NSViewController {
         self.view.layoutSubtreeIfNeeded()
     }
     
+    private func leftNext() {
+        self.view.removeConstraint(mutableNextConstraint)
+        mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
+        self.view.addConstraint(mutableNextConstraint)
+    }
     
     private func centerNext() {
         self.view.removeConstraint(mutableNextConstraint)

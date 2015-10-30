@@ -14,45 +14,67 @@ let HGLeftArrowCharacter = 63234
 let HGRightArrowCharacter = 63235
 let HGACharacter = 97
 
+/// List of Available Commands For Huckleberry Gen App generated through Keyboard Interaction.
 enum HGCommand: Int {
-    case HGCommandNone = 0
-    case HGCommandAddRow = 1
-    case HGCommandDeleteRow = 2
-    case HGCommandNextRow = 3
-    case HGCommandPreviousRow = 4
-    case HGCommandTabLeft = 5
-    case HGCommandTabRight = 6
+    case None = 0
+    case AddRow = 1
+    case DeleteRow = 2
+    case NextRow = 3
+    case PreviousRow = 4
+    case TabLeft = 5
+    case TabRight = 6
+    
+}
+
+// List of Available Command Options For Huckleberry Gen App generated through Keyboard Interaction.
+public struct HGCommandOptions : OptionSetType {
+    
+    public let rawValue: Int
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+    
+    public init() {
+        self.rawValue = 0
+    }
+    
+    static let MultiSelectOn = HGCommandOptions(rawValue: 1)
+    // static let NextOption = HGCommandOptions(rawValue: 2)
+    // static let NextOption = HGCommandOptions(rawValue: 4)
+    // static let NextOption = HGCommandOptions(rawValue: 8)
+
 }
 
 extension NSEvent {
     
+    /// Returns HGCommandOptions for an NSEvent by checking modifier flags to see which option keys (such as Command, Shift, etc) are pressed, returns appropriate Huckleberry Gen option commands to implement.  Use when checking a flagChanged Event.
+    func commandOptions() -> HGCommandOptions {
+        
+        if self.modifierFlags.contains(NSEventModifierFlags.CommandKeyMask) {
+            return .MultiSelectOn
+        }
+        
+        return HGCommandOptions() // None
+    }
+    
+    /// Returns HGCommand for an NSEvent by checking which key was pressed (such as "a", Delete, Tab) are pressed, returns appropriate Huckleberry Gen command to implement.  Use when checking a KeyDown Event.
     func command() -> HGCommand {
         
         if let scalars = self.charactersIgnoringModifiers?.unicodeScalars {
             let int = Int(scalars[scalars.startIndex].value)
-            // Swift.print(int) // Check Value of Key
+//            Swift.print(int) // Check Value of Key
             switch int {
-            case HGUpArrowCharacter: return .HGCommandPreviousRow
-            case HGDownArrowCharacter: return .HGCommandNextRow
-            case NSDeleteCharacter: return .HGCommandDeleteRow
-            case HGACharacter: return .HGCommandAddRow
-            case HGLeftArrowCharacter: return .HGCommandTabLeft
-            case HGRightArrowCharacter: return .HGCommandTabRight
-            default: return .HGCommandNone
+            case HGUpArrowCharacter: return .PreviousRow
+            case HGDownArrowCharacter: return .NextRow
+            case NSDeleteCharacter: return .DeleteRow
+            case HGACharacter: return .AddRow
+            case HGLeftArrowCharacter: return .TabLeft
+            case HGRightArrowCharacter: return .TabRight
+            default: return .None
             }
         }
         
-        return .HGCommandNone
+        return .None
     }
 }
-
-//case NSEnterCharacter: return .HGCommandEnter;
-//case NSBackspaceCharacter: return .HGCommandBackspace
-//case NSTabCharacter: return .HGCommandTab
-//case NSNewlineCharacter: return .HGCommandNewline
-//case NSFormFeedCharacter: return .HGCommandFormFeed
-//case NSCarriageReturnCharacter: return .HGCommandCarriageReturn
-//case NSBackTabCharacter: return .HGCommandBackTab
-//case NSDeleteCharacter: return .HGCommandDelete
-//case NSLineSeparatorCharacter: return .HGCommandLineSeparator
-//case NSParagraphSeparatorCharacter: return .HGCommandParagraphSeparator

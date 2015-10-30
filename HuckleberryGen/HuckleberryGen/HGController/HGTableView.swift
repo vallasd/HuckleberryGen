@@ -25,7 +25,7 @@ class HGTableView: NSTableView {
     /// Determines if user can select / deselect multiple rows.  Functionality currently broken
     var allowsMultipleRowSelection: Bool = false
     
-    /// An Array of locations that are currently selected by the table view.  If the identifier in HGCellLocation is nil, the entire row is selected
+    /// An Array of locations that are currently selected by the table view.
     private(set) var selectedRows: NSMutableIndexSet = NSMutableIndexSet()
     
     var extendedDelegate: HGTableViewDelegate?
@@ -44,16 +44,23 @@ class HGTableView: NSTableView {
     }
     
     override func keyDown(theEvent: NSEvent) {
-        executeCommand(fromKeyEvent: theEvent)
-        // superview?.keyDown(theEvent)
+        let command = theEvent.command()
+        switch command {
+        case .AddRow: addRow()
+        case .DeleteRow: deleteRow()
+        case .NextRow: selectNext()
+        case .PreviousRow: selectPrev()
+        default: break // Do Nothing
+        }
     }
     
-    func executeCommand(fromKeyEvent event: NSEvent) {
-        let command = event.command()
-        if command == .HGCommandAddRow { addRow() }
-        if command == .HGCommandDeleteRow { deleteRow() }
-        else if command == .HGCommandNextRow { selectNext() }
-        else if command == .HGCommandPreviousRow { selectPrev() }
+    override func flagsChanged(theEvent: NSEvent) {
+        let options = theEvent.commandOptions()
+        if options.contains(HGCommandOptions.MultiSelectOn) {
+            allowsMultipleRowSelection = true
+        } else {
+            allowsMultipleRowSelection = false
+        }
     }
     
     private func selectRow(var row: Int) {
@@ -142,4 +149,5 @@ class HGTableView: NSTableView {
         if nr == -1 || nr == -100 { nr = notSelected }
         selectRow(nr)
     }
+    
 }
