@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -13,38 +13,43 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="OY8-CO-Zek">
-                    <rect key="frame" x="1" y="4" width="64" height="65"/>
+                    <rect key="frame" x="1" y="4" width="65" height="65"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="OY8-CO-Zek" secondAttribute="height" multiplier="1:1" priority="750" id="6SZ-UP-OTw"/>
                     </constraints>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="1ZE-Ys-0gH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="JPt-xQ-CLw">
-                    <rect key="frame" x="66" y="4" width="64" height="65"/>
+                    <rect key="frame" x="66" y="4" width="65" height="65"/>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="JDs-sb-tuj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="5ub-Zh-wwz">
-                    <rect key="frame" x="131" y="4" width="64" height="65"/>
+                    <rect key="frame" x="131" y="4" width="65" height="65"/>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="7Q6-4c-PZP">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="6kv-YO-XN2">
-                    <rect key="frame" x="196" y="4" width="64" height="65"/>
+                    <rect key="frame" x="196" y="4" width="65" height="65"/>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="qPb-eC-BXm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="GEs-hb-DCN" userLabel="image5">
-                    <rect key="frame" x="326" y="4" width="64" height="65"/>
+                    <rect key="frame" x="326" y="4" width="65" height="65"/>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="3b5-id-GM9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -55,45 +60,53 @@
                     <constraints>
                         <constraint firstAttribute="height" id="4oW-Ye-Wof"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="WjO-nG-sg7" userLabel="space1">
-                    <rect key="frame" x="65" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="66" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="UZt-1P-rxA"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="F4C-FB-XA5" userLabel="space2">
-                    <rect key="frame" x="130" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="131" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="jcp-CU-9ME"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="7DJ-gC-pxr" userLabel="space3">
-                    <rect key="frame" x="195" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="196" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="Ee7-uh-zTe"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="nIa-T6-44O" userLabel="space4">
-                    <rect key="frame" x="260" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="261" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="SbR-h5-xys"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="oaA-dx-xvq" userLabel="space5">
-                    <rect key="frame" x="325" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="326" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="WDy-oP-VNp"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="N4V-gV-ohI" userLabel="space6">
-                    <rect key="frame" x="390" y="37" width="1" height="0.0"/>
+                    <rect key="frame" x="391" y="37" width="0.0" height="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" id="Pft-rz-IdW"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="dtA-ob-rfr" userLabel="Image4">
-                    <rect key="frame" x="261" y="4" width="64" height="65"/>
+                    <rect key="frame" x="261" y="4" width="65" height="65"/>
+                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="typeIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="ynT-8j-2Yl">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -146,6 +159,7 @@
                 <constraint firstItem="OY8-CO-Zek" firstAttribute="leading" secondItem="mnm-Yb-exv" secondAttribute="trailing" id="xdY-nb-uOv"/>
                 <constraint firstItem="N4V-gV-ohI" firstAttribute="leading" secondItem="GEs-hb-DCN" secondAttribute="trailing" id="xja-rv-dUV"/>
             </constraints>
+            <animations/>
             <connections>
                 <outlet property="image0" destination="OY8-CO-Zek" id="4qx-4M-LX8"/>
                 <outlet property="image1" destination="JPt-xQ-CLw" id="iPK-eB-0Sh"/>

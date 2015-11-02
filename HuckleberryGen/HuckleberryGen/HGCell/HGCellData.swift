@@ -53,6 +53,18 @@ struct HGCellData {
     let check2: HGCheckData?
     let check3: HGCheckData?
     
+    func images() -> [HGImageData?] {
+        return [self.image0, self.image1, self.image2, self.image3, self.image4, self.image5, self.image6, self.image7]
+    }
+    
+    func fields() -> [HGFieldData?] {
+        return [self.field0, self.field1, self.field2, self.field3, self.field4, self.field5, self.field6, self.field7]
+    }
+    
+    func checks() -> [HGCheckData?] {
+        return [self.check0, self.check1, self.check2, self.check3]
+    }
+    
     static var empty: HGCellData {
         return HGCellData(
             field0: nil, field1: nil, field2: nil, field3: nil,

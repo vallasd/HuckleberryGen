@@ -116,8 +116,6 @@ class HGTableView: NSTableView {
         selectedRows = NSMutableIndexSet()
     }
     
-    
-    
     private func addRow() {
         let shouldAdd = extendedDelegate?.hgtableview(shouldAddRowToTable: self) ?? false
         if shouldAdd == true {
