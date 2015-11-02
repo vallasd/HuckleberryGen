@@ -64,7 +64,7 @@ protocol HGTableRowAppendable: HGTableDisplayable {
 /// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  
 class HGTable: NSObject {
     
-    private(set) var selectedLocations: [HGCellLocation] = []
+    
     private(set) var parentRow: Int = notSelected
     
     // MARK: HGTable Delegates
@@ -118,8 +118,10 @@ class HGTable: NSObject {
     // MARK: Private Properties
     
     private var tableCellIdentifiers: [TableCellIdentifier] = []
-    private weak var lastImageCell: HGCell?
     private var selectNotification: String?
+    
+    private(set) weak var lastSelectedCellWithTag: HGCell?
+    private(set) var selectedLocations: [HGCellLocation] = []
     
     /// Weak reference to NSTableView.  Holds this reference so it can delegate re
     private weak var tableview: HGTableView! {
@@ -261,17 +263,34 @@ extension HGTable: HGCellDelegate {
         
         if shouldEdit == .Yes {
             let identifier = HGCellItemIdentifier(tag: tag, type: type)
-            let location = HGCellLocation(row: cell.row, identifier: identifier)
+            let newLocation = HGCellLocation(row: cell.row, identifier: identifier)
+            var unselected = false
             
             if type == .Image {
-                // highlight / unhighlight images
-                lastImageCell?.unselectImages()
-                lastImageCell = cell
-                let locationChanged = selectedLocations.contains(location) ? false : true
-                if locationChanged { cell.select(imagetag: tag) }
+                
+                let locationAlreadySelected = selectedLocations.contains(newLocation) ? true : false
+                
+                // We already have selected the location before.  Need to unselect.
+                if locationAlreadySelected == true {
+                    cell.unselect(imagetag: tag)
+                    unselected = true
+                }
+                
+                // Another image was selected.  We need to unselect the last cell's images and select the new field.
+                else  {
+                    lastSelectedCellWithTag?.unselectImages()
+                    cell.select(imagetag: tag)
+                }
             }
             
-            selectedLocations = [location]
+            // Either remove lastSelectedCell and selectedLocations if unselected, else add the new locations
+            if unselected {
+                lastSelectedCellWithTag = nil
+                selectedLocations = []
+            } else {
+                lastSelectedCellWithTag = cell
+                selectedLocations = [newLocation]
+            }
         }
         
         if shouldEdit == .AskUser {
