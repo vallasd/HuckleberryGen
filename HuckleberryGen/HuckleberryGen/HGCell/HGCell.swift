@@ -144,14 +144,20 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// updates images, fields, and checks of HGCell with HGCellData
     func update(withRow row: Int, cellData: HGCellData) {
         
+        // update row tag
+        self.row = row
+        
+        // update images with HGImageData
         for var index = 0; index < cellData.images.count; index++ {
             update(image: images[index], withData: cellData.images[index])
         }
         
+        // update fields with HGFieldData
         for var index = 0; index < cellData.fields.count; index++ {
             update(field: fields[index], withData: cellData.fields[index])
         }
         
+        // update checks with HGCheckData
         for var index = 0; index < cellData.checks.count; index++ {
             update(check: checks[index], withData: cellData.checks[index])
         }
@@ -233,18 +239,18 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: Update Cell Data
     
     /// Updates a field with appropriate HGFieldData and makes field ready for custom display
-    private func update(field field: NSTextField?, withData data: HGFieldData?) {
+    private func update(field field: NSTextField?, withData data: HGFieldData) {
         
         guard let field = field else { return }
         
-        guard let data = data else {
-            field.stringValue = ""
-            field.enabled = false
-            field.hidden = true
-            field.editable = false
-            removeSelectFieldButton(field: field)
-            return
-        }
+//        guard let data = data else {
+//            field.stringValue = ""
+//            field.enabled = false
+//            field.hidden = true
+//            field.editable = false
+//            removeSelectFieldButton(field: field)
+//            return
+//        }
         
         field.stringValue = data.title
         field.enabled = true
@@ -253,17 +259,17 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Updates an image with appropriate HGImageData and makes image ready for custom display
-    private func update(image image: NSButton?, withData data: HGImageData?) {
+    private func update(image image: NSButton?, withData data: HGImageData) {
         
         guard let image = image else { return }
         
-        guard let data = data else {
-            image.title = ""
-            image.image = nil
-            image.enabled = false
-            image.hidden = true
-            return
-        }
+//        guard let data = data else {
+//            image.title = ""
+//            image.image = nil
+//            image.enabled = false
+//            image.hidden = true
+//            return
+//        }
         
         image.image = data.image
         image.enabled = true
@@ -271,17 +277,17 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Updates an check with appropriate HGCheckData and makes check ready for custom display
-    private func update(check check: NSButton?, withData data: HGCheckData?) {
+    private func update(check check: NSButton?, withData data: HGCheckData) {
         
         guard let check = check else { return }
         
-        guard let data = data else {
-            check.title = ""
-            check.state = 0
-            check.enabled = false
-            check.hidden = true
-            return
-        }
+//        guard let data = data else {
+//            check.title = ""
+//            check.state = 0
+//            check.enabled = false
+//            check.hidden = true
+//            return
+//        }
         
         check.title = data.title
         check.state = data.state == true ? 1 : 0

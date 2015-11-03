@@ -9,6 +9,7 @@
 import Cocoa
 
 enum HGCellType: Int16 {
+    
     case DefaultCell = 0
     case MixedCell1 = 1
     case Check4Cell = 2
@@ -59,6 +60,19 @@ enum HGCellType: Int16 {
         }
     }
     
+    func cellData(sb sb: SelectionBoard, row: Int) -> HGCellData {
+        switch (self) {
+        case DefaultCell: return HGCellData.defaultCell(sb: sb, row: row)
+        case MixedCell1: return HGCellData.defaultCell(sb: sb, row: row)
+        case Check4Cell: return HGCellData.defaultCell(sb: sb, row: row)
+        case Image4Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 4)
+        case Image5Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 5)
+        case Image6Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 6)
+        case FieldCell1: return HGCellData.empty
+        case FieldCell2: return HGCellData.empty
+        }
+    }
+    
     func numberOfRows(forImageItems items: Int) -> Int {
         let ipr = imagesPerRow
         if ipr > 0 { return Int(ceilf(Float(items) / Float(ipr))) }
@@ -80,20 +94,4 @@ enum HGCellType: Int16 {
         
         return location.row
     }
-    
-    func cellData(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        
-        switch (self) {
-        case DefaultCell: return HGCellData.defaultCell(sb: sb, row: row)
-        case MixedCell1: return HGCellData.defaultCell(sb: sb, row: row)
-        case Check4Cell: return HGCellData.defaultCell(sb: sb, row: row)
-        case Image4Cell: return HGCellData.image4Cell(sb: sb, row: row)
-        case Image5Cell: return HGCellData.image5Cell(sb: sb, row: row)
-        case Image6Cell: return HGCellData.image6Cell(sb: sb, row: row)
-        case FieldCell1: return HGCellData.empty
-        case FieldCell2: return HGCellData.empty
-        }
-    }
-    
-    
 }
