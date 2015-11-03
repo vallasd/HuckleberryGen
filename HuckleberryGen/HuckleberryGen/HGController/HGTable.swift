@@ -83,14 +83,14 @@ class HGTable: NSObject {
     }
     
     /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
-    private(set) weak var displayDelegate: HGTableDisplayable? {
+    private weak var displayDelegate: HGTableDisplayable? {
         didSet {
             tableview = displayDelegate?.tableview(fortable: self)
         }
     }
     
     /// Delegate for AnyObject which conforms to protocol HGTableObservable
-    private(set) weak var observeDelegate: HGTableObservable? {
+    private weak var observeDelegate: HGTableObservable? {
         willSet {
             HGNotif.shared.removeObserver(self)
         }
@@ -100,20 +100,20 @@ class HGTable: NSObject {
     }
     
     /// Delegate for AnyObject which conforms to protocol HGTablePostable
-    private(set) weak var selectDelegate: HGTablePostable? {
+    private weak var selectDelegate: HGTablePostable? {
         didSet {
             selectNotification = selectDelegate?.selectNotification(fortable: self) ?? nil
         }
     }
     
     /// Delegate for AnyObject which conforms to protocol HGTableRowSelectable
-    private(set) weak var rowSelectDelegate: HGTableRowSelectable?
+    private weak var rowSelectDelegate: HGTableRowSelectable?
     /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
-    private(set) weak var itemEditDelegate: HGTableItemEditable?
+    private weak var itemEditDelegate: HGTableItemEditable?
     /// Delegate for AnyObject which conforms to protocol HGTableItemOptionable
-    private(set) weak var itemOptionDelegate: HGTableItemOptionable?
+    private weak var itemOptionDelegate: HGTableItemOptionable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
-    private(set) weak var rowAppenedDelegate: HGTableRowAppendable?
+    private weak var rowAppenedDelegate: HGTableRowAppendable?
     
     // MARK: Private Properties
     
