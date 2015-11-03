@@ -25,7 +25,8 @@ class ImportHandler: NSObject, HGHandler {
         selectionBoard = sb
         super.init()
         createImportFolder()
-        selectionBoard?.delegate = self
+        selectionBoard?.boardDelegate = self
+        selectionBoard?.boardDataSource = self
     }
     
     private func createImportFolder() {
@@ -92,7 +93,7 @@ extension ImportHandler: SelectionBoardDataSource {
         return HGCellData.defaultCell(
             field0: HGFieldData(title: file.name),
             field1: HGFieldData(title: file.path),
-            image0: nil
+            image0: HGImageData(title: "", image: nil)
         )
     }
     

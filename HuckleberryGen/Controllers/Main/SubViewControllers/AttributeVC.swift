@@ -41,7 +41,7 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
         let attribute = HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: attribute.name),
-            field1: nil,
+            field1: HGFieldData(title: ""),
             image0: HGImageData(title: "", image: attribute.type.image)
         )
     }
@@ -97,7 +97,8 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
     func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType) {
         if type == .Image && tag == 0 {
             let sb = SelectionBoard.present(withParentTable: table)
-            sb.delegate = self
+            sb.boardDelegate = self
+            sb.boardImageSource = self
             let identifier = HGCellItemIdentifier(tag: tag, type: type)
             editingLocation = HGCellLocation(row: row, identifier: identifier)
         }
@@ -123,7 +124,7 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
     
     // MARK: SelectionBoardImageSource
     
-    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData? {
+    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData {
         return HGImageData(title: AttributeType.strings[index], image: AttributeType.create(int: index).image)
     }
     

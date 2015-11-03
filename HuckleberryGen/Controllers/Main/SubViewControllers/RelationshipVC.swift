@@ -212,7 +212,7 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
     
     // MARK: SelectionBoardImageSource
     
-    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData? {
+    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData {
         
         // Relation Type
         if sb == typeSelection {
@@ -220,7 +220,7 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
         }
         
         // Relationship Entity / Deletion Rule will use DataSource Protocol
-        return nil
+        return HGImageData(title: "", image: nil)
     }
     
     // MARK: View Lifecycle

@@ -53,7 +53,7 @@ class EnumVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePo
         let enuM = HuckleberryGen.store.hgmodel.enums[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
-            field1: nil,
+            field1: HGFieldData(title: ""),
             image0: HGImageData(title: "", image: NSImage(named: "enumIcon"))
         )
     }

@@ -144,17 +144,16 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// updates images, fields, and checks of HGCell with HGCellData
     func update(withRow row: Int, cellData: HGCellData) {
         
-        let imagesData = cellData.images()
-        let fieldsData = cellData.fields()
-        let checksData = cellData.checks()
-        
-        for index in 0...7 {
-            update(image: images[index], withData: imagesData[index])
-            update(field: fields[index], withData: fieldsData[index])
+        for var index = 0; index < cellData.images.count; index++ {
+            update(image: images[index], withData: cellData.images[index])
         }
         
-        for index in 0...3 {
-            update(check: checks[index], withData: checksData[index])
+        for var index = 0; index < cellData.fields.count; index++ {
+            update(field: fields[index], withData: cellData.fields[index])
+        }
+        
+        for var index = 0; index < cellData.checks.count; index++ {
+            update(check: checks[index], withData: cellData.checks[index])
         }
     }
     

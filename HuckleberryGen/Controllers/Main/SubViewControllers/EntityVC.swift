@@ -39,7 +39,7 @@ class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTable
         let entity = HuckleberryGen.store.hgmodel.entities[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.name),
-            field1: nil,
+            field1: HGFieldData(title: ""),
             image0: HGImageData(title: "", image: NSImage(named: "entityIcon"))
         )
     }

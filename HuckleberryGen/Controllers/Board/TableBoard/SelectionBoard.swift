@@ -8,7 +8,7 @@
 
 import Cocoa
 
-/// Protocol that lets user know when
+/// Selection Board Protocol that
 protocol SelectionBoardDelegate: AnyObject {
     func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType
     func selectionboard(sb: SelectionBoard, didChoose items: [Int])
@@ -20,9 +20,9 @@ protocol SelectionBoardDataSource: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, dataForRow row: Int) -> HGCellData
 }
 
-/// Use this protocol for the datasource if you plan to treat each Image as an Option, this will override SelectionBoardDataSource if the delegate returns an Array (not nil) to SelectionBoard.  Designed to be used with Cells such as HGCell Image4Cell.
+/// Use this protocol for the datasource if you plan to treat each Image on the Row as an Option
 protocol SelectionBoardImageSource: SelectionBoardDelegate {
-    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData?
+    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData
 }
 
 class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable, HGTableItemEditable {
@@ -31,36 +31,37 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     @IBOutlet weak var boardtitle: NSTextField!
     @IBOutlet weak var tableview: HGTableView!
     
-    private(set) var parentTable: HGTable?
-    
-    weak var delegate: SelectionBoardDelegate? {
-        didSet {
-            boardDelegate = delegate
-            if let d = delegate as? SelectionBoardDataSource { boardDataSource = d }
-            if let d = delegate as? SelectionBoardImageSource { boardImageSource = d }
-         }
+    /// types of datasource that the Selection Board can handle
+    enum DatasourceType {
+        case BoardDataSource
+        case BoardImageSource
     }
     
-    weak var boardDelegate: SelectionBoardDelegate? = nil {
+    ///
+    var datasourceType: DatasourceType = .BoardDataSource
+    
+    private(set) var parentTable: HGTable?
+    
+    weak var boardDelegate: SelectionBoardDelegate? {
         didSet {
             hgcellType = boardDelegate?.hgcellType(forSelectionBoard: self) ?? HGCellType.DefaultCell
         }
     }
     
-    weak var boardDataSource: SelectionBoardDataSource? = nil {
+    weak var boardDataSource: SelectionBoardDataSource? {
         didSet {
+            datasourceType = .BoardDataSource
             hgtable.update()
         }
     }
     
-    weak var boardImageSource: SelectionBoardImageSource? = nil {
+    weak var boardImageSource: SelectionBoardImageSource? {
         didSet {
-            isImageSource = true
+            datasourceType = .BoardImageSource
             hgtable.update()
         }
     }
     
-    private var isImageSource = false
     private let hgtable: HGTable = HGTable()
     private(set) var hgcellType: HGCellType!
     private(set) var numberOfItems: Int = 0
@@ -86,7 +87,7 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     
     func numberOfRows(fortable table: HGTable) -> Int {
         numberOfItems = boardDelegate?.numberOfItems(forSelectionBoard: self) ?? 0
-        if isImageSource {
+        if datasourceType == .BoardImageSource {
             let rows = hgcellType.numberOfRows(forImageItems: numberOfItems)
             return rows
         }
@@ -102,14 +103,18 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        if isImageSource { return hgcellType.cellData(sb: self, row: row) }
+        if datasourceType == .BoardImageSource {
+            return hgcellType.cellData(sb: self, row: row)
+        }
         return boardDataSource?.selectionboard(self, dataForRow: row) ?? HGCellData.empty
     }
     
     // MARK: HGTableRowSelectable
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
-        if isImageSource { return false }
+        if datasourceType == .BoardImageSource {
+            return false
+        }
         return true
     }
     
@@ -120,7 +125,9 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     // MARK: HGTableItemEditable
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if isImageSource { return .Yes }
+        if datasourceType == .BoardImageSource {
+            return .Yes
+        }
         return .No
     }
     
