@@ -19,7 +19,7 @@ protocol HGTableViewDelegate: NSTableViewDelegate {
     func hgtableview(hgtableview: HGTableView, willDeleteRow row: Int)
 }
 
-/// Extended NSTableView that appropriate handles mouse and keyboard clicks
+/// Extended NSTableView that appropriate handles mouse and keyboard clicks for Huckleberry Gen
 class HGTableView: NSTableView {
     
     /// Determines if user can select / deselect multiple rows.  Functionality currently broken
@@ -36,7 +36,7 @@ class HGTableView: NSTableView {
         let local = self.convertPoint(global, fromView: nil)
         let row = self.rowAtPoint(local)
         
-        super.mouseDown(theEvent)
+        // super.mouseDown(theEvent) // We removed this because mouseDown was auto selecting rows
         
         if (row != notSelected && row != -1) {
             selectRow(row)

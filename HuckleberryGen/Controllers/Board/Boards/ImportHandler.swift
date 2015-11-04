@@ -71,7 +71,7 @@ extension ImportHandler: SelectionBoardDataSource {
     // MARK: SelectionBoardDelegate
     
     func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType {
-        return HGCellType.MixedCell1
+        return HGCellType.FieldCell3
     }
     
     func selectionboard(sb: SelectionBoard, didChoose items: [Int]) {
@@ -90,11 +90,12 @@ extension ImportHandler: SelectionBoardDataSource {
     
     func selectionboard(sb: SelectionBoard, dataForRow row: Int) -> HGCellData {
         let file = importFolder.importFiles[row]
-        return HGCellData.defaultCell(
+        return HGCellData.fieldCell3(
             field0: HGFieldData(title: file.name),
-            field1: HGFieldData(title: file.path),
-            image0: HGImageData(title: "", image: nil)
-        )
+            field1: HGFieldData(title: "Path:"),
+            field2: HGFieldData(title: file.path),
+            field3: HGFieldData(title: "Last Modified:"),
+            field4: HGFieldData(title: file.modificationDate.stringMonthDayYear()))
     }
     
     private func setBoardTitle() {

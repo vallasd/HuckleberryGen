@@ -42,7 +42,8 @@ extension NSDate
         return components.year
     }
     
-    func dateString() -> String
+    /// Creates a string of MM/DD/YY for NSDate
+    func stringMonthDayYear() -> String
     {
         //Get Year
         let calendar = NSCalendar.currentCalendar()
@@ -50,12 +51,13 @@ extension NSDate
         return "\(components.month)/\(components.day)/\(components.year)"
     }
     
-    func yearString() -> String
+    /// Creates a string of YYYY for NSDate
+    func stringYear() -> String
     {
         return "\(self.year())"
     }
     
-    func toShortTimeString() -> String
+    func stringShort() -> String
     {
         //Get Short Time String
         let formatter = NSDateFormatter()

@@ -37,17 +37,19 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
         case BoardImageSource
     }
     
-    ///
-    var datasourceType: DatasourceType = .BoardDataSource
+    /// type of datasource that the Selection Board is.  Set when user assigns the delegate.
+    private(set) var datasourceType: DatasourceType = .BoardDataSource
     
     private(set) var parentTable: HGTable?
     
+    /// delegate which conforms to SelectionBoardDelegate protocol.  Also use SelectionBoardDataSource or SelectionBoardImageSource in conjunction with this protocol in order to supply data for the cells
     weak var boardDelegate: SelectionBoardDelegate? {
         didSet {
             hgcellType = boardDelegate?.hgcellType(forSelectionBoard: self) ?? HGCellType.DefaultCell
         }
     }
     
+    /// delegate which conforms to SelectionBoardDataSource protocol.  Allows user to choose the entire row as an item.
     weak var boardDataSource: SelectionBoardDataSource? {
         didSet {
             datasourceType = .BoardDataSource
@@ -55,6 +57,7 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
         }
     }
     
+    /// delegate which conforms to SelectionBoardImageSource protocol.  Allows user to choose individual images on row  as an item.
     weak var boardImageSource: SelectionBoardImageSource? {
         didSet {
             datasourceType = .BoardImageSource
@@ -68,10 +71,12 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     
     // MARK: Public Methods
     
+    /// Refreshes the data in the table
     func update() {
         hgtable.update()
     }
     
+    /// Instantiates and presents the Selection Board to screen
     static func present(withParentTable table: HGTable?) -> SelectionBoard {
         BoardHandler.startBoard(BoardType.Selection, blur: true)
         let selectionBoard = BoardHandler.currentVC as! SelectionBoard
@@ -88,7 +93,7 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     func numberOfRows(fortable table: HGTable) -> Int {
         numberOfItems = boardDelegate?.numberOfItems(forSelectionBoard: self) ?? 0
         if datasourceType == .BoardImageSource {
-            let rows = hgcellType.numberOfRows(forImageItems: numberOfItems)
+            let rows = hgcellType.imageSourceNumberOfRows(forImageItems: numberOfItems)
             return rows
         }
         return numberOfItems
@@ -104,7 +109,7 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         if datasourceType == .BoardImageSource {
-            return hgcellType.cellData(sb: self, row: row)
+            return hgcellType.imageSourceCellData(sb: self, row: row)
         }
         return boardDataSource?.selectionboard(self, dataForRow: row) ?? HGCellData.empty
     }
@@ -142,6 +147,7 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
         hgtable.delegate = self
     }
     
+    /// Returns the selected choice (if any) to the SelectionBoardDelegate
     override func viewWillDisappear() {
         super.viewWillDisappear()
         if hgtable.selectedLocations.count > 0 {

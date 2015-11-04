@@ -53,6 +53,11 @@ struct HGCellData {
         return HGCellData(fields: [field0, field1], images: [], checks: [])
     }
     
+    /// returns a HGCellData object that can populate a fieldCell3 nib
+    static func fieldCell3(field0 field0: HGFieldData, field1: HGFieldData, field2: HGFieldData, field3: HGFieldData, field4: HGFieldData) -> HGCellData {
+        return HGCellData(fields: [field0, field1, field2, field3, field4], images: [], checks: [])
+    }
+    
     /// returns a HGCellData object that can populate a defaultCell nib
     static func defaultCell(field0 field0: HGFieldData, field1: HGFieldData, image0: HGImageData) -> HGCellData {
         return HGCellData(fields: [field0, field1], images: [image0], checks: [])
