@@ -17,7 +17,6 @@
 		033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */; };
 		033F3DEE1BBACE770089AEC2 /* HGTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DED1BBACE770089AEC2 /* HGTabVC.swift */; };
 		0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034614091BDF81E40002F0AA /* DecisionBoard.swift */; };
-		035034831B62A41800778C5D /* HGScalarString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035034821B62A41800778C5D /* HGScalarString.swift */; };
 		035428E91BA1A1C500BED618 /* HGNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428E81BA1A1C500BED618 /* HGNotif.swift */; };
 		035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428EA1BA1C16600BED618 /* NSNotification.swift */; };
 		035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E75551B9595890036AE0B /* HGFileQuery.swift */; };
@@ -115,7 +114,6 @@
 		033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabView.swift; sourceTree = "<group>"; };
 		033F3DED1BBACE770089AEC2 /* HGTabVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabVC.swift; sourceTree = "<group>"; };
 		034614091BDF81E40002F0AA /* DecisionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionBoard.swift; sourceTree = "<group>"; };
-		035034821B62A41800778C5D /* HGScalarString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGScalarString.swift; path = HGHash/HGScalarString.swift; sourceTree = "<group>"; };
 		035428E81BA1A1C500BED618 /* HGNotif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGNotif.swift; path = HGNotif/HGNotif.swift; sourceTree = "<group>"; };
 		035428EA1BA1C16600BED618 /* NSNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotification.swift; sourceTree = "<group>"; };
 		035E75551B9595890036AE0B /* HGFileQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGFileQuery.swift; path = HGQuery/HGFileQuery.swift; sourceTree = "<group>"; };
@@ -245,14 +243,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		035034811B62A3EB00778C5D /* HGHash */ = {
-			isa = PBXGroup;
-			children = (
-				035034821B62A41800778C5D /* HGScalarString.swift */,
-			);
-			name = HGHash;
-			sourceTree = "<group>";
-		};
 		035428E71BA1A1A900BED618 /* HGNotif */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,7 +353,6 @@
 				036C7CAB1B529A84004EC724 /* HGError */,
 				036C7CAD1B529A84004EC724 /* HGExtension */,
 				036C7CB01B529A84004EC724 /* HGGen */,
-				035034811B62A3EB00778C5D /* HGHash */,
 				036C7CB21B529A84004EC724 /* HGJSON */,
 				0372A6101B8F6E8C00317065 /* HGParser */,
 				036C7CB41B529A84004EC724 /* HGProtocol */,
@@ -733,7 +722,6 @@
 				031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */,
 				03F25EE81B9C16EA0048B0A0 /* HGCell.swift in Sources */,
 				036C7CC11B529A84004EC724 /* HGJSON.swift in Sources */,
-				035034831B62A41800778C5D /* HGScalarString.swift in Sources */,
 				036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */,
 				035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */,
 				036D23BF1BACA12D002824E9 /* HGTableCellIdentifier.swift in Sources */,

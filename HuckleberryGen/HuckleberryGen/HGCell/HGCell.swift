@@ -147,20 +147,17 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         // update row tag
         self.row = row
         
-        // update images with HGImageData
-        for var index = 0; index < cellData.images.count; index++ {
-            update(image: images[index], withData: cellData.images[index])
-        }
+        // Update and/or Clear Fields
+        update(withData: cellData.fields)
+        disable(missingData: cellData.fields)
         
-        // update fields with HGFieldData
-        for var index = 0; index < cellData.fields.count; index++ {
-            update(field: fields[index], withData: cellData.fields[index])
-        }
+        // Update and/or Clear Images
+        update(withData: cellData.images)
+        disable(missingData: cellData.images)
         
-        // update checks with HGCheckData
-        for var index = 0; index < cellData.checks.count; index++ {
-            update(check: checks[index], withData: cellData.checks[index])
-        }
+        // Update and/or Clear Fields
+        update(withData: cellData.checks)
+        disable(missingData: cellData.checks)
     }
     
     // MARK: Button and Field Target Actions
@@ -238,19 +235,34 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     // MARK: Update Cell Data
     
+    /// Updates fields with HGFieldData (assumes [HGFieldData] is correctly ordered)
+    private func update(withData data: [HGFieldData]) {
+        let maxCount = min(data.count, fields.count)
+        for var index = 0; index < maxCount; index++ {
+            update(field: fields[index], withData: data[index])
+        }
+    }
+    
+    /// Updates images with HGImageData (assumes [HGImageData] is correctly ordered)
+    private func update(withData data: [HGImageData]) {
+        let maxCount = min(data.count, images.count)
+        for var index = 0; index < maxCount; index++ {
+            update(image: images[index], withData: data[index])
+        }
+    }
+    
+    /// Updates checks with HGCheckData (assumes [HGCheckData] is correctly ordered)
+    private func update(withData data: [HGCheckData]) {
+        let maxCount = min(data.count, checks.count)
+        for var index = 0; index < maxCount; index++ {
+            update(check: checks[index], withData: data[index])
+        }
+    }
+    
     /// Updates a field with appropriate HGFieldData and makes field ready for custom display
     private func update(field field: NSTextField?, withData data: HGFieldData) {
         
         guard let field = field else { return }
-        
-//        guard let data = data else {
-//            field.stringValue = ""
-//            field.enabled = false
-//            field.hidden = true
-//            field.editable = false
-//            removeSelectFieldButton(field: field)
-//            return
-//        }
         
         field.stringValue = data.title
         field.enabled = true
@@ -263,15 +275,13 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         guard let image = image else { return }
         
-//        guard let data = data else {
-//            image.title = ""
-//            image.image = nil
-//            image.enabled = false
-//            image.hidden = true
-//            return
-//        }
+        /// If image is returned, use that, else, try to use title.
+        if let dataImage = data.image {
+            image.image = dataImage
+        } else {
+            image.image = NSImage(named: data.title)
+        }
         
-        image.image = data.image
         image.enabled = true
         image.hidden = false
     }
@@ -281,18 +291,80 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         guard let check = check else { return }
         
-//        guard let data = data else {
-//            check.title = ""
-//            check.state = 0
-//            check.enabled = false
-//            check.hidden = true
-//            return
-//        }
-        
         check.title = data.title
         check.state = data.state == true ? 1 : 0
         check.enabled = true
         check.hidden = false
+    }
+    
+    // MARK: Disable Cells
+    
+    /// Disables fields that do not have cooresponding HGFieldData (assumes [HGFieldData] is correctly ordered)
+    private func disable(missingData data: [HGFieldData]) {
+        if data.count < fields.count {
+            for var index = data.count; index < fields.count; index++ {
+                disable(field: fields[index])
+            }
+        }
+    }
+    
+    /// Disables images that do not have cooresponding HGImageData (assumes [HGImageData] is correctly ordered)
+    private func disable(missingData data: [HGImageData]) {
+        if data.count < images.count {
+            for var index = data.count; index < images.count; index++ {
+                disable(image: images[index])
+            }
+        }
+    }
+    
+    /// Disables checks that do not have cooresponding HGCheckData (assumes [HGCheckData] is correctly ordered)
+    private func disable(missingData data: [HGCheckData]) {
+        if data.count < checks.count {
+            for var index = data.count; index < checks.count; index++ {
+                disable(check: checks[index])
+            }
+        }
+    }
+    
+    /// Disables field so that it will not be used by the HGCell
+    private func disable(field field: NSTextField?) {
+        
+        guard let field = field else { return }
+        
+        field.stringValue = ""
+        field.enabled = false
+        field.hidden = true
+        field.editable = false
+        removeSelectFieldButton(field: field)
+    }
+    
+    /// Disables image so that it will not be used by the HGCell
+    private func disable(image image: NSButton?) {
+        
+        guard let image = image else { return }
+        
+        image.title = ""
+        image.image = nil
+        image.enabled = false
+        image.hidden = true
+    }
+    
+    /// Disables check so that it will not be used by the HGCell
+    private func disable(check check: NSButton?) {
+        
+        guard let check = check else { return }
+        
+        check.title = ""
+        check.state = 0
+        check.enabled = false
+        check.hidden = true
+    }
+    
+    // MARK: Errors Reporting
+    
+    /// Reports and error if there is more data than cell objects available
+    private func reportExtraDataErrorIfApplicable(cellCount cellCount: Int, dataCount: Int, typeOfObject: String) {
+        //
     }
     
     // MARK: Field Select Button

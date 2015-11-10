@@ -43,6 +43,7 @@ class HGTableView: NSTableView {
         }
     }
     
+    /// custom HGTableView function that handles mouseDown events
     override func keyDown(theEvent: NSEvent) {
         let command = theEvent.command()
         switch command {
@@ -54,6 +55,7 @@ class HGTableView: NSTableView {
         }
     }
     
+    /// custom HGTableView function that handles changed flag events such as command button held down
     override func flagsChanged(theEvent: NSEvent) {
         let options = theEvent.commandOptions()
         if options.contains(HGCommandOptions.MultiSelectOn) {

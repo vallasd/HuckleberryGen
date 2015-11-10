@@ -20,7 +20,6 @@ struct HGFieldData: HGCellItemData {
 struct HGImageData: HGCellItemData {
     let title: String
     let image: NSImage?
-    // let imageURL: String?
     
     static func withImage(image: NSImage?) -> HGImageData { return HGImageData(title: "", image: image) }
 

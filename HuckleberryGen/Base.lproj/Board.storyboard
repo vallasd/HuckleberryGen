@@ -280,11 +280,11 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ue1-Io-vRS">
                                 <rect key="frame" x="20" y="50" width="440" height="175"/>
                                 <clipView key="contentView" id="MF7-hx-22B">
-                                    <rect key="frame" x="1" y="1" width="438" height="173"/>
+                                    <rect key="frame" x="2" y="1" width="438" height="172"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kOc-zV-rny" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="438" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="438" height="173"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
