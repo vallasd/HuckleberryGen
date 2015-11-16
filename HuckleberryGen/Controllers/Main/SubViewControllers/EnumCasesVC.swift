@@ -104,8 +104,6 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        for row in rows {
-            HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.removeAtIndex(row)
-        }
+        HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.removeIndexes(rows)
     }
 }

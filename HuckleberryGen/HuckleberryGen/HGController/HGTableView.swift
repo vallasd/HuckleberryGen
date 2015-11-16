@@ -25,7 +25,7 @@ class HGTableView: NSTableView {
     /// Determines if user can select / deselect multiple rows.  Functionality currently broken
     var allowsMultipleRowSelection: Bool = false
     
-    /// Returns array of selected rows
+    /// Returns array of selected rows.  Do not use inside HGTableView (use iSelectedRows)
     var selectedRows: [Int] {
         get {
             return Array(iSelectedRows)
@@ -41,21 +41,23 @@ class HGTableView: NSTableView {
     /// Deletes rows supplied without conferring with delegate
     func delete(rows rows: [Int]) {
         
-        var lastDeletedRow = notSelected
-        let selectedRowArray = Array(iSelectedRows)
+        // create indexSet from rows
+        let indexSet = NSMutableIndexSet()
+        for row in rows { indexSet.addIndex(row) }
         
-        extendedDelegate?.hgtableview(self, willDeleteRows: selectedRowArray)
-        iSelectedRows = NSMutableIndexSet()
+        // notify delegate about impending deletion
+        extendedDelegate?.hgtableview(self, willDeleteRows: rows)
         
-        for row in rows {
-            self.removeRowsAtIndexes(NSIndexSet(index: row), withAnimation: [.EffectNone])
-            lastDeletedRow = row
-        }
+        // remove indexes from selected rows
+        iSelectedRows.removeIndexes(indexSet)
         
-        // We are checking if no rows left or nothing was deleted and selecting row appropriately
-        var nr = min(numberOfRows - 1, lastDeletedRow - 1)
-        if nr == -1 || nr == -100 { nr = notSelected }
-        selectRow(nr)
+        // remove rows from self (Tableview)
+        self.removeRowsAtIndexes(indexSet, withAnimation: [.EffectNone])
+        
+//        // We are checking if no rows left or nothing was deleted and selecting row appropriately
+//        var nr = min(numberOfRows - 1, lastDeletedRow - 1)
+//        if nr == -1 || nr == -100 { nr = notSelected }
+//        selectRow(nr)
     }
     
     /// custom HGTableView function that handles mouseDown events

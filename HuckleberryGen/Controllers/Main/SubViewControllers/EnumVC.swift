@@ -133,8 +133,6 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        for row in rows {
-            HuckleberryGen.store.hgmodel.enums.removeAtIndex(row)
-        }
+        HuckleberryGen.store.hgmodel.enums.removeIndexes(rows)
     }
 }

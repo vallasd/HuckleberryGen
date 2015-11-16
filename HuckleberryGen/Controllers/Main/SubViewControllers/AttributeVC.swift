@@ -87,9 +87,7 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        for row in rows {
-            HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.removeAtIndex(row)
-        }
+        HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.removeIndexes(rows)
     }
 }
 
