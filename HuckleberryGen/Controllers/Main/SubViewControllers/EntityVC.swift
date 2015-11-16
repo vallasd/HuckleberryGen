@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePostable, HGTableRowSelectable, HGTableItemEditable, HGTableRowAppendable {
+class EntityVC: NSViewController {
 
     // MARK: Public Variables
     
@@ -16,13 +16,23 @@ class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTable
     
     let cellType: HGCellType = HGCellType.DefaultCell
     let hgtable: HGTable = HGTable()
+    
+    // MARK: View Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+    
+}
 
-    // MARK: HGTableDisplayable
+// MARK: HGTableDisplayable
+extension EntityVC: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
     }
-
+    
     func numberOfRows(fortable table: HGTable) -> Int {
         return HuckleberryGen.store.hgmodel.entities.count
     }
@@ -43,26 +53,34 @@ class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTable
             image0: HGImageData(title: "", image: NSImage(named: "entityIcon"))
         )
     }
+}
 
-    // MARK: HGTableObservable
+// MARK: HGTableObservable
+extension EntityVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifEntityUpdate
     }
-    
-    // MARK: HGTablePostable
+}
+
+// MARK: HGTablePostable
+extension EntityVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEntitySelected
     }
-    
-    // MARK: HGTableRowSelectable
+}
+
+// MARK: HGTableRowSelectable
+extension EntityVC: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
-    
-    // MARK: HGTableItemEditable
+}
+
+// MARK: HGTableItemEditable
+extension EntityVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if type == .Field && tag == 0 { return .Yes } // Entity Name
@@ -76,8 +94,10 @@ class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTable
             HuckleberryGen.store.hgmodel.entities[row] = entity
         }
     }
-    
-    // MARK: HGTableRowAppendable
+}
+
+// MARK: HGTableRowAppendable
+extension EntityVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
         return true
@@ -87,21 +107,24 @@ class EntityVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTable
         HuckleberryGen.store.hgmodel.entities.append(Entity.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
-        let entity = HuckleberryGen.store.hgmodel.entities[row]
-        if entity.attributes.count > 0 || entity.relationships.count > 0 { return .AskUser }
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+        
+        for row in rows {
+            let entity = HuckleberryGen.store.hgmodel.entities[row]
+            if entity.attributes.count > 0 || entity.relationships.count > 0 {
+                return .AskUser
+            }
+        }
+        
         return .Yes
     }
     
-    func hgtable(table: HGTable, willDeleteRow row: Int) {
-        HuckleberryGen.store.hgmodel.entities.removeAtIndex(row)
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        
+        for row in rows {
+            HuckleberryGen.store.hgmodel.entities.removeAtIndex(row)
+        }
     }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
-    }
-    
 }
+
+

@@ -8,7 +8,7 @@
 //
 import Cocoa
 
-class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, HGTableRowSelectable, HGTableRowAppendable, HGTableItemEditable, HGTableItemOptionable, SelectionBoardDelegate, SelectionBoardImageSource, SelectionBoardDataSource {
+class RelationshipVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
@@ -20,17 +20,23 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
     let deletionCell = HGCellType.DefaultCell
     
     weak var typeSelection: SelectionBoard?
-    weak var entitySelection: SelectionBoard? {
-        didSet {
-            
-        }
-    }
+    weak var entitySelection: SelectionBoard?
     weak var deletionSelection: SelectionBoard?
     
     // MARK: HGTableDisplayable
     
     let noentity: Int = notSelected
     private var editingLocation: HGCellLocation?
+    
+     // MARK: View Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+}
+
+// MARK: HGTableDisplayable
+extension RelationshipVC: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
@@ -61,20 +67,48 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
             image0: HGImageData(title: "", image: relationship.type.image)
         )
     }
-    
-    // MARK: HGTableObservable
+}
+
+// MARK: HGTableObservable
+extension RelationshipVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEntitySelected
     }
-    
-    // MARK: HGTableRowSelectable
+}
+
+// MARK: HGTableRowSelectable
+extension RelationshipVC: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
+}
+
+// MARK: HGTableRowAppendable
+extension RelationshipVC: HGTableRowAppendable {
     
-    // MARK: HGTableItemEditable
+    func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
+        return table.parentRow != notSelected
+    }
+    
+    func hgtable(willAddRowToTable table: HGTable) {
+        HuckleberryGen.store.hgmodel.entities[table.parentRow].relationships.append(Relationship.new)
+    }
+    
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+        return .Yes
+    }
+    
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        for row in rows {
+            HuckleberryGen.store.hgmodel.entities[table.parentRow].relationships.removeAtIndex(row)
+        }
+    }
+}
+
+// MARK: HGTableItemEditable
+extension RelationshipVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if type == .Field && tag == 0 { return .Yes } // Relationship Name
@@ -90,26 +124,10 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
             HuckleberryGen.store.hgmodel.entities[table.parentRow].relationships[row] = relationship
         }
     }
-    
-    // MARK: HGTableRowAppendable
-    
-    func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
-        return table.parentRow != notSelected
-    }
-    
-    func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.hgmodel.entities[table.parentRow].relationships.append(Relationship.new)
-    }
-    
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
-        return .Yes
-    }
-    
-    func hgtable(table: HGTable, willDeleteRow row: Int) {
-        HuckleberryGen.store.hgmodel.entities[table.parentRow].relationships.removeAtIndex(row)
-    }
-    
-    // MARK: HGTableItemOptionable
+}
+
+// MARK: HGTableItemOptionable
+extension RelationshipVC: HGTableItemOptionable {
     
     func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType) {
         
@@ -119,15 +137,15 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
             typeSelection?.boardDelegate = self
             typeSelection?.boardImageSource = self
         }
-        
-        // Relationship Entity
+            
+            // Relationship Entity
         else if type == .Field && tag == 2 {
             entitySelection = SelectionBoard.present(withParentTable: table)
             entitySelection?.boardDelegate = self
             entitySelection?.boardDataSource = self
         }
-        
-        // Relationship Deletion Rule
+            
+            // Relationship Deletion Rule
         else if type == .Field && tag == 4 {
             deletionSelection = SelectionBoard.present(withParentTable: table)
             deletionSelection?.boardDelegate = self
@@ -137,8 +155,10 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
         let identifier = HGCellItemIdentifier(tag: tag, type: type)
         editingLocation = HGCellLocation(row: row, identifier: identifier)
     }
-    
-    // MARK: SelectionBoardDelegate
+}
+
+// MARK: SelectionBoardDelegate
+extension RelationshipVC: SelectionBoardDelegate {
     
     func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType {
         
@@ -190,8 +210,10 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
         
         return 0
     }
-    
-    // MARK: SelectionBoardDataSource
+}
+
+// MARK: SelectionBoardDataSource
+extension RelationshipVC: SelectionBoardDataSource {
     
     func selectionboard(sb: SelectionBoard, dataForRow row: Int) -> HGCellData {
         
@@ -209,8 +231,10 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
         
         return HGCellData.empty
     }
-    
-    // MARK: SelectionBoardImageSource
+}
+
+// MARK: SelectionBoardImageSource
+extension RelationshipVC: SelectionBoardImageSource {
     
     func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData {
         
@@ -221,12 +245,5 @@ class RelationshipVC: NSViewController, HGTableObservable, HGTableDisplayable, H
         
         // Relationship Entity / Deletion Rule will use DataSource Protocol
         return HGImageData(title: "", image: nil)
-    }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
     }
 }

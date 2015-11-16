@@ -22,7 +22,8 @@ protocol EnumVCDelegate: AnyObject {
     func enumVC(vc: EnumVC, selectedEnum: Enum)
 }
 
-class EnumVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePostable, HGTableRowSelectable, HGTableItemEditable, HGTableRowAppendable {
+/// NSViewController that displays a table of Enums
+class EnumVC: NSViewController {
     
     // MARK: Public Variables
     
@@ -31,7 +32,14 @@ class EnumVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePo
     let cellType: HGCellType = HGCellType.DefaultCell
     let hgtable: HGTable = HGTable()
     
-    // MARK: HGTableDisplayable
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+}
+
+// MARK: HGTableDisplayable
+extension EnumVC: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
@@ -57,26 +65,34 @@ class EnumVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePo
             image0: HGImageData(title: "", image: NSImage(named: "enumIcon"))
         )
     }
-    
-    // MARK: HGTableObservable
+}
+
+// MARK: HGTableObservable
+extension EnumVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifEnumUpdate
     }
-    
-    // MARK: HGTablePostable
+}
+
+// MARK: HGTablePostable
+extension EnumVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEnumSelected
     }
-    
-    // MARK: HGTableRowSelectable
+}
+
+// MARK: HGTableRowSelectable
+extension EnumVC: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
-    
-    // MARK: HGTableItemEditable
+}
+
+// MARK: HGTableItemEditable
+extension EnumVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if type == .Field && tag == 0 { return .Yes } // Entity Name
@@ -90,34 +106,35 @@ class EnumVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTablePo
             HuckleberryGen.store.hgmodel.enums[row] = enuM
         }
     }
-    
-    // MARK: HGTableRowAppendable
+}
+
+// MARK: HGTableRowAppendable
+extension EnumVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
         return true
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
+        
         HuckleberryGen.store.hgmodel.enums.append(Enum.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
-        let enuM = HuckleberryGen.store.hgmodel.enums[row]
-        if enuM.cases.count > 0 { return .AskUser }
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+        
+        for row in rows {
+            let enuM = HuckleberryGen.store.hgmodel.enums[row]
+            if enuM.cases.count > 0 {
+                return .AskUser
+            }
+        }
+        
         return .Yes
     }
     
-    func hgtable(table: HGTable, willDeleteRow row: Int) {
-        HuckleberryGen.store.hgmodel.enums.removeAtIndex(row)
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        for row in rows {
+            HuckleberryGen.store.hgmodel.enums.removeAtIndex(row)
+        }
     }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
-    }
-
-    
-    
 }

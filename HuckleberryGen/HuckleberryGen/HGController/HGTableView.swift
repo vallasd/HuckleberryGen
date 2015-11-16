@@ -13,10 +13,10 @@ let notSelected: Int = -99
 protocol HGTableViewDelegate: NSTableViewDelegate {
     func hgtableview(hgtableview: HGTableView, shouldSelectRow row: Int) -> Bool
     func hgtableview(shouldAddRowToTable hgtableview: HGTableView) -> Bool
-    func hgtableview(hgtableview: HGTableView, shouldDeleteRow row: Int) -> Bool
+    func hgtableviewShouldDeleteSelectedRows(hgtableview: HGTableView) -> Bool
     func hgtableview(hgtableview: HGTableView, didSelectRow row: Int)
     func hgtableview(willAddRowToTable hgtableview: HGTableView)
-    func hgtableview(hgtableview: HGTableView, willDeleteRow row: Int)
+    func hgtableview(hgtableview: HGTableView, willDeleteRows rows: [Int])
 }
 
 /// Extended NSTableView that appropriate handles mouse and keyboard clicks for Huckleberry Gen
@@ -25,11 +25,40 @@ class HGTableView: NSTableView {
     /// Determines if user can select / deselect multiple rows.  Functionality currently broken
     var allowsMultipleRowSelection: Bool = false
     
-    /// An Array of locations that are currently selected by the table view.
-    private(set) var selectedRows: NSMutableIndexSet = NSMutableIndexSet()
+    /// Returns array of selected rows
+    var selectedRows: [Int] {
+        get {
+            return Array(iSelectedRows)
+        }
+    }
     
+    /// A set of selected rows.  Internal Variable.
+    private var iSelectedRows: NSMutableIndexSet = NSMutableIndexSet()
+    
+    /// Extended delegate that conforms to protocol HGTableViewDelegate
     var extendedDelegate: HGTableViewDelegate?
     
+    /// Deletes rows supplied without conferring with delegate
+    func delete(rows rows: [Int]) {
+        
+        var lastDeletedRow = notSelected
+        let selectedRowArray = Array(iSelectedRows)
+        
+        extendedDelegate?.hgtableview(self, willDeleteRows: selectedRowArray)
+        iSelectedRows = NSMutableIndexSet()
+        
+        for row in rows {
+            self.removeRowsAtIndexes(NSIndexSet(index: row), withAnimation: [.EffectNone])
+            lastDeletedRow = row
+        }
+        
+        // We are checking if no rows left or nothing was deleted and selecting row appropriately
+        var nr = min(numberOfRows - 1, lastDeletedRow - 1)
+        if nr == -1 || nr == -100 { nr = notSelected }
+        selectRow(nr)
+    }
+    
+    /// custom HGTableView function that handles mouseDown events
     override func mouseDown(theEvent: NSEvent) {
         
         let global = theEvent.locationInWindow
@@ -43,12 +72,12 @@ class HGTableView: NSTableView {
         }
     }
     
-    /// custom HGTableView function that handles mouseDown events
+    /// custom HGTableView function that handles keyDown events
     override func keyDown(theEvent: NSEvent) {
         let command = theEvent.command()
         switch command {
         case .AddRow: addRow()
-        case .DeleteRow: deleteRow()
+        case .DeleteRow: deleteSelectedRowsIfDelegateSaysOK()
         case .NextRow: selectNext()
         case .PreviousRow: selectPrev()
         default: break // Do Nothing
@@ -65,47 +94,51 @@ class HGTableView: NSTableView {
         }
     }
     
+    /// Selects or unselects (if row is currently selected) a row
     private func selectRow(var row: Int) {
         
         if row != notSelected {
             
             let isSelectableRow = extendedDelegate?.hgtableview(self, shouldSelectRow: row) ?? false
-            let isSelectedRow = selectedRows.contains(row)
+            let isSelectedRow = iSelectedRows.contains(row)
             
             if isSelectedRow {
-                selectedRows.removeIndex(row)
+                iSelectedRows.removeIndex(row)
                 row = notSelected
             }
                 
             else if isSelectableRow {
                 if allowsMultipleRowSelection {
-                    selectedRows.addIndex(row)
+                    iSelectedRows.addIndex(row)
                 } else {
-                    selectedRows = NSMutableIndexSet(index: row)
+                    iSelectedRows = NSMutableIndexSet(index: row)
                 }
             }
         }
         
         extendedDelegate?.hgtableview(self, didSelectRow: row)
         
+        // Selects row and then scrolls to it
         NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] () -> Void in
-            self?.selectRowIndexes(self?.selectedRows ?? NSIndexSet(), byExtendingSelection: false)
+            self?.selectRowIndexes(self?.iSelectedRows ?? NSIndexSet(), byExtendingSelection: false)
             self?.scrollRowToVisible(row)
         }
     }
     
+    /// Selects previous row, loops to end of hgtableview index if current index is 0
     private func selectPrev() {
-        if selectedRows.count <= 1 {
-            var selectedRow = selectedRows.count == 0 ? notSelected : selectedRows.lastIndex
+        if iSelectedRows.count <= 1 {
+            var selectedRow = iSelectedRows.count == 0 ? notSelected : iSelectedRows.lastIndex
             if selectedRow == notSelected || selectedRow == 0 { selectedRow = self.numberOfRows - 1 }
             else { selectedRow-- }
             selectRow(selectedRow)
         }
     }
     
+    /// Selects next row, loops to beginning of hgtableview index if current index is lastrow
     private func selectNext() {
-        if selectedRows.count <= 1 {
-            var selectedRow = selectedRows.count == 0 ? notSelected : selectedRows.lastIndex
+        if iSelectedRows.count <= 1 {
+            var selectedRow = iSelectedRows.count == 0 ? notSelected : iSelectedRows.lastIndex
             let totalRows = self.numberOfRows
             if selectedRow == notSelected || selectedRow == totalRows - 1 { selectedRow = 0 }
             else { selectedRow++ }
@@ -113,11 +146,13 @@ class HGTableView: NSTableView {
         }
     }
     
+    /// Unselects all rows
     private func unSelectAll() {
         deselectAll(self)
-        selectedRows = NSMutableIndexSet()
+        iSelectedRows = NSMutableIndexSet()
     }
     
+    /// Asks delegate if hgtableview should add row, then adds row if delegate returns true
     private func addRow() {
         let shouldAdd = extendedDelegate?.hgtableview(shouldAddRowToTable: self) ?? false
         if shouldAdd == true {
@@ -129,25 +164,15 @@ class HGTableView: NSTableView {
         }
     }
     
-    private func deleteRow() {
+    /// Asks delegate if hgtableview should delete rows, then deletes row if delegate returns true
+    private func deleteSelectedRowsIfDelegateSaysOK() {
         
-        var lastDeletedRow = notSelected
-        let selectedRowArray = Array(selectedRows)
+        let shouldDelete = extendedDelegate?.hgtableviewShouldDeleteSelectedRows(self) ?? false
         
-        for row in selectedRowArray {
-            let shouldDelete = extendedDelegate?.hgtableview(self, shouldDeleteRow: row) ?? false
-            if shouldDelete == true {
-                selectedRows.removeIndex(row)
-                extendedDelegate?.hgtableview(self, willDeleteRow: row)
-                self.removeRowsAtIndexes(NSIndexSet(index: row), withAnimation: [.EffectNone])
-                lastDeletedRow = row
-            }
+        if shouldDelete == true {
+            delete(rows: selectedRows)
         }
         
-        // We are checking if no rows left or nothing was deleted and selecting row appropriately
-        var nr = min(numberOfRows - 1, lastDeletedRow - 1)
-        if nr == -1 || nr == -100 { nr = notSelected }
-        selectRow(nr)
     }
     
 }

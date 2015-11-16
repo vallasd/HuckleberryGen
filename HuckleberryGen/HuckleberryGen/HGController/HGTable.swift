@@ -57,8 +57,8 @@ protocol HGTableItemOptionable: HGTableItemEditable {
 protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool
     func hgtable(willAddRowToTable table: HGTable)
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption
-    func hgtable(table: HGTable, willDeleteRow row: Int)
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption
+    func hgtable(table: HGTable, willDeleteRows rows: [Int])
 }
 
 /// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  
@@ -214,13 +214,20 @@ extension HGTable: HGTableViewDelegate {
         return rowAppenedDelegate?.hgtable(shouldAddRowToTable: self) ?? false
     }
     
-    func hgtableview(hgtableview: HGTableView, shouldDeleteRow row: Int) -> Bool {
-        let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRow: row)
+    func hgtableviewShouldDeleteSelectedRows(hgtableview: HGTableView) -> Bool {
+        
+        let rows = hgtableview.selectedRows
+        let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRows: rows)
         
         if answer == .AskUser {
             BoardHandler.startBoard(BoardType.Decision, blur: true)
             let db = BoardHandler.currentVC as! DecisionBoard
-            db.question.stringValue = "Do you really want to delete?"
+            if rows.count > 1 {
+                db.question.stringValue = "Do you really want to delete \(rows.count) rows?"
+            } else {
+                db.question.stringValue = "Do you really want to delete the row?"
+            }
+            
             db.delegate = self
             return false
         }
@@ -229,8 +236,7 @@ extension HGTable: HGTableViewDelegate {
     }
     
     func hgtableview(hgtableview: HGTableView, didSelectRow row: Int) {
-        selectedLocations = HGCellLocation.locations(fromIndexSet: hgtableview.selectedRows)
-        //        rowSelectDelegate?.hgtable(self, didSelectRow: row)
+        selectedLocations = HGCellLocation.locations(fromRows: hgtableview.selectedRows)
         if let sn = selectNotification { HGNotif.shared.postNotification(sn, withObject: row) }
     }
     
@@ -238,8 +244,8 @@ extension HGTable: HGTableViewDelegate {
         rowAppenedDelegate?.hgtable(willAddRowToTable: self)
     }
     
-    func hgtableview(hgtableview: HGTableView, willDeleteRow row: Int) {
-        rowAppenedDelegate?.hgtable(self, willDeleteRow: row)
+    func hgtableview(hgtableview: HGTableView, willDeleteRows rows: [Int]) {
+        rowAppenedDelegate?.hgtable(self, willDeleteRows: rows)
     }
     
 }
@@ -309,7 +315,7 @@ extension HGTable: DecisionBoardDelegate {
     func decisionBoard(db db: DecisionBoard, selectedDecision: DecisionType) {
         
         if selectedDecision == .Yes {
-            
+            tableview.delete(rows: tableview.selectedRows)
         }
     }
     

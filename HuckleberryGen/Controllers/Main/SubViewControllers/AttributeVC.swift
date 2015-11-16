@@ -8,17 +8,25 @@
 //
 import Cocoa
 
-class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTableRowSelectable, HGTableRowAppendable, HGTableItemEditable, HGTableItemOptionable, SelectionBoardDelegate, SelectionBoardImageSource {
+class AttributeVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
     let attributeCell: HGCellType = HGCellType.DefaultCell
     let attributeTypeCell: HGCellType = HGCellType.Image6Cell
     let hgtable: HGTable = HGTable()
-    
-    // MARK: HGTableDisplayable
 
     private var editingLocation: HGCellLocation?
+    
+    // MARK: View Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+}
+
+// MARK: HGTableDisplayable
+extension AttributeVC: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
@@ -45,20 +53,48 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
             image0: HGImageData(title: "", image: attribute.type.image)
         )
     }
-    
-    // MARK: HGTableObservable
+}
+
+// MARK: HGTableObservable
+extension AttributeVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEntitySelected
     }
-    
-    // MARK: HGTableRowSelectable
+}
+
+// MARK: HGTableRowSelectable
+extension AttributeVC: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
+}
+
+// MARK: HGTableRowAppendable
+extension AttributeVC: HGTableRowAppendable {
     
-    // MARK: HGTableItemEditable
+    func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
+        return table.parentRow != notSelected
+    }
+    
+    func hgtable(willAddRowToTable table: HGTable) {
+        HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.append(Attribute.new)
+    }
+    
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+        return .Yes
+    }
+    
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        for row in rows {
+            HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.removeAtIndex(row)
+        }
+    }
+}
+
+// MARK: HGTableItemEditable
+extension AttributeVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if type == .Field && tag == 0 { return .Yes } // Attribute Name
@@ -73,26 +109,10 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
             HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes[row] = attribute
         }
     }
-    
-    // MARK: HGTableRowAppendable
-    
-    func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
-        return table.parentRow != notSelected
-    }
-    
-    func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.append(Attribute.new)
-    }
-    
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
-        return .Yes
-    }
-    
-    func hgtable(table: HGTable, willDeleteRow row: Int) {
-        HuckleberryGen.store.hgmodel.entities[table.parentRow].attributes.removeAtIndex(row)
-    }
-    
-    // MARK: HGTableItemOptionable
+}
+
+// MARK: HGTableItemOptionable
+extension AttributeVC: HGTableItemOptionable {
     
     func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType) {
         if type == .Image && tag == 0 {
@@ -103,8 +123,10 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
             editingLocation = HGCellLocation(row: row, identifier: identifier)
         }
     }
-    
-    // MARK: SelectionBoardDelegate
+}
+
+// MARK: SelectionBoardDelegate
+extension AttributeVC: SelectionBoardDelegate {
     
     func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType {
         return HGCellType.Image5Cell
@@ -121,17 +143,12 @@ class AttributeVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
     func numberOfItems(forSelectionBoard sb: SelectionBoard) -> Int {
         return AttributeType.strings.count
     }
-    
-    // MARK: SelectionBoardImageSource
+}
+
+// MARK: SelectionBoardImageSource
+extension AttributeVC: SelectionBoardImageSource {
     
     func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData {
         return HGImageData(title: AttributeType.strings[index], image: AttributeType.create(int: index).image)
-    }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
     }
 }

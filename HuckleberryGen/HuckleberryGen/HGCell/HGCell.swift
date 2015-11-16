@@ -30,10 +30,20 @@ struct HGCellLocation: Hashable {
         return row.hashValue + idhash
     }
     
+    /// creates an array of HGCellLocations from an NSIndexSet of rows
     static func locations(fromIndexSet set: NSIndexSet) -> [HGCellLocation] {
         var locations: [HGCellLocation] = []
         for index in set {
             locations.append(HGCellLocation(row: index, identifier: nil) )
+        }
+        return locations
+    }
+    
+    /// creates an array of HGCellLocations from an array of rows represented as [Int]
+    static func locations(fromRows rows: [Int]) -> [HGCellLocation] {
+        var locations: [HGCellLocation] = []
+        for row in rows {
+            locations.append(HGCellLocation(row: row, identifier: nil) )
         }
         return locations
     }

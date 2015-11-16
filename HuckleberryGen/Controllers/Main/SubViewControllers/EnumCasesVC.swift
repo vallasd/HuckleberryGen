@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTableRowSelectable, HGTableItemEditable, HGTableRowAppendable {
+class EnumCasesVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
@@ -18,6 +18,15 @@ class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
     // MARK: HGTableDisplayable
     
     private var editingLocation: HGCellLocation?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+}
+
+// MARK: HGTableDisplayable
+extension EnumCasesVC: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
@@ -43,20 +52,26 @@ class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
             field1: HGFieldData(title: String(row))
         )
     }
-    
-    // MARK: HGTableObservable
+}
+
+// MARK: HGTableObservable
+extension EnumCasesVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
         return HGNotif.shared.notifNewEnumSelected
     }
-    
-    // MARK: HGTableRowSelectable
+}
+
+// MARK: HGTableRowSelectable
+extension EnumCasesVC: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
-    
-    // MARK: HGTableItemEditable
+}
+
+// MARK: HGTableItemEditable
+extension EnumCasesVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if type == .Field && tag == 0 { return .Yes } // Attribute Name
@@ -71,8 +86,10 @@ class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
             HuckleberryGen.store.hgmodel.enums[table.parentRow].cases[row] = casE
         }
     }
-    
-    // MARK: HGTableRowAppendable
+}
+
+// MARK: HGTableRowAppendable
+extension EnumCasesVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
         return table.parentRow != notSelected
@@ -82,18 +99,13 @@ class EnumCasesVC: NSViewController, HGTableDisplayable, HGTableObservable, HGTa
         HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.append(EnumCase.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRow row: Int) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
         return .Yes
     }
     
-    func hgtable(table: HGTable, willDeleteRow row: Int) {
-        HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.removeAtIndex(row)
-    }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        for row in rows {
+            HuckleberryGen.store.hgmodel.enums[table.parentRow].cases.removeAtIndex(row)
+        }
     }
 }

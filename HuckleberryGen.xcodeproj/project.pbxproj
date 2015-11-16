@@ -61,7 +61,6 @@
 		037EDFA91B84B4C6002527EE /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037EDFA81B84B4C6002527EE /* Enum.swift */; };
 		038C79E01B6297560008D29C /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C79DF1B6297560008D29C /* Entity.swift */; };
 		038CD8B71B7CEC8800712F57 /* HGString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038CD8B61B7CEC8800712F57 /* HGString.swift */; };
-		03A194811B83D71200B84238 /* EntityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A194801B83D71200B84238 /* EntityCell.swift */; };
 		03A20B481B99E4C900149AF5 /* BoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B371B99E4C900149AF5 /* BoardHandler.swift */; };
 		03A20B491B99E4C900149AF5 /* BoardNAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B381B99E4C900149AF5 /* BoardNAV.swift */; };
 		03A20B4A1B99E4C900149AF5 /* FolderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */; };
@@ -164,7 +163,6 @@
 		037EDFA81B84B4C6002527EE /* Enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		038C79DF1B6297560008D29C /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entity.swift; path = Categories/Entity.swift; sourceTree = "<group>"; };
 		038CD8B61B7CEC8800712F57 /* HGString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGString.swift; sourceTree = "<group>"; };
-		03A194801B83D71200B84238 /* EntityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityCell.swift; path = Cells/EntityCell.swift; sourceTree = "<group>"; };
 		03A20B371B99E4C900149AF5 /* BoardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHandler.swift; sourceTree = "<group>"; };
 		03A20B381B99E4C900149AF5 /* BoardNAV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardNAV.swift; sourceTree = "<group>"; };
 		03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderBoard.swift; sourceTree = "<group>"; };
@@ -282,7 +280,6 @@
 		036C7C041B5143A0004EC724 /* HuckleberryGen */ = {
 			isa = PBXGroup;
 			children = (
-				03A1947F1B83D6DD00B84238 /* Cells */,
 				0322FA3C1B59033900CB132B /* Extensions */,
 				0322FA391B586F5300CB132B /* Colors */,
 				0322FA271B583BAA00CB132B /* Controllers */,
@@ -431,14 +428,6 @@
 				037817591B7D0D110009D67B /* HGEntity.swift */,
 			);
 			name = HGEntity;
-			sourceTree = "<group>";
-		};
-		03A1947F1B83D6DD00B84238 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				03A194801B83D71200B84238 /* EntityCell.swift */,
-			);
-			name = Cells;
 			sourceTree = "<group>";
 		};
 		03A20B351B99E4C900149AF5 /* Board */ = {
@@ -700,7 +689,6 @@
 				036C7C6A1B514AF9004EC724 /* Attribute.swift in Sources */,
 				035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */,
 				036C7C081B5143A0004EC724 /* ViewController.swift in Sources */,
-				03A194811B83D71200B84238 /* EntityCell.swift in Sources */,
 				03660ADF1BBE03FC00DE41D5 /* TextField.swift in Sources */,
 				033F3DEA1BB99DBD0089AEC2 /* HGTableView.swift in Sources */,
 				036C7CC01B529A84004EC724 /* HGGen.swift in Sources */,
