@@ -41,6 +41,11 @@ class HGTableView: NSTableView {
     /// Deletes rows supplied without conferring with delegate
     func delete(rows rows: [Int]) {
         
+        // return if no rows to delete
+        if rows.count == 0 {
+            return
+        }
+        
         // create indexSet from rows
         let indexSet = NSMutableIndexSet()
         for row in rows { indexSet.addIndex(row) }
@@ -54,10 +59,16 @@ class HGTableView: NSTableView {
         // remove rows from self (Tableview)
         self.removeRowsAtIndexes(indexSet, withAnimation: [.EffectNone])
         
-//        // We are checking if no rows left or nothing was deleted and selecting row appropriately
-//        var nr = min(numberOfRows - 1, lastDeletedRow - 1)
-//        if nr == -1 || nr == -100 { nr = notSelected }
-//        selectRow(nr)
+        // If we were trying to remove only one row at a time, we will auto-highlight the row above so the user can easily delete out multiple rows with a command
+        if rows.count == 1 {
+            let row = rows[0]
+            let numRows = self.numberOfRows
+            if row < numRows {
+                selectRow(row)
+            } else if numRows > 0 {
+                selectRow(numRows - 1)
+            }
+        }
     }
     
     /// custom HGTableView function that handles mouseDown events
