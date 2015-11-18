@@ -134,29 +134,93 @@ class HGTableView: NSTableView {
         // Selects row and then scrolls to it
         NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] () -> Void in
             self?.selectRowIndexes(self?.iSelectedRows ?? NSIndexSet(), byExtendingSelection: false)
-            self?.scrollRowToVisible(row)
+            if row != notSelected {
+                self?.scrollRowToVisible(row)
+            }
         }
     }
     
-    /// Selects previous row, loops to end of hgtableview index if current index is 0
+    /// If allowsMultipleRowSelection == false, will select previous row, if allowsMultipleRowSelection == true will unselect the highest indexed row
     private func selectPrev() {
-        if iSelectedRows.count <= 1 {
-            var selectedRow = iSelectedRows.count == 0 ? notSelected : iSelectedRows.lastIndex
-            if selectedRow == notSelected || selectedRow == 0 { selectedRow = self.numberOfRows - 1 }
-            else { selectedRow-- }
-            selectRow(selectedRow)
+        
+        var numSelected = iSelectedRows.count
+        
+        // If we don't have any rows in Table, we return
+        if numberOfRows == 0 {
+            return
         }
+        
+        // If we haven't selected anything yet, just select row 0
+        if numSelected == 0 {
+            selectRow(0)
+            return
+        }
+        
+        // determine the rows
+        let sort = selectedRows.sort()
+        var lastRow = sort.last!
+        let firstRow = sort.first!
+        
+        // if we only have one row which is first index, we want to exit immediately so we are not toggling selection of row
+        if numSelected == 1 && firstRow == 0 {
+            return
+        }
+        
+        // unselect the last selected row if we are allowing multiple row selection
+        if allowsMultipleRowSelection == true {
+            selectRow(lastRow)
+        }
+        
+        // unselect all if we do not allow multiple row selection
+        else {
+            lastRow = firstRow // since rows are deleted, we want to go with the first row to determine previous row
+            unSelectAll()
+            numSelected = 0
+        }
+        
+        // if there are multiple rows still selected, we just will remove lastRow and exit
+        if numSelected > 1 {
+            return
+        }
+        
+        // determine what previous row will be, this is unwrapped because we already checked iSelectedRows.count above
+        let previousRow = lastRow - 1
+        
+        // returns if previous row is out of bounds
+        if previousRow < 0 {
+            return
+        }
+        
+        // Selects previous row.
+        selectRow(previousRow)
     }
     
-    /// Selects next row, loops to beginning of hgtableview index if current index is lastrow
+    /// If allowsMultipleRowSelection == false, will select next row, if allowsMultipleRowSelection == true will add the next highest row to selection
     private func selectNext() {
-        if iSelectedRows.count <= 1 {
-            var selectedRow = iSelectedRows.count == 0 ? notSelected : iSelectedRows.lastIndex
-            let totalRows = self.numberOfRows
-            if selectedRow == notSelected || selectedRow == totalRows - 1 { selectedRow = 0 }
-            else { selectedRow++ }
-            selectRow(selectedRow)
+        
+        let numSelected = iSelectedRows.count
+        
+        // if we don't have any rows in Table, we return
+        if numberOfRows == 0 {
+            return
         }
+        
+        // if we haven't selected anything yet, just select row 0
+        if numSelected == 0 {
+            selectRow(0)
+            return
+        }
+        
+        // determine what next row will be, this is unwrapped because we already checked iSelectedRows.count above
+        let nextRow = selectedRows.sort().last! + 1
+        
+        // if we are not able to select next row, return
+        if nextRow >= numberOfRows {
+            return
+        }
+        
+        // select next row.  This will always either add next row or move to next row depending on allowsMultipleRowSelection variable
+        selectRow(nextRow)
     }
     
     /// Unselects all rows
