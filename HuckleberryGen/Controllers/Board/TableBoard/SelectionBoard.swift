@@ -25,8 +25,7 @@ protocol SelectionBoardImageSource: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData
 }
 
-class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable, HGTableItemEditable {
-    
+class SelectionBoard: NSViewController {
     
     @IBOutlet weak var boardtitle: NSTextField!
     @IBOutlet weak var tableview: HGTableView!
@@ -76,15 +75,48 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
         hgtable.update()
     }
     
-    /// Instantiates and presents the Selection Board to screen
+    /// Instantiates and presents the Selection Board to screen from another table
     static func present(withParentTable table: HGTable?) -> SelectionBoard {
-        BoardHandler.startBoard(BoardType.Selection, blur: true)
-        let selectionBoard = BoardHandler.currentVC as! SelectionBoard
-        selectionBoard.parentTable = table
+        if let handler = table?.boardHandler {
+            handler.startBoard(BoardType.Selection)
+            let selectionBoard = handler.nav!.currentVC as! SelectionBoard
+            selectionBoard.parentTable = table
+            return selectionBoard
+        }
+        
+        HGReportHandler.report("SelectionBoard unable to find boardHandler in HGTable's window", response: .Error)
+        return BoardType.Selection.create() as! SelectionBoard // returns a blank selection board
+    }
+    
+    /// Instantiates and presents the Selection Board to screen from another table
+    static func present(onViewController viewcontroller: NSViewController) -> SelectionBoard {
+        
+        let selectionBoard = BoardType.Selection.create() as! SelectionBoard
+        viewcontroller.view.addSubview(selectionBoard.view)
         return selectionBoard
     }
     
-    // MARK: HGTableDisplayable
+    // MARK: View LifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hgtable.delegate = self
+    }
+    
+    /// Returns the selected choice (if any) to the SelectionBoardDelegate
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        if hgtable.selectedLocations.count > 0 {
+            let indexes = hgcellType.selectedIndexes(forlocations: hgtable.selectedLocations)
+            boardDelegate?.selectionboard(self, didChoose: indexes)
+            parentTable?.update()
+        }
+    }
+    
+}
+
+// MARK: HGTableDisplayable
+extension SelectionBoard: HGTableDisplayable {
     
     func tableview(fortable table: HGTable) -> HGTableView! {
         return tableview
@@ -113,9 +145,12 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
         }
         return boardDataSource?.selectionboard(self, dataForRow: row) ?? HGCellData.empty
     }
-    
-    // MARK: HGTableRowSelectable
-    
+}
+
+
+// MARK: HGTableRowSelectable
+extension SelectionBoard: HGTableRowSelectable {
+
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         if datasourceType == .BoardImageSource {
             return false
@@ -126,8 +161,10 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     func hgtable(table: HGTable, didSelectRow row: Int) {
         // DO NOTHING
     }
-    
-    // MARK: HGTableItemEditable
+}
+
+// MARK: HGTableItemEditable
+extension SelectionBoard: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
         if datasourceType == .BoardImageSource {
@@ -139,24 +176,5 @@ class SelectionBoard: NSViewController, HGTableDisplayable, HGTableRowSelectable
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         // DO NOTHING
     }
-    
-    // MARK: View LifeCycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hgtable.delegate = self
-    }
-    
-    /// Returns the selected choice (if any) to the SelectionBoardDelegate
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        if hgtable.selectedLocations.count > 0 {
-            let indexes = hgcellType.selectedIndexes(forlocations: hgtable.selectedLocations)
-            boardDelegate?.selectionboard(self, didChoose: indexes)
-            parentTable?.update()
-        }
-    }
-    
 }
-
 

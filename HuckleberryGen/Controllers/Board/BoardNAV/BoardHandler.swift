@@ -9,10 +9,6 @@
 import Cocoa
 import QuartzCore
 
-protocol HandlerDelegate {
-    func handlerFinished(handler: HGHandler)
-}
-
 enum BoardType: Int16 {
     case Welcome
     case Folder
@@ -21,6 +17,7 @@ enum BoardType: Int16 {
     case Import
     case Selection
     case Decision
+    case Error
     
     var string: String {
         switch self {
@@ -28,49 +25,58 @@ enum BoardType: Int16 {
         case Folder: return "FolderBoard"
         case LicenseInfo: return "LicenseInfoBoard"
         case Model: return "ImportModelBoard"
-        case Import: return "SelectionBoard"
+        case Import: return "ImportBoard"
         case Selection: return "SelectionBoard"
         case Decision: return "DecisionBoard"
+        case Error: return "ErrorBoard"
         }
+    }
+    
+    func create() -> NSViewController {
+        let storyboard = NSStoryboard(name: "Board", bundle: nil)
+        let controller = storyboard.instantiateControllerWithIdentifier(self.string) as! NSViewController
+        return controller
+    }
+    
+    private static func createNav() -> NavController {
+        let storyboard = NSStoryboard(name: "Board", bundle: nil)
+        return storyboard.instantiateControllerWithIdentifier("NavController") as! NavController
     }
 }
 
+/// protocol for an object (like a window) that holds a board handler
+protocol BoardHandlerHolder: AnyObject {
+    var boardHandler: BoardHandler! { get }
+}
+
+/// Class that appropriately sets up a pop-up NAVController in a windowController.
 class BoardHandler {
     
-    // MARK: Handlers
+    /// windowController which boards will be pushed to
+    weak var windowcontroller: NSWindowController!
     
-    var handlers: [HGHandler] = []
-
-    static let shared: BoardHandler = BoardHandler()
-    weak var windowcontroller: NSWindowController? = nil
+    /// controllers that handles pushing and popping view controllers from Board navigation stack
+    var nav: NavController?
     
-    static var currentVC: NSViewController? { return BoardHandler.shared.nav?.currentVC }
+    /// base viewController that will hold the navigation controller
+    private weak var holder: NSViewController?
     
-    private var nav: NavController? = nil
-    private weak var holder: NSViewController? = nil
+    /// initializes BoardHandler with a window controller, use this function for initialization
+    init(windowController wc: NSWindowController) {
+        windowcontroller = wc
+    }
     
-    static func startBoard(board: BoardType, blur: Bool) { BoardHandler.shared.startBoard(board, blur: blur) }
-    static func endBoard() { BoardHandler.shared.endBoard() }
-    
-    private func startBoard(board: BoardType, ToViewController vc: NSViewController, blur: Bool) {
+    /// pops board nav controller (holding board) on window controller
+    func startBoard(board: BoardType) {
         if (nav == nil) {
-            nav = BoardHandler.navcontroller()
-            nav?.root = board
-            holder = vc
-            holder?.view.blur()
-            nav?.view.center(parent: vc.view)
-            holder?.view.addSubview(nav!.view)
+            if let vc = windowcontroller?.window?.contentViewController {
+                startBoard(board, ToViewController: vc)
+            }
         }
     }
     
-    private func startBoard(board: BoardType, blur: Bool) {
-        if (nav == nil) {
-            disableToolBar()
-            if let vc = windowcontroller?.window?.contentViewController { startBoard(board, ToViewController: vc, blur: blur) }
-        }
-    }
-    
-    private func endBoard() {
+    /// removes nav controller from window controller
+    func endBoard() {
         nav?.view.removeFromSuperview()
         nav?.removeFromParentViewController()
         nav = nil
@@ -78,54 +84,35 @@ class BoardHandler {
         enableToolBar()
     }
     
+    private func startBoard(board: BoardType, ToViewController vc: NSViewController) {
+        if (nav == nil) {
+            disableToolBar()
+            nav = BoardType.createNav()
+            nav?.root = board
+            nav?.delegate = self
+            holder = vc
+            holder?.view.blur()
+            nav?.view.center(parent: vc.view)
+            holder?.view.addSubview(nav!.view)
+        }
+    }
+    
     // MARK: TOOLBAR CONTROL
     
-    func disableToolBar() { if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = false } }
-    func enableToolBar() { if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = true } }
-    
-    // MARK: Navigation Button Manipulation
-    
-    // Will User Be Able to Move to Next Screen Or Close Menu (Default is YES / Enabled when screen is created)
-    
-    static func disableProgression() { if let nav = BoardHandler.shared.nav { nav.disableProgression() } }
-    static func enableProgression() { if let nav = BoardHandler.shared.nav { nav.enableProgression() } }
-    
-    // MARK: Menu
-    
-    static func vc(forBoardType type: BoardType) -> NSViewController {
-        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        let controller = storyboard.instantiateControllerWithIdentifier(type.string) as! NSViewController
-        BoardHandler.shared.setupHandler(forController: controller, type: type)
-        return controller
+    func disableToolBar() {
+        if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = false }
     }
     
-    static func navcontroller() -> NavController {
-        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        return storyboard.instantiateControllerWithIdentifier("NavController") as! NavController
-    }
-    
-    private func setupHandler(forController controller: NSViewController, type: BoardType) {
-        
-        if type == .Import {
-            let sb = controller as! SelectionBoard
-            let handler = ImportHandler(sb: sb)
-            handler.delegate = self
-            handlers.append(handler)
-        }
-    }
-}
-
-extension BoardHandler: HandlerDelegate {
-    
-    func handlerFinished(handler: HGHandler) {
-        var index = 0
-        for held in handlers {
-            if held.selectionBoard === handler.selectionBoard || held.selectionBoard == nil {
-                handlers.removeAtIndex(index)
-            }
-            index++
-        }
+    func enableToolBar() {
+        if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = true }
     }
     
 }
 
+extension BoardHandler: NavControllerDelegate {
+    
+    func shouldDismiss(nav: NavController) {
+        endBoard()
+    }
+    
+}

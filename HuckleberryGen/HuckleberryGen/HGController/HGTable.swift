@@ -133,6 +133,15 @@ class HGTable: NSObject {
         }
     }
     
+    /// a reference to the BoardHandler if the window owning the HGTable conforms to the protocol BoardHandlerHolder.  If this exists, we are able to pop-up questions to the user.
+    weak var boardHandler: BoardHandler? {
+        if let boardHandlerHolder = tableview.window?.windowController as? BoardHandlerHolder {
+            return boardHandlerHolder.boardHandler
+        }
+        return nil
+    }
+    
+    
     // MARK: Public Methods
     
     /// reloads tableView
@@ -168,6 +177,8 @@ class HGTable: NSObject {
             })
         }
     }
+    
+    /// displays a decisionBoard if window is a 
     
     // MARK: Deinit
     deinit {
@@ -220,16 +231,19 @@ extension HGTable: HGTableViewDelegate {
         let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRows: rows)
         
         if answer == .AskUser {
-            BoardHandler.startBoard(BoardType.Decision, blur: true)
-            let db = BoardHandler.currentVC as! DecisionBoard
-            if rows.count > 1 {
-                db.question.stringValue = "Do you really want to delete \(rows.count) rows?"
-            } else {
-                db.question.stringValue = "Do you really want to delete the row?"
+            if let boardhandler = boardHandler {
+                boardhandler.startBoard(BoardType.Decision)
+                let decisionBoard = boardhandler.nav!.currentVC as! DecisionBoard
+                if rows.count > 1 {
+                    decisionBoard.question.stringValue = "Do you really want to delete \(rows.count) rows?"
+                } else {
+                    decisionBoard.question.stringValue = "Do you really want to delete the row?"
+                }
+                
+                decisionBoard.delegate = self
+                return false
             }
-            
-            db.delegate = self
-            return false
+            HGReportHandler.report("HGTable \(self) unable to present Decision board because unable to determine boardHandler from window", response: .Error)
         }
         
         return answer == .No ? false : true

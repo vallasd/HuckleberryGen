@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Turns XCODE XML from a CoreData model into a Huckleberry Gen project
 class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
 
     private var xml: ImportFile
@@ -24,7 +25,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     
     // MARK: HGImportParser
     
-    weak var delegate: HGParserDelegate? = nil
+    weak var delegate: HGImportParserDelegate? = nil
     
     func parse() {
         if let parser = NSXMLParser(contentsOfURL: NSURL(fileURLWithPath: xml.path)) {
@@ -104,7 +105,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         let date = NSDate().timeIntervalSince1970
         let name = "\(xml.name)_\(date)"
         let model = HGModel(name: name, enums: [], entities: entities)
-        delegate?.parserDidParseImportFile(xml, success: !didError, model: model)
+        delegate?.parserDidParse(xml, success: !didError, model: model)
     }
     
     private enum ParseType: String {

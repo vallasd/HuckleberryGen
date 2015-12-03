@@ -177,6 +177,35 @@
             </objects>
             <point key="canvasLocation" x="1148" y="2153"/>
         </scene>
+        <!--Error Board-->
+        <scene sceneID="nQY-57-epH">
+            <objects>
+                <viewController storyboardIdentifier="ErrorBoard" id="8pU-P3-22l" customClass="ErrorBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="M65-JG-yHf">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lm8-f0-L9L">
+                                <rect key="frame" x="187" y="118" width="107" height="35"/>
+                                <animations/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title=" ERROR" id="ybi-po-LH4">
+                                    <font key="font" metaFont="system" size="29"/>
+                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="lm8-f0-L9L" firstAttribute="centerY" secondItem="M65-JG-yHf" secondAttribute="centerY" id="HZq-dl-PAf"/>
+                            <constraint firstItem="lm8-f0-L9L" firstAttribute="centerX" secondItem="M65-JG-yHf" secondAttribute="centerX" id="seh-r1-y8q"/>
+                        </constraints>
+                        <animations/>
+                    </view>
+                </viewController>
+                <customObject id="A2W-ZK-wP2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1148" y="2483"/>
+        </scene>
         <!--Folder Board-->
         <scene sceneID="3wl-fz-fD2">
             <objects>
@@ -284,7 +313,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kOc-zV-rny" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="438" height="173"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="438" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -341,6 +370,20 @@
                 <customObject id="o57-jA-cP8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="610" y="2483"/>
+        </scene>
+        <!--Import Board-->
+        <scene sceneID="PuB-xr-21X">
+            <objects>
+                <viewController storyboardIdentifier="ImportBoard" id="A1z-mx-RKt" customClass="ImportBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="OrK-Pw-SwT">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </view>
+                </viewController>
+                <customObject id="5wV-7T-ijg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="610" y="2809"/>
         </scene>
         <!--Nav Controller-->
         <scene sceneID="AFM-5J-Fib">

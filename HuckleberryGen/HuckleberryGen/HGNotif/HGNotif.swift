@@ -30,7 +30,7 @@ class HGNotif {
     }
     
     func postNotificationForModelUpdate() {
-        let notifs = [notifEntityUpdate, notifEnumUpdate, notifAttributeUpdate, notifEnumUpdate, notifEnumCaseUpdate]
+        let notifs = [notifEntityUpdate, notifEnumUpdate, notifAttributeUpdate, notifRelationshipUpdate, notifEnumCaseUpdate]
         postNotifications(notifs)
     }
     

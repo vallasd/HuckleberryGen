@@ -8,11 +8,14 @@
 
 import Cocoa
 
-class MainWindowController: NSWindowController {
-    
-    // MARK: Variables
+/// The main window controller for the Huckleberry Gen app.  This controller also holds the boardHandler which can be used for pushing and popping Alerts / Boards to window
+class MainWindowController: NSWindowController, BoardHandlerHolder {
 
+    /// Enables and disables touch of toolbar
     var toolBarEnabled = true
+    
+    /// Allows boards to be displayed on window (BoardHandlerHolder)
+    var boardHandler: BoardHandler!
     
     // MARK: Window Lifecycle
     
@@ -21,14 +24,26 @@ class MainWindowController: NSWindowController {
         
         window?.backgroundColor = HGColor.White.color()
         window?.titleVisibility = .Hidden
-        BoardHandler.shared.windowcontroller = self
+        boardHandler = BoardHandler(windowController: self)
         showWelcome()
     }
     
-    private func showWelcome() { BoardHandler.startBoard(.Welcome, blur: true) }
-    private func showSettings() { BoardHandler.startBoard(.LicenseInfo, blur: true) }
-    private func showImport() { BoardHandler.startBoard(.Folder, blur: true) }
+    /// displays the welcome screen
+    private func showWelcome() {
+        boardHandler.startBoard(.Welcome)
+    }
     
+    /// displays the settings screen
+    private func showSettings() {
+        boardHandler.startBoard(.LicenseInfo)
+    }
+    
+    /// displays the import screens
+    private func showImport() {
+        boardHandler.startBoard(.Folder)
+    }
+    
+    /// completes appropriate actions for header button presses
     @IBAction func menuButtonPressed(sender: NSToolbarItem) {
         if !toolBarEnabled { return }
         switch (sender.tag) {

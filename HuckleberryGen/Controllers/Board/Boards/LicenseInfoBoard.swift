@@ -10,7 +10,7 @@ import Foundation
 
 import Cocoa
 
-class LicenseInfoBoard: NSViewController, NSTextFieldDelegate {
+class LicenseInfoBoard: NSViewController, NavControllerReferrable {
 
     // MARK: Outlets
 
@@ -19,6 +19,9 @@ class LicenseInfoBoard: NSViewController, NSTextFieldDelegate {
     @IBOutlet weak var emailField: NSTextField!
     @IBOutlet weak var contact2Field: NSTextField!
     @IBOutlet weak var licenseButton: NSPopUpButtonCell!
+    
+    /// reference to the NavController that is holding this board (NavControllerReferrable)
+    weak var nav: NavController?
     
     // MARK: Private Functions
     
@@ -52,7 +55,9 @@ class LicenseInfoBoard: NSViewController, NSTextFieldDelegate {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        if (nameField.stringValue.characters.count == 0) { BoardHandler.disableProgression() }
+        if (nameField.stringValue.characters.count == 0) {
+            nav?.disableProgression()
+        }
     }
     
     override func viewWillDisappear() {
@@ -60,10 +65,16 @@ class LicenseInfoBoard: NSViewController, NSTextFieldDelegate {
         updateLicenseInfo()
     }
     
-    // MARK: NSTextFieldDelegate
+}
+
+extension LicenseInfoBoard: NSTextFieldDelegate {
     
     override func controlTextDidEndEditing(obj: NSNotification) {
-        if (nameField.stringValue.characters.count > 0) { BoardHandler.enableProgression() }
-        else { BoardHandler.disableProgression() }
+        if (nameField.stringValue.characters.count > 0) {
+            nav?.enableProgression()
+        }
+        else {
+            nav?.disableProgression()
+        }
     }
 }

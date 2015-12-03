@@ -716,7 +716,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-96" y="285.5"/>
+            <point key="canvasLocation" x="-17" y="287"/>
         </scene>
         <!--Entity-->
         <scene sceneID="VIx-pP-GI8">

@@ -14,10 +14,16 @@ enum BoardLocation: Int {
     case bottomCenter
 }
 
+/// Protocol that allows boards to define the navigation and button placements for next buttons
 protocol NavControllerPushable {
     var nextBoard: BoardType? { get }
     var nextString: String? { get }
     var nextLocation: BoardLocation { get }
+}
+
+/// Protocol that allows boards to gain reference to NavController.  If board conforms to protocol, NavController will assign itself to nav value immediately after board is instantiated.  (Allows Board to run nav commands like disableProgression)
+protocol NavControllerReferrable {
+    var nav: NavController? { get set }
 }
 
 protocol NavControllerSetable {
@@ -34,15 +40,30 @@ protocol NavSavable {
     func updateWithSavedContext(saveContext: AnyObject)
 }
 
+protocol NavControllerDelegate: AnyObject {
+    func shouldDismiss(nav: NavController)
+}
+
 class NavController: NSViewController {
     
     @IBOutlet weak var container: NSView!
     @IBOutlet weak var next: NSButton!
     @IBOutlet weak var back: NSButton!
     @IBOutlet weak var mutableNextConstraint: NSLayoutConstraint!
+    
+    weak var delegate: NavControllerDelegate?
 
-    func disableProgression() { next.enabled = false }
-    func enableProgression() { next.enabled = true }
+    func disableProgression() {
+        next.enabled = false
+    }
+    
+    func enableProgression() {
+        next.enabled = true
+    }
+    
+    func end() {
+        delegate?.shouldDismiss(self)
+    }
     
     private struct BoardInfo {
         let boardType: BoardType
@@ -55,10 +76,12 @@ class NavController: NSViewController {
     
     // MARK: Button Selection
     
+    /// action that is run when back button is pressed.  Will pop top controller from stack.
     @IBAction func backPressed(sender: AnyObject) {
         pop(animated: true)
     }
     
+    /// action that is run when next button is pressed.  Will either push next controller if currentVC conforms to NavControllerPushable or send notice to delegate for dismissal
     @IBAction func nextPressed(sender: AnyObject) {
         if let current = currentVC as? NavControllerPushable {
             if let nextBoard = current.nextBoard {
@@ -66,34 +89,51 @@ class NavController: NSViewController {
                 return
             }
         }
-        BoardHandler.endBoard()
+        
+        delegate?.shouldDismiss(self)
     }
     
-    // MARK: Navigation
-    
+    /// pushes new boardType onto stack
     private func push(board: BoardType, animated: Bool) {
         removeTopView()
         saveCurrentBoard()
         boardStack.append(BoardInfo(boardType: board, saveContext: nil))
-        currentVC = BoardHandler.vc(forBoardType: board)
+        createVC(forBoardType: board)
         updateNavButtons()
         addTopView()
     }
     
+    /// pops last boardType from stack
     private func pop(animated animated: Bool) {
         removeTopView()
         boardStack.removeLast()
-        currentVC = BoardHandler.vc(forBoardType: boardStack.last!.boardType)
+        createVC(forBoardType: boardStack.last!.boardType)
         updateNavButtons()
         addTopView()
     }
     
-    private func removeTopView() {
-        if let view = currentVC?.view { view.removeFromSuperview() }
+    /// creates NSViewController from a board type.  Sets delegates as appropriate.
+    private func createVC(forBoardType boardtype: BoardType) {
+        
+        // create and assign new currentVC
+        currentVC = boardtype.create()
+        
+        // assign self to vc.nav if currentVC conforms to NavControllerReferrable
+        if var ncr = currentVC as? NavControllerReferrable {
+            ncr.nav = self
+        }
     }
     
+    /// removes top view from container
+    private func removeTopView() {
+        currentVC?.view.removeFromSuperview()
+    }
+    
+    /// adds top view to container
     private func addTopView() {
-        if let view = currentVC?.view { container.addSubview(view) }
+        if let view = currentVC?.view {
+            container.addSubview(view)
+        }
     }
     
     func saveCurrentBoard() {
@@ -159,18 +199,21 @@ class NavController: NSViewController {
         self.view.layoutSubtreeIfNeeded()
     }
     
+    /// sets next button on left side on nav controller
     private func leftNext() {
         self.view.removeConstraint(mutableNextConstraint)
         mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
         self.view.addConstraint(mutableNextConstraint)
     }
     
+    /// sets next button in center of nav controller
     private func centerNext() {
         self.view.removeConstraint(mutableNextConstraint)
         mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0.0)
         self.view.addConstraint(mutableNextConstraint)
     }
     
+    /// sets next button on right side on nav controller
     private func rightNext() {
         self.view.removeConstraint(mutableNextConstraint)
         mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: -20.0)

@@ -14,23 +14,28 @@ enum DecisionType {
     case No
 }
 
+
 protocol DecisionBoardDelegate: AnyObject {
     func decisionBoard(db db: DecisionBoard, selectedDecision: DecisionType)
 }
 
-class DecisionBoard: NSViewController {
+class DecisionBoard: NSViewController, NavControllerReferrable {
     
+    /// conforms to DecisionBoardDelegate protocol
     weak var delegate: DecisionBoardDelegate?
+    
+    weak var nav: NavController?
+    
     @IBOutlet weak var question: NSTextField!
     
     @IBAction func yesPressed(sender: NSButton) {
         decision = .Yes
-        BoardHandler.endBoard()
+        nav?.end()
     }
     
     @IBAction func noPressed(sender: NSButton) {
         decision = .No
-        BoardHandler.endBoard()
+        nav?.end()
     }
     
     private var decision: DecisionType = .Cancel

@@ -13,6 +13,9 @@
 		0322FA3E1B59038100CB132B /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3D1B59038100CB132B /* NSView.swift */; };
 		0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3F1B591A9100CB132B /* HGTimeInterval.swift */; };
 		0322FA421B59633E00CB132B /* HGArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA411B59633E00CB132B /* HGArray.swift */; };
+		0339BC601BFD598B0071F8AD /* ErrorBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */; };
+		0339BC621BFDEFE30071F8AD /* ImportBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0339BC611BFDEFE30071F8AD /* ImportBoard.swift */; };
+		0339BC641BFE22E40071F8AD /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0339BC631BFE22E40071F8AD /* Project.swift */; };
 		033F3DEA1BB99DBD0089AEC2 /* HGTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */; };
 		033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */; };
 		033F3DEE1BBACE770089AEC2 /* HGTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DED1BBACE770089AEC2 /* HGTabVC.swift */; };
@@ -64,7 +67,6 @@
 		03A20B481B99E4C900149AF5 /* BoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B371B99E4C900149AF5 /* BoardHandler.swift */; };
 		03A20B491B99E4C900149AF5 /* BoardNAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B381B99E4C900149AF5 /* BoardNAV.swift */; };
 		03A20B4A1B99E4C900149AF5 /* FolderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */; };
-		03A20B4B1B99E4C900149AF5 /* ImportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3B1B99E4C900149AF5 /* ImportHandler.swift */; };
 		03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */; };
 		03A20B4D1B99E4C900149AF5 /* WelcomeBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */; };
 		03A20B4E1B99E4C900149AF5 /* SelectionBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */; };
@@ -109,6 +111,9 @@
 		0322FA3D1B59038100CB132B /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		0322FA3F1B591A9100CB132B /* HGTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTimeInterval.swift; sourceTree = "<group>"; };
 		0322FA411B59633E00CB132B /* HGArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGArray.swift; sourceTree = "<group>"; };
+		0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorBoard.swift; sourceTree = "<group>"; };
+		0339BC611BFDEFE30071F8AD /* ImportBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportBoard.swift; sourceTree = "<group>"; };
+		0339BC631BFE22E40071F8AD /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Project.swift; path = Categories/Project.swift; sourceTree = "<group>"; };
 		033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTableView.swift; sourceTree = "<group>"; };
 		033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabView.swift; sourceTree = "<group>"; };
 		033F3DED1BBACE770089AEC2 /* HGTabVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabVC.swift; sourceTree = "<group>"; };
@@ -166,7 +171,6 @@
 		03A20B371B99E4C900149AF5 /* BoardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHandler.swift; sourceTree = "<group>"; };
 		03A20B381B99E4C900149AF5 /* BoardNAV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardNAV.swift; sourceTree = "<group>"; };
 		03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderBoard.swift; sourceTree = "<group>"; };
-		03A20B3B1B99E4C900149AF5 /* ImportHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportHandler.swift; path = ../Boards/ImportHandler.swift; sourceTree = "<group>"; };
 		03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicenseInfoBoard.swift; sourceTree = "<group>"; };
 		03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeBoard.swift; sourceTree = "<group>"; };
 		03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectionBoard.swift; path = ../TableBoard/SelectionBoard.swift; sourceTree = "<group>"; };
@@ -335,6 +339,7 @@
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
 				036C7C641B514AF8004EC724 /* Relationship.swift */,
 				032071321B8F80A500F5C04F /* HGModel.swift */,
+				0339BC631BFE22E40071F8AD /* Project.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -442,7 +447,6 @@
 		03A20B361B99E4C900149AF5 /* BoardNAV */ = {
 			isa = PBXGroup;
 			children = (
-				03A20B3B1B99E4C900149AF5 /* ImportHandler.swift */,
 				03A20B371B99E4C900149AF5 /* BoardHandler.swift */,
 				03A20B381B99E4C900149AF5 /* BoardNAV.swift */,
 			);
@@ -457,6 +461,8 @@
 				03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */,
 				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
 				034614091BDF81E40002F0AA /* DecisionBoard.swift */,
+				0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */,
+				0339BC611BFDEFE30071F8AD /* ImportBoard.swift */,
 			);
 			path = Boards;
 			sourceTree = "<group>";
@@ -668,6 +674,8 @@
 				03F25EDC1B9BFEE90048B0A0 /* EntityDetailVC.swift in Sources */,
 				036455C01BA264930096B255 /* HGCellData.swift in Sources */,
 				03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */,
+				0339BC621BFDEFE30071F8AD /* ImportBoard.swift in Sources */,
+				0339BC601BFD598B0071F8AD /* ErrorBoard.swift in Sources */,
 				036C7CBE1B529A84004EC724 /* HGDictionary.swift in Sources */,
 				036455C21BA264E40096B255 /* HGCellType.swift in Sources */,
 				0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */,
@@ -719,13 +727,13 @@
 				036C7C6E1B514AF9004EC724 /* ImportFile.swift in Sources */,
 				0372A6121B8F6EB800317065 /* XCODE_XMLParser.swift in Sources */,
 				036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */,
-				03A20B4B1B99E4C900149AF5 /* ImportHandler.swift in Sources */,
 				032071331B8F80A500F5C04F /* HGModel.swift in Sources */,
 				036C7C061B5143A0004EC724 /* AppDelegate.swift in Sources */,
 				03F25EDE1B9BFEE90048B0A0 /* EnumVC.swift in Sources */,
 				036C7CCC1B52B89A004EC724 /* HGDate.swift in Sources */,
 				0378175A1B7D0D110009D67B /* HGEntity.swift in Sources */,
 				0322FA3E1B59038100CB132B /* NSView.swift in Sources */,
+				0339BC641BFE22E40071F8AD /* Project.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

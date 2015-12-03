@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class FolderBoard: NSViewController {
+class FolderBoard: NSViewController, NavControllerReferrable {
     
     @IBOutlet weak var folderButton: NSButton!
     
@@ -16,12 +16,17 @@ class FolderBoard: NSViewController {
         self.openFileChooser()
     }
     
+    /// reference to the NavController that may be holding this board
+    weak var nav: NavController?
+    
     // MARK: View Lifecycle
     
     override func viewWillAppear() {
         super.viewWillAppear()
         if let path = HuckleberryGen.store.importFileSearchPath { setPath(path) }
-        else { BoardHandler.disableProgression() }
+        else {
+            nav?.disableProgression()
+        }
     }
     
     override func viewWillDisappear() {
@@ -31,7 +36,7 @@ class FolderBoard: NSViewController {
     
     private func openFileChooser() {
         
-        BoardHandler.disableProgression()
+        nav?.disableProgression()
         
         let panel = NSOpenPanel()
         
@@ -53,7 +58,7 @@ class FolderBoard: NSViewController {
         let name = path.lastPathComponent
         HuckleberryGen.store.importFileSearchPath = path
         folderButton.title = name
-        BoardHandler.enableProgression()
+        nav?.enableProgression()
     }
 }
 
