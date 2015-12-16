@@ -12,12 +12,13 @@ struct Enum {
     var name: String
     var cases: [EnumCase]
     
-    static var new: Enum {
-        return Enum(name: "New Enum", cases: [])
-    }
 }
 
 extension Enum: HGEncodable {
+    
+    static var new: Enum {
+        return Enum(name: "New Enum", cases: [])
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()

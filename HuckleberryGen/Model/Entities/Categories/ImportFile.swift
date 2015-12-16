@@ -35,22 +35,10 @@ struct ImportFile {
     let path: String
     let type: ImportFileType
     
-    static var new: ImportFile {
-        let date = NSDate()
-        return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .XCODE_XML)
-    }
-    
     static func importFiles(path path: String, completion: (importFiles: [ImportFile]) -> Void) {
         HGFileQuery.shared.importFiles(forPath: path) { (importFiles) -> Void in completion(importFiles: importFiles) }
     }
-}
-
-
-extension ImportFile: Hashable { var hashValue: Int { return path.hashValue } }
-extension ImportFile: Equatable {}; func ==(lhs: ImportFile, rhs: ImportFile) -> Bool { return lhs.path == rhs.path }
-
-extension ImportFile {
-
+    
     func save(key: String) {
         NSUserDefaults.standardUserDefaults().setValue(self.encode, forKey: key)
     }
@@ -64,7 +52,17 @@ extension ImportFile {
     }
 }
 
+
+extension ImportFile: Hashable { var hashValue: Int { return path.hashValue } }
+extension ImportFile: Equatable {}; func ==(lhs: ImportFile, rhs: ImportFile) -> Bool { return lhs.path == rhs.path }
+
+
 extension ImportFile: HGEncodable {
+    
+    static var new: ImportFile {
+        let date = NSDate()
+        return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .XCODE_XML)
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()

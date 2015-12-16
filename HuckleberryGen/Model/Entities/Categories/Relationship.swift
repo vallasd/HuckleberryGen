@@ -15,15 +15,16 @@ struct Relationship {
     var type: RelationshipType
     var deletionRule: DeletionRule
     
-    static var new: Relationship {
-        return Relationship(name: "New Relationship", entity: "NotDefined", type: .TooOne, deletionRule: .NoAction)
-    }
 }
 
 extension Relationship: Hashable { var hashValue: Int { return name.hashValue } }
 extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool { return lhs.name == rhs.name }
 
 extension Relationship: HGEncodable {
+    
+    static var new: Relationship {
+        return Relationship(name: "New Relationship", entity: "NotDefined", type: .TooOne, deletionRule: .NoAction)
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()

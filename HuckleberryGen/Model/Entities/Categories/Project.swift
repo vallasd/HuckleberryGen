@@ -15,14 +15,15 @@ struct Project {
     var enums: [Enum]
     var entities: [Entity]
     
+}
+
+extension Project: HGEncodable {
+    
     static var new: Project {
         let time = NSDate().mmddyymmss
         let projectName = "New Project \(time)"
         return Project(name: projectName, enums: [], entities: [])
     }
-}
-
-extension Project: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()

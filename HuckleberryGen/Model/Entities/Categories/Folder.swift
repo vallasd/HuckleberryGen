@@ -15,9 +15,7 @@ struct Folder {
     let path: String
     let importFiles: [ImportFile]
     
-    static var new: Folder {
-        return Folder(name: "New Folder", path: "/", importFiles: [] )
-    }
+    
     
     static func create(name name: String, path: String, completion: (newfolder: Folder) -> Void) {
         ImportFile.importFiles(path: path) { (importFiles) -> Void in
@@ -27,6 +25,10 @@ struct Folder {
 }
 
 extension Folder: HGEncodable {
+    
+    static var new: Folder {
+        return Folder(name: "New Folder", path: "/", importFiles: [] )
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()

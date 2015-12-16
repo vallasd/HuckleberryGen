@@ -13,18 +13,15 @@ struct Entity {
     var attributes: [Attribute]
     var relationships: [Relationship]
     
-    var base: Entity {
-        return Entity(name: self.name, attributes: [], relationships: [])
-    }
-    
-    static var new: Entity {
-        return Entity(name: "New Entity", attributes: [], relationships: [])
-    }
 }
 
 
 
 extension Entity: HGEncodable {
+    
+    static var new: Entity {
+        return Entity(name: "New Entity", attributes: [], relationships: [])
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()
