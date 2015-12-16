@@ -46,7 +46,7 @@ extension EnumVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return HuckleberryGen.store.hgmodel.enums.count
+        return HuckleberryGen.store.project.enums.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -58,7 +58,7 @@ extension EnumVC: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let enuM = HuckleberryGen.store.hgmodel.enums[row]
+        let enuM = HuckleberryGen.store.project.enums[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
             field1: HGFieldData(title: ""),
@@ -101,9 +101,9 @@ extension EnumVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         if tag == 0 && data is HGFieldData {
-            var enuM = HuckleberryGen.store.hgmodel.enums[row]
+            var enuM = HuckleberryGen.store.project.enums[row]
             enuM.name = data.title
-            HuckleberryGen.store.hgmodel.enums[row] = enuM
+            HuckleberryGen.store.project.enums[row] = enuM
         }
     }
 }
@@ -117,13 +117,13 @@ extension EnumVC: HGTableRowAppendable {
     
     func hgtable(willAddRowToTable table: HGTable) {
         
-        HuckleberryGen.store.hgmodel.enums.append(Enum.new)
+        HuckleberryGen.store.project.enums.append(Enum.new)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
         
         for row in rows {
-            let enuM = HuckleberryGen.store.hgmodel.enums[row]
+            let enuM = HuckleberryGen.store.project.enums[row]
             if enuM.cases.count > 0 {
                 return .AskUser
             }
@@ -133,6 +133,6 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        HuckleberryGen.store.hgmodel.enums.removeIndexes(rows)
+        HuckleberryGen.store.project.enums.removeIndexes(rows)
     }
 }

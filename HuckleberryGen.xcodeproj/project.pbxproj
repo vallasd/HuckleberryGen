@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A1A531B8F81F50077FD56 /* HGParser.swift */; };
-		032071331B8F80A500F5C04F /* HGModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032071321B8F80A500F5C04F /* HGModel.swift */; };
 		0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3A1B586F6500CB132B /* HGColor.swift */; };
 		0322FA3E1B59038100CB132B /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3D1B59038100CB132B /* NSView.swift */; };
 		0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3F1B591A9100CB132B /* HGTimeInterval.swift */; };
@@ -106,7 +105,6 @@
 
 /* Begin PBXFileReference section */
 		031A1A531B8F81F50077FD56 /* HGParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGParser.swift; path = HGParser/HGParser.swift; sourceTree = "<group>"; };
-		032071321B8F80A500F5C04F /* HGModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGModel.swift; path = Categories/HGModel.swift; sourceTree = "<group>"; };
 		0322FA3A1B586F6500CB132B /* HGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGColor.swift; sourceTree = "<group>"; };
 		0322FA3D1B59038100CB132B /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		0322FA3F1B591A9100CB132B /* HGTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTimeInterval.swift; sourceTree = "<group>"; };
@@ -338,7 +336,6 @@
 				036C7CC71B52A17F004EC724 /* LicenseInfo.swift */,
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
 				036C7C641B514AF8004EC724 /* Relationship.swift */,
-				032071321B8F80A500F5C04F /* HGModel.swift */,
 				0339BC631BFE22E40071F8AD /* Project.swift */,
 			);
 			path = Entities;
@@ -727,7 +724,6 @@
 				036C7C6E1B514AF9004EC724 /* ImportFile.swift in Sources */,
 				0372A6121B8F6EB800317065 /* XCODE_XMLParser.swift in Sources */,
 				036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */,
-				032071331B8F80A500F5C04F /* HGModel.swift in Sources */,
 				036C7C061B5143A0004EC724 /* AppDelegate.swift in Sources */,
 				03F25EDE1B9BFEE90048B0A0 /* EnumVC.swift in Sources */,
 				036C7CCC1B52B89A004EC724 /* HGDate.swift in Sources */,

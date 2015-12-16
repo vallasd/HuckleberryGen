@@ -21,17 +21,17 @@ class HuckleberryGenTests: XCTestCase {
         super.tearDown()
     }
     
-    func testFindModels() {
-        
-        let expectation = expectationWithDescription("updateModels")
-        
-        ModelFinder.models(path: "/") { (models) -> Void in
-            XCTAssertTrue(models.count > 0, "No Models Found")
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(0.5, handler: nil)
-    }
+//    func testFindModels() {
+//        
+//        let expectation = expectationWithDescription("updateModels")
+//        
+//        ProjectFinder.models(path: "/") { (models) -> Void in
+//            XCTAssertTrue(models.count > 0, "No Models Found")
+//            expectation.fulfill()
+//        }
+//        
+//        waitForExpectationsWithTimeout(0.5, handler: nil)
+//    }
     
     
  

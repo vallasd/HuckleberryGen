@@ -25,8 +25,8 @@ class ImportBoard: NSViewController {
     // holds reference to parser while the parser is parsing the current importFile
     var parser: HGImportParser?
     
-    /// hgmodel stored when user selects a column
-    private var hgmodel: HGModel?
+    /// project stored when user selects a column
+    private var project: Project?
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -95,9 +95,9 @@ class ImportBoard: NSViewController {
 // MARK: HGImportParserDelegate
 extension ImportBoard: HGImportParserDelegate {
     
-    func parserDidParse(importFile: ImportFile, success: Bool, model: HGModel) {
+    func parserDidParse(importFile: ImportFile, success: Bool, project: Project) {
         if success {
-            HuckleberryGen.store.hgmodel = model
+            HuckleberryGen.store.project = project
         } else {
             HGReportHandler.report("Import Error: could not parse import file: \(importFile.name)" , response: .Error)
         }

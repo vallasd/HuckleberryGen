@@ -47,7 +47,7 @@ class MainWindowController: NSWindowController, BoardHandlerHolder {
     @IBAction func menuButtonPressed(sender: NSToolbarItem) {
         if !toolBarEnabled { return }
         switch (sender.tag) {
-        case 1: HuckleberryGen.store.hgmodel = HGModel.new // New
+        case 1: HuckleberryGen.store.project = Project.new // New
         case 2: showImport() // Import
         case 3: showImport() // Export
         case 7: HGNotif.shared.postNotificationForModelUpdate() // Refresh

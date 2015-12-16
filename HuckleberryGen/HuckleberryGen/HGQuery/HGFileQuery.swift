@@ -15,10 +15,10 @@ class HGFileQuery {
     func importFiles(forPath path: String, completion: (importFiles: [ImportFile]) -> Void)  {
         let mdq = NSMetadataQuery()
         addQueryCompleteObserver(mdq: mdq, completion: completion)
-        queryXCODEmodels(mdq: mdq, path: path)
+        queryXCODEprojects(mdq: mdq, path: path)
     }
     
-    private func queryXCODEmodels(mdq mdq: NSMetadataQuery, path: String) {
+    private func queryXCODEprojects(mdq mdq: NSMetadataQuery, path: String) {
         mdq.searchScopes = [path]
         let fileExtension = "*.xcdatamodeld"
         mdq.predicate = NSPredicate(format: "%K like %@", NSMetadataItemFSNameKey, fileExtension)

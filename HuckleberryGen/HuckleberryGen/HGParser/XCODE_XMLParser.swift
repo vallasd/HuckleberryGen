@@ -104,8 +104,8 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     private func callDelegate() {
         let date = NSDate().timeIntervalSince1970
         let name = "\(xml.name)_\(date)"
-        let model = HGModel(name: name, enums: [], entities: entities)
-        delegate?.parserDidParse(xml, success: !didError, model: model)
+        let project = Project(name: name, enums: [], entities: entities)
+        delegate?.parserDidParse(xml, success: !didError, project: project)
     }
     
     private enum ParseType: String {
@@ -121,10 +121,10 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     private func parseErrorFile(xml: ImportFile) {
         do {
             let _ = try String(contentsOfFile: xml.path, encoding: NSUTF8StringEncoding)
-            HGReportHandler.report("HGParseError Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", response: .Error)
+            HGReportHandler.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", response: .Error)
         }
         catch {
-            HGReportHandler.report("HGParseError Error: can not parse file at path: |\(xml.path)| can not be parsed", response: .Error)
+            HGReportHandler.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", response: .Error)
         }
     }
     

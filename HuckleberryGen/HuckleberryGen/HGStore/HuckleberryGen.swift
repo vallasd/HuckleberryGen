@@ -25,10 +25,10 @@ class HuckleberryGen {
         didSet { importFileSearchPath.saveDefaults(importFileSearchPathKey) }
     }
     
-    var hgmodel: HGModel {
+    var project: Project {
         didSet {
             HGNotif.shared.postNotificationForModelUpdate()
-            hgmodel.saveDefaults(hgmodelKey)
+            project.saveDefaults(projectKey)
         }
     }
     
@@ -37,34 +37,33 @@ class HuckleberryGen {
     init() {
         licenseInfo = LicenseInfo.openDefaults(licenseInfoKey)
         importFileSearchPath = NSUserDefaults.standardUserDefaults().objectForKey(importFileSearchPathKey) as? String
-        if let model = HGModel.openDefaults(hgmodelKey) {
-            let newmodel = model
-            hgmodel = newmodel
+        if let proj = Project.openDefaults(projectKey) {
+            project = proj
         } else {
-            hgmodel = HGModel.new
+            project = Project.new
         }
     }
     
     // MARK: NSUserDefaults
     
     let licenseInfoKey = "LICENSEKEY_123483818"
-    let hgmodelKey = "CURRENTMODEL_123483818"
+    let projectKey = "CURRENTPROJECT_123483818"
     let importFileSearchPathKey = "IMPORTFILESEARCHPATHKEY_123483818"
     
     func clearDefaults() {
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.removeObjectForKey(licenseInfoKey)
         defaults.removeObjectForKey(importFileSearchPathKey)
-        defaults.removeObjectForKey(hgmodelKey)
+        defaults.removeObjectForKey(projectKey)
         
         licenseInfo = nil
         importFileSearchPath = nil
-        hgmodel = HGModel.new
+        project = Project.new
     }
     
     func saveDefaults() {
         licenseInfo.saveDefaults(licenseInfoKey)
-        hgmodel.saveDefaults(hgmodelKey)
+        project.saveDefaults(projectKey)
         importFileSearchPath.saveDefaults(importFileSearchPathKey)
     }
     

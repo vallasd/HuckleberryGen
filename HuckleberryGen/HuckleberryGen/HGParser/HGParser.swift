@@ -22,10 +22,10 @@ protocol HGImportParser: HGParser {
 
 /// protocol that defines a Huckleberry Gen parser delegate that parses Import Files and produces a project
 protocol HGImportParserDelegate: AnyObject {
-    func parserDidParse(importFile: ImportFile, success: Bool, model: HGModel)
+    func parserDidParse(importFile: ImportFile, success: Bool, project: Project)
 }
 
-/// Huckleberry Gen factory for the creation of different file parsers.  These parsers deconstruct specific types of files and turn the data into different model objects.
+/// Huckleberry Gen factory for the creation of different file parsers.  These parsers deconstruct specific types of files and turn the data into different project objects.
 class HGParse {
     
     /// returns initialized HGImportParser that can be used to parse the file and create a project
