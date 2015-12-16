@@ -9,12 +9,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/AppDelegate.swift"
-            timestampString = "469589815.896503"
+            filePath = "HuckleberryGen/HuckleberryGen/HGProtocol/HGProtocol.swift"
+            timestampString = "471952287.58792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33">
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "saveDefaults(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

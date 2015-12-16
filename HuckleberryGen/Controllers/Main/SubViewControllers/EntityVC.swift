@@ -34,7 +34,7 @@ extension EntityVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return HuckleberryGen.store.project.entities.count
+        return appDelegate.store.project.entities.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -46,7 +46,7 @@ extension EntityVC: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let entity = HuckleberryGen.store.project.entities[row]
+        let entity = appDelegate.store.project.entities[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.name),
             field1: HGFieldData(title: ""),
@@ -89,9 +89,9 @@ extension EntityVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         if tag == 0 && data is HGFieldData {
-            var entity = HuckleberryGen.store.project.entities[row]
+            var entity = appDelegate.store.project.entities[row]
             entity.name = data.title
-            HuckleberryGen.store.project.entities[row] = entity
+            appDelegate.store.project.entities[row] = entity
         }
     }
 }
@@ -104,13 +104,13 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.project.entities.append(Entity.new)
+        appDelegate.store.project.entities.append(Entity.new)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
         
         for row in rows {
-            let entity = HuckleberryGen.store.project.entities[row]
+            let entity = appDelegate.store.project.entities[row]
             if entity.attributes.count > 0 || entity.relationships.count > 0 {
                 return .AskUser
             }
@@ -120,7 +120,7 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        HuckleberryGen.store.project.entities.removeIndexes(rows)
+        appDelegate.store.project.entities.removeIndexes(rows)
     }
 }
 

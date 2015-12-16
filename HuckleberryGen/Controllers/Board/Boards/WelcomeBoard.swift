@@ -15,7 +15,7 @@ class WelcomeBoard: NSViewController {
 extension WelcomeBoard: NavControllerPushable {
     
     var nextBoard: BoardType? {
-        if HuckleberryGen.store.licenseInfo == nil { return .LicenseInfo }
+        if appDelegate.store.licenseInfo.needsMoreInformation { return .LicenseInfo }
         return nil
     }
     var nextString: String? { return "Get Started" }

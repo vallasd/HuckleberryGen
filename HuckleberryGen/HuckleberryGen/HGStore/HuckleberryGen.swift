@@ -9,62 +9,75 @@
 import Foundation
 import CoreData
 
-class HuckleberryGen {
+final class HuckleberryGen {
     
-    // MARK: Singleton Instance
+    // MARK: Model Data
     
-    static let store = HuckleberryGen()
+    private(set) var uniqIdentifier: String
     
-    // MARK: Cached Model
+    var licenseInfo: LicenseInfo
     
-    var licenseInfo: LicenseInfo? {
-        didSet { licenseInfo.saveDefaults(licenseInfoKey) }
-    }
-    
-    var importFileSearchPath: String? {
-        didSet { importFileSearchPath.saveDefaults(importFileSearchPathKey) }
-    }
+    var importFileSearchPath: String
     
     var project: Project {
         didSet {
             HGNotif.shared.postNotificationForModelUpdate()
-            project.saveDefaults(projectKey)
         }
     }
     
-    // MARK: - Initialization
-    
-    init() {
-        licenseInfo = LicenseInfo.openDefaults(licenseInfoKey)
-        importFileSearchPath = NSUserDefaults.standardUserDefaults().objectForKey(importFileSearchPathKey) as? String
-        if let proj = Project.openDefaults(projectKey) {
-            project = proj
-        } else {
-            project = Project.new
-        }
+    /// Checks defaults to see if a Huckleberry Gen was saved with same identifier and opens that data if available, else returns a blank project with identifier
+    init(uniqIdentifier uniqID: String) {
+        let file = HuckleberryGen.openDefaults(uniqID)
+        uniqIdentifier = uniqID
+        licenseInfo = file.licenseInfo
+        importFileSearchPath = file.importFileSearchPath
+        project = file.project
     }
     
-    // MARK: NSUserDefaults
+    /// initializes Huckleberry Gen when user gives all data
+    init(uniqIdentifier: String, licenseInfo: LicenseInfo, importFileSearchPath: String, project: Project) {
+        self.uniqIdentifier = uniqIdentifier
+        self.licenseInfo = licenseInfo
+        self.importFileSearchPath = importFileSearchPath
+        self.project = project
+    }
     
-    let licenseInfoKey = "LICENSEKEY_123483818"
-    let projectKey = "CURRENTPROJECT_123483818"
-    let importFileSearchPathKey = "IMPORTFILESEARCHPATHKEY_123483818"
-    
-    func clearDefaults() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey(licenseInfoKey)
-        defaults.removeObjectForKey(importFileSearchPathKey)
-        defaults.removeObjectForKey(projectKey)
+    /// clears all variables to default values
+    func clear() {
         
-        licenseInfo = nil
-        importFileSearchPath = nil
+        licenseInfo = LicenseInfo.new
+        importFileSearchPath = "/"
         project = Project.new
     }
     
-    func saveDefaults() {
-        licenseInfo.saveDefaults(licenseInfoKey)
-        project.saveDefaults(projectKey)
-        importFileSearchPath.saveDefaults(importFileSearchPathKey)
+    /// saves HuckleberryGen file to user defaults
+    func save() {
+        self.saveDefaults(uniqIdentifier)
+    }
+}
+
+extension HuckleberryGen: HGEncodable {
+    
+    static var new: HuckleberryGen {
+        let uuid = NSUUID().UUIDString
+        return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importFileSearchPath: "/", project: Project.new)
     }
     
+    var encode: AnyObject {
+        var dict = HGDICT()
+        dict["uniqIdentifier"] = uniqIdentifier
+        dict["licenseInfo"] = licenseInfo.encode
+        dict["importFileSearchPath"] = importFileSearchPath
+        dict["projectKey"] = project.name
+        return dict
+    }
+    
+    static func decode(object object: AnyObject) -> HuckleberryGen {
+        let dict = hgdict(fromObject: object, decoderName: "HuckleberryGen")
+        let uniqIdentifier = dict["uniqIdentifier"].string
+        let licenseInfo = dict["licenseInfo"].licenseInfo
+        let importFileSearchPath = dict["importFileSearchPath"].string
+        let project = dict["project"].project
+        return HuckleberryGen(uniqIdentifier: uniqIdentifier, licenseInfo: licenseInfo, importFileSearchPath: importFileSearchPath, project: project)
+    }
 }

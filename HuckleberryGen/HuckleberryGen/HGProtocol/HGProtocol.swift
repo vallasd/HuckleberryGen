@@ -20,6 +20,7 @@ protocol HGReportable {
 }
 
 protocol HGEncodable {
+    static var new: Self { get }
     var encode: AnyObject { get }
     static func decode(object object: AnyObject) -> Self
 }
@@ -40,13 +41,14 @@ extension HGEncodable {
         NSUserDefaults.standardUserDefaults().setValue(encoded, forKey: key)
     }
     
-    static func openDefaults(key: String) -> Self? {
+    static func openDefaults(key: String) -> Self {
         let defaults = NSUserDefaults.standardUserDefaults()
         if let object = defaults.objectForKey(key) {
             let decoded = Self.decode(object: object)
             return decoded
         }
-        return nil
+        HGReportHandler.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", response: .Info)
+        return self.new
     }
 }
 
@@ -59,24 +61,3 @@ extension SequenceType where Generator.Element: HGEncodable {
     }
     
 }
-
-//extension SequenceType where Generator.Element: HGDICT {
-//    
-//    var decodeJSON: [HGEncodable] {
-//        var jsonArray: [HGEncodable]
-//        for dict in self { jsonArray.append(hgencodable.json) }
-//        return jsonArray
-//    }
-//}
-
-extension Optional {
-    
-    // Should set stuff for NSCoder Optionals as well
-    func saveDefaults(key: String) {
-        if let encodable = self as? HGEncodable { encodable.saveDefaults(key) }
-        else if let string = self as? String { NSUserDefaults.standardUserDefaults().setValue(string, forKey: key) }
-        else { NSUserDefaults.standardUserDefaults().removeObjectForKey(key) }
-    }
-}
-
-

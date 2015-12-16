@@ -20,6 +20,24 @@ extension Optional {
         return []
     }
     
+    var huckleberryGen: HuckleberryGen {
+        if let dict = self as? HGDICT { return HuckleberryGen.decode(object: dict) }
+        HGReportHandler.report("optional: |\(self)| is not Project mapable, returning new Attribute", response: .Error)
+        return HuckleberryGen.new
+    }
+    
+    var project: Project {
+        if let dict = self as? HGDICT { return Project.decode(object: dict) }
+        HGReportHandler.report("optional: |\(self)| is not Project mapable, returning new Attribute", response: .Error)
+        return Project.new
+    }
+    
+    var licenseInfo: LicenseInfo {
+        if let dict = self as? HGDICT { return LicenseInfo.decode(object: dict) }
+        HGReportHandler.report("optional: |\(self)| is not Licens mapable, returning new Attribute", response: .Error)
+        return LicenseInfo.new
+    }
+    
     var entity: Entity {
         if let dict = self as? HGDICT { return Entity.decode(object: dict) }
         HGReportHandler.report("optional: |\(self)| is not Entity mapable, returning new Entity", response: .Error)

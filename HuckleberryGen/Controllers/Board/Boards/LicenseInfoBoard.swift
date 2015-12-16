@@ -28,7 +28,7 @@ class LicenseInfoBoard: NSViewController, NavControllerReferrable {
     private func updateLicenseInfo() {
         //LicenseType.create(Int()
         if (nameField.stringValue.characters.count > 2) {
-            let store = HuckleberryGen.store
+            let store = appDelegate.store
             let license = LicenseInfo(name: nameField.stringValue, company: companyField.stringValue, contact1: emailField.stringValue, contact2: contact2Field.stringValue, type: LicenseType.create(int: licenseButton.indexOfSelectedItem))
             store.licenseInfo = license
         }
@@ -39,13 +39,12 @@ class LicenseInfoBoard: NSViewController, NavControllerReferrable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let license = HuckleberryGen.store.licenseInfo {
-            nameField.stringValue = license.name
-            companyField.stringValue = license.company
-            emailField.stringValue = license.contact1
-            contact2Field.stringValue = license.contact2
-            licenseButton.selectItemAtIndex(license.type.int)
-        }
+        let license = appDelegate.store.licenseInfo
+        nameField.stringValue = license.name
+        companyField.stringValue = license.company
+        emailField.stringValue = license.contact1
+        contact2Field.stringValue = license.contact2
+        licenseButton.selectItemAtIndex(license.type.int)
         
         nameField.delegate = self
         companyField.delegate = self

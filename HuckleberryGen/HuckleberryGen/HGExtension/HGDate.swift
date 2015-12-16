@@ -10,55 +10,56 @@ import Foundation
 
 extension NSDate
 {
-    func second() -> Int
-    {
-        //Get Minute
+    
+    /// returns second integer value of NSDate
+    var second: Int {
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components(.Second, fromDate: self)
         return components.second
     }
     
-    func minute() -> Int
-    {
-        //Get Minute
+    /// returns minute integer value of NSDate
+    var minute: Int {
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components(.Minute, fromDate: self)
         return components.minute
     }
     
-    func hour() -> Int
-    {
-        //Get Hour
+    /// returns hour integer value of NSDate
+    var hour: Int {
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components(.Hour, fromDate: self)
         return components.hour
     }
     
-    func year() -> Int
-    {
-        //Get Year
+    /// returns year integer value of NSDate
+    var year: Int {
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components(.Year, fromDate: self)
         return components.year
     }
     
-    /// Creates a string of MM/DD/YY for NSDate
-    func stringMonthDayYear() -> String
-    {
-        //Get Year
+    /// creates a string of MM/DD/YY for NSDate
+    var mmddyy: String {
         let calendar = NSCalendar.currentCalendar()
         let components = calendar.components([.Month, .Day, .Year], fromDate: self)
         return "\(components.month)/\(components.day)/\(components.year)"
     }
     
-    /// Creates a string of YYYY for NSDate
-    func stringYear() -> String
-    {
-        return "\(self.year())"
+    /// creates a string of MM/DD/YY mm:ss for NSDate
+    var mmddyymmss: String {
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Month, .Day, .Year, .Minute, .Second], fromDate: self)
+        return "\(components.month)/\(components.day)/\(components.year) \(components.minute):\(components.second)"
     }
     
-    func stringShort() -> String
-    {
+    /// creates a string of yyyy for NSDate
+    var yyyy: String {
+        return "\(self.year)"
+    }
+    
+    /// creates a short style string of NSDate
+    var short: String {
         //Get Short Time String
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle

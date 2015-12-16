@@ -33,7 +33,7 @@ extension EnumCasesVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return table.parentRow == notSelected ? 0 : HuckleberryGen.store.project.enums[table.parentRow].cases.count
+        return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -46,7 +46,7 @@ extension EnumCasesVC: HGTableDisplayable {
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         
-        let casE = HuckleberryGen.store.project.enums[table.parentRow].cases[row]
+        let casE = appDelegate.store.project.enums[table.parentRow].cases[row]
         return HGCellData.fieldCell2(
             field0: HGFieldData(title: casE.name),
             field1: HGFieldData(title: String(row))
@@ -81,9 +81,9 @@ extension EnumCasesVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         if tag == 0 && data is HGFieldData {
-            var casE = HuckleberryGen.store.project.enums[table.parentRow].cases[row]
+            var casE = appDelegate.store.project.enums[table.parentRow].cases[row]
             casE.name = data.title
-            HuckleberryGen.store.project.enums[table.parentRow].cases[row] = casE
+            appDelegate.store.project.enums[table.parentRow].cases[row] = casE
         }
     }
 }
@@ -96,7 +96,7 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.project.enums[table.parentRow].cases.append(EnumCase.new)
+        appDelegate.store.project.enums[table.parentRow].cases.append(EnumCase.new)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
@@ -104,6 +104,6 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        HuckleberryGen.store.project.enums[table.parentRow].cases.removeIndexes(rows)
+        appDelegate.store.project.enums[table.parentRow].cases.removeIndexes(rows)
     }
 }

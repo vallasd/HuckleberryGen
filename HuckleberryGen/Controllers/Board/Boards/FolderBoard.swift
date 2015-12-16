@@ -23,8 +23,10 @@ class FolderBoard: NSViewController, NavControllerReferrable {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        if let path = HuckleberryGen.store.importFileSearchPath { setPath(path) }
-        else {
+        let path = appDelegate.store.importFileSearchPath
+        if path != "/" {
+            setPath(path)
+        } else {
             nav?.disableProgression()
         }
     }
@@ -56,7 +58,7 @@ class FolderBoard: NSViewController, NavControllerReferrable {
     
     private func setPath(path: String) {
         let name = path.lastPathComponent
-        HuckleberryGen.store.importFileSearchPath = path
+        appDelegate.store.importFileSearchPath = path
         folderButton.title = name
         nav?.enableProgression()
     }

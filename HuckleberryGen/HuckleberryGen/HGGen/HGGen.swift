@@ -13,8 +13,8 @@ import Foundation
 
 let hgGenMinAge: UInt32 = 15
 let hgGenMaxAge: UInt32 = 85
-let hgGenCurrentDate: String = NSDate().stringMonthDayYear()
-let hgGenCurrentYear: String = NSDate().stringYear()
+let hgGenCurrentDate: String = NSDate().mmddyy
+let hgGenCurrentYear: String = NSDate().yyyy
 
 class HGGen {
     

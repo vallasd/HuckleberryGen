@@ -13,15 +13,17 @@ struct Attribute {
     var name: String
     var type: AttributeType
     
-    static var new: Attribute {
-        return Attribute(name: "New Attribute", type: ._Int16)
-    }
+    
 }
 
 extension Attribute: Hashable { var hashValue: Int { return name.hashValue } }
 extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.name == rhs.name }
 
 extension Attribute: HGEncodable {
+    
+    static var new: Attribute {
+        return Attribute(name: "New Attribute", type: ._Int16)
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()
@@ -39,7 +41,7 @@ extension Attribute: HGEncodable {
 }
 
 
-enum AttributeType: Int16, HGEncodable {
+enum AttributeType: Int16 {
  
     case _Int16 = 0
     case _Int32 = 1
@@ -53,19 +55,8 @@ enum AttributeType: Int16, HGEncodable {
     case _Binary = 9
     case _Transformable = 10
     
-    var encode: AnyObject {
-        return int
-    }
-    
     var int: Int {
         return Int(self.rawValue)
-    }
-    
-    static func decode(object object: AnyObject) -> AttributeType {
-        if let int = object as? Int { return create(int: int) }
-        if let string = object as? String { return create(string: string) }
-        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int16", response: .Error)
-        return ._Int16
     }
 
     static var set: [AttributeType] {
@@ -114,5 +105,23 @@ enum AttributeType: Int16, HGEncodable {
             HGReportHandler.report("string: |\(string)| is not AttributeType mapable, using ._Int16", response: .Error)
             return ._Int16
         }
+    }
+}
+
+extension AttributeType: HGEncodable {
+    
+    static var new: AttributeType {
+        return ._Int16
+    }
+    
+    var encode: AnyObject {
+        return int
+    }
+    
+    static func decode(object object: AnyObject) -> AttributeType {
+        if let int = object as? Int { return create(int: int) }
+        if let string = object as? String { return create(string: string) }
+        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int16", response: .Error)
+        return ._Int16
     }
 }

@@ -33,7 +33,7 @@ extension AttributeVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return table.parentRow == notSelected ? 0 : HuckleberryGen.store.project.entities[table.parentRow].attributes.count
+        return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].attributes.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -46,7 +46,7 @@ extension AttributeVC: HGTableDisplayable {
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         
-        let attribute = HuckleberryGen.store.project.entities[table.parentRow].attributes[row]
+        let attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: attribute.name),
             field1: HGFieldData(title: ""),
@@ -79,7 +79,7 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.project.entities[table.parentRow].attributes.append(Attribute.new)
+        appDelegate.store.project.entities[table.parentRow].attributes.append(Attribute.new)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
@@ -87,7 +87,7 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        HuckleberryGen.store.project.entities[table.parentRow].attributes.removeIndexes(rows)
+        appDelegate.store.project.entities[table.parentRow].attributes.removeIndexes(rows)
     }
 }
 
@@ -102,9 +102,9 @@ extension AttributeVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         if tag == 0 && data is HGFieldData {
-            var attribute = HuckleberryGen.store.project.entities[table.parentRow].attributes[row]
+            var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
             attribute.name = data.title
-            HuckleberryGen.store.project.entities[table.parentRow].attributes[row] = attribute
+            appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         }
     }
 }
@@ -132,9 +132,9 @@ extension AttributeVC: SelectionBoardDelegate {
     
     func selectionboard(sb: SelectionBoard, didChoose items: [Int]) {
         let item = items[0]
-        var attribute = HuckleberryGen.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row]
+        var attribute = appDelegate.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row]
         attribute.type = AttributeType.create(int: item)
-        HuckleberryGen.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row] = attribute
+        appDelegate.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row] = attribute
         editingLocation = nil
     }
     

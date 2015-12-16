@@ -14,7 +14,7 @@ import Cocoa
 class ImportBoard: NSViewController {
     
     /// search path ImportBoard uses to create Folder (default searchpath is defined in the store)
-    var searchPath: String? = HuckleberryGen.store.importFileSearchPath
+    var searchPath: String? = appDelegate.store.importFileSearchPath
     
     /// reference to the selection board
     private var selectionboard: SelectionBoard!
@@ -97,7 +97,7 @@ extension ImportBoard: HGImportParserDelegate {
     
     func parserDidParse(importFile: ImportFile, success: Bool, project: Project) {
         if success {
-            HuckleberryGen.store.project = project
+            appDelegate.store.project = project
         } else {
             HGReportHandler.report("Import Error: could not parse import file: \(importFile.name)" , response: .Error)
         }
@@ -133,6 +133,6 @@ extension ImportBoard: SelectionBoardDataSource {
             field1: HGFieldData(title: "Path:"),
             field2: HGFieldData(title: file.path),
             field3: HGFieldData(title: "Last Modified:"),
-            field4: HGFieldData(title: file.modificationDate.stringMonthDayYear()))
+            field4: HGFieldData(title: file.modificationDate.mmddyy))
     }
 }

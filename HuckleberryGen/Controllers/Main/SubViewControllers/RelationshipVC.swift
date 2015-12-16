@@ -43,7 +43,7 @@ extension RelationshipVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return table.parentRow == notSelected ? 0 : HuckleberryGen.store.project.entities[table.parentRow].relationships.count
+        return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].relationships.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -56,7 +56,7 @@ extension RelationshipVC: HGTableDisplayable {
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         
-        let relationship = HuckleberryGen.store.project.entities[table.parentRow].relationships[row]
+        let relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
         
         return HGCellData.mixedCell1(
             field0: HGFieldData(title: relationship.name),
@@ -93,7 +93,7 @@ extension RelationshipVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        HuckleberryGen.store.project.entities[table.parentRow].relationships.append(Relationship.new)
+        appDelegate.store.project.entities[table.parentRow].relationships.append(Relationship.new)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
@@ -101,7 +101,7 @@ extension RelationshipVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        HuckleberryGen.store.project.entities[table.parentRow].relationships.removeIndexes(rows)
+        appDelegate.store.project.entities[table.parentRow].relationships.removeIndexes(rows)
     }
 }
 
@@ -117,9 +117,9 @@ extension RelationshipVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
         if tag == 0 && data is HGFieldData {
-            var relationship = HuckleberryGen.store.project.entities[table.parentRow].relationships[row]
+            var relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
             relationship.name = data.title
-            HuckleberryGen.store.project.entities[table.parentRow].relationships[row] = relationship
+            appDelegate.store.project.entities[table.parentRow].relationships[row] = relationship
         }
     }
 }
@@ -174,28 +174,28 @@ extension RelationshipVC: SelectionBoardDelegate {
         guard let el = editingLocation else { return }
         
         let item = items[0]
-        var relationship = HuckleberryGen.store.project.entities[hgtable.parentRow].relationships[el.row]
+        var relationship = appDelegate.store.project.entities[hgtable.parentRow].relationships[el.row]
         
         if sb == typeSelection {
             relationship.type = RelationshipType.create(int: item)
         }
         
         if sb == entitySelection {
-            relationship.entity = HuckleberryGen.store.project.entities[item].name
+            relationship.entity = appDelegate.store.project.entities[item].name
         }
         
         if sb == deletionSelection {
             relationship.deletionRule = DeletionRule.create(int: item)
         }
         
-        HuckleberryGen.store.project.entities[hgtable.parentRow].relationships[el.row] = relationship
+        appDelegate.store.project.entities[hgtable.parentRow].relationships[el.row] = relationship
         editingLocation = nil
     }
     
     func numberOfItems(forSelectionBoard sb: SelectionBoard) -> Int {
         
         if sb === entitySelection {
-            return HuckleberryGen.store.project.entities.count
+            return appDelegate.store.project.entities.count
         }
         
         if sb === deletionSelection {
@@ -217,7 +217,7 @@ extension RelationshipVC: SelectionBoardDataSource {
         
         if sb == entitySelection {
             return HGCellData.fieldCell1(
-                field0: HGFieldData(title: HuckleberryGen.store.project.entities[row].name)
+                field0: HGFieldData(title: appDelegate.store.project.entities[row].name)
             )
         }
         

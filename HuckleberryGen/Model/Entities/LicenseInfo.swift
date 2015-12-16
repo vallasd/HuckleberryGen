@@ -21,9 +21,21 @@ struct LicenseInfo {
         let contact2Info = contact2 == "" ? contact2 : "(\(contact2))"
         return "//   \(project)\n//   \(fileName) created by HuckleberryGen (on: \(hgGenCurrentDate) for: \(name))\n//\n//   Copyright (c) \(hgGenCurrentYear) \(companyInfo) \(contact1Info) \(contact2Info)\n//\n \(type.staticText)"
     }
+    
+    var needsMoreInformation: Bool {
+        get {
+            if name == "" { return true }
+            return false
+        }
+    }
+    
 }
 
 extension LicenseInfo: HGEncodable {
+    
+    static var new: LicenseInfo {
+        return LicenseInfo(name: "", company: "", contact1: "", contact2: "", type: .AllRightsReserved)
+    }
     
     var encode: AnyObject {
         var dict = HGDICT()

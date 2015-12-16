@@ -16,7 +16,9 @@ struct Project {
     var entities: [Entity]
     
     static var new: Project {
-        return Project(name: "New Project", enums: [], entities: [])
+        let time = NSDate().mmddyymmss
+        let projectName = "New Project \(time)"
+        return Project(name: projectName, enums: [], entities: [])
     }
 }
 
