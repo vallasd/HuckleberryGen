@@ -79,7 +79,7 @@ extension HuckleberryGen: HGEncodable {
         dict["uniqIdentifier"] = uniqIdentifier
         dict["licenseInfo"] = licenseInfo.encode
         dict["importFileSearchPath"] = importFileSearchPath
-        dict["projectKey"] = project.name
+        dict["project"] = project.encode
         return dict
     }
     

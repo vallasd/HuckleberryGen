@@ -22,13 +22,13 @@ extension Optional {
     
     var huckleberryGen: HuckleberryGen {
         if let dict = self as? HGDICT { return HuckleberryGen.decode(object: dict) }
-        HGReportHandler.report("optional: |\(self)| is not Project mapable, returning new Attribute", response: .Error)
+        HGReportHandler.report("optional: |\(self)| is not HuckleberryGen mapable, returning new HuckleberryGen", response: .Error)
         return HuckleberryGen.new
     }
     
     var project: Project {
         if let dict = self as? HGDICT { return Project.decode(object: dict) }
-        HGReportHandler.report("optional: |\(self)| is not Project mapable, returning new Attribute", response: .Error)
+        HGReportHandler.report("optional: |\(self)| is not Project mapable, returning new Project", response: .Error)
         return Project.new
     }
     

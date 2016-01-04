@@ -172,7 +172,9 @@ class HGTable: NSObject {
     private func addObserver(name: String?) {
         if let name = name {
             HGNotif.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
-                if let row = notif.object as? Int { self?.parentRow = row }
+                if let row = notif.object as? Int {
+                    self?.parentRow = row
+                }
                 self?.update()
             })
         }
