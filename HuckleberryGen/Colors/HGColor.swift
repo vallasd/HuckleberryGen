@@ -13,6 +13,7 @@ enum HGColor {
     case White
     case Blue
     case Clear
+    case Test
     
     func cgColor() -> CGColorRef {
         switch (self) {
@@ -20,6 +21,7 @@ enum HGColor {
         case .White: return CGColorCreateGenericRGB(1.0, 1.0, 1.0, 1.0)
         case .Blue: return CGColorCreateGenericRGB(0.0, 0.48, 1.0, 1.0)
         case .Clear: return CGColorCreateGenericRGB(1.0, 1.0, 1.0, 0.0)
+        case .Test: return CGColorCreateGenericRGB(1.0, 0.0, 0.0, 0.2)
         }
     }
     
@@ -29,6 +31,7 @@ enum HGColor {
         case .White: return NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         case .Blue: return NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         case .Clear: return NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
+        case .Test: return NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 0.2)
         }
     }
 }

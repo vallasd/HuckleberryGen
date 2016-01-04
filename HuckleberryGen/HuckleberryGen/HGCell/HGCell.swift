@@ -372,7 +372,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     // MARK: Errors Reporting
     
-    /// Reports and error if there is more data than cell objects available
+    /// Reports an error if there is more data than cell objects available
     private func reportExtraDataErrorIfApplicable(cellCount cellCount: Int, dataCount: Int, typeOfObject: String) {
         //
     }

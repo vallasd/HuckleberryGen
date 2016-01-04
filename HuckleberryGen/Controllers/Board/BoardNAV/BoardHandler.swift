@@ -53,13 +53,16 @@ protocol BoardHandlerHolder: AnyObject {
 class BoardHandler {
     
     /// windowController which boards will be pushed to
-    weak var windowcontroller: NSWindowController!
+    private(set) weak var windowcontroller: NSWindowController!
+    
+    /// background view which we blur when we display boards
+    private var background: NSView { get { return windowcontroller.window!.contentViewController!.view } }
     
     /// controllers that handles pushing and popping view controllers from Board navigation stack
-    var nav: NavController?
+    private(set) var nav: NavController?
     
-    /// base viewController that will hold the navigation controller
-    private weak var holder: NSViewController?
+    /// view that holds the Board and blocks the background from touches
+    private var holder: NSView!
     
     /// initializes BoardHandler with a window controller, use this function for initialization
     init(windowController wc: NSWindowController) {
@@ -69,9 +72,16 @@ class BoardHandler {
     /// pops board nav controller (holding board) on window controller
     func startBoard(board: BoardType) {
         if (nav == nil) {
-            if let vc = windowcontroller?.window?.contentViewController {
-                startBoard(board, ToViewController: vc)
-            }
+            nav = BoardType.createNav()
+            nav!.root = board
+            nav!.delegate = self
+            background.blur()
+            holder = createHolder()
+            windowcontroller.window!.toolbar?.visible = false
+            holder.center(parent: background)
+            background.addSubview(holder)
+            nav!.view.center(parent: holder)
+            holder.addSubview(nav!.view)
         }
     }
     
@@ -79,34 +89,21 @@ class BoardHandler {
     func endBoard() {
         nav?.view.removeFromSuperview()
         nav?.removeFromParentViewController()
+        background.unblur()
+        nav?.view.removeFromSuperview()
+        holder.removeFromSuperview()
+        windowcontroller.window!.toolbar?.visible = true
+        holder = nil
         nav = nil
-        holder?.view.unblur()
-        enableToolBar()
     }
     
-    private func startBoard(board: BoardType, ToViewController vc: NSViewController) {
-        if (nav == nil) {
-            disableToolBar()
-            nav = BoardType.createNav()
-            nav?.root = board
-            nav?.delegate = self
-            holder = vc
-            holder?.view.blur()
-            nav?.view.center(parent: vc.view)
-            holder?.view.addSubview(nav!.view)
-        }
+    /// creates a empty holding view that is clear but blocks touches to the window
+    private func createHolder() -> HGBlockView {
+        let frame = background.frame
+        let holder = HGBlockView(frame: frame)
+        holder.backgroundColor(HGColor.Clear)
+        return holder
     }
-    
-    // MARK: TOOLBAR CONTROL
-    
-    func disableToolBar() {
-        if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = false }
-    }
-    
-    func enableToolBar() {
-        if let winVC = windowcontroller as? MainWindowController { winVC.toolBarEnabled = true }
-    }
-    
 }
 
 extension BoardHandler: NavControllerDelegate {

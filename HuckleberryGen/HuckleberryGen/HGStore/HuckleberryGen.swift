@@ -44,7 +44,6 @@ final class HuckleberryGen {
     
     /// clears all variables to default values
     func clear() {
-        
         licenseInfo = LicenseInfo.new
         importFileSearchPath = "/"
         project = Project.new

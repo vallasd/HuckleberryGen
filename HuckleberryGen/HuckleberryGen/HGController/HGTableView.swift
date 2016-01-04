@@ -78,8 +78,6 @@ class HGTableView: NSTableView {
         let local = self.convertPoint(global, fromView: nil)
         let row = self.rowAtPoint(local)
         
-        // super.mouseDown(theEvent) // We removed this because mouseDown was auto selecting rows
-        
         if (row != notSelected && row != -1) {
             selectRow(row)
         }
@@ -107,7 +105,7 @@ class HGTableView: NSTableView {
         }
     }
     
-    /// Selects or unselects (if row is currently selected) a row
+    /// selects or unselects (if row is currently selected) a row
     private func selectRow(var row: Int) {
         
         if row != notSelected {
@@ -252,4 +250,26 @@ class HGTableView: NSTableView {
         
     }
     
+    private class func isTopView(view: NSView, previousView: NSView?) -> Bool {
+        
+        if let superView = view.superview {
+            HGTableView.isTopView(superView, previousView: view)
+        }
+        
+        Swift.print("Top View is \(view), Previous View \(previousView)")
+        
+        Swift.print("Sub Views are \(view.subviews)")
+        
+        return false
+    }
+    
 }
+
+
+
+//        let parentWindow = self.window
+//        if let subviews = parentWindow?.contentViewController?.view.subviews {
+//            for subview in subviews {
+//
+//            }
+//        }

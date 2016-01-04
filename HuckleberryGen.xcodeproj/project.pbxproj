@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030657481C286C1200ED8722 /* NSEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030657471C286C1200ED8722 /* NSEvent.swift */; };
+		0306574A1C287ED200ED8722 /* HGBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030657491C287ED200ED8722 /* HGBlockView.swift */; };
 		031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A1A531B8F81F50077FD56 /* HGParser.swift */; };
 		0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3A1B586F6500CB132B /* HGColor.swift */; };
 		0322FA3E1B59038100CB132B /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3D1B59038100CB132B /* NSView.swift */; };
@@ -104,6 +106,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030657471C286C1200ED8722 /* NSEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSEvent.swift; sourceTree = "<group>"; };
+		030657491C287ED200ED8722 /* HGBlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGBlockView.swift; sourceTree = "<group>"; };
 		031A1A531B8F81F50077FD56 /* HGParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGParser.swift; path = HGParser/HGParser.swift; sourceTree = "<group>"; };
 		0322FA3A1B586F6500CB132B /* HGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGColor.swift; sourceTree = "<group>"; };
 		0322FA3D1B59038100CB132B /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 				035428EA1BA1C16600BED618 /* NSNotification.swift */,
 				03660ADC1BBDED6600DE41D5 /* NSImage.swift */,
 				03660ADE1BBE03FC00DE41D5 /* TextField.swift */,
+				030657471C286C1200ED8722 /* NSEvent.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -515,6 +520,7 @@
 				033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */,
 				033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */,
 				033F3DED1BBACE770089AEC2 /* HGTabVC.swift */,
+				030657491C287ED200ED8722 /* HGBlockView.swift */,
 			);
 			path = HGController;
 			sourceTree = "<group>";
@@ -669,6 +675,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03F25EDC1B9BFEE90048B0A0 /* EntityDetailVC.swift in Sources */,
+				0306574A1C287ED200ED8722 /* HGBlockView.swift in Sources */,
 				036455C01BA264930096B255 /* HGCellData.swift in Sources */,
 				03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */,
 				0339BC621BFDEFE30071F8AD /* ImportBoard.swift in Sources */,
@@ -723,6 +730,7 @@
 				03F25EEC1B9C16EA0048B0A0 /* HGTable.swift in Sources */,
 				036C7C6E1B514AF9004EC724 /* ImportFile.swift in Sources */,
 				0372A6121B8F6EB800317065 /* XCODE_XMLParser.swift in Sources */,
+				030657481C286C1200ED8722 /* NSEvent.swift in Sources */,
 				036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */,
 				036C7C061B5143A0004EC724 /* AppDelegate.swift in Sources */,
 				03F25EDE1B9BFEE90048B0A0 /* EnumVC.swift in Sources */,
