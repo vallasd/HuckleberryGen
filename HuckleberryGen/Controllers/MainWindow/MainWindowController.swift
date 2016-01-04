@@ -46,7 +46,6 @@ class MainWindowController: NSWindowController, BoardHandlerHolder {
         case 1: appDelegate.store.project = Project.new // New
         case 2: showImport() // Import
         case 3: showImport() // Export
-        case 7: HGNotif.shared.postNotificationForModelUpdate() // Refresh
         case 8: showSettings()              // Settings
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }

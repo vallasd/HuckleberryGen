@@ -21,7 +21,7 @@ final class HuckleberryGen {
     
     var project: Project {
         didSet {
-            HGNotif.shared.postNotificationForModelUpdate()
+            postProjectChangedNotifications()
         }
     }
     
@@ -52,6 +52,18 @@ final class HuckleberryGen {
     /// saves HuckleberryGen file to user defaults
     func save() {
         self.saveDefaults(uniqIdentifier)
+    }
+    
+    /// returns a store unique Notification Name for a particular HGNotifType
+    func notificationName(forNotifType notif: HGNotifType) -> String {
+        return notif.uniqString(forUniqId: uniqIdentifier)
+    }
+    
+    /// posts a mass notification to every sub component when the project has changed
+    private func postProjectChangedNotifications() {
+        let notifs: [HGNotifType] = [.EntityUpdated, .EnumUpdated, .AttributeUpdated, .RelationshipUpdated, .EnumCaseUpdated]
+        let posts = HGNotifType.uniqStrings(forNotifTypes: notifs, uniqID: uniqIdentifier)
+        HGNotif.postNotifications(posts)
     }
 }
 

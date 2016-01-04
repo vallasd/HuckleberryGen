@@ -92,7 +92,7 @@ class HGTable: NSObject {
     /// Delegate for AnyObject which conforms to protocol HGTableObservable
     private weak var observeDelegate: HGTableObservable? {
         willSet {
-            HGNotif.shared.removeObserver(self)
+            HGNotif.removeObserver(self)
         }
         didSet {
             addObserver(observeDelegate?.observeNotification(fortable: self))
@@ -171,7 +171,7 @@ class HGTable: NSObject {
     // MARK: Observers
     private func addObserver(name: String?) {
         if let name = name {
-            HGNotif.shared.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
+            HGNotif.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
                 if let row = notif.object as? Int { self?.parentRow = row }
                 self?.update()
             })
@@ -182,7 +182,7 @@ class HGTable: NSObject {
     
     // MARK: Deinit
     deinit {
-        HGNotif.shared.removeObserver(self)
+        HGNotif.removeObserver(self)
     }
 }
 
@@ -251,7 +251,7 @@ extension HGTable: HGTableViewDelegate {
     
     func hgtableview(hgtableview: HGTableView, didSelectRow row: Int) {
         selectedLocations = HGCellLocation.locations(fromRows: hgtableview.selectedRows)
-        if let sn = selectNotification { HGNotif.shared.postNotification(sn, withObject: row) }
+        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row) }
     }
     
     func hgtableview(willAddRowToTable hgtableview: HGTableView) {

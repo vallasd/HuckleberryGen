@@ -59,7 +59,7 @@ extension EntityVC: HGTableDisplayable {
 extension EntityVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifEntityUpdate
+        return appDelegate.store.notificationName(forNotifType: .EntityUpdated)
     }
 }
 
@@ -67,7 +67,7 @@ extension EntityVC: HGTableObservable {
 extension EntityVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifNewEntitySelected
+        return appDelegate.store.notificationName(forNotifType: .EntitySelected)
     }
 }
 

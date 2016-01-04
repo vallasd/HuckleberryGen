@@ -59,7 +59,7 @@ extension AttributeVC: HGTableDisplayable {
 extension AttributeVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifNewEntitySelected
+        return appDelegate.store.notificationName(forNotifType: .EntitySelected)
     }
 }
 

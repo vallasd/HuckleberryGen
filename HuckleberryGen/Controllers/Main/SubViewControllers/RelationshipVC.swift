@@ -73,7 +73,7 @@ extension RelationshipVC: HGTableDisplayable {
 extension RelationshipVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifNewEntitySelected
+        return appDelegate.store.notificationName(forNotifType: .EntitySelected)
     }
 }
 

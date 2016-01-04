@@ -71,7 +71,7 @@ extension EnumVC: HGTableDisplayable {
 extension EnumVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifEnumUpdate
+        return appDelegate.store.notificationName(forNotifType: .EnumUpdated)
     }
 }
 
@@ -79,7 +79,7 @@ extension EnumVC: HGTableObservable {
 extension EnumVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifNewEnumSelected
+        return appDelegate.store.notificationName(forNotifType: .EnumSelected)
     }
 }
 

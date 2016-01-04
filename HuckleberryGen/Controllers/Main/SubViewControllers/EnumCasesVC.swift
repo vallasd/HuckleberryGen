@@ -58,7 +58,7 @@ extension EnumCasesVC: HGTableDisplayable {
 extension EnumCasesVC: HGTableObservable {
     
     func observeNotification(fortable table: HGTable) -> String {
-        return HGNotif.shared.notifNewEnumSelected
+        return appDelegate.store.notificationName(forNotifType: .EnumSelected)
     }
 }
 
