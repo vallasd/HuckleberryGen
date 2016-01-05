@@ -11,6 +11,7 @@ import QuartzCore
 
 enum BoardType: Int16 {
     case Welcome
+    case Open
     case Folder
     case LicenseInfo
     case Model
@@ -22,6 +23,7 @@ enum BoardType: Int16 {
     var string: String {
         switch self {
         case Welcome: return "WelcomeBoard"
+        case Open: return "OpenBoard"
         case Folder: return "FolderBoard"
         case LicenseInfo: return "LicenseInfoBoard"
         case Model: return "ImportModelBoard"

@@ -328,9 +328,9 @@ extension HGTable: HGCellDelegate {
 
 extension HGTable: DecisionBoardDelegate {
     
-    func decisionBoard(db db: DecisionBoard, selectedDecision: DecisionType) {
+    func decisionBoard(db db: DecisionBoard, selected: Bool) {
         
-        if selectedDecision == .Yes {
+        if selected == true {
             tableview.delete(rows: tableview.selectedRows)
         }
     }

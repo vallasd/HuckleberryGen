@@ -27,6 +27,7 @@ protocol HGEncodable {
 
 extension HGEncodable {
     
+    /// decodes an array of objects into an array of [HGEncodable]
     static func decodeArray(objects objects: [AnyObject]) -> [Self] {
         var array: [Self] = []
         for object in objects {
@@ -36,11 +37,25 @@ extension HGEncodable {
         return array
     }
     
+    /// encodes and saves an object to standard user defaults given a key
     func saveDefaults(key: String) {
         let encoded = self.encode
         NSUserDefaults.standardUserDefaults().setValue(encoded, forKey: key)
     }
     
+    /// removes object with key from standard user defaults
+    static func removeDefaults(key: String) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+    }
+    
+    /// switches key names for object in standard user defaults
+    static func switchDefaults(oldkey oldkey: String, newkey: String) {
+        let project = NSUserDefaults.standardUserDefaults().valueForKey(oldkey)
+        NSUserDefaults.standardUserDefaults().setValue(project, forKey: newkey)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(oldkey)
+    }
+    
+    /// opens and decodes object from standard user defaults given a key
     static func openDefaults(key: String) -> Self {
         let defaults = NSUserDefaults.standardUserDefaults()
         if let object = defaults.objectForKey(key) {

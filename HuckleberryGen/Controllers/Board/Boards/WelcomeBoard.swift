@@ -18,6 +18,4 @@ extension WelcomeBoard: NavControllerPushable {
         if appDelegate.store.licenseInfo.needsMoreInformation { return .LicenseInfo }
         return nil
     }
-    var nextString: String? { return "Get Started" }
-    var nextLocation: BoardLocation { return .bottomCenter }
 }

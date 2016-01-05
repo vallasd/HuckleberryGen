@@ -8,22 +8,24 @@
 
 import Cocoa
 
-enum BoardLocation: Int {
+enum BoardLocation {
     case bottomLeft
-    case bottomRight
     case bottomCenter
 }
 
-/// Protocol that allows boards to define the navigation and button placements for next buttons
+/// Protocol that allows boards to define the navigation
 protocol NavControllerPushable {
     var nextBoard: BoardType? { get }
-    var nextString: String? { get }
-    var nextLocation: BoardLocation { get }
 }
 
 /// Protocol that allows boards to gain reference to NavController.  If board conforms to protocol, NavController will assign itself to nav value immediately after board is instantiated.  (Allows Board to run nav commands like disableProgression)
 protocol NavControllerReferrable {
     var nav: NavController? { get set }
+}
+
+/// protocol that allows the user to take action once the NAV has returned a user inputed decision, use present decision provide a decision board to the user
+protocol NavDecisionDelegate: AnyObject {
+    func navController(nav: NavController, selectedDecision: DecisionType)
 }
 
 protocol NavControllerSetable {
@@ -50,19 +52,33 @@ class NavController: NSViewController {
     @IBOutlet weak var next: NSButton!
     @IBOutlet weak var back: NSButton!
     @IBOutlet weak var mutableNextConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mutableCancelContraint: NSLayoutConstraint!
     
     weak var delegate: NavControllerDelegate?
+    weak var decisionDelegate: NavDecisionDelegate?
 
+    /// enables the next button
     func disableProgression() {
         next.enabled = false
     }
     
+    /// disables the next button
     func enableProgression() {
         next.enabled = true
     }
     
+    /// removes the navigation controller from the screen
     func end() {
         delegate?.shouldDismiss(self)
+    }
+    
+    /// pops the top most view controller from the navigation controller, if the stack is empty, ends the navigation controller
+    func pop() {
+        if boardStack.count == 1 {
+            end()
+        } else {
+            pop(animated: true)
+        }
     }
     
     private struct BoardInfo {
@@ -72,29 +88,34 @@ class NavController: NSViewController {
     
     var root: BoardType? = nil
     var currentVC: NSViewController? = nil
+    
     private var boardStack: [BoardInfo] = []
     
     // MARK: Button Selection
     
-    /// action that is run when back button is pressed.  Will pop top controller from stack.
+    /// action that is run when back button is pressed.  Will pop top controller from stack.  If last controller, dismisses nav controller
     @IBAction func backPressed(sender: AnyObject) {
-        pop(animated: true)
+        pop()
     }
     
-    /// action that is run when next button is pressed.  Will either push next controller if currentVC conforms to NavControllerPushable or send notice to delegate for dismissal
+    /// action that is run when next button is pressed.  Will push next controller
     @IBAction func nextPressed(sender: AnyObject) {
-        if let current = currentVC as? NavControllerPushable {
-            if let nextBoard = current.nextBoard {
-                push(nextBoard, animated: true)
-                return
-            }
-        }
         
-        delegate?.shouldDismiss(self)
+        if let current = currentVC as? NavControllerPushable {
+            push(current.nextBoard!, animated: true)
+        }
+    }
+    
+    /// present decision board that will auto dismiss once completed
+    func presentDecision(withTitle title: String) {
+        push(.Decision, animated: true)
+        let db = currentVC as! DecisionBoard
+        db.question.stringValue = title
+        db.delegate = self
     }
     
     /// pushes new boardType onto stack
-    private func push(board: BoardType, animated: Bool) {
+    func push(board: BoardType, animated: Bool) {
         removeTopView()
         saveCurrentBoard()
         boardStack.append(BoardInfo(boardType: board, saveContext: nil))
@@ -174,29 +195,50 @@ class NavController: NSViewController {
     }
     
     private func hideBackIfNeeded() {
-        if boardStack.count > 1 { back.hidden = false }
-        else { back.hidden = true }
+        if boardStack.count > 1 {
+            back.title = "Back"
+            leftCancel()
+        } else {
+            back.title = "Cancel"
+            centerCancel()
+        }
     }
     
     private func displayNext() {
         
         if let vc = currentVC as? NavControllerPushable {
-            if vc.nextString != nil { next.title = vc.nextString! }
-            else if vc.nextBoard != nil { next.title = "next" }
-            else { next.title = "Finished" }
-            
-            switch vc.nextLocation {
-            case .bottomLeft: leftNext()
-            case .bottomCenter: centerNext()
-            case .bottomRight: rightNext()
-            }
+            next.hidden = vc.nextBoard == nil ? true : false
         } else {
-            next.title = "Finished"
-            if back.hidden { centerNext() }
-            else { rightNext() }
+            next.hidden = true
         }
-        
         self.view.layoutSubtreeIfNeeded()
+    }
+    
+    
+}
+
+extension NavController: DecisionBoardDelegate {
+    
+    func decisionBoard(db db: DecisionBoard, selected: Bool) {
+        
+    }
+}
+
+
+extension NavController {
+    
+    /// sets cancel button on left side on nav controller
+    private func leftCancel() {
+        self.view.removeConstraint(mutableCancelContraint)
+        mutableCancelContraint = NSLayoutConstraint(item: back, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
+        self.view.addConstraint(mutableCancelContraint)
+    }
+    
+    /// sets cancel button in center of nav controller
+    private func centerCancel() {
+        self.view.removeConstraint(mutableCancelContraint)
+        mutableCancelContraint = NSLayoutConstraint(item: back, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0.0)
+        self.view.addConstraint(mutableCancelContraint)
     }
     
     /// sets next button on left side on nav controller
@@ -220,3 +262,5 @@ class NavController: NSViewController {
         self.view.addConstraint(mutableNextConstraint)
     }
 }
+
+

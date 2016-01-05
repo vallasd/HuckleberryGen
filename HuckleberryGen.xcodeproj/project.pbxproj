@@ -74,6 +74,7 @@
 		03A20B541B99E4C900149AF5 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B471B99E4C900149AF5 /* MainWindowController.swift */; };
 		03D3FF6C1B848FCD001B9F48 /* HGEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FF6B1B848FCD001B9F48 /* HGEvent.swift */; };
 		03D4FE371C3ACD38007BBA5F /* HGNotifType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D4FE361C3ACD38007BBA5F /* HGNotifType.swift */; };
+		03F106651C3B179100E808C9 /* OpenBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F106641C3B179100E808C9 /* OpenBoard.swift */; };
 		03F25EDA1B9BFEE90048B0A0 /* AttributeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */; };
 		03F25EDC1B9BFEE90048B0A0 /* EntityDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED51B9BFEE90048B0A0 /* EntityDetailVC.swift */; };
 		03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */; };
@@ -180,6 +181,7 @@
 		03A20B471B99E4C900149AF5 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		03D3FF6B1B848FCD001B9F48 /* HGEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGEvent.swift; sourceTree = "<group>"; };
 		03D4FE361C3ACD38007BBA5F /* HGNotifType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGNotifType.swift; sourceTree = "<group>"; };
+		03F106641C3B179100E808C9 /* OpenBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenBoard.swift; sourceTree = "<group>"; };
 		03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttributeVC.swift; path = ../../Main/SubViewControllers/AttributeVC.swift; sourceTree = "<group>"; };
 		03F25ED51B9BFEE90048B0A0 /* EntityDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityDetailVC.swift; path = ../../Main/SubViewControllers/EntityDetailVC.swift; sourceTree = "<group>"; };
 		03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityVC.swift; path = ../../Main/SubViewControllers/EntityVC.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				034614091BDF81E40002F0AA /* DecisionBoard.swift */,
 				0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */,
 				0339BC611BFDEFE30071F8AD /* ImportBoard.swift */,
+				03F106641C3B179100E808C9 /* OpenBoard.swift */,
 			);
 			path = Boards;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				036C7C6A1B514AF9004EC724 /* Attribute.swift in Sources */,
 				035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */,
 				036C7C081B5143A0004EC724 /* ViewController.swift in Sources */,
+				03F106651C3B179100E808C9 /* OpenBoard.swift in Sources */,
 				03660ADF1BBE03FC00DE41D5 /* TextField.swift in Sources */,
 				033F3DEA1BB99DBD0089AEC2 /* HGTableView.swift in Sources */,
 				036C7CC01B529A84004EC724 /* HGGen.swift in Sources */,

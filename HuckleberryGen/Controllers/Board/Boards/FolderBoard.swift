@@ -65,8 +65,5 @@ class FolderBoard: NSViewController, NavControllerReferrable {
 }
 
 extension FolderBoard: NavControllerPushable {
-    
     var nextBoard: BoardType? { return .Import }
-    var nextString: String? { return nil }
-    var nextLocation: BoardLocation { return .bottomRight }
 }

@@ -11,9 +11,3 @@ import Cocoa
 class ErrorBoard: NSViewController {
     
 }
-
-extension ErrorBoard: NavControllerPushable {
-    var nextBoard: BoardType? { return nil }
-    var nextString: String? { return "OK" }
-    var nextLocation: BoardLocation { return .bottomCenter }
-}

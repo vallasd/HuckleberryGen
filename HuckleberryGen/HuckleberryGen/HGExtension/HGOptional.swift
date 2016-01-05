@@ -159,6 +159,19 @@ extension Optional {
         return ""
     }
     
+    var optionalString: String? {
+        if self == nil { return nil }
+        if let string = self as? String { return string }
+        HGReportHandler.report("optional: |\(self)| is not Optional String mapable, using nil String?", response: .Error)
+        return nil
+    }
+    
+    var arrayString: [String] {
+        if let array = self as? [String] { return array }
+        HGReportHandler.report("optional: |\(self)| is not Optional String mapable, using Empty [String]", response: .Error)
+        return []
+    }
+    
     var bool: Bool {
         
         if let bool = self as? Bool { return bool }

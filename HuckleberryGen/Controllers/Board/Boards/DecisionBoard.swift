@@ -16,7 +16,7 @@ enum DecisionType {
 
 
 protocol DecisionBoardDelegate: AnyObject {
-    func decisionBoard(db db: DecisionBoard, selectedDecision: DecisionType)
+    func decisionBoard(db db: DecisionBoard, selected: Bool)
 }
 
 class DecisionBoard: NSViewController, NavControllerReferrable {
@@ -29,27 +29,12 @@ class DecisionBoard: NSViewController, NavControllerReferrable {
     @IBOutlet weak var question: NSTextField!
     
     @IBAction func yesPressed(sender: NSButton) {
-        decision = .Yes
-        nav?.end()
+        delegate?.decisionBoard(db: self, selected: true)
+        nav?.pop()
     }
     
     @IBAction func noPressed(sender: NSButton) {
-        decision = .No
-        nav?.end()
+        delegate?.decisionBoard(db: self, selected: false)
+        nav?.pop()
     }
-    
-    private var decision: DecisionType = .Cancel
-    
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        delegate?.decisionBoard(db: self, selectedDecision: decision)
-    }
-}
-
-// Will Add a Cancel Button
-extension DecisionBoard: NavControllerPushable {
-    
-    var nextBoard: BoardType? { return nil }
-    var nextString: String? { return "Cancel" }
-    var nextLocation: BoardLocation { return .bottomRight }
 }

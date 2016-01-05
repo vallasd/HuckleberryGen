@@ -36,17 +36,16 @@ class MainWindowController: NSWindowController, BoardHandlerHolder {
     }
     
     /// displays the import screens
-    private func showImport() {
-        boardHandler.startBoard(.Folder)
+    private func showOpen() {
+        boardHandler.startBoard(.Open)
     }
     
     /// completes appropriate actions for header button presses
     @IBAction func menuButtonPressed(sender: NSToolbarItem) {
         switch (sender.tag) {
-        case 1: appDelegate.store.project = Project.new // New
-        case 2: showImport() // Import
-        case 3: showImport() // Export
-        case 8: showSettings()              // Settings
+        case 2: showOpen() // Open
+        case 3: showOpen() // Save
+        case 8: showSettings()  // Settings
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }
     }

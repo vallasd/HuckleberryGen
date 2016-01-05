@@ -17,6 +17,8 @@ extension Array where Element: Hashable {
 }
 
 
+
+
 extension Array {
     
     /// Removes all indexes from the Array if they are valid indexes.  Checks for array bounds and redundant indexes and appropriately handles.
@@ -36,7 +38,16 @@ extension Array {
         }
     }
     
+    /// checks if object is within the index, if so, returns object, else creates error and returns nil
+    func object(atIndex index: Int) -> Element? {
     
+        if self.indices.contains(index) {
+            return self[index]
+        }
+        
+        HGReportHandler.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", response: .Error)
+        return nil
+    }
     
 }
 
