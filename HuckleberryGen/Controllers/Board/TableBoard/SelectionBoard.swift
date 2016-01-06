@@ -25,7 +25,7 @@ protocol SelectionBoardImageSource: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData
 }
 
-class SelectionBoard: NSViewController {
+class SelectionBoard: NSViewController, NavControllerReferrable {
     
     @IBOutlet weak var boardtitle: NSTextField!
     @IBOutlet weak var tableview: HGTableView!
@@ -35,6 +35,10 @@ class SelectionBoard: NSViewController {
         case BoardDataSource
         case BoardImageSource
     }
+    
+    /// NavControllerReferrable
+    var nav: NavController?
+    
     
     /// type of datasource that the Selection Board is.  Set when user assigns the delegate.
     private(set) var datasourceType: DatasourceType = .BoardDataSource

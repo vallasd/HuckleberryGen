@@ -8,13 +8,6 @@
 
 import Cocoa
 
-enum DecisionType {
-    case Cancel
-    case Yes
-    case No
-}
-
-
 protocol DecisionBoardDelegate: AnyObject {
     func decisionBoard(db db: DecisionBoard, selected: Bool)
 }
@@ -26,15 +19,18 @@ class DecisionBoard: NSViewController, NavControllerReferrable {
     
     weak var nav: NavController?
     
+    /// pops the decision board from the nav controller when answer selected if this is true
+    var popWhenPressed = true
+    
     @IBOutlet weak var question: NSTextField!
     
     @IBAction func yesPressed(sender: NSButton) {
         delegate?.decisionBoard(db: self, selected: true)
-        nav?.pop()
+        if popWhenPressed { nav?.pop() }
     }
     
     @IBAction func noPressed(sender: NSButton) {
         delegate?.decisionBoard(db: self, selected: false)
-        nav?.pop()
+        if popWhenPressed { nav?.pop() }
     }
 }

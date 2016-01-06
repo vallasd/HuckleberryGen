@@ -292,7 +292,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kOc-zV-rny" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="439" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="438" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -316,7 +316,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="hF1-Qq-dYs">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="hF1-Qq-dYs">
                                     <rect key="frame" x="1" y="159" width="438" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -370,28 +370,25 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="whiteBoard" id="t7u-25-u1x"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bnD-Vz-Zfb">
-                                <rect key="frame" x="14" y="13" width="70" height="32"/>
-                                <buttonCell key="cell" type="push" title="Back" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="065-fa-2sZ">
+                                <rect key="frame" x="14" y="13" width="93" height="32"/>
+                                <buttonCell key="cell" type="push" title="Button A" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="065-fa-2sZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="backPressed:" target="9ku-y6-Aj3" id="GAX-Q0-Y9e"/>
+                                    <action selector="buttonPressed:" target="9ku-y6-Aj3" id="xgr-Q0-HjO"/>
                                 </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I2h-TV-J0h">
+                                <rect key="frame" x="381" y="13" width="89" height="32"/>
+                                <buttonCell key="cell" type="push" title="ButtonB" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4g7-t6-LIk">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
                             </button>
                             <containerView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TNa-x0-YoB">
                                 <rect key="frame" x="0.0" y="0.0" width="484" height="274"/>
                             </containerView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I2h-TV-J0h">
-                                <rect key="frame" x="401" y="13" width="69" height="32"/>
-                                <buttonCell key="cell" type="push" title="Next" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4g7-t6-LIk">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="nextPressed:" target="9ku-y6-Aj3" id="uoO-iz-6NT"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="sd1-VQ-Qag" firstAttribute="top" secondItem="7Dn-qK-ace" secondAttribute="top" id="2Xs-dh-7Ca"/>
@@ -409,11 +406,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="back" destination="bnD-Vz-Zfb" id="CF1-ci-PWV"/>
+                        <outlet property="AConstraint" destination="NkX-eQ-62S" id="CMb-mh-qP9"/>
+                        <outlet property="BConstraint" destination="Qzd-qE-I8l" id="rat-5t-Ttf"/>
+                        <outlet property="buttonA" destination="bnD-Vz-Zfb" id="bsN-HF-1Tf"/>
+                        <outlet property="buttonB" destination="I2h-TV-J0h" id="xfJ-N0-djK"/>
                         <outlet property="container" destination="TNa-x0-YoB" id="RzW-y5-jeF"/>
-                        <outlet property="mutableCancelContraint" destination="NkX-eQ-62S" id="BlB-Kg-64u"/>
-                        <outlet property="mutableNextConstraint" destination="Qzd-qE-I8l" id="n4J-Mu-moa"/>
-                        <outlet property="next" destination="I2h-TV-J0h" id="62s-rb-VF7"/>
                     </connections>
                 </viewController>
                 <customObject id="WN7-nG-Uuw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

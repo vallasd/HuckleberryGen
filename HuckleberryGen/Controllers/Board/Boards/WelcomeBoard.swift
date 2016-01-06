@@ -12,10 +12,17 @@ class WelcomeBoard: NSViewController {
     
 }
 
+extension WelcomeBoard: NavControllerCancelable {
+    
+    var canCancel: Bool { return false }
+}
+
+
 extension WelcomeBoard: NavControllerPushable {
     
     var nextBoard: BoardType? {
         if appDelegate.store.licenseInfo.needsMoreInformation { return .LicenseInfo }
         return nil
     }
+    
 }

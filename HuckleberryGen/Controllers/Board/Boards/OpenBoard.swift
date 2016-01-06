@@ -11,7 +11,7 @@ import Cocoa
 class OpenBoard: NSViewController, NavControllerReferrable {
     
     /// reference to the NavController that may be holding this board
-    weak var nav: NavController? { didSet { nav?.decisionDelegate = self } }
+    weak var nav: NavController?
     
     /// holds reference to last tag pressed from button tags
     var lastTagPressed: Int = 0
@@ -30,7 +30,7 @@ class OpenBoard: NSViewController, NavControllerReferrable {
             appDelegate.store.saveProject()
             displayBoardForTag(lastTagPressed)
         } else {
-            nav?.presentDecision(withTitle: "Do you want to save current project?")
+            nav?.popoverDecision(withTitle: "Do you want to save current project?", delegate: self)
         }
     }
     
@@ -55,15 +55,16 @@ class OpenBoard: NSViewController, NavControllerReferrable {
     
 }
 
-extension OpenBoard: NavDecisionDelegate {
+extension OpenBoard: DecisionBoardDelegate {
     
-    
-    func navController(nav: NavController, selectedDecision: DecisionType) {
+    func decisionBoard(db db: DecisionBoard, selected: Bool) {
         
-        if selectedDecision == .Yes {
+        if selected == true {
             appDelegate.store.saveProject()
         }
         
+        nav?.popDecision()
         displayBoardForTag(lastTagPressed)
+        
     }
 }

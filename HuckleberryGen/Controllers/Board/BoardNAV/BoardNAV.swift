@@ -13,105 +13,123 @@ enum BoardLocation {
     case bottomCenter
 }
 
-/// Protocol that allows boards to define the navigation
+enum ButtonType {
+    
+    case Cancel
+    case Back
+    case Next
+    case Finished
+    
+    init(int: Int) {
+        switch int {
+        case 1: self = .Cancel
+        case 2: self = .Back
+        case 3: self = .Next
+        case 4: self = .Finished
+        default:
+            HGReportHandler.report("ButtonType: |\(int)| is not ButtonType mapable, returning .Cancel", response: .Error)
+            self = .Cancel
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .Cancel: return "Cancel"
+        case .Back: return "Back"
+        case .Next: return "Next"
+        case .Finished: return "Finished"
+        }
+    }
+    
+    var int: Int {
+        switch self {
+        case .Cancel: return 1
+        case .Back: return 2
+        case .Next: return 3
+        case .Finished: return 4
+        }
+    }
+    
+    static func isProgressionType(tag: Int) -> Bool {
+        if tag == 3 || tag == 4 { return true }
+        return false
+    }
+    
+}
+
+// MARK: NavController Protocols
+
+/// Protocol that allows boards to decide whether or not a Cancel button is presented when the board is last in the stack.  Nav Controller will always add Cancel button (if Board is last left in stack) unless this protocol is used by the board.
+protocol NavControllerCancelable {
+    var canCancel: Bool { get }
+}
+
+/// Protocol that allows boards to define the navigation for the next Board.  If BoardType is left as nil, user will have a finished option that will end the entire navigation controller.
 protocol NavControllerPushable {
     var nextBoard: BoardType? { get }
 }
 
-/// Protocol that allows boards to gain reference to NavController.  If board conforms to protocol, NavController will assign itself to nav value immediately after board is instantiated.  (Allows Board to run nav commands like disableProgression)
+/// Protocol that allows boards to gain reference to NavController.  If board conforms to protocol, NavController will assign itself to nav value immediately after board is instantiated.
 protocol NavControllerReferrable {
     var nav: NavController? { get set }
 }
 
-/// protocol that allows the user to take action once the NAV has returned a user inputed decision, use present decision provide a decision board to the user
-protocol NavDecisionDelegate: AnyObject {
-    func navController(nav: NavController, selectedDecision: DecisionType)
-}
-
-protocol NavControllerSetable {
-    var setableObject: Setable { get }
-}
-
-protocol Setable {
-    func set() -> [AnyObject]
-}
-
-// Will Let Nav Controller Reinstantiate Controller with savable context
+// Protocol that allows boards to sav and retrieve context from Nav Controller.
 protocol NavSavable {
     var saveContext: AnyObject { get }
     func updateWithSavedContext(saveContext: AnyObject)
 }
 
+/// Protocol that allows another object to handle delegation methods from nav controller (like dismiss)
 protocol NavControllerDelegate: AnyObject {
     func shouldDismiss(nav: NavController)
 }
 
 class NavController: NSViewController {
     
+    // MARK: Variables
+    
     @IBOutlet weak var container: NSView!
-    @IBOutlet weak var next: NSButton!
-    @IBOutlet weak var back: NSButton!
-    @IBOutlet weak var mutableNextConstraint: NSLayoutConstraint!
-    @IBOutlet weak var mutableCancelContraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonA: NSButton!
+    @IBOutlet weak var buttonB: NSButton!
+    @IBOutlet weak var AConstraint: NSLayoutConstraint!
+    @IBOutlet weak var BConstraint: NSLayoutConstraint!
     
     weak var delegate: NavControllerDelegate?
-    weak var decisionDelegate: NavDecisionDelegate?
-
-    /// enables the next button
-    func disableProgression() {
-        next.enabled = false
-    }
     
-    /// disables the next button
-    func enableProgression() {
-        next.enabled = true
-    }
+    /// reference to the root view controllers board type
+    var root: BoardType? = nil
     
-    /// removes the navigation controller from the screen
-    func end() {
-        delegate?.shouldDismiss(self)
-    }
+    /// reference to the current view controller being displayed
+    var currentVC: NSViewController? = nil
     
-    /// pops the top most view controller from the navigation controller, if the stack is empty, ends the navigation controller
-    func pop() {
-        if boardStack.count == 1 {
-            end()
-        } else {
-            pop(animated: true)
-        }
-    }
+    /// reference to the decision board if it is currently popped over, set to nil when board is not presented on screen
+    private(set) var decisionBoard: DecisionBoard?
     
+    /// tells user last button pressed in the nav controller, resets to None once next view is displayed
+    private(set) var lastButtonPressed: ButtonType?
+    
+    /// stack of boards currently in the nav controller
+    private var boardStack: [BoardInfo] = []
+    
+    /// struct that contains information about a particular board.  Used for board and state retrieval during navigation.
     private struct BoardInfo {
         let boardType: BoardType
         var saveContext: AnyObject?
     }
     
-    var root: BoardType? = nil
-    var currentVC: NSViewController? = nil
-    
-    private var boardStack: [BoardInfo] = []
-    
-    // MARK: Button Selection
-    
-    /// action that is run when back button is pressed.  Will pop top controller from stack.  If last controller, dismisses nav controller
-    @IBAction func backPressed(sender: AnyObject) {
-        pop()
+    // MARK: Public functions
+
+    /// enables the ability for the navigation controller to progress forward
+    func disableProgression() {
+        if ButtonType.isProgressionType(buttonA.tag) { buttonA.enabled = false }
+        if ButtonType.isProgressionType(buttonB.tag) { buttonB.enabled = false }
     }
     
-    /// action that is run when next button is pressed.  Will push next controller
-    @IBAction func nextPressed(sender: AnyObject) {
-        
-        if let current = currentVC as? NavControllerPushable {
-            push(current.nextBoard!, animated: true)
-        }
-    }
-    
-    /// present decision board that will auto dismiss once completed
-    func presentDecision(withTitle title: String) {
-        push(.Decision, animated: true)
-        let db = currentVC as! DecisionBoard
-        db.question.stringValue = title
-        db.delegate = self
+    /// disables the ability for the navigation controller to progress forward
+    func enableProgression() {
+        if ButtonType.isProgressionType(buttonA.tag) { buttonA.enabled = true }
+        if ButtonType.isProgressionType(buttonB.tag) { buttonB.enabled = true }
     }
     
     /// pushes new boardType onto stack
@@ -120,16 +138,80 @@ class NavController: NSViewController {
         saveCurrentBoard()
         boardStack.append(BoardInfo(boardType: board, saveContext: nil))
         createVC(forBoardType: board)
-        updateNavButtons()
+        updateButtons()
         addTopView()
     }
+    
+    /// pops the top most view controller from the navigation controller, if the stack is empty, ends() the navigation controller
+    func pop() {
+        if boardStack.count == 1 {
+            end()
+        } else {
+            pop(animated: true)
+        }
+    }
+    
+    /// attempts to remove the navigation controller from the screen.  A call is made to the nav controller delegates that the controller wants to be dismissed.
+    func end() {
+        delegate?.shouldDismiss(self)
+    }
+    
+    /// creates a decision board pop over that will return a YES or NO user inputted answer to your question.  It is the delegates responsibility to run popDecision and handle the DecisionBoardDelegate method.
+    func popoverDecision(withTitle title: String, delegate: DecisionBoardDelegate) {
+        decisionBoard = BoardType.Decision.create() as? DecisionBoard
+        currentVC?.view.hidden = true
+        container.addSubview(decisionBoard!.view)
+        decisionBoard?.question.stringValue = title
+        decisionBoard?.delegate = delegate
+        decisionBoard?.popWhenPressed = false
+        updateButtons()
+    }
+    
+    /// pops decision board from nav controller
+    func popDecision() {
+        decisionBoard?.view.removeFromSuperview()
+        decisionBoard = nil
+        currentVC?.view.hidden = false
+        updateButtons()
+    }
+
+    // MARK: Button Control
+    
+    /// action that is run when back button is pressed.  Will pop top controller from stack.  If last controller, dismisses nav controller
+    @IBAction func buttonPressed(sender: NSButton) {
+        
+        let buttontype = ButtonType(int: sender.tag)
+        lastButtonPressed = buttontype
+        
+        // if this is a decision board we just pop that board which is not part of the boardstack and return out of function
+        if decisionBoard != nil {
+            popDecision()
+            return
+        }
+        
+        // we take appropriate action based on button's ButtonType
+        switch buttontype {
+        case .Cancel:
+            end()
+        case .Back:
+            pop()
+        case .Next:
+            let current = currentVC as! NavControllerPushable
+            let nextBoard = current.nextBoard!
+            push(nextBoard, animated: true)
+        case .Finished:
+            end()
+        }
+    }
+    
+    // MARK: Navigation Control
     
     /// pops last boardType from stack
     private func pop(animated animated: Bool) {
         removeTopView()
         boardStack.removeLast()
         createVC(forBoardType: boardStack.last!.boardType)
-        updateNavButtons()
+        updateButtons()
         addTopView()
     }
     
@@ -138,6 +220,9 @@ class NavController: NSViewController {
         
         // create and assign new currentVC
         currentVC = boardtype.create()
+        
+        // reset last button pressed to nothing
+        lastButtonPressed = nil
         
         // assign self to vc.nav if currentVC conforms to NavControllerReferrable
         if var ncr = currentVC as? NavControllerReferrable {
@@ -157,16 +242,14 @@ class NavController: NSViewController {
         }
     }
     
+    // MARK: Navigation State Persistence
+    
     func saveCurrentBoard() {
         if let saveableVC = currentVC as? NavSavable {
             let oldboardinfo = boardStack.last!
             let newboardinfo = BoardInfo(boardType: oldboardinfo.boardType, saveContext: saveableVC.saveContext)
             boardStack[boardStack.count - 1] = newboardinfo
         }
-    }
-    
-    func updateCurrentVC() {
-        
     }
     
     // MARK: LifeCycle
@@ -180,87 +263,107 @@ class NavController: NSViewController {
         super.viewWillDisappear()
         boardStack.removeAll()
     }
-    
-    // MARK: Helper Methods
-    
-    private func containerInfo() {
-        print("container subview count is \(container.subviews.count)")
-        for view in container.subviews { print ("description: \(view.description)") }
-    }
-    
-    private func updateNavButtons() {
-        enableProgression()
-        hideBackIfNeeded()
-        displayNext()
-    }
-    
-    private func hideBackIfNeeded() {
-        if boardStack.count > 1 {
-            back.title = "Back"
-            leftCancel()
-        } else {
-            back.title = "Cancel"
-            centerCancel()
-        }
-    }
-    
-    private func displayNext() {
-        
-        if let vc = currentVC as? NavControllerPushable {
-            next.hidden = vc.nextBoard == nil ? true : false
-        } else {
-            next.hidden = true
-        }
-        self.view.layoutSubtreeIfNeeded()
-    }
-    
-    
+
 }
 
-extension NavController: DecisionBoardDelegate {
-    
-    func decisionBoard(db db: DecisionBoard, selected: Bool) {
-        
-    }
-}
-
+// MARK: Button Update
 
 extension NavController {
     
-    /// sets cancel button on left side on nav controller
-    private func leftCancel() {
-        self.view.removeConstraint(mutableCancelContraint)
-        mutableCancelContraint = NSLayoutConstraint(item: back, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
-        self.view.addConstraint(mutableCancelContraint)
+    /// top level update Button Titles that handles all cases
+    private func updateButtons() {
+        
+        // If we are displaying a decision board, show buttons for the Board, else display regular buttons
+        if decisionBoard != nil {
+            updateButtonsForDecision()
+        } else {
+            updateButtonsForGenericBoard()
+        }
+        
+        // enables progression on buttons
+        enableProgression()
     }
     
-    /// sets cancel button in center of nav controller
-    private func centerCancel() {
-        self.view.removeConstraint(mutableCancelContraint)
-        mutableCancelContraint = NSLayoutConstraint(item: back, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0.0)
-        self.view.addConstraint(mutableCancelContraint)
+    
+    /// updates button titles and display based on multiple aspects that affect the state of the nav controller
+    private func updateButtonsForGenericBoard() {
+        
+        // we will determine
+        var atype: ButtonType? = nil
+        var btype: ButtonType? = nil
+        
+        // we check certain nav controller and board states that will be used to determine buttons
+        let vc = currentVC as? NavControllerPushable
+        let cancelvc = currentVC as? NavControllerCancelable
+        let isNavControllerPushable = vc != nil ? true : false
+        let hasNextBoard = vc?.nextBoard != nil ? true : false
+        let firstBoard = boardStack.count == 1 ? true : false
+        let canCancel = cancelvc?.canCancel == false ? false : true
+        
+        
+        // we determine four possible button types that could be needed (at most 2 of 4 will be needed because these are two mutually exclusive sets)
+        let needsBack = !firstBoard ? true : false
+        let needsFinish = (isNavControllerPushable && !hasNextBoard) ? true : false
+        let needsNext = (isNavControllerPushable && hasNextBoard) ? true : false
+        let needsCancel = firstBoard && !needsFinish && canCancel
+        
+        // needsBack and needsCancel are mutually exclusive and tags are always assigned to buttonA if they are needed
+        if needsBack { atype = .Back }
+        if needsCancel { atype = .Cancel }
+        
+        // needsFinish and needsNext are mutually exclusive and tags are are assigned to first available button ( A if available or B )
+        if atype == nil {
+            if needsFinish { atype = .Finished }
+            if needsNext { atype = .Next }
+        } else {
+            if needsFinish { btype = .Finished }
+            if needsNext { btype = .Next }
+        }
+        
+        // hide buttons that did not get new types, else make sure they are unhidden
+        buttonA.hidden = atype == nil ? true : false
+        buttonB.hidden = btype == nil ? true : false
+        
+        // set titles and tags for buttons that are not hidden
+        if let a = atype { buttonA.title = a.string; buttonA.tag = a.int }
+        if let b = btype { buttonB.title = b.string; buttonB.tag = b.int }
+        
+        // if there are two buttons (we have a btype) - move buttonA left, else move buttonA center *** buttonB always stays right
+        if btype == nil { buttonACenter() }
+        else { buttonALeft() }
     }
     
-    /// sets next button on left side on nav controller
-    private func leftNext() {
-        self.view.removeConstraint(mutableNextConstraint)
-        mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
-        self.view.addConstraint(mutableNextConstraint)
+    /// updates button titles and display based if a Decision Board is popped over.  Always has a cancel button so user can back out.
+    private func updateButtonsForDecision() {
+        
+        let a = ButtonType.Cancel
+        buttonA.title = a.string
+        buttonA.hidden = false
+        buttonACenter()
+        
+        buttonB.hidden = true
+    }
+}
+
+
+// MARK: Determine Button Locations
+
+extension NavController {
+    
+    /// sets buttonA button on left side on nav controller
+    private func buttonALeft() {
+        self.view.removeConstraint(AConstraint)
+        AConstraint = NSLayoutConstraint(item: buttonA, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 20.0)
+        self.view.addConstraint(AConstraint)
     }
     
-    /// sets next button in center of nav controller
-    private func centerNext() {
-        self.view.removeConstraint(mutableNextConstraint)
-        mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0.0)
-        self.view.addConstraint(mutableNextConstraint)
+    /// sets buttonA in center of nav controller
+    private func buttonACenter() {
+        self.view.removeConstraint(AConstraint)
+        AConstraint = NSLayoutConstraint(item: buttonA, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0.0)
+        self.view.addConstraint(AConstraint)
     }
     
-    /// sets next button on right side on nav controller
-    private func rightNext() {
-        self.view.removeConstraint(mutableNextConstraint)
-        mutableNextConstraint = NSLayoutConstraint(item: next, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: -20.0)
-        self.view.addConstraint(mutableNextConstraint)
-    }
 }
 
 
