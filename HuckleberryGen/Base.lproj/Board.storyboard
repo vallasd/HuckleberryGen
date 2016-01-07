@@ -385,6 +385,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="buttonPressed:" target="9ku-y6-Aj3" id="5qT-RP-ZeQ"/>
+                                </connections>
                             </button>
                             <containerView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TNa-x0-YoB">
                                 <rect key="frame" x="0.0" y="0.0" width="484" height="274"/>

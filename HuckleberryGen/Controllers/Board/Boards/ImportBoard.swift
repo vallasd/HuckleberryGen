@@ -11,7 +11,10 @@ import Cocoa
 
 // TODO: ImportBoard calls a parse command that is run asynchronously and is dependent on the ImportBoard's reference to HGImportParser to finish.  It is called when ImportBoard is unloading.  This may cause a problem when parsing large files.  (ImportBoard is released before parse is finished).  We may want to create a strong reference to import board until the parse is completed.
 /// A board that imports projects into Huckleberry Gen for additional creation.
-class ImportBoard: NSViewController {
+class ImportBoard: NSViewController, NavControllerReferrable {
+    
+    /// reference to the nav controller
+    var nav: NavController?
     
     /// search path ImportBoard uses to create Folder (default searchpath is defined in the store)
     var searchPath: String? = appDelegate.store.importFileSearchPath
@@ -38,6 +41,8 @@ class ImportBoard: NSViewController {
         
         // selection board title is blanks until we get callback from folder creation
         selectionboard.boardtitle.stringValue = ""
+        
+        nav?.disableProgression()
         
         createFolder()
     }
@@ -92,6 +97,10 @@ class ImportBoard: NSViewController {
     }
 }
 
+extension ImportBoard: NavControllerPushable {
+    var nextBoard: BoardType? { return nil }
+}
+
 // MARK: HGImportParserDelegate
 extension ImportBoard: HGImportParserDelegate {
     
@@ -112,7 +121,7 @@ extension ImportBoard: SelectionBoardDelegate {
     }
     
     func selectionboard(sb: SelectionBoard, didChoose items: [Int]) {
-        let item = items[0] // we should onlt be selecting one item at a time
+        let item = items[0] // we should only be selecting one item at a time
         let selectedFile = importFolder!.importFiles[item]
         parse(selectedFile)
     }

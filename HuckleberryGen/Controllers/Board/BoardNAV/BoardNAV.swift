@@ -106,7 +106,7 @@ class NavController: NSViewController {
     /// reference to the decision board if it is currently popped over, set to nil when board is not presented on screen
     private(set) var decisionBoard: DecisionBoard?
     
-    /// tells user last button pressed in the nav controller, resets to None once next view is displayed
+    /// tells user last button pressed in the nav controller, resets to .None once next view is displayed
     private(set) var lastButtonPressed: ButtonType?
     
     /// stack of boards currently in the nav controller
@@ -120,13 +120,13 @@ class NavController: NSViewController {
     
     // MARK: Public functions
 
-    /// enables the ability for the navigation controller to progress forward
+    /// enables the ability for the navigation controller to progress forward (Finish or Next)
     func disableProgression() {
         if ButtonType.isProgressionType(buttonA.tag) { buttonA.enabled = false }
         if ButtonType.isProgressionType(buttonB.tag) { buttonB.enabled = false }
     }
     
-    /// disables the ability for the navigation controller to progress forward
+    /// disables the ability for the navigation controller to progress forward (Finish or Next)
     func enableProgression() {
         if ButtonType.isProgressionType(buttonA.tag) { buttonA.enabled = true }
         if ButtonType.isProgressionType(buttonB.tag) { buttonB.enabled = true }
