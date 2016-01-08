@@ -36,8 +36,9 @@ class ImportBoard: NSViewController, NavControllerReferrable {
         
         // displays the selection board on top of this view and sets self as delegate
         selectionboard = SelectionBoard.present(onViewController: self)
+        selectionboard.nav = nav
         selectionboard.boardDelegate = self
-        selectionboard.boardDataSource = self
+        selectionboard.rowSource = self
         
         // selection board title is blanks until we get callback from folder creation
         selectionboard.boardtitle.stringValue = ""
@@ -128,7 +129,7 @@ extension ImportBoard: SelectionBoardDelegate {
 }
 
 // MARK: SelectionBoardDataSource
-extension ImportBoard: SelectionBoardDataSource {
+extension ImportBoard: SelectionBoardRowSource {
     
     func numberOfItems(forSelectionBoard sb: SelectionBoard) -> Int {
         let count = importFolder?.importFiles.count ?? 0

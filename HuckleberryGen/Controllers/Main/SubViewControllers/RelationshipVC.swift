@@ -133,21 +133,21 @@ extension RelationshipVC: HGTableItemOptionable {
         if type == .Image && tag == 0 {
             typeSelection = SelectionBoard.present(withParentTable: table)
             typeSelection?.boardDelegate = self
-            typeSelection?.boardImageSource = self
+            typeSelection?.imageSource = self
         }
             
             // Relationship Entity
         else if type == .Field && tag == 2 {
             entitySelection = SelectionBoard.present(withParentTable: table)
             entitySelection?.boardDelegate = self
-            entitySelection?.boardDataSource = self
+            entitySelection?.rowSource = self
         }
             
             // Relationship Deletion Rule
         else if type == .Field && tag == 4 {
             deletionSelection = SelectionBoard.present(withParentTable: table)
             deletionSelection?.boardDelegate = self
-            deletionSelection?.boardDataSource = self
+            deletionSelection?.imageSource = self
         }
         
         let identifier = HGCellItemIdentifier(tag: tag, type: type)
@@ -211,7 +211,7 @@ extension RelationshipVC: SelectionBoardDelegate {
 }
 
 // MARK: SelectionBoardDataSource
-extension RelationshipVC: SelectionBoardDataSource {
+extension RelationshipVC: SelectionBoardRowSource {
     
     func selectionboard(sb: SelectionBoard, dataForRow row: Int) -> HGCellData {
         

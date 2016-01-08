@@ -116,7 +116,7 @@ extension AttributeVC: HGTableItemOptionable {
         if type == .Image && tag == 0 {
             let sb = SelectionBoard.present(withParentTable: table)
             sb.boardDelegate = self
-            sb.boardImageSource = self
+            sb.imageSource = self
             let identifier = HGCellItemIdentifier(tag: tag, type: type)
             editingLocation = HGCellLocation(row: row, identifier: identifier)
         }

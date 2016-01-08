@@ -35,6 +35,18 @@ protocol HGTableRowSelectable: HGTableDisplayable {
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
 }
 
+/// Protocol that allows user to track when selected locations change
+protocol HGTableTrackable: HGTableDisplayable {
+    // called everytime
+    func hgtableSelectedLocationsChanged(table: HGTable)
+}
+
+/// Protocol that allows user to select and highlight individual rows on HGTable.
+protocol HGTableRowTouchable: HGTableDisplayable {
+    // Pass Boolean value to inform HGTable whether row should be selectable
+    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
+}
+
 /// Protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
 protocol HGTablePostable: HGTableRowSelectable {
     /// Pass the notification name that the HGTable should POST when a new row is selected.
@@ -79,6 +91,7 @@ class HGTable: NSObject {
             if let d = delegate as? HGTableItemEditable { itemEditDelegate = d }
             if let d = delegate as? HGTableItemOptionable { itemOptionDelegate = d }
             if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
+            if let d = delegate as? HGTableTrackable { locationChangedDelegate = d }
         }
     }
     
@@ -114,6 +127,8 @@ class HGTable: NSObject {
     private weak var itemOptionDelegate: HGTableItemOptionable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
     private weak var rowAppenedDelegate: HGTableRowAppendable?
+    /// Delegate for AnyObject which conforms to protocol HGTableTrackable
+    private weak var locationChangedDelegate: HGTableTrackable?
     
     // MARK: Private Properties
     
@@ -121,7 +136,10 @@ class HGTable: NSObject {
     private var selectNotification: String?
     
     private(set) weak var lastSelectedCellWithTag: HGCell?
-    private(set) var selectedLocations: [HGCellLocation] = []
+    
+    /// set of locations that are currently selected on the Table (can be rows or items)
+    private(set) var selectedLocations: [HGCellLocation] = [] { didSet { locationChangedDelegate?.hgtableSelectedLocationsChanged(self) } }
+    
     
     /// Weak reference to NSTableView.  Holds this reference so it can delegate re
     private weak var tableview: HGTableView! {

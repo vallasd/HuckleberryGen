@@ -89,7 +89,7 @@ struct HGCellData {
     
     /// Delivers the correct HGCellData for an defaultCell when receiving an image name array for entire table and a row number
     static func defaultCell(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        guard let imagesource = sb.boardImageSource else { return HGCellData.empty }
+        guard let imagesource = sb.imageSource else { return HGCellData.empty }
         let image0 = imagesource.selectionboard(sb, imageDataForIndex: row)
         let field0 = HGFieldData(title: image0.title)
         let field1 = HGFieldData(title: "")
@@ -114,7 +114,7 @@ struct HGCellData {
     /// Delivers the correct HGCellData for any imageOnly cell when receiving an image name array for entire table and a row number
     static func imageAnyCell(sb sb: SelectionBoard, row: Int, numberOfImagesPerRow: Int) -> HGCellData {
         
-        guard let imagesource = sb.boardImageSource else { return HGCellData.empty }
+        guard let imagesource = sb.imageSource else { return HGCellData.empty }
         
         var imageArray: [HGImageData] = []
         let firstNum = row * numberOfImagesPerRow

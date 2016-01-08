@@ -8,6 +8,12 @@
 
 import Cocoa
 
+/// types of datasource that the Selection Board can handle
+enum SelectionBoardType {
+    case Row
+    case Image
+}
+
 /// Selection Board Protocol that
 protocol SelectionBoardDelegate: AnyObject {
     func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType
@@ -16,7 +22,7 @@ protocol SelectionBoardDelegate: AnyObject {
 }
 
 /// Use this protocol for the datasource if you plan to treat each Row as an Option
-protocol SelectionBoardDataSource: SelectionBoardDelegate {
+protocol SelectionBoardRowSource: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, dataForRow row: Int) -> HGCellData
 }
 
@@ -30,18 +36,11 @@ class SelectionBoard: NSViewController, NavControllerReferrable {
     @IBOutlet weak var boardtitle: NSTextField!
     @IBOutlet weak var tableview: HGTableView!
     
-    /// types of datasource that the Selection Board can handle
-    enum DatasourceType {
-        case BoardDataSource
-        case BoardImageSource
-    }
-    
     /// NavControllerReferrable
     var nav: NavController?
     
-    
     /// type of datasource that the Selection Board is.  Set when user assigns the delegate.
-    private(set) var datasourceType: DatasourceType = .BoardDataSource
+    private(set) var boardtype: SelectionBoardType = .Row
     
     private(set) var parentTable: HGTable?
     
@@ -53,17 +52,17 @@ class SelectionBoard: NSViewController, NavControllerReferrable {
     }
     
     /// delegate which conforms to SelectionBoardDataSource protocol.  Allows user to choose the entire row as an item.
-    weak var boardDataSource: SelectionBoardDataSource? {
+    weak var rowSource: SelectionBoardRowSource? {
         didSet {
-            datasourceType = .BoardDataSource
+            boardtype = .Row
             hgtable.update()
         }
     }
     
     /// delegate which conforms to SelectionBoardImageSource protocol.  Allows user to choose individual images on row  as an item.
-    weak var boardImageSource: SelectionBoardImageSource? {
+    weak var imageSource: SelectionBoardImageSource? {
         didSet {
-            datasourceType = .BoardImageSource
+            boardtype = .Image
             hgtable.update()
         }
     }
@@ -84,7 +83,7 @@ class SelectionBoard: NSViewController, NavControllerReferrable {
         if let handler = table?.boardHandler {
             handler.startBoard(BoardType.Selection)
             let selectionBoard = handler.nav!.currentVC as! SelectionBoard
-            selectionBoard.parentTable = table
+            //selectionBoard.parentTable = table
             return selectionBoard
         }
         
@@ -105,17 +104,33 @@ class SelectionBoard: NSViewController, NavControllerReferrable {
     override func viewDidLoad() {
         super.viewDidLoad()
         hgtable.delegate = self
+        nav?.disableProgression()
     }
     
     /// Returns the selected choice (if any) to the SelectionBoardDelegate
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        if hgtable.selectedLocations.count > 0 {
-            let indexes = hgcellType.selectedIndexes(forlocations: hgtable.selectedLocations)
-            boardDelegate?.selectionboard(self, didChoose: indexes)
-            parentTable?.update()
-        }
+        
+        // exit rest of function if last button pressed in nav was back or cancel
+        let lbt = nav?.lastButtonPressed
+        if lbt == .Cancel || lbt == .Back { return }
+        
+        // send did choose option to delegate
+        let indexes = hgcellType.selectedIndexes(forlocations: hgtable.selectedLocations)
+        boardDelegate?.selectionboard(self, didChoose: indexes)
+        parentTable?.update()
     }
+    
+    private func updateProgression() {
+        if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
+        else { nav?.disableProgression() }
+    }
+    
+}
+
+extension SelectionBoard: NavControllerPushable {
+    
+    var nextBoard: BoardType? { return nil }
     
 }
 
@@ -128,7 +143,7 @@ extension SelectionBoard: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
         numberOfItems = boardDelegate?.numberOfItems(forSelectionBoard: self) ?? 0
-        if datasourceType == .BoardImageSource {
+        if boardtype == .Image {
             let rows = hgcellType.imageSourceNumberOfRows(forImageItems: numberOfItems)
             return rows
         }
@@ -144,10 +159,17 @@ extension SelectionBoard: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        if datasourceType == .BoardImageSource {
+        if boardtype == .Image {
             return hgcellType.imageSourceCellData(sb: self, row: row)
         }
-        return boardDataSource?.selectionboard(self, dataForRow: row) ?? HGCellData.empty
+        return rowSource?.selectionboard(self, dataForRow: row) ?? HGCellData.empty
+    }
+}
+
+extension SelectionBoard: HGTableTrackable {
+    
+    func hgtableSelectedLocationsChanged(table: HGTable) {
+        updateProgression()
     }
 }
 
@@ -156,22 +178,19 @@ extension SelectionBoard: HGTableDisplayable {
 extension SelectionBoard: HGTableRowSelectable {
 
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
-        if datasourceType == .BoardImageSource {
+        if boardtype == .Image {
             return false
         }
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int) {
-        // DO NOTHING
-    }
 }
 
 // MARK: HGTableItemEditable
 extension SelectionBoard: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if datasourceType == .BoardImageSource {
+        if boardtype == .Image {
             return .Yes
         }
         return .No
