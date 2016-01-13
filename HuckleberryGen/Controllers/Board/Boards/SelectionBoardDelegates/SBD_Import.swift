@@ -10,6 +10,11 @@ import Foundation
 
 class SBD_Import: SelectionBoardDelegate {
     
+    /// intialization method
+    init() {
+        createImportFolder()
+    }
+    
     /// weak reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
@@ -32,6 +37,7 @@ class SBD_Import: SelectionBoardDelegate {
         Folder.create(name: name, path: path, completion: { [weak self] (newfolder) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self?.importFolder = newfolder
+                self?.selectionBoard?.update()
             })
             })
     }

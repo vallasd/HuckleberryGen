@@ -287,6 +287,10 @@ class NavController: NSViewController {
         }
     }
     
+    private func setCurrentVC(context: AnyObject?) {
+        
+    }
+    
     /// removes top view from container
     private func removeTopView() {
         currentVC?.view.removeFromSuperview()

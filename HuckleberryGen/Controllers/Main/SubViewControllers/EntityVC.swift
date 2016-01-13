@@ -15,13 +15,14 @@ class EntityVC: NSViewController {
     @IBOutlet weak var tableview: HGTableView!
     
     let cellType: HGCellType = HGCellType.DefaultCell
-    let hgtable: HGTable = HGTable()
+    
+    var hgtable: HGTable!
     
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable.delegate = self
+        hgtable = HGTable(tableview: tableview, delegate: self)
     }
     
 }

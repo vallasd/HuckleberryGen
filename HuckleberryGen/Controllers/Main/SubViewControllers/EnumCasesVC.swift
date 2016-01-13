@@ -13,7 +13,7 @@ class EnumCasesVC: NSViewController {
     @IBOutlet weak var tableview: HGTableView!
     
     let enumCell: HGCellType = HGCellType.FieldCell2
-    let hgtable: HGTable = HGTable()
+    var hgtable: HGTable!
     
     // MARK: HGTableDisplayable
     
@@ -21,7 +21,7 @@ class EnumCasesVC: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable.delegate = self
+        hgtable = HGTable(tableview: tableview, delegate: self)
     }
 }
 

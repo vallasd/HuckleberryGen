@@ -16,17 +16,18 @@ protocol SelectionBoardDelegate: HGTableDisplayable {
 /// Board that allows class to select
 class SelectionBoard: NSViewController, NavControllerReferable {
     
-    /// reference to the HGTable
-    let hgtable: HGTable = HGTable()
-    
     /// function that updates the selection board
-    func update() { hgtable.update() }
+    func update() {
+        hgtable.update()
+    }
+    
+    /// reference to the HGTable
+    private var hgtable: HGTable!
     
     /// This object is the context that whandle delegation of the Selection Board and HGTable
     private var context: SelectionBoardDelegate! {
         didSet {
-            hgtable.selectionDelegate = self
-            hgtable.delegate = context // context will also handle hgtable protocol
+            context.selectionBoard = self
         }
     }
     
@@ -34,6 +35,7 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     private var progressionType: ProgressionType = .Finished
     
     @IBOutlet weak var boardtitle: NSTextField!
+    
     @IBOutlet weak var tableview: HGTableView!
     
     /// NavControllerReferable
@@ -41,7 +43,8 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        hgtable = HGTable(tableview: tableview, delegate: context)
+        hgtable.selectionDelegate = self
         nav?.disableProgression()
     }
     

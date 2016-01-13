@@ -12,16 +12,16 @@ class AttributeVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let attributeCell: HGCellType = HGCellType.DefaultCell
-    let attributeTypeCell: HGCellType = HGCellType.Image6Cell
-    let hgtable: HGTable = HGTable()
+    let celltype = HGCellType.DefaultCell
+    
+    var hgtable: HGTable!
 
     private var editingLocation: HGCellLocation?
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable.delegate = self
+        hgtable = HGTable(tableview: tableview, delegate: self)
     }
 }
 
@@ -41,7 +41,7 @@ extension AttributeVC: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
-        return attributeCell
+        return celltype
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {

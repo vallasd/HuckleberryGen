@@ -73,6 +73,35 @@ protocol HGTableRowAppendable: HGTableDisplayable {
 /// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  To Properly use this class, set the delegates then the HGTableView
 class HGTable: NSObject {
     
+   
+    /// initialize with a NSTableView
+    init(tableview: NSTableView, delegate: HGTableDisplayable) {
+        super.init()
+        updateTableView(withTableView: tableview)
+        updateSubDelegates(withSuperDelegate: delegate)
+    }
+    
+    func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
+        displayDelegate = delegate
+        if let d = delegate as? HGTableObservable { observeDelegate = d }
+        if let d = delegate as? HGTablePostable { selectDelegate = d }
+        if let d = delegate as? HGTableRowSelectable { rowSelectDelegate = d }
+        if let d = delegate as? HGTableItemEditable { itemEditDelegate = d }
+        if let d = delegate as? HGTableItemOptionable { itemOptionDelegate = d }
+        if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
+    }
+    
+    func updateTableView(withTableView tv: NSTableView) {
+        tableview = tv
+        tableview.identifier = "MainTableView"
+        tableview.setDelegate(self)
+        tableview.setDataSource(self)
+        
+        // we check if the tableview is an HGTableView and if so, we assign the delegate
+        if let hgtv = tableview as? HGTableView {
+            hgtv.extendedDelegate = self
+        }
+    }
     
     private(set) var parentRow: Int = notSelected
     
@@ -81,28 +110,8 @@ class HGTable: NSObject {
     /// Delegate for AnyObject which conforms to protocol HGTableTrackable
     weak var selectionDelegate: HGTableSelectionTrackable?
     
-    /// Meta delegate for HGTable.  If the delegate conforms to any of the protocols used by HGTable, HGTable will call the functions in that delegate. Current protocols used by HGTable are:  HGTableDisplayable, HGTableObservable, HGTablePostable, HGTableRowSelectable, HGTableItemEditable, HGTableItemOptionable, HGTableRowAppendable
-    weak var delegate: HGTableDisplayable? {
-        didSet {
-            displayDelegate = delegate
-            if let d = delegate as? HGTableObservable { observeDelegate = d }
-            if let d = delegate as? HGTablePostable { selectDelegate = d }
-            if let d = delegate as? HGTableRowSelectable { rowSelectDelegate = d }
-            if let d = delegate as? HGTableItemEditable { itemEditDelegate = d }
-            if let d = delegate as? HGTableItemOptionable { itemOptionDelegate = d }
-            if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
-        }
-    }
-    
-    /// Weak reference to HGTableView.  Holds this reference so this class can properly delegate
-    weak var tableview: HGTableView! {
-        didSet {
-            tableview.identifier = "MainTableView"
-            tableview.setDelegate(self)
-            tableview.setDataSource(self)
-            tableview.extendedDelegate = self
-        }
-    }
+    /// weak reference to the NSTableView
+    private weak var tableview: NSTableView!
     
     /// Delegate for AnyObject which conforms to protocol HGTableObservable
     private weak var observeDelegate: HGTableObservable? {
@@ -146,14 +155,11 @@ class HGTable: NSObject {
     
     /// reloads tableView
     func update() {
-        // Public Functions will check if tableview is set in case user calls one before setting the delegate
-        if (tableview == nil) { return }
         tableview.reloadData()
     }
     
     /// reloads specific row Of tableView
     private func update(row row: Int) {
-        if tableview == nil { return }
         tableview.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))
     }
 
@@ -234,7 +240,7 @@ extension HGTable: HGTableViewDelegate {
         
         // if we are asking user, produce a Decision Board for Delete Rows
         if answer == .AskUser {
-            let context = DBD_DeleteRows(tableview: tableview, rowsToDelete: rows)
+            let context = DBD_DeleteRows(tableview: hgtableview, rowsToDelete: rows)
             let boardData = DecisionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boardData)
             return false

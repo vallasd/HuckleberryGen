@@ -27,14 +27,13 @@ class EnumVC: NSViewController {
     
     // MARK: Public Variables
     
-    @IBOutlet weak var tableview: HGTableView!
+    @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
     let cellType: HGCellType = HGCellType.DefaultCell
-    let hgtable: HGTable = HGTable()
+    var hgtable: HGTable!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable.delegate = self
     }
 }
 

@@ -288,11 +288,11 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ue1-Io-vRS">
                                 <rect key="frame" x="20" y="50" width="440" height="175"/>
                                 <clipView key="contentView" id="MF7-hx-22B">
-                                    <rect key="frame" x="1" y="1" width="438" height="158"/>
+                                    <rect key="frame" x="1" y="1" width="438" height="173"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kOc-zV-rny" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="438" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="438" height="173"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -316,8 +316,8 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="hF1-Qq-dYs">
-                                    <rect key="frame" x="1" y="158" width="438" height="16"/>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hF1-Qq-dYs">
+                                    <rect key="frame" x="1" y="159" width="438" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="eWu-xS-VEi">
@@ -336,8 +336,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="boardtitle" destination="d3n-0z-haf" id="r7n-VD-VDh"/>
-                        <outlet property="tableview" destination="kOc-zV-rny" id="FUk-do-HcU"/>
+                        <outlet property="boardtitle" destination="d3n-0z-haf" id="QN0-Mu-QmA"/>
+                        <outlet property="tableview" destination="kOc-zV-rny" id="CrG-Vh-cwt"/>
                     </connections>
                 </viewController>
                 <customObject id="o57-jA-cP8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

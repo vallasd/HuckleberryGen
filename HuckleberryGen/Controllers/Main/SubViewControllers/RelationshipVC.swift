@@ -12,14 +12,14 @@ class RelationshipVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let hgtable: HGTable = HGTable()
+    var  hgtable: HGTable!
     
     let celltype: HGCellType = HGCellType.MixedCell1
     
      // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable.delegate = self
+        hgtable = HGTable(tableview: tableview, delegate: self)
     }
 }
 
