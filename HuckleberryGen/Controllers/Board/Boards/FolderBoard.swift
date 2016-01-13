@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class FolderBoard: NSViewController, NavControllerReferrable {
+class FolderBoard: NSViewController, NavControllerReferable {
     
     @IBOutlet weak var folderButton: NSButton!
     
@@ -64,6 +64,22 @@ class FolderBoard: NSViewController, NavControllerReferrable {
     }
 }
 
-extension FolderBoard: NavControllerPushable {
-    var nextBoard: BoardType? { return .Import }
+extension FolderBoard: BoardInstantiable {
+    
+    static var storyboard: String { return "Board" }
+    static var nib: String { return "FolderBoard" }
+}
+
+
+extension FolderBoard: NavControllerProgessable {
+    
+    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
+        return .Next
+    }
+    
+    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        let context = SBD_Import()
+        let boarddata = SelectionBoard.boardData(withContext: context)
+        nav.push(boarddata)
+    }
 }

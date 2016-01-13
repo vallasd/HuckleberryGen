@@ -27,17 +27,17 @@ class MainWindowController: NSWindowController, BoardHandlerHolder {
     
     /// displays the welcome screen
     private func showWelcome() {
-        boardHandler.startBoard(.Welcome)
+        boardHandler.start(withBoardData: WelcomeBoard.boardData)
     }
     
     /// displays the settings screen
     private func showSettings() {
-        boardHandler.startBoard(.LicenseInfo)
+        boardHandler.start(withBoardData: LicenseInfoBoard.boardData)
     }
     
     /// displays the import screens
     private func showOpen() {
-        boardHandler.startBoard(.Open)
+        boardHandler.start(withBoardData: OpenBoard.boardData)
     }
     
     /// completes appropriate actions for header button presses

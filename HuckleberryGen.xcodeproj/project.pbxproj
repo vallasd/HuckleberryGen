@@ -65,8 +65,16 @@
 		037EDFA91B84B4C6002527EE /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037EDFA81B84B4C6002527EE /* Enum.swift */; };
 		038C79E01B6297560008D29C /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C79DF1B6297560008D29C /* Entity.swift */; };
 		038CD8B71B7CEC8800712F57 /* HGString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038CD8B61B7CEC8800712F57 /* HGString.swift */; };
+		039731DF1C40680B003DA4F4 /* LoadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731DE1C40680B003DA4F4 /* LoadBoard.swift */; };
+		039731E21C42833E003DA4F4 /* SBD_Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731E11C42833E003DA4F4 /* SBD_Import.swift */; };
+		039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731E31C443A44003DA4F4 /* SBD_Attributes.swift */; };
+		039731E61C4565C5003DA4F4 /* SBD_Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731E51C4565C5003DA4F4 /* SBD_Entities.swift */; };
+		039731EC1C45AE27003DA4F4 /* SBD_SavedProjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */; };
+		039731F01C45AE68003DA4F4 /* SBD_RelationshipType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */; };
+		039731F21C45AE74003DA4F4 /* SBD_DeletionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */; };
+		039731F51C46A263003DA4F4 /* DBD_DeleteRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F41C46A263003DA4F4 /* DBD_DeleteRows.swift */; };
 		03A20B481B99E4C900149AF5 /* BoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B371B99E4C900149AF5 /* BoardHandler.swift */; };
-		03A20B491B99E4C900149AF5 /* BoardNAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B381B99E4C900149AF5 /* BoardNAV.swift */; };
+		03A20B491B99E4C900149AF5 /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B381B99E4C900149AF5 /* NavController.swift */; };
 		03A20B4A1B99E4C900149AF5 /* FolderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */; };
 		03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */; };
 		03A20B4D1B99E4C900149AF5 /* WelcomeBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */; };
@@ -172,8 +180,16 @@
 		037EDFA81B84B4C6002527EE /* Enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		038C79DF1B6297560008D29C /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entity.swift; path = Categories/Entity.swift; sourceTree = "<group>"; };
 		038CD8B61B7CEC8800712F57 /* HGString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGString.swift; sourceTree = "<group>"; };
+		039731DE1C40680B003DA4F4 /* LoadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadBoard.swift; sourceTree = "<group>"; };
+		039731E11C42833E003DA4F4 /* SBD_Import.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Import.swift; path = SelectionBoardDelegates/SBD_Import.swift; sourceTree = "<group>"; };
+		039731E31C443A44003DA4F4 /* SBD_Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Attributes.swift; path = SelectionBoardDelegates/SBD_Attributes.swift; sourceTree = "<group>"; };
+		039731E51C4565C5003DA4F4 /* SBD_Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Entities.swift; path = SelectionBoardDelegates/SBD_Entities.swift; sourceTree = "<group>"; };
+		039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_SavedProjects.swift; path = SelectionBoardDelegates/SBD_SavedProjects.swift; sourceTree = "<group>"; };
+		039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_RelationshipType.swift; path = SelectionBoardDelegates/SBD_RelationshipType.swift; sourceTree = "<group>"; };
+		039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_DeletionRules.swift; path = SelectionBoardDelegates/SBD_DeletionRules.swift; sourceTree = "<group>"; };
+		039731F41C46A263003DA4F4 /* DBD_DeleteRows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBD_DeleteRows.swift; path = DecisionBoardDelegates/DBD_DeleteRows.swift; sourceTree = "<group>"; };
 		03A20B371B99E4C900149AF5 /* BoardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHandler.swift; sourceTree = "<group>"; };
-		03A20B381B99E4C900149AF5 /* BoardNAV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardNAV.swift; sourceTree = "<group>"; };
+		03A20B381B99E4C900149AF5 /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
 		03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderBoard.swift; sourceTree = "<group>"; };
 		03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicenseInfoBoard.swift; sourceTree = "<group>"; };
 		03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeBoard.swift; sourceTree = "<group>"; };
@@ -442,6 +458,27 @@
 			name = HGEntity;
 			sourceTree = "<group>";
 		};
+		039731E01C4282D6003DA4F4 /* SelectionBoardDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				039731E11C42833E003DA4F4 /* SBD_Import.swift */,
+				039731E31C443A44003DA4F4 /* SBD_Attributes.swift */,
+				039731E51C4565C5003DA4F4 /* SBD_Entities.swift */,
+				039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */,
+				039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */,
+				039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */,
+			);
+			name = SelectionBoardDelegates;
+			sourceTree = "<group>";
+		};
+		039731F31C45CC6D003DA4F4 /* DecisionBoardDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				039731F41C46A263003DA4F4 /* DBD_DeleteRows.swift */,
+			);
+			name = DecisionBoardDelegates;
+			sourceTree = "<group>";
+		};
 		03A20B351B99E4C900149AF5 /* Board */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,7 +492,7 @@
 			isa = PBXGroup;
 			children = (
 				03A20B371B99E4C900149AF5 /* BoardHandler.swift */,
-				03A20B381B99E4C900149AF5 /* BoardNAV.swift */,
+				03A20B381B99E4C900149AF5 /* NavController.swift */,
 			);
 			path = BoardNAV;
 			sourceTree = "<group>";
@@ -463,13 +500,16 @@
 		03A20B391B99E4C900149AF5 /* Boards */ = {
 			isa = PBXGroup;
 			children = (
+				039731E01C4282D6003DA4F4 /* SelectionBoardDelegates */,
 				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
 				03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */,
 				03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */,
 				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
 				034614091BDF81E40002F0AA /* DecisionBoard.swift */,
+				039731F31C45CC6D003DA4F4 /* DecisionBoardDelegates */,
 				0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */,
 				0339BC611BFDEFE30071F8AD /* ImportBoard.swift */,
+				039731DE1C40680B003DA4F4 /* LoadBoard.swift */,
 				03F106641C3B179100E808C9 /* OpenBoard.swift */,
 			);
 			path = Boards;
@@ -693,10 +733,12 @@
 				036C7CC21B529A84004EC724 /* HGProtocol.swift in Sources */,
 				036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */,
 				03660AE11BBE444C00DE41D5 /* EnumCasesVC.swift in Sources */,
+				039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */,
 				03F25EF71B9C292E0048B0A0 /* HGTableHeader.swift in Sources */,
+				039731E21C42833E003DA4F4 /* SBD_Import.swift in Sources */,
 				036C7CBF1B529A84004EC724 /* HGOptional.swift in Sources */,
 				037EDFA91B84B4C6002527EE /* Enum.swift in Sources */,
-				03A20B491B99E4C900149AF5 /* BoardNAV.swift in Sources */,
+				03A20B491B99E4C900149AF5 /* NavController.swift in Sources */,
 				03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */,
 				036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */,
 				036C7C661B514AF8004EC724 /* Relationship.swift in Sources */,
@@ -718,19 +760,25 @@
 				03D3FF6C1B848FCD001B9F48 /* HGEvent.swift in Sources */,
 				0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */,
 				033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */,
+				039731E61C4565C5003DA4F4 /* SBD_Entities.swift in Sources */,
 				038CD8B71B7CEC8800712F57 /* HGString.swift in Sources */,
 				03F25EF01B9C17B40048B0A0 /* HGSplitVC.swift in Sources */,
 				03A20B481B99E4C900149AF5 /* BoardHandler.swift in Sources */,
 				036E329C1BB1A0880024AA4E /* EnumCase.swift in Sources */,
+				039731F21C45AE74003DA4F4 /* SBD_DeletionRules.swift in Sources */,
 				0322FA421B59633E00CB132B /* HGArray.swift in Sources */,
 				03A20B4A1B99E4C900149AF5 /* FolderBoard.swift in Sources */,
+				039731F51C46A263003DA4F4 /* DBD_DeleteRows.swift in Sources */,
 				033F3DEE1BBACE770089AEC2 /* HGTabVC.swift in Sources */,
+				039731F01C45AE68003DA4F4 /* SBD_RelationshipType.swift in Sources */,
 				036C7C721B514AF9004EC724 /* Folder.swift in Sources */,
 				03A20B541B99E4C900149AF5 /* MainWindowController.swift in Sources */,
 				031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */,
 				03F25EE81B9C16EA0048B0A0 /* HGCell.swift in Sources */,
 				036C7CC11B529A84004EC724 /* HGJSON.swift in Sources */,
 				036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */,
+				039731EC1C45AE27003DA4F4 /* SBD_SavedProjects.swift in Sources */,
+				039731DF1C40680B003DA4F4 /* LoadBoard.swift in Sources */,
 				035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */,
 				036D23BF1BACA12D002824E9 /* HGTableCellIdentifier.swift in Sources */,
 				038C79E01B6297560008D29C /* Entity.swift in Sources */,

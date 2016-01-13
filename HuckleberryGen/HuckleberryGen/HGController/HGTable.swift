@@ -9,11 +9,14 @@
 import Cocoa
 import Foundation
 
+/// protocol that allows user to track when selected locations change.  This is designed to be used by a secondary delegate to track changes made to the table.
+protocol HGTableSelectionTrackable: AnyObject {
+    // called everytime
+    func hgtableSelectedLocationsChanged(table: HGTable)
+}
+
 /// Protocol that allows HGTable to display data in rows.
 protocol HGTableDisplayable: AnyObject {
-    /// Pass the tableview you wish to format with HGTable.  HGTable holds a weak reference to an HGTableView in order to handle NSTableView datasource and delegate methods internally.
-    func tableview(fortable table: HGTable) -> HGTableView!
-    /// Pass the number of records managed for HGTable by the data source object.
     func numberOfRows(fortable table: HGTable) -> Int
     /// Pass the height of a specific row in the HGTableView.
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat
@@ -33,12 +36,6 @@ protocol HGTableObservable: HGTableDisplayable {
 protocol HGTableRowSelectable: HGTableDisplayable {
     // Pass Boolean value to inform HGTable whether row should be selectable
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
-}
-
-/// Protocol that allows user to track when selected locations change
-protocol HGTableTrackable: HGTableDisplayable {
-    // called everytime
-    func hgtableSelectedLocationsChanged(table: HGTable)
 }
 
 /// Protocol that allows user to select and highlight individual rows on HGTable.
@@ -73,13 +70,16 @@ protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(table: HGTable, willDeleteRows rows: [Int])
 }
 
-/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  
+/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  To Properly use this class, set the delegates then the HGTableView
 class HGTable: NSObject {
     
     
     private(set) var parentRow: Int = notSelected
     
     // MARK: HGTable Delegates
+    
+    /// Delegate for AnyObject which conforms to protocol HGTableTrackable
+    weak var selectionDelegate: HGTableSelectionTrackable?
     
     /// Meta delegate for HGTable.  If the delegate conforms to any of the protocols used by HGTable, HGTable will call the functions in that delegate. Current protocols used by HGTable are:  HGTableDisplayable, HGTableObservable, HGTablePostable, HGTableRowSelectable, HGTableItemEditable, HGTableItemOptionable, HGTableRowAppendable
     weak var delegate: HGTableDisplayable? {
@@ -91,14 +91,16 @@ class HGTable: NSObject {
             if let d = delegate as? HGTableItemEditable { itemEditDelegate = d }
             if let d = delegate as? HGTableItemOptionable { itemOptionDelegate = d }
             if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
-            if let d = delegate as? HGTableTrackable { locationChangedDelegate = d }
         }
     }
     
-    /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
-    private weak var displayDelegate: HGTableDisplayable? {
+    /// Weak reference to HGTableView.  Holds this reference so this class can properly delegate
+    weak var tableview: HGTableView! {
         didSet {
-            tableview = displayDelegate?.tableview(fortable: self)
+            tableview.identifier = "MainTableView"
+            tableview.setDelegate(self)
+            tableview.setDataSource(self)
+            tableview.extendedDelegate = self
         }
     }
     
@@ -119,6 +121,8 @@ class HGTable: NSObject {
         }
     }
     
+    /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
+    private weak var displayDelegate: HGTableDisplayable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowSelectable
     private weak var rowSelectDelegate: HGTableRowSelectable?
     /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
@@ -127,8 +131,6 @@ class HGTable: NSObject {
     private weak var itemOptionDelegate: HGTableItemOptionable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
     private weak var rowAppenedDelegate: HGTableRowAppendable?
-    /// Delegate for AnyObject which conforms to protocol HGTableTrackable
-    private weak var locationChangedDelegate: HGTableTrackable?
     
     // MARK: Private Properties
     
@@ -138,27 +140,7 @@ class HGTable: NSObject {
     private(set) weak var lastSelectedCellWithTag: HGCell?
     
     /// set of locations that are currently selected on the Table (can be rows or items)
-    private(set) var selectedLocations: [HGCellLocation] = [] { didSet { locationChangedDelegate?.hgtableSelectedLocationsChanged(self) } }
-    
-    
-    /// Weak reference to NSTableView.  Holds this reference so it can delegate re
-    private weak var tableview: HGTableView! {
-        didSet {
-            tableview.identifier = "MainTableView"
-            tableview.setDelegate(self)
-            tableview.setDataSource(self)
-            tableview.extendedDelegate = self
-        }
-    }
-    
-    /// a reference to the BoardHandler if the window owning the HGTable conforms to the protocol BoardHandlerHolder.  If this exists, we are able to pop-up questions to the user.
-    weak var boardHandler: BoardHandler? {
-        if let boardHandlerHolder = tableview.window?.windowController as? BoardHandlerHolder {
-            return boardHandlerHolder.boardHandler
-        }
-        return nil
-    }
-    
+    private(set) var selectedLocations: [HGCellLocation] = [] { didSet { selectionDelegate?.hgtableSelectedLocationsChanged(self) } }
     
     // MARK: Public Methods
     
@@ -248,22 +230,14 @@ extension HGTable: HGTableViewDelegate {
     func hgtableviewShouldDeleteSelectedRows(hgtableview: HGTableView) -> Bool {
         
         let rows = hgtableview.selectedRows
-        let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRows: rows)
+        let answer = rowAppenedDelegate?.hgtable(self, shouldDeleteRows: rows) ?? .No
         
+        // if we are asking user, produce a Decision Board for Delete Rows
         if answer == .AskUser {
-            if let boardhandler = boardHandler {
-                boardhandler.startBoard(BoardType.Decision)
-                let decisionBoard = boardhandler.nav!.currentVC as! DecisionBoard
-                if rows.count > 1 {
-                    decisionBoard.question.stringValue = "Do you really want to delete \(rows.count) rows?"
-                } else {
-                    decisionBoard.question.stringValue = "Do you really want to delete the row?"
-                }
-                
-                decisionBoard.delegate = self
-                return false
-            }
-            HGReportHandler.report("HGTable \(self) unable to present Decision board because unable to determine boardHandler from window", response: .Error)
+            let context = DBD_DeleteRows(tableview: tableview, rowsToDelete: rows)
+            let boardData = DecisionBoard.boardData(withContext: context)
+            appDelegate.mainWindowController.boardHandler.start(withBoardData: boardData)
+            return false
         }
         
         return answer == .No ? false : true
@@ -343,15 +317,3 @@ extension HGTable: HGCellDelegate {
     }
     
 }
-
-extension HGTable: DecisionBoardDelegate {
-    
-    func decisionBoard(db db: DecisionBoard, selected: Bool) {
-        
-        if selected == true {
-            tableview.delete(rows: tableview.selectedRows)
-        }
-    }
-    
-}
-

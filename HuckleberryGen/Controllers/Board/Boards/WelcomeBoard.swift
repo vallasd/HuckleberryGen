@@ -8,21 +8,28 @@
 
 import Cocoa
 
-class WelcomeBoard: NSViewController {
+class WelcomeBoard: NSViewController, NavControllerReferable {
+    
+    // reference to nav controller
+    var nav: NavController?
     
 }
 
-extension WelcomeBoard: NavControllerCancelable {
+extension WelcomeBoard: BoardInstantiable {
     
-    var canCancel: Bool { return false }
+    static var storyboard: String { return "Board" }
+    static var nib: String { return "WelcomeBoard" }
 }
 
-
-extension WelcomeBoard: NavControllerPushable {
+extension WelcomeBoard: NavControllerProgessable {
     
-    var nextBoard: BoardType? {
-        if appDelegate.store.licenseInfo.needsMoreInformation { return .LicenseInfo }
-        return nil
+    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
+        if appDelegate.store.licenseInfo.needsMoreInformation { return .Next }
+        else { return .Finished }
     }
     
+    /// push license info if nav controller is going to next
+    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .Next { nav.push(LicenseInfoBoard.boardData) }
+    }
 }

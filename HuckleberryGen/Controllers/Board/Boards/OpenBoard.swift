@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class OpenBoard: NSViewController, NavControllerReferrable {
+class OpenBoard: NSViewController, NavControllerReferable {
     
     /// reference to the NavController that may be holding this board
     weak var nav: NavController?
@@ -30,7 +30,7 @@ class OpenBoard: NSViewController, NavControllerReferrable {
             appDelegate.store.saveProject()
             displayBoardForTag(lastTagPressed)
         } else {
-            nav?.popoverDecision(withTitle: "Do you want to save current project?", delegate: self)
+            //nav?.popoverDecision(withTitle: "Do you want to save current project?", delegate: self)
         }
     }
     
@@ -44,27 +44,24 @@ class OpenBoard: NSViewController, NavControllerReferrable {
         case 1:
             appDelegate.store.project = Project.new
             nav?.end()
-        case 2: nav?.push(.Welcome, animated: true)
-        case 3: nav?.push(.Folder, animated: true)
+        case 2:
+            nav?.end()
+            let context = SBD_SavedProjects()
+            let boarddata = SelectionBoard.boardData(withContext: context)
+            
+//            let data = BoardData(storyboard: vcType.storyboard, nibIdentifer: vcType.nib, saveContext: context)
+//            nav?.push(.Load, animated: true)
+        case 3:
+            let boarddata = FolderBoard.boardData
+            nav?.push(boarddata)
         default: break // Do Nothing
         }
     }
     
-    
-    
-    
 }
 
-extension OpenBoard: DecisionBoardDelegate {
+extension OpenBoard: BoardInstantiable {
     
-    func decisionBoard(db db: DecisionBoard, selected: Bool) {
-        
-        if selected == true {
-            appDelegate.store.saveProject()
-        }
-        
-        nav?.popDecision()
-        displayBoardForTag(lastTagPressed)
-        
-    }
+    static var storyboard: String { return "Board" }
+    static var nib: String { return "OpenBoard" }
 }

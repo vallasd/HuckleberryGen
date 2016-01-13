@@ -50,7 +50,7 @@ extension AttributeVC: HGTableDisplayable {
         return HGCellData.defaultCell(
             field0: HGFieldData(title: attribute.name),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: "", image: attribute.type.image)
+            image0: HGImageData(title: "", image: attribute.image)
         )
     }
 }
@@ -106,47 +106,5 @@ extension AttributeVC: HGTableItemEditable {
             attribute.name = data.title
             appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         }
-    }
-}
-
-// MARK: HGTableItemOptionable
-extension AttributeVC: HGTableItemOptionable {
-    
-    func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType) {
-        if type == .Image && tag == 0 {
-            let sb = SelectionBoard.present(withParentTable: table)
-            sb.boardDelegate = self
-            sb.imageSource = self
-            let identifier = HGCellItemIdentifier(tag: tag, type: type)
-            editingLocation = HGCellLocation(row: row, identifier: identifier)
-        }
-    }
-}
-
-// MARK: SelectionBoardDelegate
-extension AttributeVC: SelectionBoardDelegate {
-    
-    func hgcellType(forSelectionBoard sb: SelectionBoard) -> HGCellType {
-        return HGCellType.Image5Cell
-    }
-    
-    func selectionboard(sb: SelectionBoard, didChoose items: [Int]) {
-        let item = items[0]
-        var attribute = appDelegate.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row]
-        attribute.type = AttributeType.create(int: item)
-        appDelegate.store.project.entities[hgtable.parentRow].attributes[editingLocation!.row] = attribute
-        editingLocation = nil
-    }
-    
-    func numberOfItems(forSelectionBoard sb: SelectionBoard) -> Int {
-        return AttributeType.strings.count
-    }
-}
-
-// MARK: SelectionBoardImageSource
-extension AttributeVC: SelectionBoardImageSource {
-    
-    func selectionboard(sb: SelectionBoard, imageDataForIndex index: Int) -> HGImageData {
-        return HGImageData(title: AttributeType.strings[index], image: AttributeType.create(int: index).image)
     }
 }

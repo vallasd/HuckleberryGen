@@ -87,44 +87,7 @@ struct HGCellData {
         return HGCellData(fields: [], images: [image0, image1, image2, image3, image4, image5], checks: [])
     }
     
-    /// Delivers the correct HGCellData for an defaultCell when receiving an image name array for entire table and a row number
-    static func defaultCell(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        guard let imagesource = sb.imageSource else { return HGCellData.empty }
-        let image0 = imagesource.selectionboard(sb, imageDataForIndex: row)
-        let field0 = HGFieldData(title: image0.title)
-        let field1 = HGFieldData(title: "")
-        return HGCellData.defaultCell(field0: field0, field1: field1, image0: image0)
-    }
+    /// returns a HGCellData object that only contains HGImageData
+    static func onlyImages(images: [HGImageData]) -> HGCellData { return HGCellData(fields: [], images: images, checks: []) }
     
-    /// Delivers the correct HGCellData for an Image4Cell when receiving an image name array for entire table and a row number
-    static func image4Cell(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        return imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 4)
-    }
-    
-    /// Delivers the correct HGCellData for an Image5Cell when receiving an image name array for entire table and a row number
-    static func image5Cell(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        return imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 5)
-    }
-    
-    /// Delivers the correct HGCellData for an Image6Cell when receiving an image name array for entire table and a row number
-    static func image6Cell(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        return imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 6)
-    }
-    
-    /// Delivers the correct HGCellData for any imageOnly cell when receiving an image name array for entire table and a row number
-    static func imageAnyCell(sb sb: SelectionBoard, row: Int, numberOfImagesPerRow: Int) -> HGCellData {
-        
-        guard let imagesource = sb.imageSource else { return HGCellData.empty }
-        
-        var imageArray: [HGImageData] = []
-        let firstNum = row * numberOfImagesPerRow
-        let lastNum = firstNum + (numberOfImagesPerRow - 1)
-        let max = sb.numberOfItems
-        
-        for index in firstNum...lastNum {
-            if index < max { imageArray.append(imagesource.selectionboard(sb, imageDataForIndex: index)) }
-        }
-        
-        return HGCellData(fields: [], images: imageArray, checks: [])
-    }
 }

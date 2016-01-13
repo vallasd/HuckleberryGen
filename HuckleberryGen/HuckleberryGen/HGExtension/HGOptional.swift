@@ -118,9 +118,9 @@ extension Optional {
         return .TooOne
     }
     
-    var attributeType: AttributeType {
-        if let int = self as? Int { return AttributeType.create(int: int) }
-        if let string = self as? String { return AttributeType.create(string: string) }
+    var primitive: Primitive {
+        if let int = self as? Int { return Primitive.create(int: int) }
+        if let string = self as? String { return Primitive.create(string: string) }
         HGReportHandler.report("self: |\(self)| is not AttributeType mapable, using ._Int16", response: .Error)
         return ._Int16
     }

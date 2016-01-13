@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -14,7 +14,6 @@
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O6L-FY-5Dw">
                     <rect key="frame" x="80" y="57" width="294" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Field 0" id="7T7-6A-iT7">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -26,7 +25,6 @@
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Eur-sr-odY" secondAttribute="height" multiplier="1:1" priority="750" id="15H-uH-pbF"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSActionTemplate" imagePosition="only" alignment="center" imageScaling="axesIndependently" inset="2" id="p2R-Pq-kYa">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -34,7 +32,6 @@
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="H6g-bF-0Oz">
                     <rect key="frame" x="80" y="35" width="294" height="14"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Field 1" id="ghb-sG-Ef8">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -53,7 +50,6 @@
                 <constraint firstItem="Eur-sr-odY" firstAttribute="top" secondItem="60Y-PX-1nG" secondAttribute="top" constant="2" id="gpf-0v-4JB"/>
                 <constraint firstAttribute="trailing" secondItem="H6g-bF-0Oz" secondAttribute="trailing" constant="20" symbolic="YES" id="rWS-Ks-7XM"/>
             </constraints>
-            <animations/>
             <connections>
                 <outlet property="field0" destination="O6L-FY-5Dw" id="vFZ-iY-BFm"/>
                 <outlet property="field1" destination="H6g-bF-0Oz" id="7fk-XX-3vj"/>

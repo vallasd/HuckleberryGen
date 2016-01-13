@@ -103,6 +103,24 @@ final class HuckleberryGen {
         return true
     }
     
+    /// open a project at index of savedProjects, return true if project was successfully opened
+    func openProject(atIndex index: Int) -> Bool {
+        
+        // index out of bounds
+        if savedProjects.indices.contains(index) == false {
+            HGReportHandler.report("savedProjects attempting to open index that is out of bound", response: .Error)
+            return false
+        }
+        
+        // create save key, this will always return a string because we know for sure that project has a name
+        let key = Project.saveKey(withUniqID: uniqIdentifier, name: savedProjects[index])
+        
+        // opens project from defaults
+        project = Project.openDefaults(key)
+        
+        return true
+    }
+    
     /// changes name of project at index of savedProjects to supplied, return true if project name was successfully changed
     func changeProject(atIndex index: Int, toName name: String) -> Bool {
         

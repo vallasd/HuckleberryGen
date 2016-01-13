@@ -317,7 +317,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="hF1-Qq-dYs">
-                                    <rect key="frame" x="1" y="159" width="438" height="15"/>
+                                    <rect key="frame" x="1" y="158" width="438" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="eWu-xS-VEi">
@@ -343,19 +343,6 @@
                 <customObject id="o57-jA-cP8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="610" y="2483"/>
-        </scene>
-        <!--Import Board-->
-        <scene sceneID="PuB-xr-21X">
-            <objects>
-                <viewController storyboardIdentifier="ImportBoard" id="A1z-mx-RKt" customClass="ImportBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="OrK-Pw-SwT">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
-                </viewController>
-                <customObject id="5wV-7T-ijg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="610" y="2809"/>
         </scene>
         <!--Nav Controller-->
         <scene sceneID="AFM-5J-Fib">

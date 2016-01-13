@@ -71,21 +71,6 @@ enum HGCellType: Int16 {
         return height / numberOfRowsOnScreen
     }
     
-    /// Returns HGCellData for a HGTable if using the BoardImageSource protocol (Only Images)
-    func imageSourceCellData(sb sb: SelectionBoard, row: Int) -> HGCellData {
-        switch (self) {
-        case DefaultCell: return HGCellData.defaultCell(sb: sb, row: row)
-        case MixedCell1: return HGCellData.defaultCell(sb: sb, row: row)
-        case Check4Cell: return HGCellData.defaultCell(sb: sb, row: row)
-        case Image4Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 4)
-        case Image5Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 5)
-        case Image6Cell: return HGCellData.imageAnyCell(sb: sb, row: row, numberOfImagesPerRow: 6)
-        case FieldCell1: return HGCellData.empty
-        case FieldCell2: return HGCellData.empty
-        case FieldCell3: return HGCellData.empty
-        }
-    }
-    
     /// Returns number of rows for HGTable if using BoardImageSource protocol (Only Images)
     func imageSourceNumberOfRows(forImageItems items: Int) -> Int {
         let ipr = imagesPerRow
@@ -93,16 +78,39 @@ enum HGCellType: Int16 {
         return 0
     }
     
-    /// Returns the selected indexes of HGCellLocation.  (If HGCellLocation has an identifier that is image, will return the image index, else returns the row)
-    func selectedIndexes(forlocations locations: [HGCellLocation]) -> [Int] {
+    /// returns number of rows required for a specific cell type assuming that this cell type would be used for every row, that an image would be used on each available image button in cell, and imageCount is total images required.
+    func rows(forImagesWithCount imageCount: Int) -> Int {
+        let ipr = self.imagesPerRow
+        if ipr == 0 { return 0 }
+        if imageCount == 0 { return 0 }
+        return (imageCount / ipr) + 1
+    }
+    
+    /// returns the image indexes required for a row.
+    func imageIndexes(forRow row: Int, imageCount: Int) -> [Int] {
+        let ipr = self.imagesPerRow
+        let firstIndex = row * ipr
         var indexes: [Int] = []
-        for location in locations {
-            indexes.append(self.selectedIndex(forlocation: location))
+        for count in 0...ipr-1 {
+            let nextIndex = firstIndex + count
+            if nextIndex >= imageCount { break }
+            indexes.append(nextIndex)
         }
         return indexes
     }
     
-    private func selectedIndex(forlocation location: HGCellLocation) -> Int {
+    /// returns the cooresponding indexes of HGCellLocation.
+    func indexes(forlocations locations: [HGCellLocation]) -> [Int] {
+        var indexes: [Int] = []
+        for location in locations {
+            indexes.append(self.index(forlocation: location))
+        }
+        return indexes
+    }
+    
+    
+    /// returns the cooresponding index, if HGCellLocation is for an image, assumes the index is for an array of images
+    func index(forlocation location: HGCellLocation) -> Int {
         if let identifier = location.identifier {
             if identifier.type == .Image {
                 return (location.row * imagesPerRow) + identifier.tag

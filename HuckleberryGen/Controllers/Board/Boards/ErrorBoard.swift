@@ -11,3 +11,9 @@ import Cocoa
 class ErrorBoard: NSViewController {
     
 }
+
+extension ErrorBoard: BoardInstantiable {
+    
+    static var storyboard: String { return "Board" }
+    static var nib: String { return "ErrorBoard" }
+}

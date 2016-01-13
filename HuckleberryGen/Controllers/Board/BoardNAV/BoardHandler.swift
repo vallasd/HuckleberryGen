@@ -9,42 +9,41 @@
 import Cocoa
 import QuartzCore
 
-enum BoardType: Int16 {
-    case Welcome
-    case Open
-    case Folder
-    case LicenseInfo
-    case Model
-    case Import
-    case Selection
-    case Decision
-    case Error
-    
-    var string: String {
-        switch self {
-        case Welcome: return "WelcomeBoard"
-        case Open: return "OpenBoard"
-        case Folder: return "FolderBoard"
-        case LicenseInfo: return "LicenseInfoBoard"
-        case Model: return "ImportModelBoard"
-        case Import: return "ImportBoard"
-        case Selection: return "SelectionBoard"
-        case Decision: return "DecisionBoard"
-        case Error: return "ErrorBoard"
-        }
-    }
-    
-    func create() -> NSViewController {
-        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        let controller = storyboard.instantiateControllerWithIdentifier(self.string) as! NSViewController
-        return controller
-    }
-    
-    private static func createNav() -> NavController {
-        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        return storyboard.instantiateControllerWithIdentifier("NavController") as! NavController
-    }
-}
+//enum BoardType: Int16 {
+//    case Welcome
+//    case Open
+//    case Folder
+//    case LicenseInfo
+//    case Model
+//    case Import
+//    case Load
+//    case Selection
+//    case Decision
+//    case Error
+//    
+//    var string: String {
+//        switch self {
+//        case Welcome: return "WelcomeBoard"
+//        case Open: return "OpenBoard"
+//        case Folder: return "FolderBoard"
+//        case LicenseInfo: return "LicenseInfoBoard"
+//        case Model: return "ImportModelBoard"
+//        case Import: return "ImportBoard"
+//        case Load: return "LoadBoard"
+//        case Selection: return "SelectionBoard"
+//        case Decision: return "DecisionBoard"
+//        case Error: return "ErrorBoard"
+//        }
+//    }
+//    
+//    func create() -> NSViewController {
+//        let storyboard = NSStoryboard(name: "Board", bundle: nil)
+//        let controller = storyboard.instantiateControllerWithIdentifier(self.string) as! NSViewController
+//        return controller
+//    }
+//    
+
+//}
 
 /// protocol for an object (like a window) that holds a board handler
 protocol BoardHandlerHolder: AnyObject {
@@ -72,17 +71,17 @@ class BoardHandler {
     }
     
     /// pops board nav controller (holding board) on window controller
-    func startBoard(board: BoardType) {
+    func start(withBoardData boarddata: BoardData){
         if (nav == nil) {
-            nav = BoardType.createNav()
-            nav!.root = board
-            nav!.delegate = self
+            createNav()
+            nav?.loadData = boarddata
+            nav?.delegate = self
             background.blur()
             holder = createHolder()
             windowcontroller.window!.toolbar?.visible = false
             holder.center(parent: background)
             background.addSubview(holder)
-            nav!.view.center(parent: holder)
+            nav?.view.center(parent: holder)
             holder.addSubview(nav!.view)
         }
     }
@@ -106,11 +105,21 @@ class BoardHandler {
         holder.backgroundColor(HGColor.Clear)
         return holder
     }
+    
+    // creates a navigation controller
+    private func createNav() {
+        let storyboard = NSStoryboard(name: "Board", bundle: nil)
+        nav = storyboard.instantiateControllerWithIdentifier("NavController") as? NavController
+        
+        if nav == nil {
+            HGReportHandler.report("NavController not properly created from StoryBoard", response: .Error)
+        }
+    }
 }
 
 extension BoardHandler: NavControllerDelegate {
     
-    func shouldDismiss(nav: NavController) {
+    func navcontrollerShouldDismiss(nav: NavController) {
         endBoard()
     }
     

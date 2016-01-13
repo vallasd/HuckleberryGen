@@ -49,5 +49,16 @@ extension Array {
         return nil
     }
     
+    /// checks if object is within the index, if so, returns object, else, if user sets error to true, reports error and returns nil
+    func object(atIndex index: Int, reportError error: Bool) -> Element? {
+        
+        if self.indices.contains(index) {
+            return self[index]
+        }
+        
+        if (error) { HGReportHandler.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", response: .Error) }
+        return nil
+    }
+    
 }
 

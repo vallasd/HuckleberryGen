@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -14,7 +14,6 @@
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bFL-ED-KbM">
                     <rect key="frame" x="79" y="38" width="295" height="14"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Field 1" id="243-BJ-rqk">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -23,7 +22,6 @@
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HYb-gR-Igg">
                     <rect key="frame" x="79" y="56" width="295" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Field 0" id="qqm-W6-GWE">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -35,7 +33,6 @@
                     <constraints>
                         <constraint firstAttribute="width" secondItem="koJ-MB-RuJ" secondAttribute="height" multiplier="1:1" priority="750" id="ncz-2h-di4"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSActionTemplate" imagePosition="only" alignment="center" imageScaling="axesIndependently" inset="2" id="aa5-x0-GUd">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -43,7 +40,6 @@
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="k3Z-Py-mrH">
                     <rect key="frame" x="152" y="14" width="67" height="18"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Check1" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="bDS-tF-sAT">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -51,7 +47,6 @@
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="Qs2-lL-tXE">
                     <rect key="frame" x="296" y="14" width="69" height="18"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Check3" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4I3-gr-0IH">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -59,7 +54,6 @@
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="7pr-6X-cWF">
                     <rect key="frame" x="79" y="14" width="69" height="18"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Check0" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="1K7-ii-bp6">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -67,7 +61,6 @@
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="xh1-st-SlT">
                     <rect key="frame" x="223" y="14" width="69" height="18"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Check2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="C5q-k2-xND">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -93,7 +86,6 @@
                 <constraint firstItem="xh1-st-SlT" firstAttribute="leading" secondItem="k3Z-Py-mrH" secondAttribute="trailing" constant="8" id="nFw-ic-wwq"/>
                 <constraint firstItem="Qs2-lL-tXE" firstAttribute="centerY" secondItem="7pr-6X-cWF" secondAttribute="centerY" id="nTy-1M-mG4"/>
             </constraints>
-            <animations/>
             <connections>
                 <outlet property="check0" destination="7pr-6X-cWF" id="3sX-eR-QcX"/>
                 <outlet property="check1" destination="k3Z-Py-mrH" id="OjD-E6-kyc"/>

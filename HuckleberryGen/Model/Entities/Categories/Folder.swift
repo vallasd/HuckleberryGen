@@ -15,8 +15,6 @@ struct Folder {
     let path: String
     let importFiles: [ImportFile]
     
-    
-    
     static func create(name name: String, path: String, completion: (newfolder: Folder) -> Void) {
         ImportFile.importFiles(path: path) { (importFiles) -> Void in
             completion(newfolder: Folder(name: name, path: path, importFiles: importFiles))

@@ -6,12 +6,15 @@
 //  Copyright © 2015 Phoenix Labs. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 struct Enum {
     var name: String
     var cases: [EnumCase]
     
+    static func image(withName name: String) -> NSImage {
+        return NSImage.image(named: "enumIcon", title: name)
+    }
 }
 
 extension Enum: HGEncodable {

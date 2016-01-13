@@ -10,7 +10,7 @@ import Foundation
 
 import Cocoa
 
-class LicenseInfoBoard: NSViewController, NavControllerReferrable {
+class LicenseInfoBoard: NSViewController, NavControllerReferable {
 
     // MARK: Outlets
 
@@ -20,7 +20,7 @@ class LicenseInfoBoard: NSViewController, NavControllerReferrable {
     @IBOutlet weak var contact2Field: NSTextField!
     @IBOutlet weak var licenseButton: NSPopUpButtonCell!
     
-    /// reference to the NavController that is holding this board (NavControllerReferrable)
+    /// reference to the NavController that is holding this board (NavControllerReferable)
     weak var nav: NavController?
     
     // MARK: Private Functions
@@ -65,6 +65,13 @@ class LicenseInfoBoard: NSViewController, NavControllerReferrable {
     }
     
 }
+
+extension LicenseInfoBoard: BoardInstantiable {
+    
+    static var storyboard: String { return "Board" }
+    static var nib: String { return "LicenseInfoBoard" }
+}
+
 
 extension LicenseInfoBoard: NSTextFieldDelegate {
     

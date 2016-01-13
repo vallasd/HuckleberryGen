@@ -6,16 +6,17 @@
 //  Copyright © 2015 Phoenix Labs. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 struct Entity {
     var name: String
     var attributes: [Attribute]
     var relationships: [Relationship]
     
+    static func image(withName name: String) -> NSImage {
+        return NSImage.image(named: "entityIcon", title: name)
+    }
 }
-
-
 
 extension Entity: HGEncodable {
     
