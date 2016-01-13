@@ -25,14 +25,7 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
     
     // MARK: Private Functions
     
-    private func updateLicenseInfo() {
-        //LicenseType.create(Int()
-        if (nameField.stringValue.characters.count > 2) {
-            let store = appDelegate.store
-            let license = LicenseInfo(name: nameField.stringValue, company: companyField.stringValue, contact1: emailField.stringValue, contact2: contact2Field.stringValue, type: LicenseType.create(int: licenseButton.indexOfSelectedItem))
-            store.licenseInfo = license
-        }
-    }
+    
     
     // MARK: Lifecycle
 
@@ -47,21 +40,39 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
         licenseButton.selectItemAtIndex(license.type.int)
         
         nameField.delegate = self
-        companyField.delegate = self
-        emailField.delegate = self
-        contact2Field.delegate = self
+        
+        updateProgression()
     }
     
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        if (nameField.stringValue.characters.count == 0) {
-            nav?.disableProgression()
+    var nameFieldFilledOut: Bool {
+        return nameField.stringValue.characters.count > 2 ? true : false
+    }
+    
+    func updateProgression() {
+        if nameFieldFilledOut { nav?.enableProgression() }
+        else { nav?.disableProgression() }
+    }
+    
+    func updateLicenseInfo() {
+        //LicenseType.create(Int()
+        if nameFieldFilledOut {
+            let license = LicenseInfo(name: nameField.stringValue, company: companyField.stringValue, contact1: emailField.stringValue, contact2: contact2Field.stringValue, type: LicenseType.create(int: licenseButton.indexOfSelectedItem))
+            appDelegate.store.licenseInfo = license
         }
     }
     
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        updateLicenseInfo()
+}
+
+extension LicenseInfoBoard: NavControllerProgessable {
+    
+    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
+        return .Finished
+    }
+    
+    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .Finished {
+            updateLicenseInfo()
+        }
     }
     
 }
@@ -72,15 +83,10 @@ extension LicenseInfoBoard: BoardInstantiable {
     static var nib: String { return "LicenseInfoBoard" }
 }
 
-
 extension LicenseInfoBoard: NSTextFieldDelegate {
     
-    override func controlTextDidEndEditing(obj: NSNotification) {
-        if (nameField.stringValue.characters.count > 0) {
-            nav?.enableProgression()
-        }
-        else {
-            nav?.disableProgression()
-        }
+    override func controlTextDidChange(obj: NSNotification) {
+        updateProgression()
     }
+    
 }
