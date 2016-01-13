@@ -28,7 +28,6 @@ enum NavAction {
     case Home
 }
 
-
 // types that increase stack depth
 enum ProgressionType {
     
@@ -74,9 +73,9 @@ enum RegressionType {
     
     init(int: Int) {
         switch int {
-        case 1: self = .Cancel
-        case 2: self = .Back
-        case 2: self = .Home
+        case 800: self = .Cancel
+        case 801: self = .Back
+        case 802: self = .Home
         default:
             HGReportHandler.report("Int: |\(int)| is not RegressionType mapable, returning .Cancel", response: .Error)
             self = .Cancel
@@ -169,7 +168,10 @@ class NavController: NSViewController {
     var currentVC: NSViewController? = nil
     
     /// stack that holds references to the BoardData
-    private var boardStack: [BoardData] = []
+    private(set) var boardStack: [BoardData] = []
+    
+    /// tells us if this is the first View Controller in the Navigation Controller
+    var onRootVC: Bool { return boardStack.count == 1 ? true : false }
     
     // MARK: Public functions
 
@@ -189,7 +191,8 @@ class NavController: NSViewController {
     func push(boardData: BoardData) {
         saveCurrentBoardContext()
         removeTopView()
-        createVC(withBoardData: boardData)
+        boardStack.append(boardData)
+        setCurrentVC(withBoardData: boardData)
         updateButtons()
         addTopView()
     }
@@ -197,15 +200,15 @@ class NavController: NSViewController {
     /// pops the top most view controller from the navigation controller, if the stack is empty, ends() the navigation controller
     func pop() {
         
-        // we only have 1 view controller in stack, so we need to end
-        if boardStack.count == 1 {
+        if onRootVC {
             end()
+            return
         }
         
         // pop from stack
         removeTopView()
         boardStack.removeLast()
-        createVC(withBoardData: boardStack.last!)
+        setCurrentVC(withBoardData: boardStack.last!)
         updateButtons()
         addTopView()
     }
@@ -257,23 +260,28 @@ class NavController: NSViewController {
     }
     
     /// creates NSViewController from a board type.  Sets delegates as appropriate.
-    private func createVC(withBoardData boardData: BoardData) {
+    private func setCurrentVC(withBoardData boardData: BoardData) {
         
         // create and assign new currentVC
         let storyboard = NSStoryboard(name: boardData.storyboard, bundle: nil)
         currentVC = storyboard.instantiateControllerWithIdentifier(boardData.nib) as? NSViewController
         
+        // check success of VC instantiation from nib
+        if currentVC == nil {
+            HGReportHandler.report("Nav Controller, currentVC was not properly instantiated from BoardData", response: .Error)
+            return
+        }
+        
+        // update context if necessary
         if let context = boardData.context {
             if let saveableVC = currentVC as? BoardRetrievable {
                 saveableVC.set(context: context)
+            } else {
+                HGReportHandler.report("Nav Controller, attempting to set context for NSViewController that is not BoardRetrievable", response: .Error)
             }
         }
         
-        if currentVC == nil  {
-            HGReportHandler.report("Nav Controller, currentVC was not properly instantiated from BoardData", response: .Error)
-        }
-        
-        // assign self to vc.nav if currentVC conforms to NavControllerReferable
+        // assign nav reference to NavControllerReferable
         if var ncr = currentVC as? NavControllerReferable {
             ncr.nav = self
         }
@@ -294,7 +302,10 @@ class NavController: NSViewController {
     // MARK: Navigation State Persistence
     
     func saveCurrentBoardContext() {
-        if let vc = currentVC as? BoardRetrievable { boardStack[boardStack.count - 1] = vc.boardData() }
+        if let vc = currentVC as? BoardRetrievable {
+            let vcIndex = boardStack.count - 1
+            boardStack[vcIndex] = vc.boardData()
+        }
     }
     
     // MARK: LifeCycle
@@ -330,7 +341,7 @@ extension NavController {
     }
     
     
-    /// updates button titles and display based on multiple aspects that affect the state of the nav controller
+    /// updates button titles and display based on multiple aspects that affect the state of the nav controller.  The Nav controller has two buttons (A and B), we assign them tasks, maybe hide them, depending on what the nav controller delegates (NavControllerProgessable / NavControllerRegressable) tells us to do.
     private func updateButtonsForBoard() {
         
         // tags to be used on buttons, currently set to 0
@@ -343,7 +354,6 @@ extension NavController {
         let progressType = progressVC?.navcontrollerProgressionType(self)
         let regressTypes = regressVC?.navcontrollerRegressionTypes(self)
         
-        
         let asksNext = progressType == .Next ? true : false
         let asksFinished = progressType == .Finished ? true : false
         
@@ -354,28 +364,27 @@ extension NavController {
             asksCancel = rt.contains(.Cancel) || rt.contains(.Back) ? true : false
             asksHome = rt.contains(.Home) ? true : false
         }
-
-        let isRootController = boardStack.count == 1 ? true : false
-        
         
         // we determine four possible button types that could be needed (at most 2 of 4 will be needed because these are two mutually exclusive sets)
-        let needsBack = !isRootController ? true : false
+        let needsBack = !onRootVC
         let needsFinish = asksFinished ? true : false
         let needsNext = asksNext ? true : false
-        let needsCancel = isRootController && !needsFinish && asksCancel
-        let needsHome = !isRootController && asksHome
+        let needsCancel = asksCancel && !needsBack
+        let needsHome = asksHome && !onRootVC
         
         // needsBack and needsCancel are mutually exclusive and tags are always assigned to buttonA if they are needed
         if needsBack { atag = RegressionType.Back.int }
         if needsCancel { atag = RegressionType.Cancel.int }
         
-        // needsFinish and needsNext are mutually exclusive and tags are are assigned to first available button ( A if available or B )
+        // check if we need HOME
+        if atag == 0 && needsHome { atag = RegressionType.Home.int }
+        else if btag == 0 && needsHome { btag = RegressionType.Home.int }
+        
+        // needsFinish and needsNext are mutually exclusive and tags are are assigned to first available button ( A if available or B ).  Not if we already used two regressions (like back and home), we will not have a button for a Progression (we allow just two buttons)
         if atag == 0 {
-            if needsHome { atag = RegressionType.Home.int }
             if needsFinish { atag = ProgressionType.Finished.int }
             if needsNext { atag = ProgressionType.Next.int }
-        } else {
-            if needsHome { btag = RegressionType.Home.int }
+        } else if btag == 0 {
             if needsFinish { btag = ProgressionType.Finished.int }
             if needsNext { btag = ProgressionType.Next.int }
         }
@@ -394,10 +403,15 @@ extension NavController {
     }
     
     
+    /// creates a string given the tag number presented
     func string(fromTag tag: Int) -> String {
     
-        if ProgressionType.isValid(tag) { return ProgressionType(int: tag).string }
-        if RegressionType.isValid(tag) { return RegressionType(int: tag).string }
+        if ProgressionType.isValid(tag) {
+            return ProgressionType(int: tag).string
+        }
+        if RegressionType.isValid(tag) {
+            return RegressionType(int: tag).string
+        }
         
         HGReportHandler.report("\(tag) is Not A Regression or Progression Type Tag", response: .Error)
         return ""

@@ -20,14 +20,8 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
     @IBOutlet weak var contact2Field: NSTextField!
     @IBOutlet weak var licenseButton: NSPopUpButtonCell!
     
-    /// reference to the NavController that is holding this board (NavControllerReferable)
+    /// reference to the Nav Controller
     weak var nav: NavController?
-    
-    // MARK: Private Functions
-    
-    
-    
-    // MARK: Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +48,6 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
     }
     
     func updateLicenseInfo() {
-        //LicenseType.create(Int()
         if nameFieldFilledOut {
             let license = LicenseInfo(name: nameField.stringValue, company: companyField.stringValue, contact1: emailField.stringValue, contact2: contact2Field.stringValue, type: LicenseType.create(int: licenseButton.indexOfSelectedItem))
             appDelegate.store.licenseInfo = license

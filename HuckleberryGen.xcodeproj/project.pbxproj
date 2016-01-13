@@ -500,17 +500,17 @@
 		03A20B391B99E4C900149AF5 /* Boards */ = {
 			isa = PBXGroup;
 			children = (
-				039731E01C4282D6003DA4F4 /* SelectionBoardDelegates */,
-				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
-				03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */,
-				03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */,
-				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
 				034614091BDF81E40002F0AA /* DecisionBoard.swift */,
 				039731F31C45CC6D003DA4F4 /* DecisionBoardDelegates */,
 				0339BC5F1BFD598B0071F8AD /* ErrorBoard.swift */,
+				03A20B3A1B99E4C900149AF5 /* FolderBoard.swift */,
 				0339BC611BFDEFE30071F8AD /* ImportBoard.swift */,
+				03A20B3C1B99E4C900149AF5 /* LicenseInfoBoard.swift */,
 				039731DE1C40680B003DA4F4 /* LoadBoard.swift */,
 				03F106641C3B179100E808C9 /* OpenBoard.swift */,
+				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
+				039731E01C4282D6003DA4F4 /* SelectionBoardDelegates */,
+				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
 			);
 			path = Boards;
 			sourceTree = "<group>";

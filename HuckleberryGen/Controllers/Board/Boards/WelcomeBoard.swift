@@ -21,6 +21,18 @@ extension WelcomeBoard: BoardInstantiable {
     static var nib: String { return "WelcomeBoard" }
 }
 
+extension WelcomeBoard: NavControllerRegressable {
+    
+    func navcontrollerRegressionTypes(nav: NavController) -> [RegressionType] {
+        return [] // We just want to remove the cancel option for the Welcome Board
+    }
+    
+    func navcontroller(nav: NavController, hitRegressWithType: RegressionType) {
+        // Do Nothing
+    }
+    
+}
+
 extension WelcomeBoard: NavControllerProgessable {
     
     func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
