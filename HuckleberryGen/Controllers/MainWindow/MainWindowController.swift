@@ -8,20 +8,19 @@
 
 import Cocoa
 
-/// The main window controller for the Huckleberry Gen app.  This controller also holds the boardHandler which can be used for pushing and popping Alerts / Boards to window
-class MainWindowController: NSWindowController, BoardHandlerHolder {
+/// The main window controller for the Huckleberry Gen app.
+class MainWindowController: NSWindowController {
     
-    /// Allows boards to be displayed on window (BoardHandlerHolder)
+    /// allows boards to be displayed on window (BoardHandlerHolder)
     var boardHandler: BoardHandler!
-    
-    // MARK: Window Lifecycle
     
     override func windowDidLoad() {
         super.windowDidLoad()
         
         window?.backgroundColor = HGColor.White.color()
         window?.titleVisibility = .Hidden
-        boardHandler = BoardHandler(windowController: self)
+        appDelegate.mainWindowController = self
+        boardHandler = BoardHandler(withWindowController: self)
         showWelcome()
     }
     

@@ -28,6 +28,6 @@ extension DBD_DeleteRows: DecisionBoardDelegate {
     }
     
     func decisionboard(db: DecisionBoard, didChoose: Bool) {
-        tableview?.delete(rows: rowsToDelete)
+        if didChoose { tableview?.delete(rows: rowsToDelete) }
     }
 }

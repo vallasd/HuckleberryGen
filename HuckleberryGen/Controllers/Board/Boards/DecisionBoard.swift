@@ -28,7 +28,7 @@ class DecisionBoard: NSViewController, NavControllerReferable {
     @IBOutlet weak var question: NSTextField!
     
     @IBAction func yesPressed(sender: NSButton) {
-        context?.decisionboard(self, didChoose: false)
+        context?.decisionboard(self, didChoose: true)
         performAction()
     }
     
@@ -57,6 +57,8 @@ class DecisionBoard: NSViewController, NavControllerReferable {
     
 }
 
+
+
 extension DecisionBoard: BoardInstantiable {
     
     static var storyboard: String { return "Board" }
@@ -73,3 +75,15 @@ extension DecisionBoard: BoardRetrievable {
         HGReportHandler.report("DecisionBoard Context \(context) not valid", response: .Error)
     }
 }
+
+extension DecisionBoard: NavControllerRegressable {
+    
+    func navcontrollerRegressionTypes(nav: NavController) -> [RegressionType] {
+        return [] // we do not want a cancel option
+    }
+    
+    func navcontroller(nav: NavController, hitRegressWithType: RegressionType) {
+        // do nothing
+    }
+}
+

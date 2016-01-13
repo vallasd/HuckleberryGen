@@ -1,5 +1,5 @@
 //
-//  IntroVC.swift
+//  BoardHandler.swift
 //  HuckleberryGen
 //
 //  Created by David Vallas on 7/16/15.
@@ -9,49 +9,13 @@
 import Cocoa
 import QuartzCore
 
-//enum BoardType: Int16 {
-//    case Welcome
-//    case Open
-//    case Folder
-//    case LicenseInfo
-//    case Model
-//    case Import
-//    case Load
-//    case Selection
-//    case Decision
-//    case Error
-//    
-//    var string: String {
-//        switch self {
-//        case Welcome: return "WelcomeBoard"
-//        case Open: return "OpenBoard"
-//        case Folder: return "FolderBoard"
-//        case LicenseInfo: return "LicenseInfoBoard"
-//        case Model: return "ImportModelBoard"
-//        case Import: return "ImportBoard"
-//        case Load: return "LoadBoard"
-//        case Selection: return "SelectionBoard"
-//        case Decision: return "DecisionBoard"
-//        case Error: return "ErrorBoard"
-//        }
-//    }
-//    
-//    func create() -> NSViewController {
-//        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-//        let controller = storyboard.instantiateControllerWithIdentifier(self.string) as! NSViewController
-//        return controller
-//    }
-//    
-
-//}
-
-/// protocol for an object (like a window) that holds a board handler
-protocol BoardHandlerHolder: AnyObject {
-    var boardHandler: BoardHandler! { get }
-}
-
 /// Class that appropriately sets up a pop-up NAVController in a windowController.
 class BoardHandler {
+    
+    /// initialize with a window controller
+    init(withWindowController wc: NSWindowController) {
+        windowcontroller = wc
+    }
     
     /// windowController which boards will be pushed to
     private(set) weak var windowcontroller: NSWindowController!
@@ -64,11 +28,6 @@ class BoardHandler {
     
     /// view that holds the Board and blocks the background from touches
     private var holder: NSView!
-    
-    /// initializes BoardHandler with a window controller, use this function for initialization
-    init(windowController wc: NSWindowController) {
-        windowcontroller = wc
-    }
     
     /// pops board nav controller (holding board) on window controller
     func start(withBoardData boarddata: BoardData){
