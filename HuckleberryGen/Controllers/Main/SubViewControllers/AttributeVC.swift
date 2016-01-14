@@ -94,10 +94,11 @@ extension AttributeVC: HGTableRowAppendable {
 // MARK: HGTableItemEditable
 extension AttributeVC: HGTableItemEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if type == .Field && tag == 0 { return .Yes }
-        if type == .Image && tag == 0 { return .AskUser }
-        return .No
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+        // TODO: FIX .Image
+        if type == .Field && tag == 0 { return true }
+        if type == .Image && tag == 0 { return true }
+        return false
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {

@@ -73,10 +73,11 @@ extension EnumCasesVC: HGTableRowSelectable {
 // MARK: HGTableItemEditable
 extension EnumCasesVC: HGTableItemEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if type == .Field && tag == 0 { return .Yes } // Attribute Name
-        if type == .Image && tag == 0 { return .AskUser } // Attribute Type
-        return .No
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+        // TODO: FIXED .IMAGE to run the
+        if type == .Field && tag == 0 { return true } // Attribute Name
+        if type == .Image && tag == 0 { return true } // Attribute Type
+        return false
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {

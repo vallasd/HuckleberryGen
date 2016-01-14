@@ -85,8 +85,8 @@ extension SBD_Attributes: HGTableDisplayable {
 // MARK: HGTableItemEditable
 extension SBD_Attributes: HGTableItemEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        return .Yes
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+        return true
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {

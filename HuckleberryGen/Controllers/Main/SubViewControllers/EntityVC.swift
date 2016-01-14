@@ -83,9 +83,9 @@ extension EntityVC: HGTableRowSelectable {
 // MARK: HGTableItemEditable
 extension EntityVC: HGTableItemEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if type == .Field && tag == 0 { return .Yes } // Entity Name
-        return .No
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+        if type == .Field && tag == 0 { return true } // Entity Name
+        return false
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {

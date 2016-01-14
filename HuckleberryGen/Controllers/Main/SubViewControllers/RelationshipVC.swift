@@ -96,11 +96,12 @@ extension RelationshipVC: HGTableRowAppendable {
 // MARK: HGTableItemEditable
 extension RelationshipVC: HGTableItemEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if type == .Field && tag == 0 { return .Yes } // Relationship Name
-        if type == .Field && (tag == 2 || tag == 4) { return .AskUser } // Entity or DeletionRule
-        if type == .Image && tag == 0 { return .AskUser } // Relationship Type
-        return .No
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+        // TODO: FIX LINES 2 / 3
+        if type == .Field && tag == 0 { return true } // Relationship Name
+        if type == .Field && (tag == 2 || tag == 4) { return true } // Entity or DeletionRule
+        if type == .Image && tag == 0 { return true } // Relationship Type
+        return false
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {

@@ -53,7 +53,7 @@ protocol HGTablePostable: HGTableRowSelectable {
 /// Protocol that allows user to edit fields of the HGCell in an HGTable
 protocol HGTableItemEditable: HGTableDisplayable {
     /// If HGOption is .No, will not attempt to edit HGCellItemType. If HGOption is .Yes, will allow user to Edit Item or Highlight an Image.  If HGOption is .AskUser, will delegate didSelectRowForOption if class conforms to HGTableItemOptionEditable protocol.
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption
+    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool
     func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData)
 }
 
@@ -268,53 +268,43 @@ extension HGTable: HGTableViewDelegate {
 extension HGTable: HGCellDelegate {
     
     func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool {
-        let shouldEdit = itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? .No
-        return shouldEdit == .No ? false : true
+        return itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? false
     }
     
     func hgcell(cell: HGCell, shouldEditTag tag: Int, type: HGCellItemType) -> Bool {
-        let shouldEdit = itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? .No
-        return shouldEdit == .Yes ? true : false
+        return itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? false
     }
     
     func hgcell(cell: HGCell, didSelectTag tag: Int, type: HGCellItemType) {
         
-        let shouldEdit = itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? .No
+        let identifier = HGCellItemIdentifier(tag: tag, type: type)
+        let newLocation = HGCellLocation(row: cell.row, identifier: identifier)
+        var unselected = false
         
-        if shouldEdit == .Yes {
-            let identifier = HGCellItemIdentifier(tag: tag, type: type)
-            let newLocation = HGCellLocation(row: cell.row, identifier: identifier)
-            var unselected = false
+        if type == .Image {
             
-            if type == .Image {
-                
-                let locationAlreadySelected = selectedLocations.contains(newLocation) ? true : false
-                
-                // We already have selected the location before.  Need to unselect.
-                if locationAlreadySelected == true {
-                    cell.unselect(imagetag: tag)
-                    unselected = true
-                }
+            let locationAlreadySelected = selectedLocations.contains(newLocation) ? true : false
+            
+            // We already have selected the location before.  Need to unselect.
+            if locationAlreadySelected == true {
+                cell.unselect(imagetag: tag)
+                unselected = true
+            }
                 
                 // Another image was selected.  We need to unselect the last cell's images and select the new field.
-                else  {
-                    lastSelectedCellWithTag?.unselectImages()
-                    cell.select(imagetag: tag)
-                }
-            }
-            
-            // Either remove lastSelectedCell and selectedLocations if unselected, else add the new locations
-            if unselected {
-                lastSelectedCellWithTag = nil
-                selectedLocations = []
-            } else {
-                lastSelectedCellWithTag = cell
-                selectedLocations = [newLocation]
+            else  {
+                lastSelectedCellWithTag?.unselectImages()
+                cell.select(imagetag: tag)
             }
         }
         
-        if shouldEdit == .AskUser {
-            itemOptionDelegate?.hgtable(self, didSelectRowForOption: cell.row, tag: tag, type: type)
+        // Either remove lastSelectedCell and selectedLocations if unselected, else add the new locations
+        if unselected {
+            lastSelectedCellWithTag = nil
+            selectedLocations = []
+        } else {
+            lastSelectedCellWithTag = cell
+            selectedLocations = [newLocation]
         }
     }
     
