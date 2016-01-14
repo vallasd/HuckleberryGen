@@ -102,8 +102,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     // MARK: Private Methods
     
     private func callDelegate() {
-        let date = NSDate().timeIntervalSince1970
-        let name = "\(xml.name)_\(date)"
+        let name = Project.newName
         let project = Project(name: name, enums: [], entities: entities)
         delegate?.parserDidParse(xml, success: !didError, project: project)
     }

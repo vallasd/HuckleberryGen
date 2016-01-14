@@ -19,19 +19,7 @@ class OpenBoard: NSViewController, NavControllerReferable {
     // MARK: Button Commands
     
     @IBAction func buttonPressed(sender: NSButton) {
-        
-        lastTagPressed = sender.tag
-        
-        // determine if the first save of project was ever performed, name is set during this time
-        let projectWasInitiallySaved = appDelegate.store.project.name == nil ? false : true
-        
-        
-        if projectWasInitiallySaved {
-            appDelegate.store.saveProject()
-            displayBoardForTag(lastTagPressed)
-        } else {
-            //nav?.popoverDecision(withTitle: "Do you want to save current project?", delegate: self)
-        }
+        displayBoardForTag(sender.tag)
     }
     
     override func viewDidLoad() {
@@ -41,23 +29,19 @@ class OpenBoard: NSViewController, NavControllerReferable {
     /// displays next nav controller based on button tag
     private func displayBoardForTag(tag: Int) {
         switch tag {
-        case 1:
+        case 1: // New Project
             appDelegate.store.project = Project.new
             nav?.end()
-        case 2:
-            nav?.end()
+        case 2: // Load Saved Project
             let context = SBD_SavedProjects()
             let boarddata = SelectionBoard.boardData(withContext: context)
-            
-//            let data = BoardData(storyboard: vcType.storyboard, nibIdentifer: vcType.nib, saveContext: context)
-//            nav?.push(.Load, animated: true)
-        case 3:
+            nav?.push(boarddata)
+        case 3: // Import Saved Project
             let boarddata = FolderBoard.boardData
             nav?.push(boarddata)
         default: break // Do Nothing
         }
     }
-    
 }
 
 extension OpenBoard: BoardInstantiable {

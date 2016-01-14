@@ -63,16 +63,29 @@ final class HuckleberryGen {
     
     // MARK: Project Manipulation
     
-    /// saves the current project to user defaults and creates a key
-    func saveProject() {
-        
-        // determine what the project name either is or will be
-        let projectName = project.name ?? "New Project \(NSDate().mmddyymmss)"
+    /// saves or overwrites a project to user defaults
+    func saveProject(var project: Project) {
         
         // if project was not already named, name it and append it to savedProjects
-        if project.name == nil {
-            project.name = projectName
-            savedProjects.append(projectName)
+        if project.isNew {
+            project.name = "New Project \(NSDate().mmddyymmss)"
+            savedProjects.append(project.name)
+        }
+        
+        // create save key, this will always return a string because we know for sure that project has a name
+        let key = project.saveKey(withUniqID: uniqIdentifier) as String!
+        
+        // save defaults
+        project.saveDefaults(key)
+    }
+    
+    /// saves the current project to user defaults and creates a key
+    func saveCurrentProject() {
+        
+        // if project was not already named, name it and append it to savedProjects
+        if project.isNew {
+            project.name = "New Project \(NSDate().mmddyymmss)"
+            savedProjects.append(project.name)
         }
         
         // create save key, this will always return a string because we know for sure that project has a name

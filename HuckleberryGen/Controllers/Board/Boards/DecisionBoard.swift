@@ -13,13 +13,28 @@ protocol DecisionBoardDelegate: AnyObject {
     func decisionboard(db: DecisionBoard, didChoose: Bool)
 }
 
+/// lets DecisionBoardDelegate decide what action to perform after DidChoose is called.  Default is .End, so implement this protocol if you want the Decision Board to do something else besides remove itself
+protocol DecisionBoardDelegateProgressable: DecisionBoardDelegate {
+    func decisionboardNavAction(db: DecisionBoard) -> NavAction
+}
+
+/// lets DecisionBoardDelegate display options with a cancel button
+protocol DecisionBoardDelegateCancelable: DecisionBoardDelegate {
+    func decisionboardCanCancel(db: DecisionBoard) -> Bool
+}
+
 class DecisionBoard: NSViewController, NavControllerReferable {
     
     /// a context that will allow the Decision Board to execute
-    private var context: DecisionBoardDelegate!
+    private var context: DecisionBoardDelegate! {
+        didSet {
+            if let c = context as? DecisionBoardDelegateProgressable { contextProgressable = c }
+            if let c = context as? DecisionBoardDelegateCancelable { contextCancelable = c }
+        }
+    }
     
-    /// action that decision board will take after Button is pressed.  Action is performed after didChoose is executed by delegate, so you are able to change the action in your delegate at that moment.
-    var action: NavAction = .End
+    private weak var contextProgressable: DecisionBoardDelegateProgressable?
+    private weak var contextCancelable: DecisionBoardDelegateCancelable?
     
     /// reference to the Nav Controller
     weak var nav: NavController?
@@ -38,7 +53,11 @@ class DecisionBoard: NSViewController, NavControllerReferable {
     }
     
     private func performAction() {
-        switch action {
+        
+        /// default action is End if we do not have a DecisionBoardDelegateCancelable delegate.
+        let navAction = contextProgressable?.decisionboardNavAction(self) ?? .End
+        
+        switch navAction {
         case .End: nav?.end()
         case .Pop: nav?.pop()
         case .Home: nav?.home()
@@ -54,10 +73,7 @@ class DecisionBoard: NSViewController, NavControllerReferable {
         let dQuestion = context.decisionboardQuestion(self)
         question.stringValue = dQuestion
     }
-    
 }
-
-
 
 extension DecisionBoard: BoardInstantiable {
     
@@ -79,6 +95,8 @@ extension DecisionBoard: BoardRetrievable {
 extension DecisionBoard: NavControllerRegressable {
     
     func navcontrollerRegressionTypes(nav: NavController) -> [RegressionType] {
+        let canCancel = contextCancelable?.decisionboardCanCancel(self) ?? false
+        if canCancel { return [.Cancel] }
         return [] // we do not want a cancel option
     }
     

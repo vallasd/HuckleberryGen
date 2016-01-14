@@ -36,7 +36,20 @@ class MainWindowController: NSWindowController {
     
     /// displays the import screens
     private func showOpen() {
-        boardHandler.start(withBoardData: OpenBoard.boardData)
+        
+        /// check if current project is new, if so, ask user first if they want to save the project in Decision Board that pushes to OpenBoard
+        if appDelegate.store.project.isNew {
+            let context = DBD_SaveProject(project: appDelegate.store.project, nextBoard: OpenBoard.boardData, canCancel:true)
+            let boarddata = DecisionBoard.boardData(withContext: context)
+            boardHandler.start(withBoardData: boarddata)
+        }
+        
+        // if project is not new, just save it automatically then start Open Board
+        else {
+            appDelegate.store.saveCurrentProject()
+            let boarddata = OpenBoard.boardData
+            boardHandler.start(withBoardData: boarddata)
+        }
     }
     
     /// completes appropriate actions for header button presses

@@ -16,9 +16,6 @@ extension Array where Element: Hashable {
     }
 }
 
-
-
-
 extension Array {
     
     /// Removes all indexes from the Array if they are valid indexes.  Checks for array bounds and redundant indexes and appropriately handles.

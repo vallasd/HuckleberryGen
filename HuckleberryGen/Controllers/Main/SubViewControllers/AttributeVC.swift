@@ -95,8 +95,8 @@ extension AttributeVC: HGTableRowAppendable {
 extension AttributeVC: HGTableItemEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> HGOption {
-        if type == .Field && tag == 0 { return .Yes } // Attribute Name
-        if type == .Image && tag == 0 { return .AskUser } // Attribute Type
+        if type == .Field && tag == 0 { return .Yes }
+        if type == .Image && tag == 0 { return .AskUser }
         return .No
     }
     

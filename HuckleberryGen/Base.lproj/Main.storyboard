@@ -846,7 +846,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="9Oh-3l-Rsc">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="9Oh-3l-Rsc">
                                     <rect key="frame" x="1" y="79" width="442" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1141,7 +1141,7 @@
                 </viewController>
                 <customObject id="Iod-CC-sRl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="325" y="1148"/>
+            <point key="canvasLocation" x="366" y="1148"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="N9h-hb-AAu">
@@ -1282,7 +1282,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="JGV-bg-m4R">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="JGV-bg-m4R">
                                     <rect key="frame" x="1" y="147" width="186" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

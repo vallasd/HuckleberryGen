@@ -9,13 +9,16 @@
 import Foundation
 
 struct Project {
-    var name: String?
+    var name: String
     var enums: [Enum]
     var entities: [Entity]
     
+    static var newName = "New Project"
+    
+    var isNew: Bool { return name == Project.newName ? true : false }
+    
     func saveKey(withUniqID uniqId: String) -> String? {
-        if name == nil { return nil }
-        return uniqId + "__*_|||_*__" + name!
+        return uniqId + "__*_|||_*__" + name
     }
     
     static func saveKey(withUniqID uniqId: String, name: String) -> String {
@@ -27,12 +30,12 @@ struct Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: nil, enums: [], entities: [])
+        return Project(name: Project.newName, enums: [], entities: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        if let n = name { dict["name"] = n }
+        dict["name"] = name
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
         return dict
@@ -40,7 +43,7 @@ extension Project: HGEncodable {
     
     static func decode(object object: AnyObject) -> Project {
         let dict = hgdict(fromObject: object, decoderName: "Project")
-        let name = dict["name"].optionalString
+        let name = dict["name"].string
         let enums = dict["enums"].enums
         let entities = dict["entities"].entities
         let project = Project(name: name, enums: enums, entities: entities)
