@@ -326,10 +326,6 @@ class NavController: NSViewController {
         super.viewWillDisappear()
         boardStack.removeAll()
     }
-    
-    deinit {
-        HGReportHandler.report("NavController Deinit", response: .Info)
-    }
 }
 
 // MARK: Button Update

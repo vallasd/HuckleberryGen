@@ -59,7 +59,7 @@ class BoardHandler {
     private func createHolder() -> HGBlockView {
         let frame = background.frame
         let holder = HGBlockView(frame: frame)
-        holder.backgroundColor(HGColor.Clear)
+        holder.backgroundColor(HGColor.WhiteTranslucent)
         return holder
     }
     

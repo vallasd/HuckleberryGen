@@ -56,7 +56,6 @@ class SBD_Attributes: SelectionBoardDelegate {
         }
         return imagedatas
     }
-    
 }
 
 // MARK: HGTableDisplayable
