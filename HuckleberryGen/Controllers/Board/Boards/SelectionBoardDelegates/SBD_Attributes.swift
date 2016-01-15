@@ -50,9 +50,6 @@ class SBD_Attributes: SelectionBoardDelegate {
         var imagedatas: [HGImageData] = []
         for index in indexes {
             let name = attributes[index]
-            if name == "" {
-                
-            }
             let image = index < firstEnumIndex ? Primitive.create(string: name).image : Enum.image(withName: name)
             let imagedata = HGImageData(title: name, image: image)
             imagedatas.append(imagedata)

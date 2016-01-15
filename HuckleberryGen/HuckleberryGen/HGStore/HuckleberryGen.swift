@@ -64,7 +64,7 @@ final class HuckleberryGen {
     // MARK: Project Manipulation
     
     /// saves or overwrites a project to user defaults
-    func saveProject(var project: Project) {
+    func saveProject(project: Project) {
         
         // if project was not already named, name it and append it to savedProjects
         if project.isNew {

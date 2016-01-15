@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/Controllers/Board/Boards/SelectionBoardDelegates/SBD_Attributes.swift"
-            timestampString = "474539517.846073"
+            filePath = "HuckleberryGen/HuckleberryGen/HGController/HGTable.swift"
+            timestampString = "474546190.071721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "cellImageDatas(forAttributeIndexes:)"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "addProjectChangedObserver()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,10 +8,16 @@
 
 import Foundation
 
-struct Project {
+final class Project {
     var name: String
     var enums: [Enum]
     var entities: [Entity]
+    
+    init(name: String, enums: [Enum], entities: [Entity]) {
+        self.name = name
+        self.enums = enums
+        self.entities = entities
+    }
     
     static var newName = "New Project"
     
