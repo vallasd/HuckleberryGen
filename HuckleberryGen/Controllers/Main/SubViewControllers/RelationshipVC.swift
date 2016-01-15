@@ -60,8 +60,8 @@ extension RelationshipVC: HGTableDisplayable {
 // MARK: HGTableObservable
 extension RelationshipVC: HGTableObservable {
     
-    func observeNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EntitySelected)
+    func observeNotifications(fortable table: HGTable) -> [String] {
+        return appDelegate.store.notificationNames(forNotifTypes: [.EntitySelected, .RelationshipUpdated])
     }
 }
 

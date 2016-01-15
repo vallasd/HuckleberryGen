@@ -69,8 +69,8 @@ extension EnumVC: HGTableDisplayable {
 // MARK: HGTableObservable
 extension EnumVC: HGTableObservable {
     
-    func observeNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EnumUpdated)
+    func observeNotifications(fortable table: HGTable) -> [String] {
+        return appDelegate.store.notificationNames(forNotifTypes: [.EnumUpdated])
     }
 }
 

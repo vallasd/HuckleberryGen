@@ -16,9 +16,9 @@ struct LicenseInfo {
     let type: LicenseType
     
     func string(project: String, fileName: String) -> String {
-        let companyInfo = company == "" ? name : company
-        let contact1Info = contact1 == "" ? contact1 : "(\(contact1))"
-        let contact2Info = contact2 == "" ? contact2 : "(\(contact2))"
+        let companyInfo = company.isEmpty ? name : company
+        let contact1Info = contact1.isEmpty ? contact1 : "(\(contact1))"
+        let contact2Info = contact2.isEmpty ? contact2 : "(\(contact2))"
         return "//   \(project)\n//   \(fileName) created by HuckleberryGen (on: \(hgGenCurrentDate) for: \(name))\n//\n//   Copyright (c) \(hgGenCurrentYear) \(companyInfo) \(contact1Info) \(contact2Info)\n//\n \(type.staticText)"
     }
     

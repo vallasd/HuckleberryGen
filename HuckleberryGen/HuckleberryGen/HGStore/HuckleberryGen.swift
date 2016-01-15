@@ -23,7 +23,7 @@ final class HuckleberryGen {
     /// the project that is currently opened
     var project: Project {
         didSet {
-            postProjectChangedNotifications()
+            postProjectChanged()
         }
     }
     
@@ -166,6 +166,15 @@ final class HuckleberryGen {
     // MARK: Notifications
     
     /// returns a store unique Notification Name for a particular HGNotifType
+    func notificationNames(forNotifTypes notifs: [HGNotifType]) -> [String] {
+        var names: [String] = []
+        for notif in notifs {
+            names.append(notif.uniqString(forUniqId: uniqIdentifier))
+        }
+        return names
+    }
+    
+    /// returns a store unique Notification Name for a particular HGNotifType
     func notificationName(forNotifType notif: HGNotifType) -> String {
         return notif.uniqString(forUniqId: uniqIdentifier)
     }
@@ -177,10 +186,10 @@ final class HuckleberryGen {
     }
     
     /// posts a mass notification to every sub component when the project has changed
-    private func postProjectChangedNotifications() {
-        let notifs: [HGNotifType] = [.EntityUpdated, .EnumUpdated, .AttributeUpdated, .RelationshipUpdated, .EnumCaseUpdated]
-        let posts = HGNotifType.uniqStrings(forNotifTypes: notifs, uniqID: uniqIdentifier)
-        HGNotif.postNotifications(posts)
+    private func postProjectChanged() {
+        let notifType = HGNotifType.ProjectChanged
+        let post = notifType.uniqString(forUniqId: uniqIdentifier)
+        HGNotif.postNotification(post)
     }
 }
 

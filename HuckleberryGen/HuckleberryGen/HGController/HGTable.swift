@@ -29,7 +29,7 @@ protocol HGTableDisplayable: AnyObject {
 /// Protocol that allows HGTable to observe notification and reload Table when a notification is sent.
 protocol HGTableObservable: HGTableDisplayable {
     /// Pass the notification name that the HGTable should observe, table will reload data when the notification is observed.
-    func observeNotification(fortable table: HGTable) -> String
+    func observeNotifications(fortable table: HGTable) -> [String]
 }
 
 /// Protocol that allows user to select and highlight individual rows on HGTable.
@@ -79,6 +79,7 @@ class HGTable: NSObject {
         super.init()
         updateSubDelegates(withSuperDelegate: delegate)
         updateTableView(withTableView: tableview)
+        addProjectChangedObserver()
     }
     
     /// initialize with a NSTableView
@@ -87,6 +88,7 @@ class HGTable: NSObject {
         updateSubDelegates(withSuperDelegate: delegate)
         updateTableView(withTableView: tableview)
         self.selectionDelegate = selectionDelegate
+        addProjectChangedObserver()
     }
     
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
@@ -127,7 +129,9 @@ class HGTable: NSObject {
             HGNotif.removeObserver(self)
         }
         didSet {
-            addObserver(observeDelegate?.observeNotification(fortable: self))
+            addProjectChangedObserver()
+            let names = observeDelegate!.observeNotifications(fortable: self)
+            addObservers(withNotifNames: names)
         }
     }
     
@@ -183,18 +187,30 @@ class HGTable: NSObject {
     }
     
     // MARK: Observers
-    private func addObserver(name: String?) {
-        if let name = name {
+    private func addObservers(withNotifNames names: [String]) {
+        
+        for name in names {
             HGNotif.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
                 if let row = notif.object as? Int {
                     self?.parentRow = row
                 }
                 self?.update()
-            })
+                })
         }
     }
     
-    /// displays a decisionBoard if window is a 
+    private func addProjectChangedObserver() {
+        
+        let uniqueID = appDelegate.store.uniqIdentifier
+        let notifType = HGNotifType.ProjectChanged
+        let notifName = notifType.uniqString(forUniqId: uniqueID)
+        
+        HGNotif.addObserverForName(notifName, usingBlock: { [weak self] (notif) -> Void in
+            self?.parentRow = notSelected
+            self?.update()
+            })
+        
+    }
     
     // MARK: Deinit
     deinit {

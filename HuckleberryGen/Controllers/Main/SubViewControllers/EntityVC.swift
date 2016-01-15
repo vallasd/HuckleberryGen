@@ -59,8 +59,8 @@ extension EntityVC: HGTableDisplayable {
 // MARK: HGTableObservable
 extension EntityVC: HGTableObservable {
     
-    func observeNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EntityUpdated)
+    func observeNotifications(fortable table: HGTable) -> [String] {
+        return appDelegate.store.notificationNames(forNotifTypes: [.EntityUpdated])
     }
 }
 

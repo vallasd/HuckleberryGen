@@ -10,6 +10,7 @@ import Foundation
 
 enum HGNotifType {
     
+    case ProjectChanged
     case EntityUpdated
     case EntitySelected
     case EnumUpdated
@@ -24,6 +25,7 @@ enum HGNotifType {
     /// returns a string that identifies the HGNotifType
     var string: String {
         switch self {
+        case ProjectChanged: return "ProjectChanged"
         case EntityUpdated: return "EntityUpdated"
         case EntitySelected: return "EntitySelected"
         case EnumUpdated: return "EnumUpdated"
