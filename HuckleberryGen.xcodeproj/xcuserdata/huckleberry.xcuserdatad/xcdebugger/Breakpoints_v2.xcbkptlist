@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/Model/Entities/Enum.swift"
-            timestampString = "474509797.859982"
+            filePath = "HuckleberryGen/Controllers/Board/Boards/SelectionBoardDelegates/SBD_Attributes.swift"
+            timestampString = "474539517.846073"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "image(withName:)"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "cellImageDatas(forAttributeIndexes:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

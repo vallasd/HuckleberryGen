@@ -77,8 +77,16 @@ class HGTable: NSObject {
     /// initialize with a NSTableView
     init(tableview: NSTableView, delegate: HGTableDisplayable) {
         super.init()
-        updateTableView(withTableView: tableview)
         updateSubDelegates(withSuperDelegate: delegate)
+        updateTableView(withTableView: tableview)
+    }
+    
+    /// initialize with a NSTableView
+    init(tableview: NSTableView, delegate: HGTableDisplayable, selectionDelegate: HGTableSelectionTrackable) {
+        super.init()
+        updateSubDelegates(withSuperDelegate: delegate)
+        updateTableView(withTableView: tableview)
+        self.selectionDelegate = selectionDelegate
     }
     
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
@@ -108,7 +116,7 @@ class HGTable: NSObject {
     // MARK: HGTable Delegates
     
     /// Delegate for AnyObject which conforms to protocol HGTableTrackable
-    weak var selectionDelegate: HGTableSelectionTrackable?
+    private weak var selectionDelegate: HGTableSelectionTrackable?
     
     /// weak reference to the NSTableView
     private weak var tableview: NSTableView!

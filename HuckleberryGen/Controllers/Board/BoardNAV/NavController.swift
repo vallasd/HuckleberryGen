@@ -342,7 +342,6 @@ extension NavController {
         enableProgression()
     }
     
-    
     /// updates button titles and display based on multiple aspects that affect the state of the nav controller.  The Nav controller has two buttons (A and B), we assign them tasks, maybe hide them, depending on what the nav controller delegates (NavControllerProgessable / NavControllerRegressable) tells us to do.
     private func updateButtonsForBoard() {
         

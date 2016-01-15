@@ -25,32 +25,39 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     private var hgtable: HGTable!
     
     /// This object is the context that whandle delegation of the Selection Board and HGTable
-    private var context: SelectionBoardDelegate! {
-        didSet {
-            context.selectionBoard = self
-        }
-    }
+    private var context: SelectionBoardDelegate? { didSet { loadSelectionBoardIfReady() } }
     
     /// the default progression is to finish.  If we want to implement a Next progression, we would need a boardData for the next controller (need to implement this logic later if needed *** nextData for selectionBoard, handled by delegate.
     private var progressionType: ProgressionType = .Finished
     
     @IBOutlet weak var boardtitle: NSTextField!
     
-    @IBOutlet weak var tableview: HGTableView!
+    @IBOutlet weak var tableview: HGTableView?
     
     /// NavControllerReferable
     weak var nav: NavController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hgtable = HGTable(tableview: tableview, delegate: context)
-        hgtable.selectionDelegate = self
+        loadSelectionBoardIfReady()
         nav?.disableProgression()
     }
     
     private func updateProgression() {
         if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
         else { nav?.disableProgression() }
+    }
+    
+    private func loadSelectionBoardIfReady() {
+    
+        // check if not ready and return if so
+        if context == nil || tableview == nil {
+            return
+        }
+        
+        // load context and init hgtable
+        context!.selectionBoard = self
+        hgtable = HGTable(tableview: tableview!, delegate: context!, selectionDelegate: self)
     }
     
 }
@@ -65,7 +72,7 @@ extension SelectionBoard: BoardRetrievable {
     
     
     func contextForBoard() -> AnyObject {
-        return context
+        return context!
     }
     
     
