@@ -35,7 +35,6 @@ class BoardHandler {
             createNav()
             nav?.loadData = boarddata
             nav?.delegate = self
-            background.blur()
             holder = createHolder()
             windowcontroller.window!.toolbar?.visible = false
             holder.center(parent: background)
@@ -49,7 +48,6 @@ class BoardHandler {
     func endBoard() {
         nav?.view.removeFromSuperview()
         nav?.removeFromParentViewController()
-        background.unblur()
         nav?.view.removeFromSuperview()
         holder.removeFromSuperview()
         windowcontroller.window!.toolbar?.visible = true

@@ -64,12 +64,17 @@ extension SelectionBoard: BoardInstantiable {
 extension SelectionBoard: BoardRetrievable {
     
     
-    func contextForBoard() -> AnyObject { return context }
+    func contextForBoard() -> AnyObject {
+        return context
+    }
     
     
     func set(context context: AnyObject) {
         // assign context if it is of type SelectionBoardDelegate
-        if let c = context as? SelectionBoardDelegate { self.context = c; return }
+        if let context = context as? SelectionBoardDelegate {
+            self.context = context;
+            return
+        }
         HGReportHandler.report("SelectionBoard Context \(context) not valid", response: .Error)
     }
 }

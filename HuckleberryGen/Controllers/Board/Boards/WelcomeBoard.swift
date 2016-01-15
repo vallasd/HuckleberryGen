@@ -11,7 +11,7 @@ import Cocoa
 class WelcomeBoard: NSViewController, NavControllerReferable {
     
     // reference to nav controller
-    var nav: NavController?
+    weak var nav: NavController?
     
 }
 

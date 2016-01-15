@@ -141,7 +141,7 @@ protocol NavControllerProgessable {
 
 /// protocol that allows a Nav Controller's NSViewController to gain reference to the nav controller when it is added to the stack.
 protocol NavControllerReferable {
-    var nav: NavController? { get set }
+    weak var nav: NavController? { get set }
 }
 
 /// protocol that allows another object to handle delegation methods from nav controller (like dismiss)
@@ -215,6 +215,9 @@ class NavController: NSViewController {
     
     /// attempts to remove the navigation controller from the screen.  A call is made to the nav controller delegates that the controller wants to be dismissed.
     func end() {
+        boardStack.removeAll()
+        currentVC?.view.removeFromSuperview()
+        currentVC = nil
         delegate?.navcontrollerShouldDismiss(self)
     }
     
@@ -287,10 +290,6 @@ class NavController: NSViewController {
         }
     }
     
-    private func setCurrentVC(context: AnyObject?) {
-        
-    }
-    
     /// removes top view from container
     private func removeTopView() {
         currentVC?.view.removeFromSuperview()
@@ -327,7 +326,10 @@ class NavController: NSViewController {
         super.viewWillDisappear()
         boardStack.removeAll()
     }
-
+    
+    deinit {
+        HGReportHandler.report("NavController Deinit", response: .Info)
+    }
 }
 
 // MARK: Button Update

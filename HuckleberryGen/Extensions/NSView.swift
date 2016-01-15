@@ -32,28 +32,34 @@ extension NSView {
         self.wantsLayer = true
         self.layer = layer
     }
+
+// Blur function was causing a memory leak
     
-    func blur() {
-        let blurFilter = CIFilter(name: "CIGaussianBlur")!
-        let blurredLayer = CALayer()
-        blurFilter.setDefaults()
-        blurFilter.setValue(1.0, forKey: kCIInputRadiusKey)
-        blurredLayer.backgroundFilters = [blurFilter]
-        blurredLayer.name = "NSViewBlurredLayer1725349360"
-        self.wantsLayer = true
-        self.layerUsesCoreImageFilters = true
-        self.layer?.addSublayer(blurredLayer)
-        self.disableInteraction()
-    }
-    
-    func unblur() {
-        if let layers = self.layer?.sublayers {
-            for layer in layers { if layer.name == "NSViewBlurredLayer1725349360" { layer.removeFromSuperlayer() } }
-            self.wantsLayer = false
-            self.layerUsesCoreImageFilters = false
-            self.enableInteraction()
-        }
-    }
+//    func blur() {
+//        let blurFilter = CIFilter(name: "CIGaussianBlur")!
+//        let blurredLayer = CALayer()
+//        blurFilter.setDefaults()
+//        blurFilter.setValue(1.0, forKey: kCIInputRadiusKey)
+//        blurredLayer.backgroundFilters = [blurFilter]
+//        blurredLayer.name = "NSViewBlurredLayer1725349360"
+//        self.wantsLayer = true
+//        self.layerUsesCoreImageFilters = true
+//        self.layer?.addSublayer(blurredLayer)
+//        self.disableInteraction()
+//    }
+//    
+//    func unblur() {
+//        if let layers = self.layer?.sublayers {
+//            for layer in layers {
+//                if layer.name == "NSViewBlurredLayer1725349360" {
+//                    layer.removeFromSuperlayer()
+//                }
+//            }
+//            self.wantsLayer = false
+//            self.layerUsesCoreImageFilters = false
+//            self.enableInteraction()
+//        }
+//    }
     
     func dropshadow() {
         let shadow = NSShadow()
