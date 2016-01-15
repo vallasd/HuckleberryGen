@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/Controllers/Main/SubViewControllers/AttributeVC.swift"
-            timestampString = "474498579.297666"
+            filePath = "HuckleberryGen/Model/Entities/Enum.swift"
+            timestampString = "474509797.859982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
-            landmarkName = "hgtable(_:didEditRow:tag:withData:)"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "image(withName:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

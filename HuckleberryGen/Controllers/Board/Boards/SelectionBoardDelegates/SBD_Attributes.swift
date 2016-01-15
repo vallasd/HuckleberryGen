@@ -36,6 +36,7 @@ class SBD_Attributes: SelectionBoardDelegate {
         let index = celltype.index(forlocation: locations[0])
         let attributeString = attributes[index]
         appDelegate.store.project.entities[entityIndex].attributes[attributeIndex].type = attributeString
+        appDelegate.store.post(forNotifType: .AttributeUpdated) // post notification so other classes are in the know
     }
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)

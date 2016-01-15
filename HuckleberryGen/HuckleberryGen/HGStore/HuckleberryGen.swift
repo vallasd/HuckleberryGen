@@ -170,6 +170,12 @@ final class HuckleberryGen {
         return notif.uniqString(forUniqId: uniqIdentifier)
     }
     
+    /// posts a notification that is unique to store
+    func post(forNotifType notif: HGNotifType) {
+        let uniqNotif = notificationName(forNotifType: notif)
+        HGNotif.postNotification(uniqNotif)
+    }
+    
     /// posts a mass notification to every sub component when the project has changed
     private func postProjectChangedNotifications() {
         let notifs: [HGNotifType] = [.EntityUpdated, .EnumUpdated, .AttributeUpdated, .RelationshipUpdated, .EnumCaseUpdated]

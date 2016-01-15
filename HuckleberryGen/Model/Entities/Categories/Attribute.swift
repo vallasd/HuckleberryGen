@@ -15,7 +15,13 @@ struct Attribute {
     var type: String
     
     var image: NSImage {
-        if Primitive.strings.contains(type) { return NSImage.image(named: "typeIcon", title: type) }
+        if type.isEmpty {
+            HGReportHandler.report("Attribute type is empty, using Error Image", response: .Error)
+            return NSImage(named: "removeIcon")!
+        }
+        if Primitive.strings.contains(type) {
+            return NSImage.image(named: "typeIcon", title: type)
+        }
         return NSImage.image(named: "enumIcon", title: type)
     }
 
