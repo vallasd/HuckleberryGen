@@ -13,7 +13,7 @@ final class Project {
     var enums: [Enum]
     var entities: [Entity]
     
-    init(name: String, enums: [Enum], entities: [Entity]) {
+    init(name: String, enums:[Enum], entities: [Entity]) {
         self.name = name
         self.enums = enums
         self.entities = entities
@@ -30,7 +30,6 @@ final class Project {
     static func saveKey(withUniqID uniqId: String, name: String) -> String {
         return uniqId + "__*_|||_*__" + name
     }
-    
 }
 
 extension Project: HGEncodable {

@@ -99,8 +99,14 @@ extension RelationshipVC: HGTableItemEditable {
     func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
         // TODO: FIX LINES 2 / 3
         if type == .Field && tag == 0 { return true } // Relationship Name
-        if type == .Field && (tag == 2 || tag == 4) { return true } // Entity or DeletionRule
-        if type == .Image && tag == 0 { return true } // Relationship Type
+        if type == .Field && (tag == 2 || tag == 4) { return true } // Entity or Deletion Rule
+        if type == .Image && tag == 0 {
+            // present a selection board for Relationship Type
+            let context = SBD_RelationshipType(entityIndex: table.parentRow, relationshipIndex: row)
+            let boarddata = SelectionBoard.boardData(withContext: context)
+            appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
+        
+        }
         return false
     }
     
@@ -120,15 +126,8 @@ extension RelationshipVC: HGTableItemOptionable {
         
         let boardHandler = appDelegate.mainWindowController.boardHandler
         
-        // Set Relationship's Type
-        if type == .Image && tag == 0 {
-            let context = SBD_RelationshipType(entityIndex: hgtable.parentRow, relationshipIndex: row)
-            let boarddata = SelectionBoard.boardData(withContext: context)
-            boardHandler.start(withBoardData: boarddata)
-        }
-            
         // Set Relationship's Entity
-        else if type == .Field && tag == 2 {
+        if type == .Field && tag == 2 {
             let context = SBD_Entities(entityIndex: hgtable.parentRow, relationshipIndex: row)
             let boarddata = SelectionBoard.boardData(withContext: context)
             boardHandler.start(withBoardData: boarddata)
