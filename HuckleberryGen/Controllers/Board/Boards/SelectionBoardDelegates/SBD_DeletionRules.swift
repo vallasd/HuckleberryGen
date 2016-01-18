@@ -34,8 +34,9 @@ class SBD_DeletionRules: SelectionBoardDelegate {
     
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
-        let relationshiptype = RelationshipType.create(int: index)
-        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].type = relationshiptype
+        let deletionrule = DeletionRule.create(int: index)
+        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].deletionRule = deletionrule
+        appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
     }
 }
 

@@ -91,12 +91,9 @@ extension AttributeVC: HGTableRowAppendable {
     }
 }
 
-// MARK: HGTableItemEditable
-extension AttributeVC: HGTableItemEditable {
+extension AttributeVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
-        
-        if type == .Field && tag == 0 { return true }
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
         if type == .Image && tag == 0 {
             // present a selection board to update current Attribute
             let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: row)
@@ -106,10 +103,22 @@ extension AttributeVC: HGTableItemEditable {
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        if tag == 0 && data is HGFieldData {
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+        // Do Nothing
+    }
+}
+
+extension AttributeVC: HGTableFieldEditable {
+    
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        if field == 0 { return true }
+        return false
+    }
+    
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        if field == 0 {
             var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
-            attribute.name = data.title
+            attribute.name = string
             appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         }
     }

@@ -82,9 +82,11 @@ func ==(lhs: HGImageCellItemIdentifier, rhs: HGImageCellItemIdentifier) -> Bool 
 protocol HGCellDelegate: AnyObject {
     func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool
     func hgcell(cell: HGCell, didSelectTag tag: Int, type: HGCellItemType)
-    func hgcell(cell: HGCell, shouldEditTag tag: Int, type: HGCellItemType) -> Bool
-    func hgcell(cell: HGCell, didEditTag tag: Int, withData data: HGCellItemData)
+    func hgcell(cell: HGCell, shouldEditField field: Int) -> Bool
+    func hgcell(cell: HGCell, didEditField field: Int, withString string: String)
 }
+
+
 
 class HGCell: NSTableCellView, NSTextFieldDelegate {
     
@@ -384,23 +386,15 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         let shouldSelect = delegate?.hgcell(self, shouldSelectTag: field.tag, type: .Field) ?? false
         
-        // Not Selectable Field
-        if !shouldSelect {
-            field.editable = false
-            field.textColor = NSColor.blackColor()
-            removeSelectFieldButton(field: field)
-            return
-        }
-        
-        let shouldEdit = delegate?.hgcell(self, shouldEditTag: field.tag, type: .Field) ?? false
-        
         // Selectable Field
-        if !shouldEdit {
+        if shouldSelect {
             field.editable = false
             field.textColor = NSColor.blueColor()
             addSelectFieldButton(field: field)
             return
         }
+        
+        let shouldEdit = delegate?.hgcell(self, shouldEditField: field.tag) ?? false
         
         // Editable Field
         if shouldEdit {
@@ -409,6 +403,11 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
             removeSelectFieldButton(field: field)
             return
         }
+        
+        // Not Selectable or Editable Field (Just Displayable)
+        field.editable = false
+        field.textColor = NSColor.blackColor()
+        removeSelectFieldButton(field: field)
     }
     
     /// Returns the appropriate field selection button for a field if it exists
@@ -443,8 +442,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Returns a call to delegate to let the delegate know that the field was edited once editing is done
     func control(control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
         let string = fieldEditor.string ?? ""
-        let data = HGFieldData(title: string)
-        delegate?.hgcell(self, didEditTag: control.tag, withData: data)
+        delegate?.hgcell(self, didEditField: control.tag, withString: string)
         return true
     }
 }

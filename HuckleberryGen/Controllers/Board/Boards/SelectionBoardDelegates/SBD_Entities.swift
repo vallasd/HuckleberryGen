@@ -33,11 +33,11 @@ class SBD_Entities: SelectionBoardDelegate {
     }
     
     /// creates an array of HGImageData for an array indexes in attribute
-    func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
+    func cellImageDatas(forEntityIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
         for index in indexes {
             let name = entities[index]
-            let image = Enum.image(withName: name)
+            let image = Entity.image(withName: name)
             let imagedata = HGImageData(title: name, image: image)
             imagedatas.append(imagedata)
         }
@@ -48,6 +48,7 @@ class SBD_Entities: SelectionBoardDelegate {
         let index = celltype.index(forlocation: locations[0])
         let entityString = entities[index]
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].entity = entityString
+        appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
     }
 }
 
@@ -70,24 +71,21 @@ extension SBD_Entities: HGTableDisplayable {
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: entities.count)
-        let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
+        let imagedatas = cellImageDatas(forEntityIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
     }
 }
 
-// MARK: HGTableItemEditable
-extension SBD_Entities: HGTableItemEditable {
+extension SBD_Entities: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
-        // TODO: EDIT
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        // DO NOTHING
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+        // Do Nothing
     }
 }
-
 
 
 

@@ -82,18 +82,17 @@ extension SBD_Attributes: HGTableDisplayable {
     }
 }
 
-// MARK: HGTableItemEditable
-extension SBD_Attributes: HGTableItemEditable {
+// MARK: HGTableItemSelectable
+extension SBD_Attributes: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        // DO NOTHING
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+        // Do Nothing
     }
 }
-
 
 
 

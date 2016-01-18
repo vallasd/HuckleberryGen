@@ -90,21 +90,20 @@ extension EnumVC: HGTableRowSelectable {
     }
 }
 
-// MARK: HGTableItemEditable
-extension EnumVC: HGTableItemEditable {
+// MARK: HGTableFieldEditable
+extension EnumVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
-        if type == .Field && tag == 0 { return true } // Entity Name
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        if field == 0 { return true }
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        if tag == 0 && data is HGFieldData {
-            var enuM = appDelegate.store.project.enums[row]
-            enuM.name = data.title
-            appDelegate.store.project.enums[row] = enuM
-        }
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        var enuM = appDelegate.store.project.enums[row]
+        enuM.name = string
+        appDelegate.store.project.enums[row] = enuM
     }
+    
 }
 
 // MARK: HGTableRowAppendable
@@ -115,7 +114,6 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        
         appDelegate.store.project.enums.append(Enum.new)
     }
     

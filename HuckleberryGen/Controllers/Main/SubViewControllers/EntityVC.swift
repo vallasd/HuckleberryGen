@@ -80,21 +80,19 @@ extension EntityVC: HGTableRowSelectable {
     }
 }
 
-// MARK: HGTableItemEditable
-extension EntityVC: HGTableItemEditable {
+// MARK: HGTableFieldEditable
+extension EntityVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
-        if type == .Field && tag == 0 { return true } // Entity Name
-        return false
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        return true
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        if tag == 0 && data is HGFieldData {
-            var entity = appDelegate.store.project.entities[row]
-            entity.name = data.title
-            appDelegate.store.project.entities[row] = entity
-        }
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        var entity = appDelegate.store.project.entities[row]
+        entity.name = string
+        appDelegate.store.project.entities[row] = entity
     }
+    
 }
 
 // MARK: HGTableRowAppendable

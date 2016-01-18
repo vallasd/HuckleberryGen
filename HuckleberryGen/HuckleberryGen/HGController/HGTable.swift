@@ -50,16 +50,15 @@ protocol HGTablePostable: HGTableRowSelectable {
     func selectNotification(fortable table: HGTable) -> String
 }
 
-/// Protocol that allows user to edit fields of the HGCell in an HGTable
-protocol HGTableItemEditable: HGTableDisplayable {
-    /// If HGOption is .No, will not attempt to edit HGCellItemType. If HGOption is .Yes, will allow user to Edit Item or Highlight an Image.  If HGOption is .AskUser, will delegate didSelectRowForOption if class conforms to HGTableItemOptionEditable protocol.
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData)
+protocol HGTableItemSelectable: HGTableDisplayable {
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType)
 }
 
-/// allows user to edit items in the HGCell of HGTable by calling another HGTable that will give selection choices for user, overrides HGTableEditable protocol when necessary
-protocol HGTableItemOptionable: HGTableItemEditable {
-    func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType)
+/// Protocol that allows user to edit fields of the HGCell in an HGTable
+protocol HGTableFieldEditable: HGTableDisplayable {
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String)
 }
 
 /// allows user to add and delete rows in HGTable
@@ -96,8 +95,8 @@ class HGTable: NSObject {
         if let d = delegate as? HGTableObservable { observeDelegate = d }
         if let d = delegate as? HGTablePostable { selectDelegate = d }
         if let d = delegate as? HGTableRowSelectable { rowSelectDelegate = d }
-        if let d = delegate as? HGTableItemEditable { itemEditDelegate = d }
-        if let d = delegate as? HGTableItemOptionable { itemOptionDelegate = d }
+        if let d = delegate as? HGTableItemSelectable { itemSelectDelegate = d }
+        if let d = delegate as? HGTableFieldEditable { fieldEditDelegate = d }
         if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
     }
     
@@ -147,9 +146,9 @@ class HGTable: NSObject {
     /// Delegate for AnyObject which conforms to protocol HGTableRowSelectable
     private weak var rowSelectDelegate: HGTableRowSelectable?
     /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
-    private weak var itemEditDelegate: HGTableItemEditable?
-    /// Delegate for AnyObject which conforms to protocol HGTableItemOptionable
-    private weak var itemOptionDelegate: HGTableItemOptionable?
+    private weak var itemSelectDelegate: HGTableItemSelectable?
+    /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
+    private weak var fieldEditDelegate: HGTableFieldEditable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
     private weak var rowAppenedDelegate: HGTableRowAppendable?
     
@@ -292,11 +291,7 @@ extension HGTable: HGTableViewDelegate {
 extension HGTable: HGCellDelegate {
     
     func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool {
-        return itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? false
-    }
-    
-    func hgcell(cell: HGCell, shouldEditTag tag: Int, type: HGCellItemType) -> Bool {
-        return itemEditDelegate?.hgtable(self, shouldEditRow: cell.row, tag: tag, type: type) ?? false
+        return itemSelectDelegate?.hgtable(self, shouldSelect: cell.row, tag: tag, type: type) ?? false
     }
     
     func hgcell(cell: HGCell, didSelectTag tag: Int, type: HGCellItemType) {
@@ -330,10 +325,16 @@ extension HGTable: HGCellDelegate {
             lastSelectedCellWithTag = cell
             selectedLocations = [newLocation]
         }
+        
+        itemSelectDelegate?.hgtable(self, didSelectRow: cell.row, tag: tag, type: type)
     }
     
-    func hgcell(cell: HGCell, didEditTag tag: Int, withData data: HGCellItemData) {
-        itemEditDelegate?.hgtable(self, didEditRow: cell.row, tag: tag, withData: data)
+    func hgcell(cell: HGCell, shouldEditField field: Int) -> Bool {
+        return fieldEditDelegate?.hgtable(self, shouldEditRow: cell.row, field: field) ?? false
+    }
+    
+    func hgcell(cell: HGCell, didEditField field: Int, withString string: String) {
+        fieldEditDelegate?.hgtable(self, didEditRow: cell.row, field: field, withString: string)
     }
     
 }

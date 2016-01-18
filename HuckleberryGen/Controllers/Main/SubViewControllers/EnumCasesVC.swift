@@ -70,25 +70,6 @@ extension EnumCasesVC: HGTableRowSelectable {
     }
 }
 
-// MARK: HGTableItemEditable
-extension EnumCasesVC: HGTableItemEditable {
-    
-    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
-        // TODO: FIXED .IMAGE to run the
-        if type == .Field && tag == 0 { return true } // Attribute Name
-        if type == .Image && tag == 0 { return true } // Attribute Type
-        return false
-    }
-    
-    func hgtable(table: HGTable, didEditRow row: Int, tag: Int, withData data: HGCellItemData) {
-        if tag == 0 && data is HGFieldData {
-            var casE = appDelegate.store.project.enums[table.parentRow].cases[row]
-            casE.name = data.title
-            appDelegate.store.project.enums[table.parentRow].cases[row] = casE
-        }
-    }
-}
-
 // MARK: HGTableRowAppendable
 extension EnumCasesVC: HGTableRowAppendable {
     
@@ -108,3 +89,20 @@ extension EnumCasesVC: HGTableRowAppendable {
         appDelegate.store.project.enums[table.parentRow].cases.removeIndexes(rows)
     }
 }
+
+// MARK: HGTableFieldEditable
+extension EnumCasesVC: HGTableFieldEditable {
+    
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        if field == 0 { return true }
+        return false
+    }
+    
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        var enumcase = appDelegate.store.project.enums[table.parentRow].cases[row]
+        enumcase.name = string
+        appDelegate.store.project.enums[table.parentRow].cases[row] = enumcase
+    }
+    
+}
+
