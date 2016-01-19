@@ -284,6 +284,11 @@ extension HGTable: HGTableViewDelegate {
         rowAppenedDelegate?.hgtable(self, willDeleteRows: rows)
     }
     
+    func hgtableview(hgtableview: HGTableView, didDeleteRows rows: [Int]) {
+        let row = notSelected
+        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row) }
+    }
+    
 }
 
 // MARK: HGCellDelegate

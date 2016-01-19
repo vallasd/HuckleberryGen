@@ -18,7 +18,7 @@ class MainWindowController: NSWindowController {
         super.windowDidLoad()
         
         window?.backgroundColor = HGColor.White.color()
-        window?.titleVisibility = .Hidden
+        window?.title = appDelegate.store.project.name
         appDelegate.mainWindowController = self
         boardHandler = BoardHandler(withWindowController: self)
         showWelcome()
@@ -52,11 +52,18 @@ class MainWindowController: NSWindowController {
         }
     }
     
+    private func showExport() {
+        let context = FolderBoardContext(boardtype: .Export)
+        let boarddata = FolderBoard.boardData(withContext: context)
+        boardHandler.start(withBoardData: boarddata)
+    }
+    
     /// completes appropriate actions for header button presses
     @IBAction func menuButtonPressed(sender: NSToolbarItem) {
         switch (sender.tag) {
         case 2: showOpen() // Open
-        case 3: showOpen() // Save
+        case 3: showExport() // Save
+        case 7: appDelegate.store.saveCurrentProject()
         case 8: showSettings()  // Settings
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }

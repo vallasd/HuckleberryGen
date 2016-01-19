@@ -30,7 +30,7 @@ class SBD_Import: SelectionBoardDelegate {
     /// creates a folder (of importfiles) from searchPath
     private func createImportFolder() {
         
-        let path = appDelegate.store.importFileSearchPath
+        let path = appDelegate.store.importPath
         let name: String = path.lastPathComponent
         
         // Create a folder from path and name

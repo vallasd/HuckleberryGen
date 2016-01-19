@@ -229,6 +229,7 @@
                     </view>
                     <connections>
                         <outlet property="folderButton" destination="G83-9s-0q7" id="U60-de-kLS"/>
+                        <outlet property="titleTextField" destination="18M-LA-gkn" id="JqM-cb-9h8"/>
                     </connections>
                 </viewController>
                 <customObject id="c1t-n3-K3L" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

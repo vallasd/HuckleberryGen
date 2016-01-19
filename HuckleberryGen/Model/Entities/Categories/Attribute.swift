@@ -15,13 +15,16 @@ struct Attribute {
     var type: String
     
     var image: NSImage {
+        
         if type.isEmpty {
             HGReportHandler.report("Attribute type is empty, using Error Image", response: .Error)
             return NSImage(named: "removeIcon")!
         }
-        if Primitive.strings.contains(type) {
-            return NSImage.image(named: "typeIcon", title: type)
+        
+        if let primitive = Primitive.optionalPrimitive(string: type) {
+            return NSImage.image(named: "typeIcon", title: primitive.string)
         }
+        
         return NSImage.image(named: "enumIcon", title: type)
     }
 
@@ -70,12 +73,9 @@ enum Primitive: Int {
         return Int(self.rawValue)
     }
 
-    static var set: [Primitive] {
-        return [._Int, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary]
-    }
+    static var set: [Primitive] = [._Int, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary]
     
     static var strings = ["Int", "Double", "Float", "String", "Boolean", "Date", "Binary Data"]
-    
     
     var image: NSImage {
         return NSImage.image(named: "typeIcon", title: Primitive.strings[self.int])
@@ -98,6 +98,7 @@ enum Primitive: Int {
     
     static func create(string string: String) -> Primitive {
         switch string {
+        case "Int": return ._Int
         case "Integer 16": return ._Int
         case "Integer 32": return ._Int
         case "Integer 64": return ._Int
@@ -112,6 +113,25 @@ enum Primitive: Int {
         default:
             HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int", response: .Error)
             return ._Int
+        }
+    }
+    
+    static func optionalPrimitive(string string: String) -> Primitive? {
+        switch string {
+        case "Int": return ._Int
+        case "Integer 16": return ._Int
+        case "Integer 32": return ._Int
+        case "Integer 64": return ._Int
+        case "Decimal": return ._Float
+        case "Double": return ._Double
+        case "Float": return ._Float
+        case "String": return ._String
+        case "Boolean": return ._Boolean
+        case "Date": return ._Date
+        case "Binary Data": return ._Binary
+        case "Transformable": return ._Binary
+        default:
+            return nil
         }
     }
 }

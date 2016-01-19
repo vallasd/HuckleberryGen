@@ -677,7 +677,7 @@
                                         <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="S97-LQ-0a6"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="14BCFE6F-4234-42E6-8A10-575F6360FFAD" label="refresh" paletteLabel="refresh" tag="7" image="refreshIcon" id="Vso-H6-Aw0">
+                                <toolbarItem implicitItemIdentifier="14BCFE6F-4234-42E6-8A10-575F6360FFAD" label="save" paletteLabel="save" tag="7" image="refreshIcon" id="Vso-H6-Aw0" userLabel="save">
                                     <connections>
                                         <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="v3i-Nv-gdc"/>
                                     </connections>
@@ -707,6 +707,7 @@
                                 <toolbarItem reference="3my-Xg-2s9"/>
                                 <toolbarItem reference="aT8-5y-1HR"/>
                                 <toolbarItem reference="6Tx-Gr-5rh"/>
+                                <toolbarItem reference="Vso-H6-Aw0"/>
                                 <toolbarItem reference="Cx7-0x-RWq"/>
                             </defaultToolbarItems>
                         </toolbar>
@@ -1207,7 +1208,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="bSo-Ao-NxG">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="bSo-Ao-NxG">
                                     <rect key="frame" x="1" y="145" width="198" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1283,7 +1284,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="JGV-bg-m4R">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="JGV-bg-m4R">
                                     <rect key="frame" x="1" y="147" width="186" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

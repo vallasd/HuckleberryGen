@@ -17,6 +17,7 @@ protocol HGTableViewDelegate: NSTableViewDelegate {
     func hgtableview(hgtableview: HGTableView, didSelectRow row: Int)
     func hgtableview(willAddRowToTable hgtableview: HGTableView)
     func hgtableview(hgtableview: HGTableView, willDeleteRows rows: [Int])
+    func hgtableview(hgtableview: HGTableView, didDeleteRows rows: [Int])
 }
 
 /// Extended NSTableView that appropriate handles mouse and keyboard clicks for Huckleberry Gen
@@ -69,6 +70,9 @@ class HGTableView: NSTableView {
                 selectRow(numRows - 1)
             }
         }
+        
+        // notify delegate that deletion happened
+        extendedDelegate?.hgtableview(self, didDeleteRows: rows)
     }
     
     /// custom HGTableView function that handles mouseDown events

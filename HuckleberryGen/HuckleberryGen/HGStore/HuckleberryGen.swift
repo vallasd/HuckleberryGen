@@ -17,8 +17,11 @@ final class HuckleberryGen {
     /// user and license info
     var licenseInfo: LicenseInfo
     
-    /// the current search path for the XCODE files
-    var importFileSearchPath: String
+    /// the current path for the XCODE files to import
+    var importPath: String
+    
+    /// the current path for the exporting a Project
+    var exportPath: String
     
     /// the project that is currently opened
     var project: Project {
@@ -35,16 +38,18 @@ final class HuckleberryGen {
         let file = HuckleberryGen.openDefaults(uniqID)
         uniqIdentifier = uniqID
         licenseInfo = file.licenseInfo
-        importFileSearchPath = file.importFileSearchPath
+        importPath = file.importPath
+        exportPath = file.exportPath
         project = file.project
         savedProjects = file.savedProjects
     }
     
     /// initializes Huckleberry Gen when user gives all data
-    init(uniqIdentifier: String, licenseInfo: LicenseInfo, importFileSearchPath: String, project: Project, savedProjects: [String]) {
+    init(uniqIdentifier: String, licenseInfo: LicenseInfo, importPath: String, exportPath: String, project: Project, savedProjects: [String]) {
         self.uniqIdentifier = uniqIdentifier
         self.licenseInfo = licenseInfo
-        self.importFileSearchPath = importFileSearchPath
+        self.importPath = importPath
+        self.exportPath = exportPath
         self.project = project
         self.savedProjects = savedProjects
     }
@@ -52,7 +57,7 @@ final class HuckleberryGen {
     /// clears all variables to default values
     func clear() {
         licenseInfo = LicenseInfo.new
-        importFileSearchPath = "/"
+        importPath = "/"
         project = Project.new
     }
     
@@ -162,6 +167,11 @@ final class HuckleberryGen {
         return true
     }
     
+    /// exports a project to a series of files and directories
+    func exportProject() {
+        print("Exporting the Project to \(exportPath)")
+    }
+    
     
     // MARK: Notifications
     
@@ -197,14 +207,15 @@ extension HuckleberryGen: HGEncodable {
     
     static var new: HuckleberryGen {
         let uuid = NSUUID().UUIDString
-        return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importFileSearchPath: "/", project: Project.new, savedProjects: [])
+        return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importPath: "/", exportPath: "/", project: Project.new, savedProjects: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
         dict["uniqIdentifier"] = uniqIdentifier
         dict["licenseInfo"] = licenseInfo.encode
-        dict["importFileSearchPath"] = importFileSearchPath
+        dict["importPath"] = importPath
+        dict["exportPath"] = exportPath
         dict["project"] = project.encode
         dict["savedProjects"] = savedProjects
         return dict
@@ -214,9 +225,10 @@ extension HuckleberryGen: HGEncodable {
         let dict = hgdict(fromObject: object, decoderName: "HuckleberryGen")
         let uniqIdentifier = dict["uniqIdentifier"].string
         let licenseInfo = dict["licenseInfo"].licenseInfo
-        let importFileSearchPath = dict["importFileSearchPath"].string
+        let importPath = dict["importPath"].string
+        let exportPath = dict["exportPath"].string
         let project = dict["project"].project
         let savedProjects = dict["savedProjects"].arrayString
-        return HuckleberryGen(uniqIdentifier: uniqIdentifier, licenseInfo: licenseInfo, importFileSearchPath: importFileSearchPath, project: project, savedProjects: savedProjects)
+        return HuckleberryGen(uniqIdentifier: uniqIdentifier, licenseInfo: licenseInfo, importPath: importPath, exportPath: exportPath, project: project, savedProjects: savedProjects)
     }
 }

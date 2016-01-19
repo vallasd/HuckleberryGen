@@ -41,16 +41,18 @@ extension NSDate
     
     /// creates a string of MM/DD/YY for NSDate
     var mmddyy: String {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Month, .Day, .Year], fromDate: self)
-        return "\(components.month)/\(components.day)/\(components.year)"
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        let dateString = dateFormatter.stringFromDate(self)
+        return dateString
     }
     
-    /// creates a string of MM/DD/YY mm:ss for NSDate
+    /// creates a string of MM/DD/YY h:mm:ss a for NSDate
     var mmddyymmss: String {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Month, .Day, .Year, .Minute, .Second], fromDate: self)
-        return "\(components.month)/\(components.day)/\(components.year) \(components.minute):\(components.second)"
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy hh:mm:ss a"
+        let dateString = dateFormatter.stringFromDate(self)
+        return dateString
     }
     
     /// creates a string of yyyy for NSDate
