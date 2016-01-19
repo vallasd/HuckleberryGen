@@ -11,11 +11,10 @@ import Foundation
 
 /// protocol that allows user to track when selected locations change.  This is designed to be used by a secondary delegate to track changes made to the table.
 protocol HGTableSelectionTrackable: AnyObject {
-    // called everytime
     func hgtableSelectedLocationsChanged(table: HGTable)
 }
 
-/// Protocol that allows HGTable to display data in rows.
+/// protocol that allows HGTable to display data in rows.
 protocol HGTableDisplayable: AnyObject {
     func numberOfRows(fortable table: HGTable) -> Int
     /// Pass the height of a specific row in the HGTableView.
@@ -26,42 +25,43 @@ protocol HGTableDisplayable: AnyObject {
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData
 }
 
-/// Protocol that allows HGTable to observe notification and reload Table when a notification is sent.
+/// protocol that allows HGTable to observe notification and reload Table when a notification is sent.
 protocol HGTableObservable: HGTableDisplayable {
     /// Pass the notification name that the HGTable should observe, table will reload data when the notification is observed.
     func observeNotifications(fortable table: HGTable) -> [String]
 }
 
-/// Protocol that allows user to select and highlight individual rows on HGTable.
+/// protocol that allows user to select and highlight individual rows on HGTable.
 protocol HGTableRowSelectable: HGTableDisplayable {
     // Pass Boolean value to inform HGTable whether row should be selectable
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
 }
 
-/// Protocol that allows user to select and highlight individual rows on HGTable.
+/// protocol that allows user to select and highlight individual rows on HGTable.
 protocol HGTableRowTouchable: HGTableDisplayable {
     // Pass Boolean value to inform HGTable whether row should be selectable
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool
 }
 
-/// Protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
+/// protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
 protocol HGTablePostable: HGTableRowSelectable {
     /// Pass the notification name that the HGTable should POST when a new row is selected.
     func selectNotification(fortable table: HGTable) -> String
 }
 
+/// protocol that allows user to select types of the HGCell in an HGTable
 protocol HGTableItemSelectable: HGTableDisplayable {
     func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool
     func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType)
 }
 
-/// Protocol that allows user to edit fields of the HGCell in an HGTable
+/// protocol that allows user to edit fields of the HGCell in an HGTable
 protocol HGTableFieldEditable: HGTableDisplayable {
     func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool
     func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String)
 }
 
-/// allows user to add and delete rows in HGTable
+/// allows user to add and delete rows in HGTable.  Handles the table updates within HGTable, as long as Delegate updates the Datasource.
 protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool
     func hgtable(willAddRowToTable table: HGTable)
@@ -102,7 +102,7 @@ class HGTable: NSObject {
     
     func updateTableView(withTableView tv: NSTableView) {
         tableview = tv
-        tableview.identifier = "MainTableView"
+        tableview.identifier = String.random(7)
         tableview.setDelegate(self)
         tableview.setDataSource(self)
         
@@ -208,7 +208,6 @@ class HGTable: NSObject {
             self?.parentRow = notSelected
             self?.update()
             })
-        
     }
     
     // MARK: Deinit

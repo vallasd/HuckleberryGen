@@ -38,7 +38,7 @@ extension DBD_SaveProject: DecisionBoardDelegateCancelable {
 extension DBD_SaveProject: DecisionBoardDelegate {
     
     func decisionboardQuestion(db: DecisionBoard) -> String {
-        return "Do you want to save \(project.name)"
+        return "Do you want to save \(project.name)?"
     }
     
     func decisionboard(db: DecisionBoard, didChoose: Bool) {
@@ -54,12 +54,3 @@ extension DBD_SaveProject: DecisionBoardDelegate {
         }
     }
 }
-
-
-///// lets DecisionBoardDelegate decide what action to perform after DidChoose is called.  Default is .End, so implement this protocol if you want the Decision Board to do something else besides remove itself
-//protocol DecisionBoardDelegateProgressable: DecisionBoardDelegate {
-//    func decisionboardNavAction(db: DecisionBoard) -> NavAction
-//}
-//
-///// lets DecisionBoardDelegate display options with a cancel button
-//protocol DecisionBoardDelegateCancelable: DecisionBoardDelegate {}

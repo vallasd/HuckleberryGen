@@ -13,9 +13,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qeD-LJ-lux">
-                    <rect key="frame" x="6" y="7" width="342" height="36"/>
+                    <rect key="frame" x="6" y="11" width="342" height="29"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Field 0" id="2qS-qa-6YP">
-                        <font key="font" size="30" name=".HelveticaNeueDeskInterface-Regular"/>
+                        <font key="font" size="24" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>

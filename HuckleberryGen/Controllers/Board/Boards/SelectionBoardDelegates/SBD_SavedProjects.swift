@@ -15,10 +15,7 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// reference to the cell type used
-    let celltype = HGCellType.FieldCell1
-    
-    /// a list of ProjectInfos for saved projects
-    let savedProjects = appDelegate.store.savedProjects
+    let celltype = HGCellType.FieldCell2
     
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = locations[0].row
@@ -30,7 +27,8 @@ class SBD_SavedProjects: SelectionBoardDelegate {
 extension SBD_SavedProjects: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return savedProjects.count
+        let count = appDelegate.store.savedProjects.count
+        return count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -42,18 +40,54 @@ extension SBD_SavedProjects: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let savedProject = savedProjects[row]
-        let fieldData = HGFieldData(title: savedProject)
-        return HGCellData.fieldCell1(field0: fieldData)
+        let savedProjectName = appDelegate.store.savedProjects[row]
+        let fieldData = HGFieldData(title: savedProjectName)
+        return HGCellData.fieldCell2(field0: fieldData, field1: HGFieldData(title: ""))
     }
 }
 
+// MARK: HGTableRowSelectable
 extension SBD_SavedProjects: HGTableRowSelectable {
     
     func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
-    
 }
 
+// MARK: HGTableFieldEditable
+extension SBD_SavedProjects: HGTableFieldEditable {
+    
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        if field == 0 { return true }
+        return false
+    }
+    
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        if field == 0 {
+            appDelegate.store.changeProject(atIndex: row, toName: string)
+            table.update()
+        }
+    }
+}
 
+// MARK: HGTableRowAppendable
+extension SBD_SavedProjects: HGTableRowAppendable {
+    
+    func hgtable(shouldAddRowToTable table: HGTable) -> Bool {
+        return false
+    }
+    
+    func hgtable(willAddRowToTable table: HGTable) {
+        // do nothing
+    }
+    
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+        return .Yes
+    }
+    
+    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+        let row = rows[0]
+        appDelegate.store.deleteProject(atIndex: row)
+    }
+
+}

@@ -33,7 +33,7 @@ extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bo
 extension Attribute: HGEncodable {
     
     static var new: Attribute {
-        return Attribute(name: "New Attribute", type: "Integer 16")
+        return Attribute(name: "New Attribute", type: "Int")
     }
     
     var encode: AnyObject {
@@ -54,17 +54,13 @@ extension Attribute: HGEncodable {
 
 enum Primitive: Int {
  
-    case _Int16 = 0
-    case _Int32 = 1
-    case _Int64 = 2
-    case _Decimal = 3
-    case _Double = 4
-    case _Float = 5
-    case _String = 6
-    case _Boolean = 7
-    case _Date = 8
-    case _Binary = 9
-    case _Transformable = 10
+    case _Int = 0
+    case _Double = 1
+    case _Float = 2
+    case _String = 3
+    case _Boolean = 4
+    case _Date = 5
+    case _Binary = 6
     
     var string: String {
         return Primitive.strings[rawValue]
@@ -75,10 +71,11 @@ enum Primitive: Int {
     }
 
     static var set: [Primitive] {
-        return [._Int16, ._Int32, ._Int64, ._Decimal, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary, ._Transformable]
+        return [._Int, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary]
     }
     
-    static var strings = ["Integer 16", "Integer 32", "Integer 64", "Decimal", "Double", "Float", "String", "Boolean", "Date", "Binary Data", "Transformable"]
+    static var strings = ["Int", "Double", "Float", "String", "Boolean", "Date", "Binary Data"]
+    
     
     var image: NSImage {
         return NSImage.image(named: "typeIcon", title: Primitive.strings[self.int])
@@ -86,39 +83,35 @@ enum Primitive: Int {
     
     static func create(int int: Int) -> Primitive {
         switch(int) {
-        case 0: return ._Int16
-        case 1: return ._Int32
-        case 2: return ._Int64
-        case 3: return ._Decimal
-        case 4: return ._Double
-        case 5: return ._Float
-        case 6: return ._String
-        case 7: return ._Boolean
-        case 8: return ._Date
-        case 9: return ._Binary
-        case 10: return ._Transformable
+        case 0: return ._Int
+        case 1: return ._Double
+        case 2: return ._Float
+        case 3: return ._String
+        case 4: return ._Boolean
+        case 5: return ._Date
+        case 6: return ._Binary
         default:
-            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int16", response: .Error)
-            return ._Int16
+            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int", response: .Error)
+            return ._Int
         }
     }
     
     static func create(string string: String) -> Primitive {
         switch string {
-        case "Integer 16": return ._Int16
-        case "Integer 32": return ._Int32
-        case "Integer 64": return ._Int64
-        case "Decimal": return ._Decimal
+        case "Integer 16": return ._Int
+        case "Integer 32": return ._Int
+        case "Integer 64": return ._Int
+        case "Decimal": return ._Float
         case "Double": return ._Double
         case "Float": return ._Float
         case "String": return ._String
         case "Boolean": return ._Boolean
         case "Date": return ._Date
         case "Binary Data": return ._Binary
-        case "Transformable": return ._Transformable
+        case "Transformable": return ._Binary
         default:
-            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int16", response: .Error)
-            return ._Int16
+            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int", response: .Error)
+            return ._Int
         }
     }
 }
@@ -126,7 +119,7 @@ enum Primitive: Int {
 extension Primitive: HGEncodable {
     
     static var new: Primitive {
-        return ._Int16
+        return ._Int
     }
     
     var encode: AnyObject {
@@ -136,7 +129,78 @@ extension Primitive: HGEncodable {
     static func decode(object object: AnyObject) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int16", response: .Error)
-        return ._Int16
+        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int", response: .Error)
+        return ._Int
     }
 }
+
+//enum Primitive: Int {
+//
+//    case _Int16 = 0
+//    case _Int32 = 1
+//    case _Int64 = 2
+//    case _Decimal = 3
+//    case _Double = 4
+//    case _Float = 5
+//    case _String = 6
+//    case _Boolean = 7
+//    case _Date = 8
+//    case _Binary = 9
+//    case _Transformable = 10
+//
+//    var string: String {
+//        return Primitive.strings[rawValue]
+//    }
+//
+//    var int: Int {
+//        return Int(self.rawValue)
+//    }
+//
+//    static var set: [Primitive] {
+//        return [._Int16, ._Int32, ._Int64, ._Decimal, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary, ._Transformable]
+//    }
+//
+//    static var strings = ["Integer 16", "Integer 32", "Integer 64", "Decimal", "Double", "Float", "String", "Boolean", "Date", "Binary Data", "Transformable"]
+//
+//    var image: NSImage {
+//        return NSImage.image(named: "typeIcon", title: Primitive.strings[self.int])
+//    }
+//
+//    static func create(int int: Int) -> Primitive {
+//        switch(int) {
+//        case 0: return ._Int16
+//        case 1: return ._Int32
+//        case 2: return ._Int64
+//        case 3: return ._Decimal
+//        case 4: return ._Double
+//        case 5: return ._Float
+//        case 6: return ._String
+//        case 7: return ._Boolean
+//        case 8: return ._Date
+//        case 9: return ._Binary
+//        case 10: return ._Transformable
+//        default:
+//            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int16", response: .Error)
+//            return ._Int16
+//        }
+//    }
+//
+//    static func create(string string: String) -> Primitive {
+//        switch string {
+//        case "Integer 16": return ._Int16
+//        case "Integer 32": return ._Int32
+//        case "Integer 64": return ._Int64
+//        case "Decimal": return ._Decimal
+//        case "Double": return ._Double
+//        case "Float": return ._Float
+//        case "String": return ._String
+//        case "Boolean": return ._Boolean
+//        case "Date": return ._Date
+//        case "Binary Data": return ._Binary
+//        case "Transformable": return ._Transformable
+//        default:
+//            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int16", response: .Error)
+//            return ._Int16
+//        }
+//    }
+//}

@@ -122,7 +122,7 @@ extension Optional {
         if let int = self as? Int { return Primitive.create(int: int) }
         if let string = self as? String { return Primitive.create(string: string) }
         HGReportHandler.report("self: |\(self)| is not AttributeType mapable, using ._Int16", response: .Error)
-        return ._Int16
+        return ._Int
     }
     
     var importFileType: ImportFileType {
