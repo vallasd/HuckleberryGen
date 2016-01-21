@@ -26,6 +26,7 @@ final class HuckleberryGen {
     /// the project that is currently opened
     var project: Project {
         didSet {
+            appDelegate.mainWindowController.window?.title = project.name
             postProjectChanged()
         }
     }
@@ -74,6 +75,7 @@ final class HuckleberryGen {
         // if project was not already named, name it and append it to savedProjects
         if project.isNew {
             project.name = "New Project \(NSDate().mmddyymmss)"
+            appDelegate.mainWindowController.window?.title = project.name
             savedProjects.append(project.name)
         }
         
@@ -90,6 +92,7 @@ final class HuckleberryGen {
         // if project was not already named, name it and append it to savedProjects
         if project.isNew {
             project.name = "New Project \(NSDate().mmddyymmss)"
+            appDelegate.mainWindowController.window?.title = project.name
             savedProjects.append(project.name)
         }
         
@@ -153,9 +156,16 @@ final class HuckleberryGen {
             HGReportHandler.report("savedProjects already contains name, will not change name", response: .Error)
             return false
         }
+        
+        // check if this is current project, if so, rename the current project
+        let oldName = savedProjects[index]
+        if project.name == oldName {
+            project.name = name
+            appDelegate.mainWindowController.window?.title = project.name
+        }
     
         // create save keys
-        let oldKey = Project.saveKey(withUniqID: uniqIdentifier, name: savedProjects[index])
+        let oldKey = Project.saveKey(withUniqID: uniqIdentifier, name: oldName)
         let newKey = Project.saveKey(withUniqID: uniqIdentifier, name: name)
         
         // switch the default stuff
@@ -170,6 +180,8 @@ final class HuckleberryGen {
     /// exports a project to a series of files and directories
     func exportProject() {
         print("Exporting the Project to \(exportPath)")
+        let ep = ExportProject(store: self)
+        ep.export()
     }
     
     

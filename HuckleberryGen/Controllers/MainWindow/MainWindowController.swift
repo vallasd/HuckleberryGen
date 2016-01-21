@@ -63,7 +63,7 @@ class MainWindowController: NSWindowController {
         switch (sender.tag) {
         case 2: showOpen() // Open
         case 3: showExport() // Save
-        case 7: appDelegate.store.saveCurrentProject()
+        case 7: appDelegate.store.save()
         case 8: showSettings()  // Settings
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }

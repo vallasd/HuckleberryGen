@@ -14,6 +14,10 @@ struct Attribute {
     var name: String
     var type: String
     
+    var isPrimitive: Bool {
+        return Primitive.optionalPrimitive(string: type) != nil ? true : false
+    }
+    
     var image: NSImage {
         
         if type.isEmpty {
@@ -21,8 +25,8 @@ struct Attribute {
             return NSImage(named: "removeIcon")!
         }
         
-        if let primitive = Primitive.optionalPrimitive(string: type) {
-            return NSImage.image(named: "typeIcon", title: primitive.string)
+        if self.isPrimitive {
+            return NSImage.image(named: "typeIcon", title: type)
         }
         
         return NSImage.image(named: "enumIcon", title: type)

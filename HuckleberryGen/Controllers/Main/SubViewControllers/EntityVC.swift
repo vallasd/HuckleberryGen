@@ -84,7 +84,8 @@ extension EntityVC: HGTableRowSelectable {
 extension EntityVC: HGTableFieldEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        return true
+        if field == 0 { return true }
+        return false
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {

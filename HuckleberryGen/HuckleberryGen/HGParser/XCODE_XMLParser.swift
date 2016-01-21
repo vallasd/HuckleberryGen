@@ -55,6 +55,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     }
     
     func parserDidEndDocument(parser: NSXMLParser) {
+        if lastEntity != nil { entities.append(lastEntity!) } // Add the final entity
         print("Completed Parsing XCODE XML For \(xml.name)")
         callDelegate()
     }
@@ -62,6 +63,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         
         if elementName == ParseType.Entity.rawValue {
+            
             let name = attributeDict["name"]!
             if lastEntity != nil { entities.append(lastEntity!) }
             lastEntity = Entity(name: name, attributes: [], relationships: [])

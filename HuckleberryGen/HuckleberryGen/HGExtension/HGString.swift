@@ -39,4 +39,8 @@ extension String {
             return nsstring.lastPathComponent
         }
     }
+    
+    var lowerCaseFirstLetter: String {
+        return ""
+    }
 }
