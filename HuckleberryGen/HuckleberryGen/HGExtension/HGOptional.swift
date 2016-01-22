@@ -137,6 +137,12 @@ extension Optional {
         return 0
     }
     
+    var int: Int {
+        if let int = self as? Int { return int }
+        HGReportHandler.report("optional: |\(self)| is not Int mapable, using 0", response: .Error)
+        return 0
+    }
+    
     var int16: Int16 {
         if let int = self as? Int {
             if abs(int) > Int(Int16.max) { return Int16(int) }

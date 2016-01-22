@@ -10,7 +10,7 @@ import Foundation
 
 struct EnumCase {
     var name: String
-    var number: Int16
+    var number: Int
     
 }
 
@@ -30,7 +30,7 @@ extension EnumCase: HGEncodable {
     static func decode(object object: AnyObject) -> EnumCase {
         let dict = hgdict(fromObject: object, decoderName: "EnumCase")
         let name = dict["name"].string
-        let number = dict["number"].int16
+        let number = dict["number"].int
         return EnumCase(name: name, number: number)
     }
 }
