@@ -41,6 +41,19 @@ extension String {
     }
     
     var lowerCaseFirstLetter: String {
-        return ""
+        if self.isEmpty { return "" }
+        var string = self
+        let firstChar = String(string.characters.first!).lowercaseString
+        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
+        return string
+    }
+    
+    var lowerCaseFirstLetterAndArray: String {
+        
+        if self.isEmpty { return "" }
+        
+        let string = self.lowerCaseFirstLetter
+        
+        return string + "Array"
     }
 }

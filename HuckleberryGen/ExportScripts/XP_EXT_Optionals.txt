@@ -1,6 +1,6 @@
-extension Optional {
 
-    var interval: NSTimeInterval {
+
+var interval: NSTimeInterval {
         if let interval = self as? Double { return interval }
         HGReportHandler.report("optional: |\(self)| is not NSTimeInterval mapable, using 0", response: .Error)
         return 0
@@ -53,4 +53,3 @@ extension Optional {
         HGReportHandler.report("optional: |\(self)| is not Bool mapable, using false", response: .Error)
         return false
     }
-}
