@@ -12,6 +12,8 @@ class ExportExtensions {
     
     let path: String
     let exportOptional: ExportOptional
+    let exportString: ExportString
+    
     
     /// initializes the class with a baseDir and entity
     init(baseDir: String, store: HuckleberryGen) {
@@ -21,6 +23,7 @@ class ExportExtensions {
         let enumNames = store.project.enums.map { $0.name }
         
         exportOptional = ExportOptional(baseDir: path, licenseInfo: licenseInfo, entityNames: entityNames, enumNames: enumNames)
+        exportString = ExportString(baseDir: path, licenseInfo: licenseInfo, enums: store.project.enums)
         
     }
     
@@ -34,12 +37,12 @@ class ExportExtensions {
     /// creates an optional file for the given Entity.  Returns false if error.
     func exportFiles() -> Bool {
         
-        var pass = true
+        var exportedAllFiles = true
+
+        exportedAllFiles = exportOptional.exportFile() == false ? false : exportedAllFiles
+        exportedAllFiles = exportString.exportFile() == false ? false : exportedAllFiles
         
-        // pass = pass == false ? false : ExportOptional.exportFile()
-        
-        
-        return pass
+        return exportedAllFiles
     }
 
 }

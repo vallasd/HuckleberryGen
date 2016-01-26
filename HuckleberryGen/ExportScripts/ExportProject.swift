@@ -33,10 +33,22 @@ class ExportProject {
         // create Entity Files
         for entity in store.project.entities { exportEntity.exportFile(forEntity: entity) }
         
-        // create Enum Files
+        // create Store Enum Files
         for enuM in store.project.enums { exportEnum.exportFile(forEnum: enuM) }
         
+        // create Extension Files
+        exportExtensions.exportFiles()
     }
+    
+    static func genericPrimitives() -> [String] {
+        
+        return ["Bool", "Int", "Int16", "Int32", "Interval", "String"]
+    }
+    
+    static func genericPrimitiveDefaults() -> [String] {
+        return ["false", "0", "0", "0", "0", "\"MISSING STRING\""]
+    }
+    
     
     func createBaseFolders() {
         

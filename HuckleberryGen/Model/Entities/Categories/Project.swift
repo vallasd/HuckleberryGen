@@ -35,7 +35,7 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: [], entities: [])
+        return Project(name: Project.newName, enums: Enum.genericEnums(), entities: [])
     }
     
     var encode: AnyObject {

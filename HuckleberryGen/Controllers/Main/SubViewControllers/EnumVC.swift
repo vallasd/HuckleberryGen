@@ -94,7 +94,10 @@ extension EnumVC: HGTableRowSelectable {
 extension EnumVC: HGTableFieldEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        if field == 0 { return true }
+        if field == 0 {
+            let editable = appDelegate.store.project.enums[row].editable
+            return editable
+        }
         return false
     }
     
@@ -114,17 +117,26 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        appDelegate.store.project.enums.append(Enum.new)
+        let newEnum = Enum.new
+        appDelegate.store.project.enums.append(newEnum)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
         
+        var willAskUser = false
+        
         for row in rows {
             let enuM = appDelegate.store.project.enums[row]
+            if enuM.editable == false {
+                return .No
+            }
             if enuM.cases.count > 0 {
-                return .AskUser
+                willAskUser = true
             }
         }
+        
+        
+        if willAskUser { return .AskUser }
         
         return .Yes
     }

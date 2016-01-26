@@ -104,8 +104,8 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     // MARK: Private Methods
     
     private func callDelegate() {
-        let name = Project.newName
-        let project = Project(name: name, enums: [], entities: entities)
+        let project = Project.new
+        project.entities = project.entities + entities
         delegate?.parserDidParse(xml, success: !didError, project: project)
     }
     

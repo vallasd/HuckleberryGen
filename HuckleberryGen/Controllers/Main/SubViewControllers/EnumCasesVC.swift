@@ -74,7 +74,12 @@ extension EnumCasesVC: HGTableRowSelectable {
 extension EnumCasesVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
-        return table.parentRow != notSelected
+        
+        if table.parentRow == notSelected {
+            return false
+        }
+        
+        return appDelegate.store.project.enums[table.parentRow].editable
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
@@ -82,7 +87,8 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
-        return .Yes
+        
+        return appDelegate.store.project.enums[table.parentRow].editable == true ? .Yes : .No
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
@@ -94,7 +100,9 @@ extension EnumCasesVC: HGTableRowAppendable {
 extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        if field == 0 { return true }
+        if field == 0 {
+            return appDelegate.store.project.enums[table.parentRow].editable
+        }
         return false
     }
     

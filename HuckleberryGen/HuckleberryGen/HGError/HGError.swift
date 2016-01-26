@@ -2,11 +2,11 @@
 // import UIKit
 
 enum HGErrorResponse: String {
-    case Info = "[INFO] "
-    case Warn = "[WARNING] "
-    case Error = "[ERROR] "
-    case Alert = "[ALERT] "
-    case Assert = "[ASSERT] "
+    case Info = "[INFO]"
+    case Warn = "[WARNING]"
+    case Error = "[ERROR]"
+    case Alert = "[ALERT]"
+    case Assert = "[ASSERT]"
 }
 
 enum HGInfo: String {
@@ -100,7 +100,7 @@ struct HGReportHandler {
         switch (response) {
         case .Info:    if( hgReportHandlerInfo == true) { print("\(string)") }
         case .Warn:    if( hgReportHandlerWarn == true) { print("\(string)") }
-        case .Error:   if( hgReportHandlerError == true) { print("\(string)"); if (HGReportHandler.reportedError == false) { HGReportHandler.reportedError = true } }
+        case .Error:   if( hgReportHandlerError == true) { print("\(string)") }
         case .Alert:   if( hgReportHandlerAlert == true) { print("\(string)") }
         case .Assert:  if( hgReportHandlerAssert == true) { assert(true, string) }
         }
