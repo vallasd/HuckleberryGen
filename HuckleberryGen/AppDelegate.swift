@@ -25,8 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Nice For Debugging
         // NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
         
-        // Clear Defaults For Clean Build
-        // HuckleberryGen.store.clearDefaults()
+//         // clear store
+//         store.clear()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

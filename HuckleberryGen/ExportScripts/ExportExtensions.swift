@@ -13,7 +13,7 @@ class ExportExtensions {
     let path: String
     let exportOptional: ExportOptional
     let exportString: ExportString
-    
+    let exportInt: ExportInt
     
     /// initializes the class with a baseDir and entity
     init(baseDir: String, store: HuckleberryGen) {
@@ -24,7 +24,7 @@ class ExportExtensions {
         
         exportOptional = ExportOptional(baseDir: path, licenseInfo: licenseInfo, entityNames: entityNames, enumNames: enumNames)
         exportString = ExportString(baseDir: path, licenseInfo: licenseInfo, enums: store.project.enums)
-        
+        exportInt = ExportInt(baseDir: path, licenseInfo: licenseInfo, enums: store.project.enums)
     }
     
     /// creates a base folder
@@ -41,6 +41,7 @@ class ExportExtensions {
 
         exportedAllFiles = exportOptional.exportFile() == false ? false : exportedAllFiles
         exportedAllFiles = exportString.exportFile() == false ? false : exportedAllFiles
+        exportedAllFiles = exportInt.exportFile() == false ? false : exportedAllFiles
         
         return exportedAllFiles
     }

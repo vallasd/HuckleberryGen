@@ -38,6 +38,18 @@ extension Optional {
         return LicenseInfo.new
     }
     
+    var hgtype: HGType {
+        if let dict = self as? HGDICT { return HGType.decode(object: dict) }
+        HGReportHandler.report("optional: |\(self)| is not HGType mapable, returning new Entity", response: .Error)
+        return HGType.new
+    }
+    
+    var hgtypes: [HGType] {
+        if let array = self as? HGARRAY { return HGType.decodeArray(objects: array) }
+        HGReportHandler.report("optional: |\(self)| is not [HGType] mapable, returning []", response: .Error)
+        return []
+    }
+    
     var entity: Entity {
         if let dict = self as? HGDICT { return Entity.decode(object: dict) }
         HGReportHandler.report("optional: |\(self)| is not Entity mapable, returning new Entity", response: .Error)
@@ -165,14 +177,14 @@ extension Optional {
         return ""
     }
     
-    var optionalString: String? {
+    var stringOptional: String? {
         if self == nil { return nil }
         if let string = self as? String { return string }
         HGReportHandler.report("optional: |\(self)| is not Optional String mapable, using nil String?", response: .Error)
         return nil
     }
     
-    var arrayString: [String] {
+    var stringArray: [String] {
         if let array = self as? [String] { return array }
         HGReportHandler.report("optional: |\(self)| is not Optional String mapable, using Empty [String]", response: .Error)
         return []

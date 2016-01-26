@@ -54,22 +54,6 @@ extension SBD_SavedProjects: HGTableRowSelectable {
     }
 }
 
-// MARK: HGTableFieldEditable
-extension SBD_SavedProjects: HGTableFieldEditable {
-    
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        if field == 0 { return true }
-        return false
-    }
-    
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        if field == 0 {
-            appDelegate.store.changeProject(atIndex: row, toName: string)
-            table.update()
-        }
-    }
-}
-
 // MARK: HGTableRowAppendable
 extension SBD_SavedProjects: HGTableRowAppendable {
     

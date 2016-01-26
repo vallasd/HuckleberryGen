@@ -62,12 +62,12 @@ class ExportString {
             string += " var \(name.lowerCaseFirstLetter): \(name) {\n"
             string += "     switch self {\n"
             for enumcase in enuM.cases {
-                string += "     case \"\(enumcase.name)\": return .\(enumcase.name) {\n"
+                string += "     case \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
             }
             string += "     }\n"
-            string += "     HGReportHandler.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
+            string += "     appDelegate.hgerror.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
             string += "     return \(name).new\n"
-            string += " }\n"
+            string += " }\n\n"
 
         }
         

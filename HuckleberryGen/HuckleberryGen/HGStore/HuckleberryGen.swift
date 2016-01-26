@@ -55,10 +55,28 @@ final class HuckleberryGen {
         self.savedProjects = savedProjects
     }
     
+    /// clears NSUserDefaults completely
+    static func clear() {
+        let appDomain = NSBundle.mainBundle().bundleIdentifier
+        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
+    }
+    
+    
     /// clears all variables to default values
     func clear() {
+        let keys = Array(NSUserDefaults.standardUserDefaults().dictionaryRepresentation().keys)
+        let storeKeys = keys.filter { $0.containsString(self.uniqIdentifier) }
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        print("Deleting storeKeys: \n\(storeKeys)")
+        
+        for key in storeKeys {
+            defaults.removeObjectForKey(key)
+        }
+        
         licenseInfo = LicenseInfo.new
-        importPath = "/"
+        importPath = ""
+        exportPath = ""
         project = Project.new
     }
     
@@ -143,36 +161,35 @@ final class HuckleberryGen {
     }
     
     /// changes name of project at index of savedProjects to supplied, return true if project name was successfully changed
-    func changeProject(atIndex index: Int, toName name: String) -> Bool {
+    func changeCurrentProject(toName name: String) -> Bool {
         
-        // index out of bounds
-        if savedProjects.indices.contains(index) == false {
-            HGReportHandler.report("savedProjects attempting to change index that is out of bounds", response: .Error)
-            return false
+        // set original name
+        let originalName = project.name
+        
+        // remove original name
+        if savedProjects.contains(originalName) {
+            // remove original name and name from savedProjects if they exist
+            savedProjects = savedProjects.filter { $0 != originalName && $0 != name }
         }
         
-        // the name already exists
-        if savedProjects.contains(name) {
-            HGReportHandler.report("savedProjects already contains name, will not change name", response: .Error)
-            return false
-        }
+        // change name
+        project.name = name
         
-        // check if this is current project, if so, rename the current project
-        let oldName = savedProjects[index]
-        if project.name == oldName {
-            project.name = name
-            appDelegate.mainWindowController.window?.title = project.name
-        }
+        // add new name to top of index
+        savedProjects.insert(name, atIndex: 0)
+        
+        // update title bar
+        appDelegate.mainWindowController.window?.title = project.name
     
         // create save keys
-        let oldKey = Project.saveKey(withUniqID: uniqIdentifier, name: oldName)
-        let newKey = Project.saveKey(withUniqID: uniqIdentifier, name: name)
+        let oldKey = Project.saveKey(withUniqID: uniqIdentifier, name: originalName)
+        let key = project.saveKey(withUniqID: uniqIdentifier) as String!
         
-        // switch the default stuff
-        Project.switchDefaults(oldkey: oldKey, newkey: newKey)
+        // delete old key
+        Project.removeDefaults(oldKey)
         
-        // change name at the index
-        savedProjects[index] = name
+        // save new key
+        project.saveDefaults(key)
         
         return true
     }
@@ -240,7 +257,7 @@ extension HuckleberryGen: HGEncodable {
         let importPath = dict["importPath"].string
         let exportPath = dict["exportPath"].string
         let project = dict["project"].project
-        let savedProjects = dict["savedProjects"].arrayString
+        let savedProjects = dict["savedProjects"].stringArray
         return HuckleberryGen(uniqIdentifier: uniqIdentifier, licenseInfo: licenseInfo, importPath: importPath, exportPath: exportPath, project: project, savedProjects: savedProjects)
     }
 }

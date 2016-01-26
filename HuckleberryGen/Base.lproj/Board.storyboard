@@ -474,6 +474,49 @@
             </objects>
             <point key="canvasLocation" x="53" y="2153"/>
         </scene>
+        <!--Save Board-->
+        <scene sceneID="GOY-4x-gSv">
+            <objects>
+                <viewController storyboardIdentifier="SaveBoard" id="Du3-RO-GrD" customClass="SaveBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="OSR-Ee-fAf">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GSR-TR-TAk">
+                                <rect key="frame" x="200" y="233" width="80" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Save Project" id="O9R-5p-AxL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fv3-ev-qfK">
+                                <rect key="frame" x="20" y="118" width="440" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="440" id="o3J-yK-CSp"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ibd-wZ-nR4">
+                                    <font key="font" metaFont="system" size="24"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="GSR-TR-TAk" firstAttribute="top" secondItem="OSR-Ee-fAf" secondAttribute="top" constant="20" id="2Xd-cw-LFQ"/>
+                            <constraint firstItem="Fv3-ev-qfK" firstAttribute="centerY" secondItem="OSR-Ee-fAf" secondAttribute="centerY" id="emC-cy-nyn"/>
+                            <constraint firstItem="Fv3-ev-qfK" firstAttribute="centerX" secondItem="OSR-Ee-fAf" secondAttribute="centerX" id="n1Q-Zk-8bp"/>
+                            <constraint firstItem="GSR-TR-TAk" firstAttribute="centerX" secondItem="OSR-Ee-fAf" secondAttribute="centerX" id="vaW-dj-tIB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="projectName" destination="Fv3-ev-qfK" id="HRs-iS-7eT"/>
+                    </connections>
+                </viewController>
+                <customObject id="Or7-jR-uV2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="2483"/>
+        </scene>
     </scenes>
     <resources>
         <image name="NSUserGuest" width="32" height="32"/>

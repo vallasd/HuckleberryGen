@@ -22,6 +22,9 @@
 		0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034614091BDF81E40002F0AA /* DecisionBoard.swift */; };
 		034985071C56D50B0048F44C /* ExportString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985061C56D50B0048F44C /* ExportString.swift */; };
 		034985091C56D5220048F44C /* ExportInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985081C56D5220048F44C /* ExportInt.swift */; };
+		0349850A1C578B840048F44C /* HuckleberryGenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C251B5143A0004EC724 /* HuckleberryGenUITests.swift */; };
+		0349850C1C578BE80048F44C /* HGType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349850B1C578BE80048F44C /* HGType.swift */; };
+		0349850E1C579AA00048F44C /* SaveBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349850D1C579AA00048F44C /* SaveBoard.swift */; };
 		035428E91BA1A1C500BED618 /* HGNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428E81BA1A1C500BED618 /* HGNotif.swift */; };
 		035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428EA1BA1C16600BED618 /* NSNotification.swift */; };
 		035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E75551B9595890036AE0B /* HGFileQuery.swift */; };
@@ -37,7 +40,6 @@
 		036C7C0D1B5143A0004EC724 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036C7C0C1B5143A0004EC724 /* Assets.xcassets */; };
 		036C7C101B5143A0004EC724 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 036C7C0E1B5143A0004EC724 /* Main.storyboard */; };
 		036C7C1B1B5143A0004EC724 /* HuckleberryGenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C1A1B5143A0004EC724 /* HuckleberryGenTests.swift */; };
-		036C7C261B5143A0004EC724 /* HuckleberryGenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C251B5143A0004EC724 /* HuckleberryGenUITests.swift */; };
 		036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C601B514AF8004EC724 /* CoreDataModel.swift */; };
 		036C7C661B514AF8004EC724 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C641B514AF8004EC724 /* Relationship.swift */; };
 		036C7C6A1B514AF9004EC724 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C681B514AF9004EC724 /* Attribute.swift */; };
@@ -139,6 +141,8 @@
 		034614091BDF81E40002F0AA /* DecisionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionBoard.swift; sourceTree = "<group>"; };
 		034985061C56D50B0048F44C /* ExportString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportString.swift; path = ExportScripts/ExportExtensions/ExportString.swift; sourceTree = "<group>"; };
 		034985081C56D5220048F44C /* ExportInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportInt.swift; path = ExportScripts/ExportExtensions/ExportInt.swift; sourceTree = "<group>"; };
+		0349850B1C578BE80048F44C /* HGType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGType.swift; path = Categories/HGType.swift; sourceTree = "<group>"; };
+		0349850D1C579AA00048F44C /* SaveBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveBoard.swift; sourceTree = "<group>"; };
 		035428E81BA1A1C500BED618 /* HGNotif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGNotif.swift; path = HGNotif/HGNotif.swift; sourceTree = "<group>"; };
 		035428EA1BA1C16600BED618 /* NSNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotification.swift; sourceTree = "<group>"; };
 		035E75551B9595890036AE0B /* HGFileQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGFileQuery.swift; path = HGQuery/HGFileQuery.swift; sourceTree = "<group>"; };
@@ -380,6 +384,7 @@
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
 				036C7C641B514AF8004EC724 /* Relationship.swift */,
 				0339BC631BFE22E40071F8AD /* Project.swift */,
+				0349850B1C578BE80048F44C /* HGType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -527,6 +532,7 @@
 				03A20B3F1B99E4C900149AF5 /* SelectionBoard.swift */,
 				039731E01C4282D6003DA4F4 /* SelectionBoardDelegates */,
 				03A20B3D1B99E4C900149AF5 /* WelcomeBoard.swift */,
+				0349850D1C579AA00048F44C /* SaveBoard.swift */,
 			);
 			path = Boards;
 			sourceTree = "<group>";
@@ -770,6 +776,7 @@
 				036C7CBE1B529A84004EC724 /* HGDictionary.swift in Sources */,
 				036455C21BA264E40096B255 /* HGCellType.swift in Sources */,
 				0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */,
+				0349850C1C578BE80048F44C /* HGType.swift in Sources */,
 				03660ADD1BBDED6600DE41D5 /* NSImage.swift in Sources */,
 				036C7CC21B529A84004EC724 /* HGProtocol.swift in Sources */,
 				03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */,
@@ -786,6 +793,7 @@
 				036C7C661B514AF8004EC724 /* Relationship.swift in Sources */,
 				0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */,
 				03F25EDA1B9BFEE90048B0A0 /* AttributeVC.swift in Sources */,
+				0349850E1C579AA00048F44C /* SaveBoard.swift in Sources */,
 				03D4FE371C3ACD38007BBA5F /* HGNotifType.swift in Sources */,
 				036C7CBD1B529A84004EC724 /* HGError.swift in Sources */,
 				03F25EEB1B9C16EA0048B0A0 /* HGSplit.swift in Sources */,
@@ -857,7 +865,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				036C7C261B5143A0004EC724 /* HuckleberryGenUITests.swift in Sources */,
+				0349850A1C578B840048F44C /* HuckleberryGenUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

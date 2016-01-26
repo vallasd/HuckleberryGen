@@ -160,7 +160,7 @@ class ExportEntity {
         
         // begin decode function
         string += " static func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "     HGReportHandler.track(name: \"\(entity.name)\", object: object)\n"
+        string += "     appDelegate.hgerror.track(name: \"\(entity.name)\", object: object)\n"
         string += "     let dict = hgdict(fromObject: object)\n"
         
         // decode function attributes
@@ -184,7 +184,7 @@ class ExportEntity {
         }
         
         // decode function return statement
-        string += "     HGReportHandler.untrack()\n"
+        string += "     appDelegate.hgerror.untrack()\n"
         string += "     return \(entity.name)("
         
         // decode function return statement attributes

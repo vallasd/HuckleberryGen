@@ -139,7 +139,7 @@ class ExportEnum {
         string += " static func decode(object object: AnyObject) -> \(enuM.name) {\n"
         string += "     if let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
         string += "     if let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "     HGReportHandler.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
+        string += "     appDelegate.hgerror.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
         string += "     return \(enuM.name).new\n"
         
         // end decode function

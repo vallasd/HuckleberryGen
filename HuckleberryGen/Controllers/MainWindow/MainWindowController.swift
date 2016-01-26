@@ -25,6 +25,11 @@ class MainWindowController: NSWindowController {
     }
     
     /// displays the welcome screen
+    private func showSave() {
+        boardHandler.start(withBoardData: SaveBoard.boardData)
+    }
+    
+    /// displays the welcome screen
     private func showWelcome() {
         boardHandler.start(withBoardData: WelcomeBoard.boardData)
     }
@@ -61,10 +66,10 @@ class MainWindowController: NSWindowController {
     /// completes appropriate actions for header button presses
     @IBAction func menuButtonPressed(sender: NSToolbarItem) {
         switch (sender.tag) {
-        case 2: showOpen() // Open
-        case 3: showExport() // Save
-        case 7: appDelegate.store.save()
-        case 8: showSettings()  // Settings
+        case 2: showOpen()
+        case 3: showExport()
+        case 7: showSave()
+        case 8: showSettings()
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }
     }
