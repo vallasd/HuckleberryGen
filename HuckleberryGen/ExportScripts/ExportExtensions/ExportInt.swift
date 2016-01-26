@@ -59,18 +59,18 @@ class ExportInt {
             let defaultValue = "\(enuM.name).new"
             
             // create var that attempts to unwrap the string as the Enum
-            string += " /// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
-            string += " var \(name.lowerCaseFirstLetter): \(name) {\n"
-            string += "     switch self {\n"
+            string += "\t/// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
+            string += "\tvar \(name.lowerCaseFirstLetter): \(name) {\n"
+            string += " \t\tswitch self {\n"
             var count = 0
             for enumcase in enuM.cases {
-                string += "     case \(count): return .\(enumcase.name) \n"
+                string += "\t\tcase \(count): return .\(enumcase.name) \n"
                 count++
             }
-            string += "     }\n"
-            string += "     appDelegate.hgerror.report(\"int: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
-            string += "     return \(name).new\n"
-            string += " }\n\n"
+            string += "\t\t}\n"
+            string += "\t\tappDelegate.hgerror.report(\"int: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
+            string += "\t\treturn \(name).new\n"
+            string += "\t}\n"
         }
         
         // end string extension

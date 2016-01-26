@@ -38,14 +38,14 @@ extension Optional {
         return LicenseInfo.new
     }
     
-    var hgtype: HGType {
-        if let dict = self as? HGDICT { return HGType.decode(object: dict) }
+    var hgtype: Type {
+        if let dict = self as? HGDICT { return Type.decode(object: dict) }
         HGReportHandler.report("optional: |\(self)| is not HGType mapable, returning new Entity", response: .Error)
-        return HGType.new
+        return Type.new
     }
     
-    var hgtypes: [HGType] {
-        if let array = self as? HGARRAY { return HGType.decodeArray(objects: array) }
+    var hgtypes: [Type] {
+        if let array = self as? HGARRAY { return Type.decodeArray(objects: array) }
         HGReportHandler.report("optional: |\(self)| is not [HGType] mapable, returning []", response: .Error)
         return []
     }

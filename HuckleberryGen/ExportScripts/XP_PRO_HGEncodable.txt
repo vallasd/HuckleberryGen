@@ -52,7 +52,7 @@ extension HGEncodable {
 extension SequenceType where Generator.Element: HGEncodable {
 
     /// encodes an array of HGEncodables
-    var encode: [AnyObject]
+    var encode: [AnyObject] {
         var jsonArray: [AnyObject] = []
         for encodable in self {
             jsonArray.append(encodable.encode)

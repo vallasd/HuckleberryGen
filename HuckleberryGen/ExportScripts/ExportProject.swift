@@ -15,14 +15,19 @@ class ExportProject {
     let exportEntity: ExportEntity
     let exportEnum: ExportEnum
     let exportExtensions: ExportExtensions
+    let exportProtocols: ExportProtocols
+    let exportHGClasses: ExportHGClasses
     
     init(store: HuckleberryGen) {
         self.store = store
         let license = store.licenseInfo
+        let projectName = store.project.name
         path = store.exportPath + "/\(store.project.name)"
         exportEntity = ExportEntity(baseDir: path, licenseInfo: license)
         exportEnum = ExportEnum(baseDir: path, licenseInfo: license)
         exportExtensions = ExportExtensions(baseDir: path, store: store)
+        exportProtocols = ExportProtocols(baseDir: path, projectName: projectName, licenseInfo: license)
+        exportHGClasses = ExportHGClasses(baseDir: path, projectName: projectName, licenseInfo: license)
     }
     
     func export() {
@@ -38,6 +43,13 @@ class ExportProject {
         
         // create Extension Files
         exportExtensions.exportFiles()
+        
+        // create Protocol Files
+        exportProtocols.exportFiles()
+        
+        // create HGClass Files
+        exportHGClasses.exportFiles()
+        
     }
     
     static func genericPrimitives() -> [String] {
@@ -46,9 +58,36 @@ class ExportProject {
     }
     
     static func genericPrimitiveDefaults() -> [String] {
-        return ["false", "0", "0", "0", "0", "\"MISSING STRING\""]
+        return ["false", "0", "0", "0", "0", "\"notDefined\""]
     }
     
+    /// reads file in project, if there is an error, returns false
+    static func read(file file: String) -> String {
+        
+        let path = NSBundle.mainBundle().pathForResource(file, ofType: "txt") ?? ""
+        
+        do  {
+            let content = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding) // crash right away, you are looking for file that DNE
+            return content
+        } catch {
+            HGReportHandler.report("ExportProject: can not unpackage \(file) from path \(path)", response: .Error)
+        }
+        
+        return ""
+    }
+    
+    /// write to file, if there is an error, return false
+    static func write(file file: String, toPath path: String) -> Bool {
+        
+        do {
+            try file.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+            return true
+        } catch {
+            HGReportHandler.report("ExportProject: can not package \(file) to path \(path)", response: .Error)
+        }
+        
+        return false
+    }
     
     func createBaseFolders() {
         
@@ -63,6 +102,8 @@ class ExportProject {
         exportEntity.createBaseFolder()
         exportEnum.createBaseFolder()
         exportExtensions.createBaseFolder()
+        exportProtocols.createBaseFolder()
+        exportHGClasses.createBaseFolder()
         
 //        let entities = baseDirectory + "/Entities"
 //        let enums = baseDirectory + "/Enums"

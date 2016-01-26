@@ -47,12 +47,12 @@ class ExportEnum {
         
         // add struct if it is available
         let enumStanza = enumDefinition(enuM)
-        file = file + "\n\n" + enumStanza
+        file = file + "\n" + enumStanza
         
         // add encode if it is available
         if encodeAvail {
             let encodableStanza = encodableExtension(enuM)
-            file = file + "\n\n" + encodableStanza
+            file = file + "\n" + encodableStanza
         }
         
         // write to file, if there is an error, return false
@@ -68,45 +68,45 @@ class ExportEnum {
     /// creates a struct definition for the Entity in string format
     private func enumDefinition(enuM: Enum) -> String {
         
-        var string: String = "\n"
-        
         // begin enum definition
-        string += "enum \(enuM.name) {\n"
+        var string = "enum \(enuM.name) {\n"
+        
+        string += "\n"
         
         // add attributes to enum stanza
         for enumcase in enuM.cases {
-            string += "   case \(enumcase.name)\n"
+            string += "\tcase \(enumcase.name)\n"
         }
         
         string += "\n"
         
         // define int for enum stanza
-        string += " var int: Int {\n"
-        string += "     switch self {\n"
+        string += "\tvar int: Int {\n"
+        string += "\t\tswitch self {\n"
         
         var index = 0
         for enumcase in enuM.cases {
-            string += "     case \(enumcase.name): return \(index)\n"
+            string += "\t\tcase \(enumcase.name): return \(index)\n"
             index++
         }
         
         // end int for enum stanza
-        string += "     }\n"
-        string += " }\n"
+        string += "\t\t}\n"
+        string += "\t}\n"
         
         string += "\n"
         
         // define string for enum stanza
-        string += " var string: String {\n"
-        string += "     switch self {\n"
+        string += "\tvar string: String {\n"
+        string += "\t\tswitch self {\n"
         
         for enumcase in enuM.cases {
-            string += "     case \(enumcase.name): return \"\(enumcase.name)\"\n"
+            string += "\t\tcase \(enumcase.name): return \"\(enumcase.name)\"\n"
         }
         
         // end string for enum stanza
-        string += "     }\n"
-        string += " }\n"
+        string += "\t\t}\n"
+        string += "\t}\n"
         
         // end enum definition
         string += "}\n"
@@ -122,28 +122,28 @@ class ExportEnum {
         string += "\n"
         
         // new variable
-        string += " static var new: \(enuM.name) {\n"
-        string += "     return \(enuM.name).\(enuM.cases[0].name)\n"
+        string += "\tstatic var new: \(enuM.name) {\n"
+        string += "\t\treturn \(enuM.name).\(enuM.cases[0].name)\n"
         
         // end new variable
-        string += " }\n\n"
+        string += "\t}\n\n"
         
         // begin encode variable
-        string += " var encode: AnyObject {\n"
-        string += "     return self.int\n"
+        string += "\tvar encode: AnyObject {\n"
+        string += "\t\treturn self.int\n"
         
         // end encode variable
-        string += " }\n\n"
+        string += "\t}\n\n"
         
         // begin decode function
-        string += " static func decode(object object: AnyObject) -> \(enuM.name) {\n"
-        string += "     if let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "     if let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "     appDelegate.hgerror.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
-        string += "     return \(enuM.name).new\n"
+        string += "\tstatic func decode(object object: AnyObject) -> \(enuM.name) {\n"
+        string += "\t\tif let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
+        string += "\t\tif let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
+        string += "\t\tappDelegate.hgerror.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
+        string += "\t\treturn \(enuM.name).new\n"
         
         // end decode function
-        string += " }\n\n"
+        string += "\t}\n"
         
         // end hgencodable stanza
         string += "}\n"

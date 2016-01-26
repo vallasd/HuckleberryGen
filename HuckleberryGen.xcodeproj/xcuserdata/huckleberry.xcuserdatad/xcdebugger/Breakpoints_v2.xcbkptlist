@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/Model/Entities/Categories/Attribute.swift"
-            timestampString = "474959983.55522"
+            filePath = "HuckleberryGen/Controllers/Board/Boards/SelectionBoardDelegates/SBD_Attributes.swift"
+            timestampString = "475532739.565779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "decode(object:)"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "selectionboard(_:didChooseLocations:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

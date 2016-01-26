@@ -10,11 +10,11 @@ import Foundation
 
 final class Project {
     var name: String
-    var types: [HGType]
+    var types: [Type]
     var enums: [Enum]
     var entities: [Entity]
     
-    init(name: String, types: [HGType], enums:[Enum], entities: [Entity]) {
+    init(name: String, types: [Type], enums:[Enum], entities: [Entity]) {
         self.name = name
         self.enums = enums
         self.entities = entities
@@ -37,7 +37,7 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, types: HGType.genericTypes(), enums: Enum.genericEnums(), entities: [])
+        return Project(name: Project.newName, types: Type.genericTypes(), enums: Enum.genericEnums(), entities: [])
     }
     
     var encode: AnyObject {

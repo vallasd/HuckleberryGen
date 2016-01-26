@@ -58,16 +58,16 @@ class ExportString {
             let defaultValue = "\(enuM.name).new"
             
             // create var that attempts to unwrap the string as the Enum
-            string += " /// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
-            string += " var \(name.lowerCaseFirstLetter): \(name) {\n"
-            string += "     switch self {\n"
+            string += "\t/// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
+            string += "\tvar \(name.lowerCaseFirstLetter): \(name) {\n"
+            string += "\t\tswitch self {\n"
             for enumcase in enuM.cases {
-                string += "     case \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
+                string += "\t\tcase \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
             }
-            string += "     }\n"
-            string += "     appDelegate.hgerror.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
-            string += "     return \(name).new\n"
-            string += " }\n\n"
+            string += "\t\t}\n"
+            string += "\t\tappDelegate.hgerror.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
+            string += "\t\treturn \(name).new\n"
+            string += "\t}\n"
 
         }
         

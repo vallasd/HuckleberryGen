@@ -9,12 +9,6 @@
 import Foundation
 import CoreData
 
-enum HGEntityDepth: Int {
-    case Single = 1  // Just Attributes
-    case Double = 2  // Attributes and One Level Of Relationships
-    case Full = 3    // Attributes and All Levels of Relationships
-}
-
 protocol HGReportable {
     static var report: HGReport { get }
 }

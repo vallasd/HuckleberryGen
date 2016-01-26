@@ -34,22 +34,26 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// SelectionBoardDelegate function
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
-        let attributeString = attributes[index]
-        appDelegate.store.project.entities[entityIndex].attributes[attributeIndex].type = attributeString
+        var attribute = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
+        let type = types[index]
+        let isPrimitive = index < firstEnumIndex ? true : false
+        attribute.type = type;
+        attribute.isPrimitive = isPrimitive
+        appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = attribute
         appDelegate.store.post(forNotifType: .AttributeUpdated) // post notification so other classes are in the know
     }
     
-    /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
-    let attributes: [String] = Primitive.strings + appDelegate.store.project.enums.map { $0.name }
+    /// a list of strings of all attributes types that can be assigned
+    let types: [String] = Primitive.set.map { $0.string } + appDelegate.store.project.enums.map { $0.name }
     
     /// last index of Attribute Type in the attributes array
-    let firstEnumIndex = Primitive.strings.count
+    let firstEnumIndex = Primitive.set.count
     
     /// creates an array of HGImageData for an array indexes in attribute
     func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
         for index in indexes {
-            let name = attributes[index]
+            let name = types[index]
             let image = index < firstEnumIndex ? Primitive.create(string: name).image : Enum.image(withName: name)
             let imagedata = HGImageData(title: name, image: image)
             imagedatas.append(imagedata)
@@ -62,7 +66,7 @@ class SBD_Attributes: SelectionBoardDelegate {
 extension SBD_Attributes: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        let numImages = attributes.count
+        let numImages = types.count
         let numRows = celltype.rows(forImagesWithCount: numImages)
         return numRows
     }
@@ -76,7 +80,7 @@ extension SBD_Attributes: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: attributes.count)
+        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: types.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
     }

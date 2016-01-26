@@ -13,22 +13,30 @@ struct Attribute {
     
     var name: String
     var type: String
+    var isPrimitive: Bool
     
-    var isPrimitive: Bool {
-        return Primitive.optionalPrimitive(string: type) != nil ? true : false
+    init(name: String, primitive: Primitive) {
+        self.name = name
+        self.type = primitive.string
+        self.isPrimitive = true
+    }
+    
+    init(name: String, enuM: Enum) {
+        self.name = name
+        self.type = enuM.name
+        self.isPrimitive = false
+    }
+    
+    init(name: String, type: String, isPrimitive: Bool) {
+        self.name = name
+        self.type = type
+        self.isPrimitive = isPrimitive
     }
     
     var image: NSImage {
-        
-        if type.isEmpty {
-            HGReportHandler.report("Attribute type is empty, using Error Image", response: .Error)
-            return NSImage(named: "removeIcon")!
-        }
-        
-        if self.isPrimitive {
+        if isPrimitive {
             return NSImage.image(named: "typeIcon", title: type)
         }
-        
         return NSImage.image(named: "enumIcon", title: type)
     }
 
@@ -40,13 +48,14 @@ extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bo
 extension Attribute: HGEncodable {
     
     static var new: Attribute {
-        return Attribute(name: "New Attribute", type: "Int")
+        return Attribute(name: "New Attribute", primitive: Primitive._Int)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
         dict["name"] = name
         dict["type"] = type
+        dict["isPrimitive"] = isPrimitive
         return dict
     }
     
@@ -54,36 +63,53 @@ extension Attribute: HGEncodable {
         let dict = hgdict(fromObject: object, decoderName: "Attribute")
         let name = dict["name"].string
         let type = dict["type"].string
-        return Attribute(name: name, type: type)
+        let isPrimitive = dict["isPrimitive"].bool
+        return Attribute(name: name, type: type, isPrimitive: isPrimitive)
     }
 }
 
 
-enum Primitive: Int {
+enum Primitive {
  
-    case _Int = 0
-    case _Double = 1
-    case _Float = 2
-    case _String = 3
-    case _Boolean = 4
-    case _Date = 5
-    case _Binary = 6
+    case _Int
+    case _Double
+    case _Float
+    case _String
+    case _Bool
+    case _Date
+    case _Binary
+    
+    static var count = 7
     
     var string: String {
-        return Primitive.strings[rawValue]
+        switch self {
+        case _Int: return "Int"
+        case _Double: return "Double"
+        case _Float: return "Float"
+        case _String: return "String"
+        case _Bool: return "Bool"
+        case _Date: return "Date"
+        case _Binary: return "Binary"
+        }
     }
     
     var int: Int {
-        return Int(self.rawValue)
+        switch self {
+        case _Int: return 0
+        case _Double: return 0
+        case _Float: return 0
+        case _String: return 0
+        case _Bool: return 0
+        case _Date: return 0
+        case _Binary: return 0
+        }
     }
-
-    static var set: [Primitive] = [._Int, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary]
-    
-    static var strings = ["Int", "Double", "Float", "String", "Boolean", "Date", "Binary Data"]
     
     var image: NSImage {
-        return NSImage.image(named: "typeIcon", title: Primitive.strings[self.int])
+        return NSImage.image(named: "typeIcon", title: self.string)
     }
+    
+    static var set: [Primitive] = [_Int, _Double, _Float, _String, _Bool, _Date, _Binary]
     
     static func create(int int: Int) -> Primitive {
         switch(int) {
@@ -91,7 +117,7 @@ enum Primitive: Int {
         case 1: return ._Double
         case 2: return ._Float
         case 3: return ._String
-        case 4: return ._Boolean
+        case 4: return ._Bool
         case 5: return ._Date
         case 6: return ._Binary
         default:
@@ -110,7 +136,8 @@ enum Primitive: Int {
         case "Double": return ._Double
         case "Float": return ._Float
         case "String": return ._String
-        case "Boolean": return ._Boolean
+        case "Boolean": return ._Bool
+        case "Bool": return ._Bool
         case "Date": return ._Date
         case "Binary Data": return ._Binary
         case "Transformable": return ._Binary
@@ -130,7 +157,8 @@ enum Primitive: Int {
         case "Double": return ._Double
         case "Float": return ._Float
         case "String": return ._String
-        case "Boolean": return ._Boolean
+        case "Boolean": return ._Bool
+        case "Bool": return ._Bool
         case "Date": return ._Date
         case "Binary Data": return ._Binary
         case "Transformable": return ._Binary
@@ -157,74 +185,3 @@ extension Primitive: HGEncodable {
         return ._Int
     }
 }
-
-//enum Primitive: Int {
-//
-//    case _Int16 = 0
-//    case _Int32 = 1
-//    case _Int64 = 2
-//    case _Decimal = 3
-//    case _Double = 4
-//    case _Float = 5
-//    case _String = 6
-//    case _Boolean = 7
-//    case _Date = 8
-//    case _Binary = 9
-//    case _Transformable = 10
-//
-//    var string: String {
-//        return Primitive.strings[rawValue]
-//    }
-//
-//    var int: Int {
-//        return Int(self.rawValue)
-//    }
-//
-//    static var set: [Primitive] {
-//        return [._Int16, ._Int32, ._Int64, ._Decimal, ._Double, ._Float, ._String, ._Boolean, ._Date, ._Binary, ._Transformable]
-//    }
-//
-//    static var strings = ["Integer 16", "Integer 32", "Integer 64", "Decimal", "Double", "Float", "String", "Boolean", "Date", "Binary Data", "Transformable"]
-//
-//    var image: NSImage {
-//        return NSImage.image(named: "typeIcon", title: Primitive.strings[self.int])
-//    }
-//
-//    static func create(int int: Int) -> Primitive {
-//        switch(int) {
-//        case 0: return ._Int16
-//        case 1: return ._Int32
-//        case 2: return ._Int64
-//        case 3: return ._Decimal
-//        case 4: return ._Double
-//        case 5: return ._Float
-//        case 6: return ._String
-//        case 7: return ._Boolean
-//        case 8: return ._Date
-//        case 9: return ._Binary
-//        case 10: return ._Transformable
-//        default:
-//            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int16", response: .Error)
-//            return ._Int16
-//        }
-//    }
-//
-//    static func create(string string: String) -> Primitive {
-//        switch string {
-//        case "Integer 16": return ._Int16
-//        case "Integer 32": return ._Int32
-//        case "Integer 64": return ._Int64
-//        case "Decimal": return ._Decimal
-//        case "Double": return ._Double
-//        case "Float": return ._Float
-//        case "String": return ._String
-//        case "Boolean": return ._Boolean
-//        case "Date": return ._Date
-//        case "Binary Data": return ._Binary
-//        case "Transformable": return ._Transformable
-//        default:
-//            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int16", response: .Error)
-//            return ._Int16
-//        }
-//    }
-//}
