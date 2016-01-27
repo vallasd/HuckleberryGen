@@ -1,2 +1,6 @@
 
-// TODO : Add Code
+// a recording of an error message
+struct HGError {
+    let type: HGErrorType
+    let message: String
+}

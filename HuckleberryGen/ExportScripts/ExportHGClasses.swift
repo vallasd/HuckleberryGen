@@ -33,6 +33,8 @@ class ExportHGClasses {
     func exportFiles() -> Bool {
         exportHGObject()
         exportHGError()
+        exportHGErrorTrack()
+        exportHGErrorReporter()
         return true
     }
     
@@ -45,11 +47,29 @@ class ExportHGClasses {
         ExportProject.write(file: file, toPath: filePath)
     }
     
+    func exportHGErrorReporter() {
+        let name = "HGErrorReporter"
+        let filePath = path + "/\(name).swift"
+        let header = licenseInfo.string(projectName, fileName: name)
+        let code = ExportProject.read(file: "XP_CLA_HGErrorReporter")
+        let file = header + "\n" + code
+        ExportProject.write(file: file, toPath: filePath)
+    }
+    
     func exportHGError() {
         let name = "HGError"
         let filePath = path + "/\(name).swift"
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_CLA_HGError")
+        let file = header + "\n" + code
+        ExportProject.write(file: file, toPath: filePath)
+    }
+    
+    func exportHGErrorTrack() {
+        let name = "HGErrorTrack"
+        let filePath = path + "/\(name).swift"
+        let header = licenseInfo.string(projectName, fileName: name)
+        let code = ExportProject.read(file: "XP_CLA_HGErrorTrack")
         let file = header + "\n" + code
         ExportProject.write(file: file, toPath: filePath)
     }

@@ -74,7 +74,7 @@ enum DeletionRule: Int16 {
         case 2: return .Cascade
         case 3: return .Deny
         default:
-            HGReportHandler.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", response: .Error)
+            HGReportHandler.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
@@ -86,7 +86,7 @@ enum DeletionRule: Int16 {
         case "Cascade": return .Cascade
         case "Deny": return .Deny
         default:
-            HGReportHandler.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", response: .Error)
+            HGReportHandler.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
@@ -121,7 +121,7 @@ enum RelationshipType: Int16 {
         case 0: return .TooMany
         case 1: return .TooOne
         default:
-            HGReportHandler.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", response: .Error)
+            HGReportHandler.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
             return .TooOne
         }
     }
@@ -131,7 +131,7 @@ enum RelationshipType: Int16 {
         case "YES", "TooMany": return .TooMany
         case "NO", "TooOne": return .TooOne
         default:
-            HGReportHandler.report("string: |\(string)| is not RelationshipType mapable, using .Nullify", response: .Error)
+            HGReportHandler.report("string: |\(string)| is not RelationshipType mapable, using .Nullify", type: .Error)
             return .TooOne
         }
     }

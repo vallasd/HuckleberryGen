@@ -121,7 +121,7 @@ enum Primitive {
         case 5: return ._Date
         case 6: return ._Binary
         default:
-            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int", response: .Error)
+            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
         }
     }
@@ -142,7 +142,7 @@ enum Primitive {
         case "Binary Data": return ._Binary
         case "Transformable": return ._Binary
         default:
-            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int", response: .Error)
+            HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
         }
     }
@@ -181,7 +181,7 @@ extension Primitive: HGEncodable {
     static func decode(object object: AnyObject) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int", response: .Error)
+        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
         return ._Int
     }
 }

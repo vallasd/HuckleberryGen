@@ -1,5 +1,5 @@
 
-// A few typealiases and global functions used throughout the app
+// List of Global References
 
 /// reference to appDelegate.
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -10,10 +10,11 @@ typealias HGDICT = Dictionary<String, AnyObject>
 /// Array used in HGEncodables
 typealias HGARRAY = [HGDICT]
 
-/// Returns a HGDICT from the object.  If object is not a HGDICT, returns an empty HGDICT.  Will report Error Message if decoderName is not nil and the object is nil or not an HGDICT
-func hgdict(fromObject object: AnyObject, decoderName: String?) -> HGDICT {
-let check = object as? HGDICT
-if decoderName != nil && check == nil { appDelegate.hgerror.report("object: |\(object)| is not \(decoderName!) mapable", response: .Error) }
-let dict: HGDICT = check ?? HGDICT()
-return dict
+/// returns hgdict from AnyObject, used for HGEncodable
+func hgdict(fromObject object: AnyObject, decoderName: String) -> HGDICT {
+    if let dict = object as? HGDICT {
+        return dict
+    }
+    appDelegate.error.report("object: |\(object)| is not \(decoderName) mapable", type: .Error)
+    return HGDICT()
 }

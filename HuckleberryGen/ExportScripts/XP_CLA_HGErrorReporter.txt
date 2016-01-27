@@ -1,0 +1,34 @@
+
+class HGErrorReporter {
+
+    // unique identifier for this HGError instance
+    var identifier: String
+
+    // current tracks called (a breadcrumb that allows HGError to see when unwraps / decodes are first started)
+    var trackCount = 0
+
+    // determine is HGError will log and store messages
+    var logMessages: Bool = false
+
+    init(identifier: String) {
+        self.identifier = identifier
+    }
+
+    // report a message
+    func report(message: String, errorType: HGErrorType) {
+        // TODO: Implement
+    }
+
+    func track(name name: String, object: AnyObject) {
+        // TODO: Implement
+        trackCount += 1
+    }
+
+    func untrack() {
+        // TODO: Implement
+        trackCount = max(0, trackCount - 1)
+        if trackCount == 0 {
+
+        }
+    }
+}

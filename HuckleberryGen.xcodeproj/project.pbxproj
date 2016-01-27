@@ -33,7 +33,9 @@
 		035E49431C57D7FE0005E28A /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E49421C57D7FE0005E28A /* Function.swift */; };
 		035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D21C57F75F0005E28A /* XP_CLA_HGObject.txt */; };
 		035E49D51C57FA490005E28A /* ExportHGClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E49D41C57FA490005E28A /* ExportHGClasses.swift */; };
-		035E49D71C57FABD0005E28A /* XP_CLA_HGError.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D61C57FABD0005E28A /* XP_CLA_HGError.txt */; };
+		035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */; };
+		035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */; };
+		035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */; };
 		035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E75551B9595890036AE0B /* HGFileQuery.swift */; };
 		036455C01BA264930096B255 /* HGCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455BF1BA264930096B255 /* HGCellData.swift */; };
 		036455C21BA264E40096B255 /* HGCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455C11BA264E40096B255 /* HGCellType.swift */; };
@@ -158,7 +160,9 @@
 		035E49421C57D7FE0005E28A /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Function.swift; path = Categories/Function.swift; sourceTree = "<group>"; };
 		035E49D21C57F75F0005E28A /* XP_CLA_HGObject.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XP_CLA_HGObject.txt; sourceTree = "<group>"; };
 		035E49D41C57FA490005E28A /* ExportHGClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportHGClasses.swift; path = ExportScripts/ExportHGClasses.swift; sourceTree = "<group>"; };
-		035E49D61C57FABD0005E28A /* XP_CLA_HGError.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGError.txt; path = ExportScripts/XP_CLA_HGError.txt; sourceTree = "<group>"; };
+		035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorReporter.txt; path = ExportScripts/XP_CLA_HGErrorReporter.txt; sourceTree = "<group>"; };
+		035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorTrack.txt; path = ExportScripts/XP_CLA_HGErrorTrack.txt; sourceTree = "<group>"; };
+		035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGError.txt; path = ExportScripts/XP_CLA_HGError.txt; sourceTree = "<group>"; };
 		035E75551B9595890036AE0B /* HGFileQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGFileQuery.swift; path = HGQuery/HGFileQuery.swift; sourceTree = "<group>"; };
 		036455BF1BA264930096B255 /* HGCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellData.swift; sourceTree = "<group>"; };
 		036455C11BA264E40096B255 /* HGCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellType.swift; sourceTree = "<group>"; };
@@ -599,7 +603,9 @@
 				03A278F61C51315100DA353C /* ExportType.swift */,
 				03D56F241C4F41C500A3A8DC /* XP_PRO_HGEncodable.txt */,
 				035E49D21C57F75F0005E28A /* XP_CLA_HGObject.txt */,
-				035E49D61C57FABD0005E28A /* XP_CLA_HGError.txt */,
+				035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */,
+				035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */,
+				035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */,
 			);
 			name = ExportScripts;
 			sourceTree = "<group>";
@@ -754,6 +760,7 @@
 				03673A681BEA4C8900CF8F21 /* FieldCell3.xib in Resources */,
 				036E32A21BB2DEE00024AA4E /* Check4Cell.xib in Resources */,
 				03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */,
+				035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */,
 				03D56F251C4F41C500A3A8DC /* XP_PRO_HGEncodable.txt in Resources */,
 				036E32A41BB2DEED0024AA4E /* Image4Cell.xib in Resources */,
 				036E32A81BB2DF070024AA4E /* Image6Cell.xib in Resources */,
@@ -761,9 +768,10 @@
 				036C7C101B5143A0004EC724 /* Main.storyboard in Resources */,
 				035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */,
 				036E32A61BB2DEFB0024AA4E /* Image5Cell.xib in Resources */,
+				035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */,
 				036E32A01BB2DED00024AA4E /* DefaultCell.xib in Resources */,
 				03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */,
-				035E49D71C57FABD0005E28A /* XP_CLA_HGError.txt in Resources */,
+				035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */,
 				03F25EF81B9C292E0048B0A0 /* HGTableHeader.xib in Resources */,
 				036E329E1BB2CCA40024AA4E /* MixedCell1.xib in Resources */,
 			);

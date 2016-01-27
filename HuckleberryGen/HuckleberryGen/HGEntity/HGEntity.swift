@@ -56,7 +56,7 @@ extension String {
         case "Relationship": return .Relationship
         case "User": return .User
         default:
-            HGReportHandler.report("string: |\(self)| is not an HGEntity mapable", response: .Error)
+            HGReportHandler.report("string: |\(self)| is not an HGEntity mapable", type: .Error)
             return .NotDefined
         }
     }
@@ -75,7 +75,7 @@ extension Int16 {
         case 6: return .User
         case -99: return .NotDefined
         default:
-            HGReportHandler.report("int16: |\(self)| is not an HGEntity mapable", response: .Error)
+            HGReportHandler.report("int16: |\(self)| is not an HGEntity mapable", type: .Error)
             return .NotDefined
         }
     }

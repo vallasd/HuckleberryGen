@@ -1,0 +1,26 @@
+
+// tracks error messages
+struct HGErrorTrack {
+    let name: String
+    let trackedObject: AnyObject
+    var error: HGError?
+}
+
+extension HGErrorTrack {
+
+    var hasError: Bool {
+        return error != nil ? true : false
+    }
+
+    func print() {
+        if let error = error {
+            Swift.print("[\(error.type.string.uppercaseString)] : TrackName: |\(name)| Message: \(error.message)")
+        }
+    }
+
+    func printFull() {
+        if let error = error {
+            Swift.print("[\(error.type.string.uppercaseString)] : TrackName: |\(name)| Message: \(error.message) Object: \(trackedObject)")
+        }
+    }
+}

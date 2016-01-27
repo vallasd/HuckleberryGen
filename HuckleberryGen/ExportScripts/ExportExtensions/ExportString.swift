@@ -65,7 +65,7 @@ class ExportString {
                 string += "\t\tcase \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
             }
             string += "\t\t}\n"
-            string += "\t\tappDelegate.hgerror.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
+            string += "\t\tappDelegate.error.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", type: .Error)\n"
             string += "\t\treturn \(name).new\n"
             string += "\t}\n"
 

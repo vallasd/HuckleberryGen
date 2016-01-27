@@ -32,7 +32,7 @@ class ExportEnum {
         
         // return immediately if enum cases count is 0
         if enuM.cases.count == 0 {
-            HGReportHandler.report("Export Enum |\(enuM.name)| failed, no cases for enum", response: .Error)
+            HGReportHandler.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .Error)
             return false
         }
         
@@ -139,7 +139,7 @@ class ExportEnum {
         string += "\tstatic func decode(object object: AnyObject) -> \(enuM.name) {\n"
         string += "\t\tif let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
         string += "\t\tif let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "\t\tappDelegate.hgerror.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
+        string += "\t\tappDelegate.error.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
         string += "\t\treturn \(enuM.name).new\n"
         
         // end decode function

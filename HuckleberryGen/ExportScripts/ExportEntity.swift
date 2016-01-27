@@ -34,7 +34,7 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 && entity.relationships.count == 0 {
-            HGReportHandler.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", response: .Error)
+            HGReportHandler.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
             return false
         }
         
@@ -207,8 +207,8 @@ class ExportEntity {
         
         // begin decode function
         string += "\tstatic func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "\t\tappDelegate.hgerror.track(name: \"\(entity.name)\", object: object)\n"
-        string += "\t\tlet dict = hgdict(fromObject: object)\n"
+        string += "\t\tappDelegate.error.track(name: \"\(entity.name)\", object: object)\n"
+        string += "\t\tlet dict = hgdict(fromObject: object, decoderName: \(entity.name))\n"
         
         // decode function attributes
         for attribute in entity.attributes {
@@ -231,7 +231,7 @@ class ExportEntity {
         }
         
         // decode function return statement
-        string += "\t\tappDelegate.hgerror.untrack()\n"
+        string += "\t\tappDelegate.error.untrack()\n"
         string += "\t\treturn \(entity.name)("
         
         // decode function return statement attributes

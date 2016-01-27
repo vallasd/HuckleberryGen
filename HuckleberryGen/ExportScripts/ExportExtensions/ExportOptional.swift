@@ -60,7 +60,7 @@ class ExportOptional {
         var string = ""
         string += "     if self == nil {\n"
         string += "         if logErrorForNil {\n"
-        string += "             appDelegate.hgerror.report(\"optional: \(name) returned nil value, using \\(\(variable))\", response: .Error)\n"
+        string += "             appDelegate.error.report(\"optional: \(name) returned nil value, using \\(\(variable))\", type: .Error)\n"
         string += "         }\n"
         string += "         return \(variable)\n"
         string += "     }\n"
@@ -70,7 +70,7 @@ class ExportOptional {
     // creates an error return statement for a variable value.
     private func errorReturnStatement(name: String, variable: String) -> String  {
         var string = ""
-        string += "     appDelegate.hgerror.report(\"optional: |\\(self)| is not \(name) mapable, using \\(\(variable))\", response: .Error)\n"
+        string += "     appDelegate.error.report(\"optional: |\\(self)| is not \(name) mapable, using \\(\(variable))\", type: .Error)\n"
         string += "     return \(variable)\n"
         return string
     }
@@ -78,7 +78,7 @@ class ExportOptional {
     // creates an error return statement for a string value.
     private func errorReturnStatement(name: String, stringValue: String) -> String  {
         var string = ""
-        string += "     appDelegate.hgerror.report(\"optional: |\\(self)| is not \(name) mapable, using \(stringValue)\", response: .Error)\n"
+        string += "     appDelegate.error.report(\"optional: |\\(self)| is not \(name) mapable, using \(stringValue)\", type: .Error)\n"
         string += "     return \(stringValue)\n"
         return string
     }
@@ -86,7 +86,7 @@ class ExportOptional {
     // creates an error return statement for an array.
     private func errorReturnArrayStatement(name: String) -> String  {
         var string = ""
-        string += "     appDelegate.hgerror.report(\"optional is not [\(name)] mapable, using [] - optional: |\\(self)|\", response: .Error)\n"
+        string += "     appDelegate.error.report(\"optional is not [\(name)] mapable, using [] - optional: |\\(self)|\", type: .Error)\n"
         string += "     return []\n"
         return string
     }

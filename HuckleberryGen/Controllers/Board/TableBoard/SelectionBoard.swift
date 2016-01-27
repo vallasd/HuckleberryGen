@@ -82,7 +82,7 @@ extension SelectionBoard: BoardRetrievable {
             self.context = context;
             return
         }
-        HGReportHandler.report("SelectionBoard Context \(context) not valid", response: .Error)
+        HGReportHandler.report("SelectionBoard Context \(context) not valid", type: .Error)
     }
 }
 

@@ -54,12 +54,12 @@ struct HGReport {
     
     private func err(details: AnyObject?, key: String,  error: HGError) {
         let errorString = "\(error.response().rawValue)error: |\(error.rawValue)| for entity: |\(entity)| key: |\(key)| - details: \(self.info(details))"
-        HGReportHandler.report(errorString, response: error.response())
+        HGReportHandler.report(errorString, type: error.response())
     }
     
     private func info(info: HGInfo) {
         let infoString = "\(info.response().rawValue)action: |\(info.rawValue)| for entity: |\(entity)|"
-        HGReportHandler.report(infoString, response: info.response())
+        HGReportHandler.report(infoString, type: info.response())
     }
     
     // ERRORS
@@ -96,8 +96,8 @@ struct HGReportHandler {
     static var reportedError = false
     // var alertDelegate: UIViewController? = nil
     
-    static func report(string: String, response: HGErrorResponse) {
-        switch (response) {
+    static func report(string: String, type: HGErrorResponse) {
+        switch (type) {
         case .Info:    if( hgReportHandlerInfo == true) { print("\(string)") }
         case .Warn:    if( hgReportHandlerWarn == true) { print("\(string)") }
         case .Error:   if( hgReportHandlerError == true) { print("\(string)") }

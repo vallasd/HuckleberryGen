@@ -116,16 +116,16 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     }
     
     private func parseErrorMissing(name: String, type: ParseType) {
-        HGReportHandler.report("HGParseError Error: Missing \(type.rawValue): \(name)" , response: HGErrorResponse.Error)
+        HGReportHandler.report("HGParseError Error: Missing \(type.rawValue): \(name)" , type: HGErrorResponse.Error)
     }
     
     private func parseErrorFile(xml: ImportFile) {
         do {
             let _ = try String(contentsOfFile: xml.path, encoding: NSUTF8StringEncoding)
-            HGReportHandler.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", response: .Error)
+            HGReportHandler.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .Error)
         }
         catch {
-            HGReportHandler.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", response: .Error)
+            HGReportHandler.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .Error)
         }
     }
     

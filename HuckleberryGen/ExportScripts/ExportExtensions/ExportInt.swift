@@ -68,7 +68,7 @@ class ExportInt {
                 count++
             }
             string += "\t\t}\n"
-            string += "\t\tappDelegate.hgerror.report(\"int: |\\(self)| is not enum \(name) mapable, using \(name).new\", response: .Error)\n"
+            string += "\t\tappDelegate.error.report(\"int: |\\(self)| is not enum \(name) mapable, using \(name).new\", type: .Error)\n"
             string += "\t\treturn \(name).new\n"
             string += "\t}\n"
         }
