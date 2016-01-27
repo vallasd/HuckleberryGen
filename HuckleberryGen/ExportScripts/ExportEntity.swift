@@ -147,8 +147,8 @@ class ExportEntity {
     private func encodableExtension(entity: Entity) -> String {
         
         // get Primitives
-        let primitives = ExportProject.genericPrimitives()
-        let primitivesDefault = ExportProject.genericPrimitiveDefaults()
+        let primitives = Primitive.array.map { $0.string }
+        let primitivesDefault = Primitive.array.map { $0.defaultValue }
         
         // begin hgencodable stanza
         var string = "extension \(entity.name): HGEncodable {\n"
@@ -185,7 +185,7 @@ class ExportEntity {
         
         // begin encode variable
         string += "\tvar encode: AnyObject {\n"
-        string += "\t\tvar dict = HGDict()\n"
+        string += "\t\tvar dict = HGDICT()\n"
         
         // encode variable attributes
         for attribute in entity.attributes {
@@ -208,7 +208,7 @@ class ExportEntity {
         // begin decode function
         string += "\tstatic func decode(object object: AnyObject) -> \(entity.name) {\n"
         string += "\t\tappDelegate.error.track(name: \"\(entity.name)\", object: object)\n"
-        string += "\t\tlet dict = hgdict(fromObject: object, decoderName: \(entity.name))\n"
+        string += "\t\tlet dict = hgdict(fromObject: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
         for attribute in entity.attributes {

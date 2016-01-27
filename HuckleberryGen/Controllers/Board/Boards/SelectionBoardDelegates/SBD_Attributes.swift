@@ -44,10 +44,10 @@ class SBD_Attributes: SelectionBoardDelegate {
     }
     
     /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.set.map { $0.string } + appDelegate.store.project.enums.map { $0.name }
+    let types: [String] = Primitive.array.map { $0.string } + appDelegate.store.project.enums.map { $0.name }
     
     /// last index of Attribute Type in the attributes array
-    let firstEnumIndex = Primitive.set.count
+    let firstEnumIndex = Primitive.array.count
     
     /// creates an array of HGImageData for an array indexes in attribute
     func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {

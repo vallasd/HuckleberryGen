@@ -72,6 +72,8 @@ extension Attribute: HGEncodable {
 enum Primitive {
  
     case _Int
+    case _Int16
+    case _Int32
     case _Double
     case _Float
     case _String
@@ -81,9 +83,25 @@ enum Primitive {
     
     static var count = 7
     
+    var defaultValue: String {
+        switch self {
+        case _Int: return "0"
+        case _Int16: return "0"
+        case _Int32: return "0"
+        case _Double: return "0.0"
+        case _Float: return "0.0"
+        case _String: return "\"notDefined\""
+        case _Bool: return "false"
+        case _Date: return "NSDate()"
+        case _Binary: return "NSData()"
+        }
+    }
+    
     var string: String {
         switch self {
         case _Int: return "Int"
+        case _Int16: return "Int16"
+        case _Int32: return "Int32"
         case _Double: return "Double"
         case _Float: return "Float"
         case _String: return "String"
@@ -96,12 +114,14 @@ enum Primitive {
     var int: Int {
         switch self {
         case _Int: return 0
-        case _Double: return 0
-        case _Float: return 0
-        case _String: return 0
-        case _Bool: return 0
-        case _Date: return 0
-        case _Binary: return 0
+        case _Int16: return 1
+        case _Int32: return 2
+        case _Double: return 3
+        case _Float: return 4
+        case _String: return 5
+        case _Bool: return 6
+        case _Date: return 7
+        case _Binary: return 8
         }
     }
     
@@ -109,17 +129,100 @@ enum Primitive {
         return NSImage.image(named: "typeIcon", title: self.string)
     }
     
-    static var set: [Primitive] = [_Int, _Double, _Float, _String, _Bool, _Date, _Binary]
+    // create unique array return statements for Primitive.  use for exporting optionals.
+    func uniqueOptionalArrayReturnStatement(withIndent ind: String, indentCount: Int) -> String? {
+        
+        // exit early
+        if self != _Int16 && self != _Int32 {
+            return nil
+        }
+        
+        // set name
+        let name = self.string
+        
+        // create initial indent
+        var iInd = ""
+        for _ in 1...indentCount { iInd += ind }
+        
+        // create default string
+        var string = ""
+        
+        // return Int16 || Int32
+        if self == _Int16 || self == _Int32 {
+            string += "\(iInd)if let intArray = self as? [Int] {\n"
+            string += "\(iInd)\(ind)var arrayContainsAll\(name) = true\n"
+            string += "\(iInd)\(ind)for int in intArray {\n"
+            string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(name).max) {\n"
+            string += "\(iInd)\(ind)\(ind)\(ind)var arrayContainsAll\(name) = false\n"
+            string += "\(iInd)\(ind)\(ind)\(ind)break\n"
+            string += "\(iInd)\(ind)\(ind)}\n"
+            string += "\(iInd)\(ind)}\n"
+            string += "\(iInd)\(ind)if arrayContainsAll\(name) == true {\n"
+            string += "\(iInd)\(ind)\(ind)return intArray\n"
+            string += "\(iInd)\(ind)}\n"
+            string += "\(iInd)}\n"
+            return string
+        }
+        
+        return nil
+    }
+    
+    // create unique return statements for Primitive.  use for exporting optionals.
+    func uniqueOptionalReturnStatement(withIndent ind: String, indentCount: Int) -> String? {
+        
+        // exit early
+        if self != _Int16 && self != _Int32 && self != _Bool {
+            return nil
+        }
+        
+        // set name
+        let name = self.string
+        
+        // create initial indent
+        var iInd = ""
+        for _ in 1...indentCount { iInd += ind }
+        
+        // create default string
+        var string = ""
+        
+        // return Int16 || Int32
+        if self == _Int16 || self == _Int32 {
+            string += "\(iInd)if let int = self as? Int {\n"
+            string += "\(iInd)\(ind)if abs(int) <= Int(\(name).max) {\n"
+            string += "\(iInd)\(ind)\(ind)return \(name)(int)\n"
+            string += "\(iInd)\(ind)}\n"
+            string += "\(iInd)}\n"
+            return string
+        }
+        
+        // return Bool
+        if self == _Bool {
+            string += "\(iInd)if let string = self as? String {\n"
+            string += "\(iInd)\(ind)switch string {\n"
+            string += "\(iInd)\(ind)case \"YES\", \"TRUE\", \"Yes\", \"1\", \"true\", \"True\", \"yes\": return true\n"
+            string += "\(iInd)\(ind)case \"NO\", \"FALSE\", \"No\", \"0\", \"false\", \"False\",  \"no\": return false\n"
+            string += "\(iInd)\(ind)default: break;\n"
+            string += "\(iInd)\(ind)}\n"
+            string += "\(iInd)}\n"
+            return string
+        }
+        
+        return nil
+    }
+    
+    static var array: [Primitive] = [_Int, _Double, _Float, _String, _Bool, _Date, _Binary]
     
     static func create(int int: Int) -> Primitive {
         switch(int) {
         case 0: return ._Int
-        case 1: return ._Double
-        case 2: return ._Float
-        case 3: return ._String
-        case 4: return ._Bool
-        case 5: return ._Date
-        case 6: return ._Binary
+        case 1: return ._Int16
+        case 2: return ._Int32
+        case 3: return ._Double
+        case 4: return ._Float
+        case 5: return ._String
+        case 6: return ._Bool
+        case 7: return ._Date
+        case 8: return ._Binary
         default:
             HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int

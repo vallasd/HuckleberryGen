@@ -52,14 +52,7 @@ class ExportProject {
         
     }
     
-    static func genericPrimitives() -> [String] {
-        
-        return ["Bool", "Int", "Int16", "Int32", "Interval", "String"]
-    }
-    
-    static func genericPrimitiveDefaults() -> [String] {
-        return ["false", "0", "0", "0", "0", "\"notDefined\""]
-    }
+
     
     /// reads file in project, if there is an error, returns false
     static func read(file file: String) -> String {
