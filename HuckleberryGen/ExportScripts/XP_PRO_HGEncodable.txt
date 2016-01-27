@@ -9,6 +9,11 @@ protocol HGEncodable {
 
 extension HGEncodable {
 
+    /// encode optional to dictionary
+    func encode(var dict: HGDICT, key: String) {
+        dict[key] = self.encode
+    }
+
     /// decodes an array of objects into an array of [HGEncodable]
     static func decodeArray(objects objects: [AnyObject]) -> [Self] {
         var array: [Self] = []
@@ -44,7 +49,7 @@ extension HGEncodable {
             let decoded = Self.decode(object: object)
             return decoded
         }
-        HGReportHandler.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
+        appDelegate.error.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
         return self.new
     }
 }

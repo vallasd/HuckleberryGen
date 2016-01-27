@@ -47,6 +47,9 @@ class ExportString {
     /// creates optional definitions for the Enum in string format
     private func enumDefinitions() -> String {
         
+        // get indent
+        let ind = HGIndent.indent
+        
         // begin string extension
         var string = "// MARK: Enums\n"
         string += "extension String {\n\n"
@@ -58,16 +61,16 @@ class ExportString {
             let defaultValue = "\(enuM.name).new"
             
             // create var that attempts to unwrap the string as the Enum
-            string += "\t/// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
-            string += "\tvar \(name.lowerCaseFirstLetter): \(name) {\n"
-            string += "\t\tswitch self {\n"
+            string += "\(ind)/// returns \(name) if valid string.  Logs error and returns \(defaultValue) if object is nil or not a valid string.\n"
+            string += "\(ind)var \(name.lowerCaseFirstLetter): \(name) {\n"
+            string += "\(ind)\(ind)switch self {\n"
             for enumcase in enuM.cases {
-                string += "\t\tcase \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
+                string += "\(ind)\(ind)case \"\(enumcase.name)\", \"\(enumcase.name.uppercaseString)\": return .\(enumcase.name) \n"
             }
-            string += "\t\t}\n"
-            string += "\t\tappDelegate.error.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", type: .Error)\n"
-            string += "\t\treturn \(name).new\n"
-            string += "\t}\n"
+            string += "\(ind)\(ind)}\n"
+            string += "\(ind)\(ind)appDelegate.error.report(\"string: |\\(self)| is not enum \(name) mapable, using \(name).new\", type: .Error)\n"
+            string += "\(ind)\(ind)return \(name).new\n"
+            string += "\(ind)}\n"
 
         }
         

@@ -70,6 +70,9 @@ class ExportEntity {
     /// creates a struct definition for the Entity in string format
     private func entityDefinition(entity: Entity) -> String {
         
+        // get indent
+        let ind = HGIndent.indent
+        
         // begin entity stanza
         var string: String = ""
         
@@ -83,22 +86,22 @@ class ExportEntity {
         
         // add attributes to entity stanza
         for attribute in entity.attributes {
-            string += "\tlet \(attribute.name): \(attribute.type)\n"
+            string += "\(ind)let \(attribute.name): \(attribute.type)\n"
         }
         
         // add relationships to entity stanza
         for relationship in entity.relationships {
             if relationship.type == .TooMany {
-                string += "\tvar \(relationship.name): [\(relationship.entity)]\n"
+                string += "\(ind)var \(relationship.name): [\(relationship.entity)]\n"
             } else {
-                string += "\tvar \(relationship.name): \(relationship.entity)?\n"
+                string += "\(ind)var \(relationship.name): \(relationship.entity)?\n"
             }
         }
         
         string += "\n"
         
         // begin init
-        string += "\tinit("
+        string += "\(ind)init("
         
         // assign strings
         var assigns: [String] = []
@@ -106,7 +109,7 @@ class ExportEntity {
         // new variable attributes
         for attribute in entity.attributes {
             string += "\(attribute.name): \(attribute.type), "
-            let attAssign = "\t\tself.\(attribute.name) = \(attribute.name)\n"
+            let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
             assigns.append(attAssign)
             
         }
@@ -118,7 +121,7 @@ class ExportEntity {
             } else {
                 string += "\(relationship.name): \(relationship.entity)?, "
             }
-            let relAssign = "\t\tself.\(relationship.name) = \(relationship.name)\n"
+            let relAssign = "\(ind)\(ind)self.\(relationship.name) = \(relationship.name)\n"
             assigns.append(relAssign)
         }
         
@@ -135,7 +138,7 @@ class ExportEntity {
         }
         
         // end init
-        string += "\t}\n"
+        string += "\(ind)}\n"
         
         // end struct entity stanza
         string += "}\n"
@@ -146,6 +149,9 @@ class ExportEntity {
     /// creates a HGEncodable extensions for the Entity in string format
     private func encodableExtension(entity: Entity) -> String {
         
+        // get indent
+        let ind = HGIndent.indent
+        
         // get Primitives
         let primitives = Primitive.array.map { $0.string }
         let primitivesDefault = Primitive.array.map { $0.defaultValue }
@@ -155,8 +161,8 @@ class ExportEntity {
         string += "\n"
         
         // new variable
-        string += "\tstatic var new: \(entity.name) {\n"
-        string += "\t\treturn \(entity.name)("
+        string += "\(ind)static var new: \(entity.name) {\n"
+        string += "\(ind)\(ind)return \(entity.name)("
         
         // new variable attributes
         for attribute in entity.attributes {
@@ -181,41 +187,49 @@ class ExportEntity {
         
         // end new variable
         string += ")\n"
-        string += "\t}\n\n"
+        string += "\(ind)}\n\n"
         
         // begin encode variable
-        string += "\tvar encode: AnyObject {\n"
-        string += "\t\tvar dict = HGDICT()\n"
+        string += "\(ind)var encode: AnyObject {\n"
+        string += "\(ind)\(ind)var dict = HGDICT()\n"
         
         // encode variable attributes
         for attribute in entity.attributes {
             if attribute.isPrimitive {
-                string += "\t\tdict[\"\(attribute.name)\"] = \(attribute.name)\n"
+                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
             } else {
-                string += "\t\tdict[\"\(attribute.name)\"] = \(attribute.name).encode\n"
+                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name).encode\n"
             }
         }
         
         // encode variable relationships
         for relationship in entity.relationships {
-            string += "\t\tdict[\"\(relationship.name)\"] = \(relationship.name).encode\n"
+            if relationship.type == .TooMany {
+                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].encode"
+            } else {
+                let name = relationship.name.lowerCaseFirstLetter
+                string += "\(ind)\(ind)let \(relationship.name) = \(name)?.encode(dict, key: \"\(relationship.name)\")\n"
+            }
         }
         
+        //
+        //
+        
         // end encode variable
-        string += "\t\treturn dict\n"
-        string += "\t}\n\n"
+        string += "\(ind)\(ind)return dict\n"
+        string += "\(ind)}\n\n"
         
         // begin decode function
-        string += "\tstatic func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "\t\tappDelegate.error.track(name: \"\(entity.name)\", object: object)\n"
-        string += "\t\tlet dict = hgdict(fromObject: object, decoderName: \"\(entity.name)\")\n"
+        string += "\(ind)static func decode(object object: AnyObject) -> \(entity.name) {\n"
+        string += "\(ind)\(ind)appDelegate.error.track(name: \"\(entity.name)\", object: object)\n"
+        string += "\(ind)\(ind)let dict = hgdict(fromObject: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
         for attribute in entity.attributes {
             if attribute.isPrimitive {
-                string += "\t\tlet \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.type.lowerCaseFirstLetter)\n"
+                string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.type.lowerCaseFirstLetter)\n"
             } else {
-                string += "\t\tlet \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name.lowerCaseFirstLetter)\n"
+                string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name.lowerCaseFirstLetter)\n"
             }
         }
         
@@ -223,20 +237,20 @@ class ExportEntity {
         for relationship in entity.relationships {
             if relationship.type == .TooMany {
                 let arrayName = relationship.name.lowerCaseFirstLetterAndArray
-                string += "\t\tlet \(relationship.name) = dict[\"\(relationship.name)\"].\(arrayName)\n"
+                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(arrayName)\n"
             } else {
                 let name = relationship.name.lowerCaseFirstLetter
-                string += "\t\tlet \(relationship.name) = dict[\"\(relationship.name)\"].\(name)\n"
+                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(name)Nillable\n"
             }
         }
         
         // decode function return statement
-        string += "\t\tappDelegate.error.untrack()\n"
-        string += "\t\treturn \(entity.name)("
+        string += "\(ind)\(ind)appDelegate.error.untrack()\n"
+        string += "\(ind)\(ind)return \(entity.name)("
         
         // decode function return statement attributes
         for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.type), "
+            string += "\(attribute.name): \(attribute.name), "
         }
         
         // decode function return statement relationships
@@ -250,7 +264,7 @@ class ExportEntity {
         
         // end decode function
         string += ")\n"
-        string += "\t}\n"
+        string += "\(ind)}\n"
         
         // end hgencodable stanza
         string += "}\n"

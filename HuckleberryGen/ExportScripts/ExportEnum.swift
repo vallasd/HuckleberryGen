@@ -68,6 +68,9 @@ class ExportEnum {
     /// creates a struct definition for the Entity in string format
     private func enumDefinition(enuM: Enum) -> String {
         
+        // get indent
+        let ind = HGIndent.indent
+        
         // begin enum definition
         var string = "enum \(enuM.name) {\n"
         
@@ -75,38 +78,38 @@ class ExportEnum {
         
         // add attributes to enum stanza
         for enumcase in enuM.cases {
-            string += "\tcase \(enumcase.name)\n"
+            string += "\(ind)case \(enumcase.name)\n"
         }
         
         string += "\n"
         
         // define int for enum stanza
-        string += "\tvar int: Int {\n"
-        string += "\t\tswitch self {\n"
+        string += "\(ind)var int: Int {\n"
+        string += "\(ind)\(ind)switch self {\n"
         
         var index = 0
         for enumcase in enuM.cases {
-            string += "\t\tcase \(enumcase.name): return \(index)\n"
+            string += "\(ind)\(ind)case \(enumcase.name): return \(index)\n"
             index++
         }
         
         // end int for enum stanza
-        string += "\t\t}\n"
-        string += "\t}\n"
+        string += "\(ind)\(ind)}\n"
+        string += "\(ind)}\n"
         
         string += "\n"
         
         // define string for enum stanza
-        string += "\tvar string: String {\n"
-        string += "\t\tswitch self {\n"
+        string += "\(ind)var string: String {\n"
+        string += "\(ind)\(ind)switch self {\n"
         
         for enumcase in enuM.cases {
-            string += "\t\tcase \(enumcase.name): return \"\(enumcase.name)\"\n"
+            string += "\(ind)\(ind)case \(enumcase.name): return \"\(enumcase.name)\"\n"
         }
         
         // end string for enum stanza
-        string += "\t\t}\n"
-        string += "\t}\n"
+        string += "\(ind)\(ind)}\n"
+        string += "\(ind)}\n"
         
         // end enum definition
         string += "}\n"
@@ -117,33 +120,36 @@ class ExportEnum {
     /// creates a HGEncodable extensions for the Entity in string format
     private func encodableExtension(enuM: Enum) -> String {
         
+        // get indent
+        let ind = HGIndent.indent
+        
         // begin hgencodable stanza
         var string = "extension \(enuM.name): HGEncodable {\n"
         string += "\n"
         
         // new variable
-        string += "\tstatic var new: \(enuM.name) {\n"
-        string += "\t\treturn \(enuM.name).\(enuM.cases[0].name)\n"
+        string += "\(ind)static var new: \(enuM.name) {\n"
+        string += "\(ind)\(ind)return \(enuM.name).\(enuM.cases[0].name)\n"
         
         // end new variable
-        string += "\t}\n\n"
+        string += "\(ind)}\n\n"
         
         // begin encode variable
-        string += "\tvar encode: AnyObject {\n"
-        string += "\t\treturn self.int\n"
+        string += "\(ind)var encode: AnyObject {\n"
+        string += "\(ind)\(ind)return self.int\n"
         
         // end encode variable
-        string += "\t}\n\n"
+        string += "\(ind)}\n\n"
         
         // begin decode function
-        string += "\tstatic func decode(object object: AnyObject) -> \(enuM.name) {\n"
-        string += "\t\tif let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "\t\tif let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "\t\tappDelegate.error.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
-        string += "\t\treturn \(enuM.name).new\n"
+        string += "\(ind)static func decode(object object: AnyObject) -> \(enuM.name) {\n"
+        string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
+        string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
+        string += "\(ind)\(ind)appDelegate.error.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
+        string += "\(ind)\(ind)return \(enuM.name).new\n"
         
         // end decode function
-        string += "\t}\n"
+        string += "\(ind)}\n"
         
         // end hgencodable stanza
         string += "}\n"

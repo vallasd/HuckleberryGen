@@ -21,6 +21,10 @@ protocol HGEncodable {
 
 extension HGEncodable {
     
+    func encode(var dict: HGDICT, key: String) {
+        dict[key] = self.encode
+    }
+    
     /// decodes an array of objects into an array of [HGEncodable]
     static func decodeArray(objects objects: [AnyObject]) -> [Self] {
         var array: [Self] = []

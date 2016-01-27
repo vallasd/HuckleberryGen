@@ -36,6 +36,7 @@
 		035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */; };
 		035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */; };
 		035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */; };
+		035E4A9E1C58DA2E0005E28A /* HGIndent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E4A9D1C58DA2E0005E28A /* HGIndent.swift */; };
 		035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E75551B9595890036AE0B /* HGFileQuery.swift */; };
 		036455C01BA264930096B255 /* HGCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455BF1BA264930096B255 /* HGCellData.swift */; };
 		036455C21BA264E40096B255 /* HGCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455C11BA264E40096B255 /* HGCellType.swift */; };
@@ -163,6 +164,7 @@
 		035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorReporter.txt; path = ExportScripts/XP_CLA_HGErrorReporter.txt; sourceTree = "<group>"; };
 		035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorTrack.txt; path = ExportScripts/XP_CLA_HGErrorTrack.txt; sourceTree = "<group>"; };
 		035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGError.txt; path = ExportScripts/XP_CLA_HGError.txt; sourceTree = "<group>"; };
+		035E4A9D1C58DA2E0005E28A /* HGIndent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGIndent.swift; path = HGIndent/HGIndent.swift; sourceTree = "<group>"; };
 		035E75551B9595890036AE0B /* HGFileQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGFileQuery.swift; path = HGQuery/HGFileQuery.swift; sourceTree = "<group>"; };
 		036455BF1BA264930096B255 /* HGCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellData.swift; sourceTree = "<group>"; };
 		036455C11BA264E40096B255 /* HGCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellType.swift; sourceTree = "<group>"; };
@@ -315,6 +317,14 @@
 			name = HGNotif;
 			sourceTree = "<group>";
 		};
+		035E4A9C1C58D9C30005E28A /* HGIndent */ = {
+			isa = PBXGroup;
+			children = (
+				035E4A9D1C58DA2E0005E28A /* HGIndent.swift */,
+			);
+			name = HGIndent;
+			sourceTree = "<group>";
+		};
 		035E75541B9595660036AE0B /* HGQuery */ = {
 			isa = PBXGroup;
 			children = (
@@ -414,6 +424,7 @@
 		036C7CAA1B529A84004EC724 /* HuckleberryGen */ = {
 			isa = PBXGroup;
 			children = (
+				035E4A9C1C58D9C30005E28A /* HGIndent */,
 				035428E71BA1A1A900BED618 /* HGNotif */,
 				03F25EF41B9C292E0048B0A0 /* HGTableHeader */,
 				03F25EE11B9C16EA0048B0A0 /* HGCell */,
@@ -818,6 +829,7 @@
 				039731E21C42833E003DA4F4 /* SBD_Import.swift in Sources */,
 				036C7CBF1B529A84004EC724 /* HGOptional.swift in Sources */,
 				037EDFA91B84B4C6002527EE /* Enum.swift in Sources */,
+				035E4A9E1C58DA2E0005E28A /* HGIndent.swift in Sources */,
 				03A20B491B99E4C900149AF5 /* NavController.swift in Sources */,
 				03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */,
 				036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */,
