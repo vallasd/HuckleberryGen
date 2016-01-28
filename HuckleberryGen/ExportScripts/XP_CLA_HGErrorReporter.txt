@@ -15,7 +15,7 @@ class HGErrorReporter {
     }
 
     // report a message
-    func report(message: String, errorType: HGErrorType) {
+    func report(message: String, type: HGErrorType) {
         // TODO: Implement
     }
 

@@ -42,6 +42,18 @@ struct Attribute {
 
 }
 
+extension Attribute: HGTypeRepresentable {
+    
+    func typeRep() -> String { return type.typeRepresentable }
+}
+
+extension Attribute: HGVarRepresentable {
+    
+    func varRep() -> String { return name }
+    func varArrayRep() -> String { return name }
+}
+
+
 extension Attribute: Hashable { var hashValue: Int { return name.hashValue } }
 extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.name == rhs.name }
 
@@ -67,7 +79,6 @@ extension Attribute: HGEncodable {
         return Attribute(name: name, type: type, isPrimitive: isPrimitive)
     }
 }
-
 
 enum Primitive {
  
@@ -188,12 +199,12 @@ enum Primitive {
             string += "\(iInd)\(ind)var arrayContainsAll\(name) = true\n"
             string += "\(iInd)\(ind)for int in intArray {\n"
             string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(name).max) {\n"
-            string += "\(iInd)\(ind)\(ind)\(ind)var arrayContainsAll\(name) = false\n"
+            string += "\(iInd)\(ind)\(ind)\(ind)arrayContainsAll\(name) = false\n"
             string += "\(iInd)\(ind)\(ind)\(ind)break\n"
             string += "\(iInd)\(ind)\(ind)}\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)\(ind)if arrayContainsAll\(name) == true {\n"
-            string += "\(iInd)\(ind)\(ind)return intArray.map { Int32($0) }\n"
+            string += "\(iInd)\(ind)\(ind)return intArray.map { \(name)($0) }\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)}\n"
             return string

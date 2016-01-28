@@ -169,7 +169,7 @@ class ExportEntity {
             let type = attribute.type
             let index = primitives.indexOf(type)
             if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
-            else { string += "\(attribute.name): \(attribute.name).new, " }
+            else { string += "\(attribute.name): \(attribute.type).new, " }
         }
         
         // new variable relationships
@@ -204,16 +204,13 @@ class ExportEntity {
         
         // encode variable relationships
         for relationship in entity.relationships {
+            let name = relationship.name.lowerCaseFirstLetter
             if relationship.type == .TooMany {
-                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].encode"
+                string += "\(ind)\(ind)dict[\"\(name)\"] = \(name).encode\n"
             } else {
-                let name = relationship.name.lowerCaseFirstLetter
-                string += "\(ind)\(ind)let \(relationship.name) = \(name)?.encode(dict, key: \"\(relationship.name)\")\n"
+                string += "\(ind)\(ind)dict[\"\(name)\"] =? \(name)?.encode\n"
             }
         }
-        
-        //
-        //
         
         // end encode variable
         string += "\(ind)\(ind)return dict\n"
@@ -226,20 +223,16 @@ class ExportEntity {
         
         // decode function attributes
         for attribute in entity.attributes {
-            if attribute.isPrimitive {
-                string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.type.lowerCaseFirstLetter)\n"
-            } else {
-                string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name.lowerCaseFirstLetter)\n"
-            }
+            string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.type.lowerCaseFirstLetter)\n"
         }
         
         // decode function relationships
         for relationship in entity.relationships {
             if relationship.type == .TooMany {
-                let arrayName = relationship.name.lowerCaseFirstLetterAndArray
+                let arrayName = relationship.entity.lowerCaseFirstLetterAndArray
                 string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(arrayName)\n"
             } else {
-                let name = relationship.name.lowerCaseFirstLetter
+                let name = relationship.entity.lowerCaseFirstLetter
                 string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(name)Nillable\n"
             }
         }

@@ -135,7 +135,6 @@ extension EnumVC: HGTableRowAppendable {
             }
         }
         
-        
         if willAskUser { return .AskUser }
         
         return .Yes

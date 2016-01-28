@@ -23,20 +23,18 @@
 		034985071C56D50B0048F44C /* ExportString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985061C56D50B0048F44C /* ExportString.swift */; };
 		034985091C56D5220048F44C /* ExportInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985081C56D5220048F44C /* ExportInt.swift */; };
 		0349850A1C578B840048F44C /* HuckleberryGenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C251B5143A0004EC724 /* HuckleberryGenUITests.swift */; };
-		0349850C1C578BE80048F44C /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349850B1C578BE80048F44C /* Type.swift */; };
 		0349850E1C579AA00048F44C /* SaveBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349850D1C579AA00048F44C /* SaveBoard.swift */; };
 		035428E91BA1A1C500BED618 /* HGNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428E81BA1A1C500BED618 /* HGNotif.swift */; };
 		035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035428EA1BA1C16600BED618 /* NSNotification.swift */; };
 		035E493D1C57D6220005E28A /* ExportProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E493C1C57D6220005E28A /* ExportProtocols.swift */; };
-		035E493F1C57D77F0005E28A /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E493E1C57D77F0005E28A /* Protocol.swift */; };
-		035E49411C57D7DC0005E28A /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E49401C57D7DC0005E28A /* Variable.swift */; };
-		035E49431C57D7FE0005E28A /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E49421C57D7FE0005E28A /* Function.swift */; };
 		035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D21C57F75F0005E28A /* XP_CLA_HGObject.txt */; };
 		035E49D51C57FA490005E28A /* ExportHGClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E49D41C57FA490005E28A /* ExportHGClasses.swift */; };
 		035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */; };
 		035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */; };
 		035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */; };
 		035E4A9E1C58DA2E0005E28A /* HGIndent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E4A9D1C58DA2E0005E28A /* HGIndent.swift */; };
+		035E4CB21C5922870005E28A /* XP_CLA_HGOperators.txt in Resources */ = {isa = PBXBuildFile; fileRef = 035E4CB11C5922870005E28A /* XP_CLA_HGOperators.txt */; };
+		035E4D1E1C5A46710005E28A /* HGCodeRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E4D1D1C5A46710005E28A /* HGCodeRepresentable.swift */; };
 		035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E75551B9595890036AE0B /* HGFileQuery.swift */; };
 		036455C01BA264930096B255 /* HGCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455BF1BA264930096B255 /* HGCellData.swift */; };
 		036455C21BA264E40096B255 /* HGCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455C11BA264E40096B255 /* HGCellType.swift */; };
@@ -60,7 +58,6 @@
 		036C7CBF1B529A84004EC724 /* HGOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CAF1B529A84004EC724 /* HGOptional.swift */; };
 		036C7CC01B529A84004EC724 /* HGGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CB11B529A84004EC724 /* HGGen.swift */; };
 		036C7CC11B529A84004EC724 /* HGJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CB31B529A84004EC724 /* HGJSON.swift */; };
-		036C7CC21B529A84004EC724 /* HGProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CB51B529A84004EC724 /* HGProtocol.swift */; };
 		036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CB71B529A84004EC724 /* HuckleberryGen.swift */; };
 		036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CC71B52A17F004EC724 /* LicenseInfo.swift */; };
 		036C7CCC1B52B89A004EC724 /* HGDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CCB1B52B89A004EC724 /* HGDate.swift */; };
@@ -98,6 +95,11 @@
 		03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278F81C513DA600DA353C /* ExportEnum.swift */; };
 		03A278FB1C52447800DA353C /* ExportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278FA1C52447800DA353C /* ExportExtensions.swift */; };
 		03A278FD1C52498F00DA353C /* ExportOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278FC1C52498F00DA353C /* ExportOptional.swift */; };
+		03BDDA461C5A757A00F0DCEA /* XP_Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA451C5A757A00F0DCEA /* XP_Utility.swift */; };
+		03BDDA491C5A924E00F0DCEA /* HGOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA481C5A924E00F0DCEA /* HGOperators.swift */; };
+		03BDDA4B1C5A934100F0DCEA /* HGEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA4A1C5A934100F0DCEA /* HGEncodable.swift */; };
+		03BDDA4D1C5A936C00F0DCEA /* HGReportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA4C1C5A936C00F0DCEA /* HGReportable.swift */; };
+		03BDDA531C5AA0F900F0DCEA /* HGProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA521C5AA0F900F0DCEA /* HGProtocol.swift */; };
 		03D3FF6C1B848FCD001B9F48 /* HGEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FF6B1B848FCD001B9F48 /* HGEvent.swift */; };
 		03D4FE371C3ACD38007BBA5F /* HGNotifType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D4FE361C3ACD38007BBA5F /* HGNotifType.swift */; };
 		03D56F231C4F29BF00A3A8DC /* ExportProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D56F221C4F29BF00A3A8DC /* ExportProject.swift */; };
@@ -115,7 +117,6 @@
 		03F25EF81B9C292E0048B0A0 /* HGTableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F25EF61B9C292E0048B0A0 /* HGTableHeader.xib */; };
 		03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F38F7B1BBE487A00B2739A /* FieldCell2.xib */; };
 		03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F7E33D1BA891A90053BA6B /* Board.storyboard */; };
-		03FBECA61C57C8D6007A5953 /* Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FBECA51C57C8D6007A5953 /* Unwrap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,20 +152,18 @@
 		034614091BDF81E40002F0AA /* DecisionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionBoard.swift; sourceTree = "<group>"; };
 		034985061C56D50B0048F44C /* ExportString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportString.swift; path = ExportScripts/ExportExtensions/ExportString.swift; sourceTree = "<group>"; };
 		034985081C56D5220048F44C /* ExportInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportInt.swift; path = ExportScripts/ExportExtensions/ExportInt.swift; sourceTree = "<group>"; };
-		0349850B1C578BE80048F44C /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Type.swift; path = Categories/Type.swift; sourceTree = "<group>"; };
 		0349850D1C579AA00048F44C /* SaveBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveBoard.swift; sourceTree = "<group>"; };
 		035428E81BA1A1C500BED618 /* HGNotif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGNotif.swift; path = HGNotif/HGNotif.swift; sourceTree = "<group>"; };
 		035428EA1BA1C16600BED618 /* NSNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotification.swift; sourceTree = "<group>"; };
 		035E493C1C57D6220005E28A /* ExportProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportProtocols.swift; path = ExportScripts/ExportProtocols.swift; sourceTree = "<group>"; };
-		035E493E1C57D77F0005E28A /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocol.swift; path = Categories/Protocol.swift; sourceTree = "<group>"; };
-		035E49401C57D7DC0005E28A /* Variable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Variable.swift; path = Categories/Variable.swift; sourceTree = "<group>"; };
-		035E49421C57D7FE0005E28A /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Function.swift; path = Categories/Function.swift; sourceTree = "<group>"; };
 		035E49D21C57F75F0005E28A /* XP_CLA_HGObject.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XP_CLA_HGObject.txt; sourceTree = "<group>"; };
 		035E49D41C57FA490005E28A /* ExportHGClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportHGClasses.swift; path = ExportScripts/ExportHGClasses.swift; sourceTree = "<group>"; };
 		035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorReporter.txt; path = ExportScripts/XP_CLA_HGErrorReporter.txt; sourceTree = "<group>"; };
 		035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGErrorTrack.txt; path = ExportScripts/XP_CLA_HGErrorTrack.txt; sourceTree = "<group>"; };
 		035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGError.txt; path = ExportScripts/XP_CLA_HGError.txt; sourceTree = "<group>"; };
 		035E4A9D1C58DA2E0005E28A /* HGIndent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGIndent.swift; path = HGIndent/HGIndent.swift; sourceTree = "<group>"; };
+		035E4CB11C5922870005E28A /* XP_CLA_HGOperators.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = XP_CLA_HGOperators.txt; path = ExportScripts/XP_CLA_HGOperators.txt; sourceTree = "<group>"; };
+		035E4D1D1C5A46710005E28A /* HGCodeRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCodeRepresentable.swift; sourceTree = "<group>"; };
 		035E75551B9595890036AE0B /* HGFileQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGFileQuery.swift; path = HGQuery/HGFileQuery.swift; sourceTree = "<group>"; };
 		036455BF1BA264930096B255 /* HGCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellData.swift; sourceTree = "<group>"; };
 		036455C11BA264E40096B255 /* HGCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellType.swift; sourceTree = "<group>"; };
@@ -195,7 +194,6 @@
 		036C7CAF1B529A84004EC724 /* HGOptional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGOptional.swift; sourceTree = "<group>"; };
 		036C7CB11B529A84004EC724 /* HGGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HGGen.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		036C7CB31B529A84004EC724 /* HGJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HGJSON.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		036C7CB51B529A84004EC724 /* HGProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HGProtocol.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		036C7CB71B529A84004EC724 /* HuckleberryGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HuckleberryGen.swift; sourceTree = "<group>"; };
 		036C7CC71B52A17F004EC724 /* LicenseInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicenseInfo.swift; sourceTree = "<group>"; };
 		036C7CCB1B52B89A004EC724 /* HGDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGDate.swift; sourceTree = "<group>"; };
@@ -233,6 +231,11 @@
 		03A278F81C513DA600DA353C /* ExportEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportEnum.swift; path = ExportScripts/ExportEnum.swift; sourceTree = "<group>"; };
 		03A278FA1C52447800DA353C /* ExportExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportExtensions.swift; path = ExportScripts/ExportExtensions.swift; sourceTree = "<group>"; };
 		03A278FC1C52498F00DA353C /* ExportOptional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportOptional.swift; path = ExportScripts/ExportExtensions/ExportOptional.swift; sourceTree = "<group>"; };
+		03BDDA451C5A757A00F0DCEA /* XP_Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XP_Utility.swift; path = ExportScripts/XP_Utility.swift; sourceTree = "<group>"; };
+		03BDDA481C5A924E00F0DCEA /* HGOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGOperators.swift; path = HGOperators/HGOperators.swift; sourceTree = "<group>"; };
+		03BDDA4A1C5A934100F0DCEA /* HGEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGEncodable.swift; sourceTree = "<group>"; };
+		03BDDA4C1C5A936C00F0DCEA /* HGReportable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGReportable.swift; sourceTree = "<group>"; };
+		03BDDA521C5AA0F900F0DCEA /* HGProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGProtocol.swift; path = Categories/HGProtocol.swift; sourceTree = "<group>"; };
 		03D3FF6B1B848FCD001B9F48 /* HGEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGEvent.swift; sourceTree = "<group>"; };
 		03D4FE361C3ACD38007BBA5F /* HGNotifType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGNotifType.swift; sourceTree = "<group>"; };
 		03D56F221C4F29BF00A3A8DC /* ExportProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportProject.swift; path = ExportScripts/ExportProject.swift; sourceTree = "<group>"; };
@@ -250,7 +253,6 @@
 		03F25EF61B9C292E0048B0A0 /* HGTableHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HGTableHeader.xib; sourceTree = "<group>"; };
 		03F38F7B1BBE487A00B2739A /* FieldCell2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell2.xib; sourceTree = "<group>"; };
 		03F7E33E1BA891A90053BA6B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = HuckleberryGen/Base.lproj/Board.storyboard; sourceTree = "<group>"; };
-		03FBECA51C57C8D6007A5953 /* Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Unwrap.swift; path = Categories/Unwrap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -412,11 +414,7 @@
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
 				036C7C641B514AF8004EC724 /* Relationship.swift */,
 				0339BC631BFE22E40071F8AD /* Project.swift */,
-				0349850B1C578BE80048F44C /* Type.swift */,
-				03FBECA51C57C8D6007A5953 /* Unwrap.swift */,
-				035E493E1C57D77F0005E28A /* Protocol.swift */,
-				035E49401C57D7DC0005E28A /* Variable.swift */,
-				035E49421C57D7FE0005E28A /* Function.swift */,
+				03BDDA521C5AA0F900F0DCEA /* HGProtocol.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -424,6 +422,7 @@
 		036C7CAA1B529A84004EC724 /* HuckleberryGen */ = {
 			isa = PBXGroup;
 			children = (
+				03BDDA471C5A922500F0DCEA /* HGOperators */,
 				035E4A9C1C58D9C30005E28A /* HGIndent */,
 				035428E71BA1A1A900BED618 /* HGNotif */,
 				03F25EF41B9C292E0048B0A0 /* HGTableHeader */,
@@ -483,7 +482,9 @@
 		036C7CB41B529A84004EC724 /* HGProtocol */ = {
 			isa = PBXGroup;
 			children = (
-				036C7CB51B529A84004EC724 /* HGProtocol.swift */,
+				03BDDA4C1C5A936C00F0DCEA /* HGReportable.swift */,
+				03BDDA4A1C5A934100F0DCEA /* HGEncodable.swift */,
+				035E4D1D1C5A46710005E28A /* HGCodeRepresentable.swift */,
 			);
 			path = HGProtocol;
 			sourceTree = "<group>";
@@ -602,9 +603,18 @@
 			name = ExportExtensions;
 			sourceTree = "<group>";
 		};
+		03BDDA471C5A922500F0DCEA /* HGOperators */ = {
+			isa = PBXGroup;
+			children = (
+				03BDDA481C5A924E00F0DCEA /* HGOperators.swift */,
+			);
+			name = HGOperators;
+			sourceTree = "<group>";
+		};
 		03D56F1F1C4F265F00A3A8DC /* ExportScripts */ = {
 			isa = PBXGroup;
 			children = (
+				03BDDA451C5A757A00F0DCEA /* XP_Utility.swift */,
 				03A278F21C50737400DA353C /* ExportEntity.swift */,
 				03A278F81C513DA600DA353C /* ExportEnum.swift */,
 				03A278FE1C52499800DA353C /* ExportExtensions */,
@@ -617,6 +627,7 @@
 				035E49D61C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt */,
 				035E4A0A1C5832C90005E28A /* XP_CLA_HGError.txt */,
 				035E4A081C582FD10005E28A /* XP_CLA_HGErrorTrack.txt */,
+				035E4CB11C5922870005E28A /* XP_CLA_HGOperators.txt */,
 			);
 			name = ExportScripts;
 			sourceTree = "<group>";
@@ -785,6 +796,7 @@
 				035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */,
 				03F25EF81B9C292E0048B0A0 /* HGTableHeader.xib in Resources */,
 				036E329E1BB2CCA40024AA4E /* MixedCell1.xib in Resources */,
+				035E4CB21C5922870005E28A /* XP_CLA_HGOperators.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,18 +825,18 @@
 				0306574A1C287ED200ED8722 /* HGBlockView.swift in Sources */,
 				036455C01BA264930096B255 /* HGCellData.swift in Sources */,
 				03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */,
+				035E4D1E1C5A46710005E28A /* HGCodeRepresentable.swift in Sources */,
+				03BDDA491C5A924E00F0DCEA /* HGOperators.swift in Sources */,
 				0339BC601BFD598B0071F8AD /* ErrorBoard.swift in Sources */,
 				036C7CBE1B529A84004EC724 /* HGDictionary.swift in Sources */,
 				036455C21BA264E40096B255 /* HGCellType.swift in Sources */,
 				0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */,
-				0349850C1C578BE80048F44C /* Type.swift in Sources */,
 				03660ADD1BBDED6600DE41D5 /* NSImage.swift in Sources */,
-				036C7CC21B529A84004EC724 /* HGProtocol.swift in Sources */,
 				03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */,
 				036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */,
 				03660AE11BBE444C00DE41D5 /* EnumCasesVC.swift in Sources */,
-				035E493F1C57D77F0005E28A /* Protocol.swift in Sources */,
 				039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */,
+				03BDDA4D1C5A936C00F0DCEA /* HGReportable.swift in Sources */,
 				03F25EF71B9C292E0048B0A0 /* HGTableHeader.swift in Sources */,
 				039731E21C42833E003DA4F4 /* SBD_Import.swift in Sources */,
 				036C7CBF1B529A84004EC724 /* HGOptional.swift in Sources */,
@@ -835,11 +847,11 @@
 				036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */,
 				036C7C661B514AF8004EC724 /* Relationship.swift in Sources */,
 				0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */,
+				03BDDA461C5A757A00F0DCEA /* XP_Utility.swift in Sources */,
 				03F25EDA1B9BFEE90048B0A0 /* AttributeVC.swift in Sources */,
 				0349850E1C579AA00048F44C /* SaveBoard.swift in Sources */,
 				03D4FE371C3ACD38007BBA5F /* HGNotifType.swift in Sources */,
 				036C7CBD1B529A84004EC724 /* HGError.swift in Sources */,
-				035E49411C57D7DC0005E28A /* Variable.swift in Sources */,
 				03F25EEB1B9C16EA0048B0A0 /* HGSplit.swift in Sources */,
 				036C7C6A1B514AF9004EC724 /* Attribute.swift in Sources */,
 				035428EB1BA1C16600BED618 /* NSNotification.swift in Sources */,
@@ -865,6 +877,7 @@
 				039731F21C45AE74003DA4F4 /* SBD_DeletionRules.swift in Sources */,
 				03A278FB1C52447800DA353C /* ExportExtensions.swift in Sources */,
 				0322FA421B59633E00CB132B /* HGArray.swift in Sources */,
+				03BDDA4B1C5A934100F0DCEA /* HGEncodable.swift in Sources */,
 				03A20B4A1B99E4C900149AF5 /* FolderBoard.swift in Sources */,
 				039731F51C46A263003DA4F4 /* DBD_DeleteRows.swift in Sources */,
 				035E493D1C57D6220005E28A /* ExportProtocols.swift in Sources */,
@@ -873,7 +886,6 @@
 				036C7C721B514AF9004EC724 /* Folder.swift in Sources */,
 				03A20B541B99E4C900149AF5 /* MainWindowController.swift in Sources */,
 				031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */,
-				03FBECA61C57C8D6007A5953 /* Unwrap.swift in Sources */,
 				03F25EE81B9C16EA0048B0A0 /* HGCell.swift in Sources */,
 				036C7CC11B529A84004EC724 /* HGJSON.swift in Sources */,
 				036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */,
@@ -888,12 +900,12 @@
 				036C7C6E1B514AF9004EC724 /* ImportFile.swift in Sources */,
 				03A278F31C50737400DA353C /* ExportEntity.swift in Sources */,
 				0372A6121B8F6EB800317065 /* XCODE_XMLParser.swift in Sources */,
-				035E49431C57D7FE0005E28A /* Function.swift in Sources */,
 				030657481C286C1200ED8722 /* NSEvent.swift in Sources */,
 				036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */,
 				036C7C061B5143A0004EC724 /* AppDelegate.swift in Sources */,
 				03F25EDE1B9BFEE90048B0A0 /* EnumVC.swift in Sources */,
 				036C7CCC1B52B89A004EC724 /* HGDate.swift in Sources */,
+				03BDDA531C5AA0F900F0DCEA /* HGProtocol.swift in Sources */,
 				0378175A1B7D0D110009D67B /* HGEntity.swift in Sources */,
 				0322FA3E1B59038100CB132B /* NSView.swift in Sources */,
 				0339BC641BFE22E40071F8AD /* Project.swift in Sources */,

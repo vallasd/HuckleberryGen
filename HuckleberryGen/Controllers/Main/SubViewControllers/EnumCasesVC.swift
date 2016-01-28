@@ -48,7 +48,7 @@ extension EnumCasesVC: HGTableDisplayable {
         
         let casE = appDelegate.store.project.enums[table.parentRow].cases[row]
         return HGCellData.fieldCell2(
-            field0: HGFieldData(title: casE.name),
+            field0: HGFieldData(title: casE.string),
             field1: HGFieldData(title: String(row))
         )
     }
@@ -108,7 +108,7 @@ extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         var enumcase = appDelegate.store.project.enums[table.parentRow].cases[row]
-        enumcase.name = string
+        enumcase.string = string
         appDelegate.store.project.enums[table.parentRow].cases[row] = enumcase
     }
     

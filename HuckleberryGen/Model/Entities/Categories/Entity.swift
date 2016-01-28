@@ -9,6 +9,7 @@
 import Cocoa
 
 struct Entity {
+    
     var name: String
     var attributes: [Attribute]
     var relationships: [Relationship]
@@ -40,6 +41,19 @@ extension Entity: HGEncodable {
         return Entity(name: name, attributes: attributes, relationships: relationships)
     }
 }
+
+
+extension Entity: HGTypeRepresentable {
+    
+    func typeRep() -> String { return name.typeRepresentable }
+}
+
+extension Entity: HGVarRepresentable {
+    
+    func varRep() -> String { return name.lowerFirstLetter }
+    func varArrayRep() -> String { return name.lowerFirstLetter.pluralized }
+}
+
 
 extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
 extension Entity: Equatable {}; func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.name == rhs.name }

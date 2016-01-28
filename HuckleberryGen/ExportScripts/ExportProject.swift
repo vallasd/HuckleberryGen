@@ -51,9 +51,7 @@ class ExportProject {
         exportHGClasses.exportFiles()
         
     }
-    
 
-    
     /// reads file in project, if there is an error, returns false
     static func read(file file: String) -> String {
         

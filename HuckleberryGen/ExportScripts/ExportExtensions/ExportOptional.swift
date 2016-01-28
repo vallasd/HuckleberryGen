@@ -91,8 +91,9 @@ class ExportOptional {
     private func errorReturnStatement(name: String, stringValue: String, iInd: String) -> String  {
         
         // return string
+        let literalString = stringValue.removeQuotes
         var string = ""
-        string += "\(iInd)appDelegate.error.report(\"optional: |\\(self)| is not \(name) mapable, using \(stringValue)\", type: .Error)\n"
+        string += "\(iInd)appDelegate.error.report(\"optional: |\\(self)| is not \(name) mapable, using \(literalString)\", type: .Error)\n"
         string += "\(iInd)return \(stringValue)\n"
         return string
     }
@@ -357,6 +358,5 @@ class ExportOptional {
         
         return string
     }
-    
 }
 

@@ -10,7 +10,7 @@ protocol HGEncodable {
 extension HGEncodable {
 
     /// encode optional to dictionary
-    func encode(var dict: HGDICT, key: String) {
+    func encode(inout dict: HGDICT, key: String) {
         dict[key] = self.encode
     }
 

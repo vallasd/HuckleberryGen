@@ -78,7 +78,7 @@ class ExportEnum {
         
         // add attributes to enum stanza
         for enumcase in enuM.cases {
-            string += "\(ind)case \(enumcase.name)\n"
+            string += "\(ind)case \(enumcase.typeRep())\n"
         }
         
         string += "\n"
@@ -89,7 +89,7 @@ class ExportEnum {
         
         var index = 0
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.name): return \(index)\n"
+            string += "\(ind)\(ind)case \(enumcase.typeRep()): return \(index)\n"
             index++
         }
         
@@ -104,7 +104,7 @@ class ExportEnum {
         string += "\(ind)\(ind)switch self {\n"
         
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.name): return \"\(enumcase.name)\"\n"
+            string += "\(ind)\(ind)case \(enumcase.typeRep()): return \"\(enumcase.string)\"\n"
         }
         
         // end string for enum stanza
@@ -123,13 +123,16 @@ class ExportEnum {
         // get indent
         let ind = HGIndent.indent
         
+        // create default case type report, if cases were not loaded, will create string that will cause an error in Export file to draw attention
+        let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.typeRep() : "Missing Enum Cases!!!"
+        
         // begin hgencodable stanza
         var string = "extension \(enuM.name): HGEncodable {\n"
         string += "\n"
         
         // new variable
         string += "\(ind)static var new: \(enuM.name) {\n"
-        string += "\(ind)\(ind)return \(enuM.name).\(enuM.cases[0].name)\n"
+        string += "\(ind)\(ind)return \(enuM.name).\(defaultCaseType)\n"
         
         // end new variable
         string += "\(ind)}\n\n"
@@ -145,7 +148,7 @@ class ExportEnum {
         string += "\(ind)static func decode(object object: AnyObject) -> \(enuM.name) {\n"
         string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
         string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "\(ind)\(ind)appDelegate.error.report(\"object \\(object) is not \(enuM.name) decodable, returning \(enuM.cases[0].name)\", .Error)\n"
+        string += "\(ind)\(ind)appDelegate.error.report(\"object \\(object) is not |\(enuM.typeRep())| decodable, returning \(defaultCaseType)\", type: .Error)\n"
         string += "\(ind)\(ind)return \(enuM.name).new\n"
         
         // end decode function

@@ -40,6 +40,10 @@ extension String {
         }
     }
     
+    /// removes all characters
+    func stripOutCharacterExcept(characters set: Set<Character>, fromString string: String) -> String {
+        return String(string.characters.filter { set.contains($0) })
+    }
     
     /// returns an indexed list of iterated objects that match string in a set of string objects.  Example, string is "New Case", iterated objects are ["Hello", "New Case 2", "Bleepy", "new case 3", "New Case"].  Function will return ["New Case", "New Case 2"].  This search is case sensitive.
     func iteratedObjects(objects: [String]) -> [String] {
@@ -74,6 +78,54 @@ extension String {
         // is not already iterated, return with 2
         return self + " 2"
     }
+    
+    /// returns string with quotes removed inside string
+    var removeQuotes: String {
+        let string = self.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        return string
+    }
+    
+    /// simple string, removes all characters besides caps, lower case, and spaces
+    var simple: String {
+        let chars: Set<Character> = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ".characters)
+        return stripOutCharacterExcept(characters: chars, fromString: self)
+    }
+    
+    /// makes a Type [Entity, Struct,  representation of the string
+    var typeRepresentable: String {
+        return self.simple.componentsSeparatedByString(" ").flatMap { $0.capitalFirstLetter }.joinWithSeparator("")
+    }
+    
+    /// makes a variable representation of the string
+    var varRepresentable: String {
+        return self.typeRepresentable.lowerFirstLetter
+    }
+    
+    /// makes a variable Array representation of the string
+    var varArrayRepresentable: String {
+        return self.varArrayRepresentable.pluralized
+    }
+    
+    var capitalFirstLetter: String {
+        if self.isEmpty { return "" }
+        var string = self
+        let firstChar = String(string.characters.first!).uppercaseString
+        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
+        return string
+    }
+    
+    var lowerFirstLetter: String {
+        if self.isEmpty { return "" }
+        var string = self
+        let firstChar = String(string.characters.first!).lowercaseString
+        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
+        return string
+    }
+    
+    var pluralized: String {
+        return self + "Array"
+    }
+    
     
     /// makes first letter of string lower case
     var lowerCaseFirstLetter: String {

@@ -318,7 +318,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hF1-Qq-dYs">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hF1-Qq-dYs">
                                     <rect key="frame" x="1" y="158" width="438" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -517,8 +517,46 @@
             </objects>
             <point key="canvasLocation" x="53" y="2483"/>
         </scene>
+        <!--Save Board-->
+        <scene sceneID="DSG-M8-9Fh">
+            <objects>
+                <viewController storyboardIdentifier="ColorBoard" id="r9R-6O-5GC" customClass="SaveBoard" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="g1b-Ck-92A">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="udC-0p-qrC">
+                                <rect key="frame" x="90" y="35" width="300" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="TmF-OV-ubn"/>
+                                    <constraint firstAttribute="width" constant="300" id="qvb-lK-6oD"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSColorPanel" id="FO7-yW-mts"/>
+                            </imageView>
+                            <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="Ttm-TK-Ky1">
+                                <rect key="frame" x="410" y="35" width="50" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="LoL-Of-3rn"/>
+                                    <constraint firstAttribute="width" constant="50" id="RIt-UQ-A6a"/>
+                                </constraints>
+                                <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </colorWell>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="udC-0p-qrC" firstAttribute="centerX" secondItem="g1b-Ck-92A" secondAttribute="centerX" id="7Qm-nN-aOt"/>
+                            <constraint firstItem="Ttm-TK-Ky1" firstAttribute="centerY" secondItem="g1b-Ck-92A" secondAttribute="centerY" id="DIb-mi-NB8"/>
+                            <constraint firstAttribute="trailing" secondItem="Ttm-TK-Ky1" secondAttribute="trailing" constant="20" id="fxI-r4-CkI"/>
+                            <constraint firstItem="udC-0p-qrC" firstAttribute="centerY" secondItem="g1b-Ck-92A" secondAttribute="centerY" id="tud-NC-5lh"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="Y15-8l-uor" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="2835"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="NSColorPanel" width="32" height="32"/>
         <image name="NSUserGuest" width="32" height="32"/>
         <image name="whiteBoard" width="484" height="274"/>
     </resources>

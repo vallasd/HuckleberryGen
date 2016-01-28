@@ -9,31 +9,44 @@
 import Foundation
 
 struct EnumCase {
-    var name: String
     
-    init(name: String) {
-        self.name = name
+    /// string representation of enum's case.  case .caseRep:
+    var string: String
+    
+    init(string: String) {
+        self.string = string
     }
 }
 
 extension EnumCase: HGEncodable {
     
     static var new: EnumCase {
-        return EnumCase(name: "New Case")
+        return EnumCase(string: "New Case")
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
+        dict["string"] = string
         return dict
     }
     
     static func decode(object object: AnyObject) -> EnumCase {
         let dict = hgdict(fromObject: object, decoderName: "EnumCase")
-        let name = dict["name"].string
-        return EnumCase(name: name)
+        let name = dict["string"].string
+        return EnumCase(string: name)
     }
 }
 
-extension EnumCase: Hashable { var hashValue: Int { return name.hashValue } }
-extension EnumCase: Equatable {}; func ==(lhs: EnumCase, rhs: EnumCase) -> Bool { return lhs.name == rhs.name }
+extension EnumCase: HGTypeRepresentable {
+    
+    func typeRep() -> String { return string.typeRepresentable }
+}
+
+extension EnumCase: HGVarRepresentable {
+    
+    func varRep() -> String { return string.varRepresentable }
+    func varArrayRep() -> String { return string.varArrayRepresentable }
+}
+
+extension EnumCase: Hashable { var hashValue: Int { return string.hashValue } }
+extension EnumCase: Equatable {}; func ==(lhs: EnumCase, rhs: EnumCase) -> Bool { return lhs.string == rhs.string }
