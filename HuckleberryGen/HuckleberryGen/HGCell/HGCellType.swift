@@ -1,5 +1,5 @@
 //
-//  HGCellType.swift
+//  CellType.swift
 //  HuckleberryGen
 //
 //  Created by David Vallas on 9/10/15.
@@ -8,17 +8,17 @@
 
 import Cocoa
 
-enum HGCellType: Int16 {
+enum CellType {
     
-    case DefaultCell = 0
-    case MixedCell1 = 1
-    case Check4Cell = 2
-    case Image4Cell = 3
-    case Image5Cell = 4
-    case Image6Cell = 5
-    case FieldCell1 = 6
-    case FieldCell2 = 7
-    case FieldCell3 = 8
+    case DefaultCell
+    case MixedCell1
+    case Check4Cell
+    case Image4Cell
+    case Image5Cell
+    case Image6Cell
+    case FieldCell1
+    case FieldCell2
+    case FieldCell3
     
     /// The nib identifier
     var identifier: String {

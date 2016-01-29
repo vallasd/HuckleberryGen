@@ -21,7 +21,7 @@ class SBD_Attributes: SelectionBoardDelegate {
     let attributeIndex: Int
     
     /// reference to the cell type used 
-    let celltype = HGCellType.Image5Cell
+    let celltype = CellType.Image5Cell
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
@@ -75,7 +75,7 @@ extension SBD_Attributes: HGTableDisplayable {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     

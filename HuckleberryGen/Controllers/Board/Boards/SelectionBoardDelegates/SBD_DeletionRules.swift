@@ -21,7 +21,7 @@ class SBD_DeletionRules: SelectionBoardDelegate {
     let relationshipIndex: Int!
     
     /// reference to the cell type used
-    let celltype = HGCellType.FieldCell1
+    let celltype = CellType.FieldCell1
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let deletionRules: [DeletionRule] = DeletionRule.set
@@ -51,7 +51,7 @@ extension SBD_DeletionRules: HGTableDisplayable {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     

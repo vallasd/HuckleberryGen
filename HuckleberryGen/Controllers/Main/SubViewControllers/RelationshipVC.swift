@@ -14,7 +14,7 @@ class RelationshipVC: NSViewController {
     
     var  hgtable: HGTable!
     
-    let celltype: HGCellType = HGCellType.MixedCell1
+    let celltype = CellType.MixedCell1
     
      // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ extension RelationshipVC: HGTableDisplayable {
         return 65.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     

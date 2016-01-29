@@ -12,7 +12,7 @@ class AttributeVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let celltype = HGCellType.DefaultCell
+    let celltype = CellType.DefaultCell
     
     var hgtable: HGTable!
 
@@ -40,7 +40,7 @@ extension AttributeVC: HGTableDisplayable {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     

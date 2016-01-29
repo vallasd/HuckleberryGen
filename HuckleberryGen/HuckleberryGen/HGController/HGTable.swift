@@ -19,8 +19,8 @@ protocol HGTableDisplayable: AnyObject {
     func numberOfRows(fortable table: HGTable) -> Int
     /// Pass the height of a specific row in the HGTableView.
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat
-    /// Pass the HGCellType for a specific row in the HGTable
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType
+    /// Pass the CellType for a specific row in the HGTable
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType
     /// Pass the HGCellData for a specific row in the HGTable.  The data will be used to populate the cell appropriately.
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData
 }
@@ -177,7 +177,7 @@ class HGTable: NSObject {
     // MARK: Cell Nib Loading
     
     /// Registers HGCell's Nib with TableView one time
-    private func register(cellType: HGCellType, forTableView tableView: NSTableView) {
+    private func register(cellType: CellType, forTableView tableView: NSTableView) {
         let tci = TableCellIdentifier(tableId: tableView.identifier, cellId: cellType.identifier)
         if tableCellIdentifiers.contains(tci) { return }
         let nib = NSNib(nibNamed: cellType.identifier, bundle: nil)

@@ -29,7 +29,8 @@ class EnumVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
-    let cellType: HGCellType = HGCellType.DefaultCell
+    let cellType = CellType.DefaultCell
+    
     var hgtable: HGTable!
     
     override func viewDidLoad() {
@@ -52,7 +53,7 @@ extension EnumVC: HGTableDisplayable {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return cellType
     }
     

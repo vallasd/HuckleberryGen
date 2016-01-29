@@ -14,7 +14,7 @@ class EntityVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let cellType: HGCellType = HGCellType.DefaultCell
+    let cellType = CellType.DefaultCell
     
     var hgtable: HGTable!
     
@@ -42,7 +42,7 @@ extension EntityVC: HGTableDisplayable {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return cellType
     }
     

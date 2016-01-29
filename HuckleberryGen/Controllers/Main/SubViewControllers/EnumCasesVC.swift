@@ -12,7 +12,8 @@ class EnumCasesVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let enumCell: HGCellType = HGCellType.FieldCell2
+    let celltype = CellType.FieldCell2
+    
     var hgtable: HGTable!
     
     // MARK: HGTableDisplayable
@@ -40,8 +41,8 @@ extension EnumCasesVC: HGTableDisplayable {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
-        return enumCell
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+        return celltype
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {

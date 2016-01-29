@@ -15,7 +15,7 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// reference to the cell type used
-    let celltype = HGCellType.FieldCell2
+    let celltype = CellType.FieldCell2
     
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = locations[0].row
@@ -35,7 +35,7 @@ extension SBD_SavedProjects: HGTableDisplayable {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     

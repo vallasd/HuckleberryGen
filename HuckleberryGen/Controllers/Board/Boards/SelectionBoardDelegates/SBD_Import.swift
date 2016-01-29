@@ -19,7 +19,7 @@ class SBD_Import: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// reference to cellType
-    var celltype = HGCellType.FieldCell3
+    var celltype = CellType.FieldCell3
     
     /// holds reference to parser while the parser is parsing the current importFile
     var parser: HGImportParser?
@@ -91,7 +91,7 @@ extension SBD_Import: HGTableDisplayable {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> HGCellType {
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
