@@ -23,8 +23,26 @@ protocol HGVarRepresentable: HGTypeRepresentable {
     func varArrayRep() -> String
 }
 
-// A string representation of the objects variable.  Example: Thing is Float, defaultRep -> "0.0".  Thing is enum HGErrorType, defaultRep -> "Warn"
-protocol HGDefaultRepresentable {
+// A string representation of the objects default return value.  Example: Thing is Float, defaultRep -> "0.0".  Thing is enum HGErrorType, defaultRep -> "Warn"
+protocol HGDefaultRepresentable: HGTypeRepresentable {
     
     func defaultRep() -> String
+}
+
+// whether object is optional
+protocol OptionalCheckable {
+    
+    func isOptional() -> Bool
+}
+
+// whether object is Array
+protocol HGArrayCheckable {
+    
+    func isArray() -> Bool
+}
+
+// whether object is let vs var object when typed
+protocol HGLetCheckable: HGTypeRepresentable {
+    
+    func isLet() -> Bool
 }

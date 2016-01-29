@@ -14,7 +14,32 @@ struct Relationship {
     var entity: String
     var type: RelationshipType
     var deletionRule: DeletionRule
+}
+
+extension Relationship: HGTypeRepresentable {
     
+    func typeRep() -> String { return entity.typeRepresentable }
+}
+
+extension Relationship: HGVarRepresentable {
+    
+    func varRep() -> String { return name.lowerFirstLetter }
+    func varArrayRep() -> String { return name.lowerFirstLetter.pluralized }
+}
+
+extension Relationship: OptionalCheckable {
+    
+    func isOptional() -> Bool { return type.isOptional() }
+}
+
+extension Relationship: HGArrayCheckable {
+    
+    func isArray() -> Bool { return type.isOptional() }
+}
+
+extension Relationship: HGLetCheckable {
+    
+    func isLet() -> Bool { return false }
 }
 
 extension Relationship: Hashable { var hashValue: Int { return name.hashValue } }
@@ -74,7 +99,7 @@ enum DeletionRule: Int16 {
         case 2: return .Cascade
         case 3: return .Deny
         default:
-            HGReportHandler.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
+            appDelegate.error.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
@@ -86,16 +111,17 @@ enum DeletionRule: Int16 {
         case "Cascade": return .Cascade
         case "Deny": return .Deny
         default:
-            HGReportHandler.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
+            appDelegate.error.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
 }
 
-enum RelationshipType: Int16 {
+enum RelationshipType {
     
-    case TooMany = 0
-    case TooOne = 1
+    case TooMany
+    case TooOne
+    case TooOneOptional
     
     static var set: [RelationshipType] = [.TooMany, .TooOne]
     static var imageStringSet = ["toManyIcon", "toOneIcon"]
@@ -105,6 +131,7 @@ enum RelationshipType: Int16 {
             switch self {
             case TooMany: return NSImage(named: "toManyIcon")!
             case TooOne: return NSImage(named: "toOneIcon")!
+            case TooOneOptional: return NSImage.image(named: "toOneIcon", title: "Optional")
             }
         }
     }
@@ -113,6 +140,7 @@ enum RelationshipType: Int16 {
         switch self {
         case TooMany: return 0
         case TooOne: return 1
+        case TooOneOptional: return 2
         }
     }
     
@@ -120,8 +148,9 @@ enum RelationshipType: Int16 {
         switch int {
         case 0: return .TooMany
         case 1: return .TooOne
+        case 3: return .TooOneOptional
         default:
-            HGReportHandler.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
+            appDelegate.error.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
             return .TooOne
         }
     }
@@ -131,9 +160,20 @@ enum RelationshipType: Int16 {
         case "YES", "TooMany": return .TooMany
         case "NO", "TooOne": return .TooOne
         default:
-            HGReportHandler.report("string: |\(string)| is not RelationshipType mapable, using .Nullify", type: .Error)
-            return .TooOne
+            appDelegate.error.report("string: |\(string)| is not RelationshipType mapable, using .TooOneOptional", type: .Error)
+            return .TooOneOptional
         }
     }
     
 }
+
+extension RelationshipType: OptionalCheckable {
+    
+    func isOptional() -> Bool {
+        if self == TooOneOptional { return true }
+        return false
+    }
+}
+
+
+

@@ -69,7 +69,7 @@ enum LicenseType: Int16 {
         case 0: return .MIT
         case 1: return .AllRightsReserved
         default:
-            HGReportHandler.report("int: |\(int)| is not an LicenseType mapable, returning .MIT", type: .Error)
+            appDelegate.error.report("int: |\(int)| is not an LicenseType mapable, returning .MIT", type: .Error)
             return .MIT
         }
     }

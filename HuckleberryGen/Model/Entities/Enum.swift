@@ -68,7 +68,9 @@ extension Enum {
     
     static func genericEnums() -> [Enum] {
         
-        var enums: [Enum] = []
+        var generics: [Enum] = []
+        
+        
         
         // generics are not editable
         let editable = false
@@ -81,7 +83,7 @@ extension Enum {
         let error4 = EnumCase(string: "Alert")
         let error5 = EnumCase(string: "Assert")
         let enum1 = Enum(editable: editable, name: error, cases: [error1, error2, error3, error4, error5])
-        enums.append(enum1)
+        generics.append(enum1)
         
         // create HGErrorType
         let artic = "HGArticle"
@@ -107,7 +109,7 @@ extension Enum {
         let artic20 = EnumCase(string: "A Story about the")
         let artics = [artic1, artic2, artic3, artic4, artic5, artic6, artic7, artic8, artic9, artic10, artic11, artic12, artic13, artic14, artic15, artic16, artic17, artic18, artic19, artic20]
         let enum2 = Enum(editable: editable, name: artic, cases: artics)
-        enums.append(enum2)
+        generics.append(enum2)
         
         // create HGErrorType
         let adjec = "HGAdjective"
@@ -133,7 +135,7 @@ extension Enum {
         let adjec20 = EnumCase(string: "Excellent")
         let adjecs = [adjec1, adjec2, adjec3, adjec4, adjec5, adjec6, adjec7, adjec8, adjec9, adjec10, adjec11, adjec12, adjec13, adjec14, adjec15, adjec16, adjec17, adjec18, adjec19, adjec20]
         let enum3 = Enum(editable: editable, name: adjec, cases: adjecs)
-        enums.append(enum3)
+        generics.append(enum3)
         
         // create HGErrorType
         let noun = "HGNoun"
@@ -159,10 +161,10 @@ extension Enum {
         let noun20 = EnumCase(string: "Movie")
         let nouns = [noun1, noun2, noun3, noun4, noun5, noun6, noun7, noun8, noun9, noun10, noun11, noun12, noun13, noun14, noun15, noun16, noun17, noun18, noun19, noun20]
         let enum4 = Enum(editable: editable, name: noun, cases: nouns)
-        enums.append(enum4)
+        generics.append(enum4)
         
         // return enums
-        return enums
+        return generics
     }
 }
 

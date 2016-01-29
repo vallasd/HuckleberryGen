@@ -54,6 +54,10 @@ extension Entity: HGVarRepresentable {
     func varArrayRep() -> String { return name.lowerFirstLetter.pluralized }
 }
 
+extension Entity: HGLetCheckable {
+    
+    func isLet() -> Bool { return false }
+}
 
 extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
 extension Entity: Equatable {}; func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.name == rhs.name }

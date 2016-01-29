@@ -8,7 +8,7 @@
 
 import Cocoa
 
-enum HGOption {
+enum Option {
     case Yes
     case No
     case AskUser // Will Display a Prompt

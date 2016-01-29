@@ -65,7 +65,7 @@ extension SBD_SavedProjects: HGTableRowAppendable {
         // do nothing
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         return .Yes
     }
     

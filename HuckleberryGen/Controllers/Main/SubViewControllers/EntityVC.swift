@@ -107,7 +107,7 @@ extension EntityVC: HGTableRowAppendable {
         appDelegate.store.project.entities.append(Entity.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         for row in rows {
             let entity = appDelegate.store.project.entities[row]

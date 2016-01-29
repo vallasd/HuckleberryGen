@@ -34,7 +34,7 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 && entity.relationships.count == 0 {
-            HGReportHandler.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
+            appDelegate.error.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
             return false
         }
         

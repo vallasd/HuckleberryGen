@@ -121,7 +121,7 @@ extension EnumVC: HGTableRowAppendable {
         appDelegate.store.project.enums.append(newEnum)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         var willAskUser = false
         

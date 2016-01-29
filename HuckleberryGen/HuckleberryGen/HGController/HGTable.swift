@@ -65,7 +65,7 @@ protocol HGTableFieldEditable: HGTableDisplayable {
 protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool
     func hgtable(willAddRowToTable table: HGTable)
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option
     func hgtable(table: HGTable, willDeleteRows rows: [Int])
 }
 

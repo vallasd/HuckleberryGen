@@ -8,20 +8,38 @@
 
 import Foundation
 
-struct HGProtocol {
+struct Protocol {
     
     var name: String
     
-//    init(name: String) {
-//        self.name = name
-//    }
+    init(name: String) {
+        self.name = name
+    }
+    
+    init(proto: HG_Protocol) {
+        self.name = proto.name
+    }
+}
+
+extension Protocol {
+    
+    static func genericProtocols() -> [Protocol] {
+        
+        var generics: [Protocol] = []
+        
+        for proto in HG_Protocol.set {
+            generics.append(Protocol(proto: proto))
+        }
+        
+        return generics
+    }
     
 }
 
-extension HGProtocol: HGEncodable {
+extension Protocol: HGEncodable {
     
-    static var new: HGProtocol {
-        return HGProtocol(name: "New Protocol")
+    static var new: Protocol {
+        return Protocol(name: "New Protocol")
     }
     
     var encode: AnyObject {
@@ -30,21 +48,36 @@ extension HGProtocol: HGEncodable {
         return dict
     }
     
-    static func decode(object object: AnyObject) -> HGProtocol {
+    static func decode(object object: AnyObject) -> Protocol {
         let dict = hgdict(fromObject: object, decoderName: "Enum")
         let name = dict["name"].string
-        return HGProtocol(name: name)
+        return Protocol(name: name)
     }
 }
 
 
-extension HGProtocol: HGTypeRepresentable {
+extension Protocol: HGTypeRepresentable {
     
     func typeRep() -> String { return name.typeRepresentable }
+    
 }
 
-extension HGProtocol: HGVarRepresentable {
+extension Protocol: HGVarRepresentable {
     
     func varRep() -> String { return name.varRepresentable }
     func varArrayRep() -> String { return name.varArrayRepresentable }
+}
+
+
+enum HG_Protocol {
+    
+    case HGEncodable
+    
+    static var set: [HG_Protocol] = [.HGEncodable]
+    
+    var name: String {
+        switch self {
+        case .HGEncodable: return "HGEncodable"
+        }
+    }
 }

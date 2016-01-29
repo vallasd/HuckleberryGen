@@ -84,7 +84,7 @@ extension RelationshipVC: HGTableRowAppendable {
         appDelegate.store.project.entities[table.parentRow].relationships.append(Relationship.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         return .Yes
     }
     

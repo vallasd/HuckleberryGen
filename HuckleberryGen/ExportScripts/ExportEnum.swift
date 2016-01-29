@@ -32,7 +32,7 @@ class ExportEnum {
         
         // return immediately if enum cases count is 0
         if enuM.cases.count == 0 {
-            HGReportHandler.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .Error)
+            appDelegate.error.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .Error)
             return false
         }
         

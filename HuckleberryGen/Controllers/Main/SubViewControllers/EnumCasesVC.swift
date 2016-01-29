@@ -86,7 +86,7 @@ extension EnumCasesVC: HGTableRowAppendable {
         appDelegate.store.project.enums[table.parentRow].cases.append(EnumCase.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> HGOption {
+    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         return appDelegate.store.project.enums[table.parentRow].editable == true ? .Yes : .No
     }

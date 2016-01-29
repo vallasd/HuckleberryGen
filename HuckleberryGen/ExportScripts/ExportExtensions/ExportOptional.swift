@@ -27,7 +27,7 @@ class ExportOptional {
     func exportFile() -> Bool {
         
         // Setting Default Names
-        let name = "HGOptional"
+        let name = "Optional"
         let filePath = path + "/\(name).swift"
         let store = appDelegate.store
         let header = licenseInfo.string(store.project.name, fileName: name)

@@ -39,7 +39,6 @@ struct Attribute {
         }
         return NSImage.image(named: "enumIcon", title: type)
     }
-
 }
 
 extension Attribute: HGTypeRepresentable {
@@ -225,7 +224,7 @@ enum Primitive {
         case 7: return ._Date
         case 8: return ._Binary
         default:
-            HGReportHandler.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
+            appDelegate.error.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
         }
     }
@@ -234,7 +233,7 @@ enum Primitive {
         if let primitive = prim(fromString: string) {
             return primitive
         }
-        HGReportHandler.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
+        appDelegate.error.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
         return ._Int
     }
     
@@ -275,7 +274,7 @@ extension Primitive: HGEncodable {
     static func decode(object object: AnyObject) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        HGReportHandler.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
+        appDelegate.error.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
         return ._Int
     }
 }
