@@ -9,6 +9,7 @@
 import Cocoa
 
 enum HGColor {
+    
     case Grey
     case White
     case WhiteTranslucent

@@ -93,7 +93,7 @@ extension AttributeVC: HGTableRowAppendable {
 
 extension AttributeVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         if type == .Image && tag == 0 {
             // present a selection board to update current Attribute
             let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: row)
@@ -103,7 +103,7 @@ extension AttributeVC: HGTableItemSelectable {
         return false
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

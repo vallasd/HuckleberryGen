@@ -78,11 +78,11 @@ extension SBD_RelationshipType: HGTableDisplayable {
 
 extension SBD_RelationshipType: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

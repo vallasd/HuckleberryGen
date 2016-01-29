@@ -96,7 +96,7 @@ extension RelationshipVC: HGTableRowAppendable {
 // MARK: HGTableItemSelectable
 extension RelationshipVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool {
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         
         /// Select Relationship's Entity or Deletion Rule
         if type == .Field && ( tag == 2 || tag == 4 ) {
@@ -112,7 +112,7 @@ extension RelationshipVC: HGTableItemSelectable {
         return false
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType) {
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         
         /// Set Relationship's Type
         if type == .Image && tag == 0 {
@@ -165,7 +165,7 @@ extension RelationshipVC: HGTableFieldEditable {
 //// MARK: HGTableItemEditable
 //extension RelationshipVC: HGTableItemEditable {
 //    
-//    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: HGCellItemType) -> Bool {
+//    func hgtable(table: HGTable, shouldEditRow row: Int, tag: Int, type: CellItemType) -> Bool {
 //        // TODO: FIX LINES 2 / 3
 //        if type == .Field && tag == 0 { return true } // Relationship Name
 //        if type == .Field && (tag == 2 || tag == 4) { return true } // Entity or Deletion Rule
@@ -191,7 +191,7 @@ extension RelationshipVC: HGTableFieldEditable {
 //// MARK: HGTableItemOptionable
 //extension RelationshipVC: HGTableItemOptionable {
 //    
-//    func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: HGCellItemType) {
+//    func hgtable(table: HGTable, didSelectRowForOption row: Int, tag: Int, type: CellItemType) {
 //        
 //        let boardHandler = appDelegate.mainWindowController.boardHandler
 //        

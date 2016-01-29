@@ -14,7 +14,7 @@ enum Option {
     case AskUser // Will Display a Prompt
 }
 
-enum HGCellItemType: Int16 {
+enum CellItemType: Int16 {
     case Field
     case Image
     case Check
@@ -57,7 +57,7 @@ func ==(lhs: HGCellLocation, rhs: HGCellLocation) -> Bool {
 /// Defines Item in HGCell, tag = 0, type = Field, would define IBOutlet weak var field0: NSTextField? in HGCell
 struct HGCellItemIdentifier: Hashable {
     let tag: Int
-    let type: HGCellItemType
+    let type: CellItemType
     
     var hashValue: Int {
         return tag.hashValue + type.hashValue
@@ -80,8 +80,8 @@ func ==(lhs: HGImageCellItemIdentifier, rhs: HGImageCellItemIdentifier) -> Bool 
 }
 
 protocol HGCellDelegate: AnyObject {
-    func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool
-    func hgcell(cell: HGCell, didSelectTag tag: Int, type: HGCellItemType)
+    func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool
+    func hgcell(cell: HGCell, didSelectTag tag: Int, type: CellItemType)
     func hgcell(cell: HGCell, shouldEditField field: Int) -> Bool
     func hgcell(cell: HGCell, didEditField field: Int, withString string: String)
 }

@@ -51,8 +51,8 @@ protocol HGTablePostable: HGTableRowSelectable {
 
 /// protocol that allows user to select types of the HGCell in an HGTable
 protocol HGTableItemSelectable: HGTableDisplayable {
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: HGCellItemType) -> Bool
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: HGCellItemType)
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType)
 }
 
 /// protocol that allows user to edit fields of the HGCell in an HGTable
@@ -294,11 +294,11 @@ extension HGTable: HGTableViewDelegate {
 // MARK: HGCellDelegate
 extension HGTable: HGCellDelegate {
     
-    func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: HGCellItemType) -> Bool {
+    func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool {
         return itemSelectDelegate?.hgtable(self, shouldSelect: cell.row, tag: tag, type: type) ?? false
     }
     
-    func hgcell(cell: HGCell, didSelectTag tag: Int, type: HGCellItemType) {
+    func hgcell(cell: HGCell, didSelectTag tag: Int, type: CellItemType) {
         
         let identifier = HGCellItemIdentifier(tag: tag, type: type)
         let newLocation = HGCellLocation(row: cell.row, identifier: identifier)
