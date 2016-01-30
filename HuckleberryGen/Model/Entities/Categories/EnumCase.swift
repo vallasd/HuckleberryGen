@@ -39,12 +39,12 @@ extension EnumCase: HGEncodable {
 
 extension EnumCase: HGTypeRepresentable {
     
-    func typeRep() -> String { return string.typeRepresentable }
+    var typeRep: String { return string.typeRepresentable }
 }
 
 extension EnumCase: HGVarRepresentable {
     
-    func varRep() -> String { return string.varRepresentable }
+    var varRep: String { return string.varRepresentable }
 }
 
 extension EnumCase: Hashable { var hashValue: Int { return string.hashValue } }

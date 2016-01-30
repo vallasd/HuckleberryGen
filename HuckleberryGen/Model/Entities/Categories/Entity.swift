@@ -47,23 +47,23 @@ extension Entity: HGEncodable {
 
 extension Entity: HGTypeRepresentable {
     
-    func typeRep() -> String { return name.typeRepresentable }
+    var typeRep: String { return name.typeRepresentable }
 }
 
 extension Entity: HGVarRepresentable {
     
-    func varRep() -> String { return name.lowerFirstLetter }
+    var varRep: String { return name.lowerFirstLetter }
     
 }
 
-extension Entity: HGLetCheckable {
+extension Entity: Mutable {
     
-    func isLet() -> Bool { return false }
+    var mutable: Bool { return false }
 }
 
 extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
 extension Entity: Equatable {};
-func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep() == rhs.typeRep() }
-func ==(lhs: Entity, rhs: String) -> Bool { return lhs.typeRep() == rhs.typeRepresentable }
+func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
+func ==(lhs: Entity, rhs: String) -> Bool { return lhs.typeRep == rhs.typeRepresentable }
 
 

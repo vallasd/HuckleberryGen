@@ -85,7 +85,7 @@ class ExportEntity {
         
         // add relationships to entity stanza
         for relationship in entity.relationships {
-            string += "\(ind)var \(relationship.varRep()): \(relationship.typeRep())\n"
+            string += "\(ind)var \(relationship.varRep): \(relationship.typeRep)\n"
         }
         
         string += "\n"
@@ -160,7 +160,7 @@ class ExportEntity {
         
         // new variable relationships
         for relationship in entity.relationships {
-            string += "\(relationship.varRep()): \(relationship.defaultRep()), "
+            string += "\(relationship.varRep): \(relationship.defaultRep), "
         }
         
         // remove last , from new var
@@ -186,7 +186,7 @@ class ExportEntity {
         
         // encode variable relationships
         for relationship in entity.relationships {
-            let name = relationship.varRep()
+            let name = relationship.varRep
             let equals = relationship.type == .TooOne ? "=?" : "="
             string += "\(ind)\(ind)dict[\"\(name)\"] \(equals) \(name).encode\n"
         }
@@ -207,8 +207,8 @@ class ExportEntity {
         
         // decode function relationships
         for relationship in entity.relationships {
-            let name = relationship.varRep()
-            string += "\(ind)\(ind)let \(name) = dict[\"\(name)\"].\(relationship.decodeRep())\n"
+            let name = relationship.varRep
+            string += "\(ind)\(ind)let \(name) = dict[\"\(name)\"].\(relationship.decodeRep)\n"
         }
         
         // decode function return statement
@@ -222,7 +222,7 @@ class ExportEntity {
         
         // decode function return statement relationships
         for relationship in entity.relationships {
-            string += "\(relationship.varRep()): \(relationship.varRep()), "
+            string += "\(relationship.varRep): \(relationship.varRep), "
         }
         
         // decode function return statement cleanup , from last object

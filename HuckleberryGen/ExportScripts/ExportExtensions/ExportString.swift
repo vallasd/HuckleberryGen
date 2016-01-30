@@ -57,9 +57,9 @@ class ExportString {
         for enuM in enums {
             
             // get enum name and defaultValue
-            let enumtype = enuM.typeRep()
-            let enumvar = enuM.varRep()
-            let defaultValue = enuM.defaultRep()
+            let enumtype = enuM.typeRep
+            let enumvar = enuM.varRep
+            let defaultValue = enuM.defaultRep
             
             // create var that attempts to unwrap the string as the Enum
             string += "\(ind)/// returns \(enumtype)s.  Logs error and returns \(defaultValue) if not a valid Int.\n"
@@ -67,7 +67,7 @@ class ExportString {
             string += " \(ind)\(ind)switch self {\n"
             var count = 0
             for enumcase in enuM.cases {
-                string += "\(ind)\(ind)case \"\(enumcase.string)\": return .\(enumcase.typeRep()) \n"
+                string += "\(ind)\(ind)case \"\(enumcase.string)\": return .\(enumcase.typeRep) \n"
                 count++
             }
             string += "\(ind)\(ind)default:\n"

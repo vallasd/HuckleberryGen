@@ -43,12 +43,12 @@ struct Attribute {
 
 extension Attribute: HGTypeRepresentable {
     
-    func typeRep() -> String { return type.typeRepresentable }
+    var typeRep: String { return type.typeRepresentable }
 }
 
 extension Attribute: HGVarRepresentable {
     
-    func varRep() -> String { return name }
+    var varRep: String { return name }
 }
 
 

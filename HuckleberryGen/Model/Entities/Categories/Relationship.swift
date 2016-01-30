@@ -17,27 +17,27 @@ struct Relationship {
 
 extension Relationship: HGTypeRepresentable {
     
-    func typeRep() -> String {
+    var typeRep: String {
         switch type {
-        case .TooMany: return entity.typeRep() + "?"
-        case .TooOne: return entity.typeRep().pluralRep
+        case .TooMany: return entity.typeRep + "?"
+        case .TooOne: return entity.typeRep.pluralRep
         }
     }
 }
 
 extension Relationship: HGVarRepresentable {
     
-    func varRep() -> String {
+    var varRep: String {
         switch type {
-        case .TooMany: return entity.varRep().lowerCaseFirstLetter.setRep
-        case .TooOne: return entity.varRep().lowerCaseFirstLetter
+        case .TooMany: return entity.varRep.lowerCaseFirstLetter.setRep
+        case .TooOne: return entity.varRep.lowerCaseFirstLetter
         }
     }
 }
 
 extension Relationship: HGDefaultRepresentable {
     
-    func defaultRep() -> String {
+    var defaultRep: String {
         switch type {
         case .TooMany: return "nil"
         case .TooOne: return "[]"
@@ -47,10 +47,10 @@ extension Relationship: HGDefaultRepresentable {
 
 extension Relationship: HGDecodeRepresentable {
     
-    func decodeRep() -> String {
+    var decodeRep: String {
         switch type {
-        case .TooMany: return varRep()
-        case .TooOne: return entity.varRep().nilRep
+        case .TooMany: return varRep
+        case .TooOne: return entity.varRep.nilRep
         }
     }
 }

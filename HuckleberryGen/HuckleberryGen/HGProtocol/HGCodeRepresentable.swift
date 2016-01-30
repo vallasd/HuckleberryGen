@@ -13,29 +13,35 @@ import Foundation
 /// A string representation of the objects Type. Example: RecordingState
 protocol HGTypeRepresentable {
     
-    func typeRep() -> String
+    var typeRep: String { get }
 }
 
 /// A string representation of the objects variable.  Example: recordingState || recordingStateSet
 protocol HGVarRepresentable {
     
-    func varRep() -> String
+    var varRep: String { get }
 }
 
 /// A string representation of the objects default return value.  Example: Float, "0.0".  Entity, Entity.new
 protocol HGDefaultRepresentable {
     
-    func defaultRep() -> String
+    var defaultRep: String { get }
 }
 
 /// A string representation of the objects default return value.  Example: Thing is Float, defaultRep -> "0.0".  Thing is enum HGErrorType, defaultRep -> "Warn"
 protocol HGDecodeRepresentable {
     
-    func decodeRep() -> String
+    var decodeRep: String { get }
+}
+
+/// whether object has
+protocol HashRepresentable {
+    
+    var string: [HGVarRepresentable] { get }
 }
 
 /// whether object is let vs var object when typed
-protocol HGLetCheckable: HGTypeRepresentable {
+protocol Mutable {
     
-    func isLet() -> Bool
+    var mutable: Bool { get }
 }

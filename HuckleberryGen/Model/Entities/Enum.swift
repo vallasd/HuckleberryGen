@@ -50,17 +50,17 @@ extension Enum: HGEncodable {
 
 extension Enum: HGTypeRepresentable {
     
-    func typeRep() -> String { return name.typeRepresentable }
+    var typeRep: String { return name.typeRepresentable }
 }
 
 extension Enum: HGVarRepresentable {
     
-    func varRep() -> String { return name.varRepresentable }
+    var varRep: String { return name.varRepresentable }
 }
 
 extension Enum: HGDefaultRepresentable {
     
-    func defaultRep() -> String { return cases.count > 0 ? cases.first!.typeRep() : "Missing Cases!!!" }
+    var defaultRep: String { return cases.count > 0 ? cases.first!.typeRep : "Missing Cases!!!" }
 }
 
 extension Enum {

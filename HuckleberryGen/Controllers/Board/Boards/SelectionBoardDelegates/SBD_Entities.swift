@@ -36,7 +36,7 @@ class SBD_Entities: SelectionBoardDelegate {
     func cellImageDatas(forEntityIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
         for index in indexes {
-            let name = entities[index].typeRep()
+            let name = entities[index].typeRep
             let image = Entity.image(withName: name)
             let imagedata = HGImageData(title: name, image: image)
             imagedatas.append(imagedata)

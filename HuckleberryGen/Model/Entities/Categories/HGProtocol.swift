@@ -57,13 +57,13 @@ extension Protocol: HGEncodable {
 
 extension Protocol: HGTypeRepresentable {
     
-    func typeRep() -> String { return name.typeRepresentable }
+    var typeRep: String { return name.typeRepresentable }
     
 }
 
 extension Protocol: HGVarRepresentable {
     
-    func varRep() -> String { return name.varRepresentable }
+    var varRep: String { return name.varRepresentable }
 }
 
 

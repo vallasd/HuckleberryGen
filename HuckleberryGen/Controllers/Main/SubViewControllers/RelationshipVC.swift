@@ -47,9 +47,9 @@ extension RelationshipVC: HGTableDisplayable {
         let relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
         
         return HGCellData.mixedCell1(
-            field0: HGFieldData(title: relationship.varRep()),
+            field0: HGFieldData(title: relationship.varRep),
             field1: HGFieldData(title: "Entity:"),
-            field2: HGFieldData(title: relationship.typeRep()),
+            field2: HGFieldData(title: relationship.typeRep),
             field3: HGFieldData(title: "Deletion Rule:"),
             field4: HGFieldData(title: relationship.deletionRule.string),
             image0: HGImageData(title: "", image: relationship.type.image)

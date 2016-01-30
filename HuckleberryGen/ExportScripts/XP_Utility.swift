@@ -43,7 +43,7 @@ struct XP_Utility {
         
         // add Protocols with typeRep
         for prot in protocols {
-            string += "\(prot.typeRep()),"
+            string += "\(prot.typeRep),"
         }
         
         // drop last comma and return
