@@ -19,7 +19,7 @@ extension Int {
 		case 3: return .Alert 
 		case 4: return .Assert 
 		default:
-			appDelegate.error.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .Error)
 		}
 		return .Info
 	}
@@ -47,7 +47,7 @@ extension Int {
 		case 18: return .AHistoryOfThe 
 		case 19: return .AStoryAboutThe 
 		default:
-			appDelegate.error.report("int: |\(self)| is not enum |HGArticle| mapable, using The", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGArticle| mapable, using The", type: .Error)
 		}
 		return .The
 	}
@@ -75,7 +75,7 @@ extension Int {
 		case 18: return .Crappy 
 		case 19: return .Excellent 
 		default:
-			appDelegate.error.report("int: |\(self)| is not enum |HGAdjective| mapable, using Exceptional", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGAdjective| mapable, using Exceptional", type: .Error)
 		}
 		return .Exceptional
 	}
@@ -103,7 +103,7 @@ extension Int {
 		case 18: return .Kid 
 		case 19: return .Movie 
 		default:
-			appDelegate.error.report("int: |\(self)| is not enum |HGNoun| mapable, using Boy", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGNoun| mapable, using Boy", type: .Error)
 		}
 		return .Boy
 	}

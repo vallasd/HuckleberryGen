@@ -94,7 +94,7 @@ extension HGNoun: HGEncodable {
 	static func decode(object object: AnyObject) -> HGNoun {
 		if let int = object as? Int { return int.hGNoun }
 		if let string = object as? String { return string.hGNoun }
-		appDelegate.error.report("object \(object) is not |HGNoun| decodable, returning Boy", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGNoun| decodable, returning Boy", type: .Error)
 		return HGNoun.new
 	}
 }

@@ -15,15 +15,15 @@ let HGRightArrowCharacter = 63235
 let HGACharacter = 97
 
 /// List of Available Commands For Huckleberry Gen App generated through Keyboard Interaction.
-enum HGCommand: Int {
-    case None = 0
-    case AddRow = 1
-    case DeleteRow = 2
-    case NextRow = 3
-    case PreviousRow = 4
-    case TabLeft = 5
-    case TabRight = 6
-    
+enum HGCocoaCommand {
+    case None
+    case AddRow
+    case DeleteRow
+    case NextRow
+    case PreviousRow
+    case TabLeft
+    case TabRight
+
 }
 
 // List of Available Command Options For Huckleberry Gen App generated through Keyboard Interaction.
@@ -59,7 +59,7 @@ extension NSEvent {
     }
     
     /// Returns HGCommand for an NSEvent by checking which key was pressed (such as "a", Delete, Tab) are pressed, returns appropriate Huckleberry Gen command to implement.  Use when checking a KeyDown Event.
-    func command() -> HGCommand {
+    func command() -> HGCocoaCommand {
         
         if let scalars = self.charactersIgnoringModifiers?.unicodeScalars {
             let int = Int(scalars[scalars.startIndex].value)

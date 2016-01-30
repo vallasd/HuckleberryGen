@@ -61,7 +61,7 @@ class ExportProject {
             let content = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding) // crash right away, you are looking for file that DNE
             return content
         } catch {
-            appDelegate.error.report("ExportProject: can not unpackage \(file) from path \(path)", type: .Error)
+            HGReportHandler.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .Error)
         }
         
         return ""
@@ -74,7 +74,7 @@ class ExportProject {
             try file.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
             return true
         } catch {
-            appDelegate.error.report("ExportProject: can not package \(file) to path \(path)", type: .Error)
+            HGReportHandler.shared.report("ExportProject: can not package \(file) to path \(path)", type: .Error)
         }
         
         return false

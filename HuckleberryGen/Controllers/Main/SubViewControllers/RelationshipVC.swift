@@ -47,9 +47,9 @@ extension RelationshipVC: HGTableDisplayable {
         let relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
         
         return HGCellData.mixedCell1(
-            field0: HGFieldData(title: relationship.name),
+            field0: HGFieldData(title: relationship.varRep()),
             field1: HGFieldData(title: "Entity:"),
-            field2: HGFieldData(title: relationship.entity),
+            field2: HGFieldData(title: relationship.typeRep()),
             field3: HGFieldData(title: "Deletion Rule:"),
             field4: HGFieldData(title: relationship.deletionRule.string),
             image0: HGImageData(title: "", image: relationship.type.image)
@@ -135,28 +135,6 @@ extension RelationshipVC: HGTableItemSelectable {
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
     }
-    
-}
-
-// MARK: HGTableFieldEditable
-extension RelationshipVC: HGTableFieldEditable {
-    
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        
-        // Edit Relationship's Name
-        if field == 0 {
-            return true
-        }
-        return false
-    }
-    
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        var relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
-        relationship.name = string
-        appDelegate.store.project.entities[table.parentRow].relationships[row] = relationship
-    }
-
-    
 }
 
 

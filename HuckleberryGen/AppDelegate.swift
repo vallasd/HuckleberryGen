@@ -16,8 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     weak var mainWindowController: MainWindowController!
     
-    let error = HGReportHandler()
-    
     var store: HuckleberryGen = HuckleberryGen(uniqIdentifier: "defaultStore")
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {

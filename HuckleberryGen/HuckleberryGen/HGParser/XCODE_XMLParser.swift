@@ -14,7 +14,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     private var xml: ImportFile
     private var xmlParser: NSXMLParser = NSXMLParser()
     private var lastEntity: Entity? = nil
-    private var entities: [Entity] = []
+    private var entities: Set<Entity> = []
     private var didError: Bool = false
     
     // MARK: Initialization
@@ -55,7 +55,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     }
     
     func parserDidEndDocument(parser: NSXMLParser) {
-        if lastEntity != nil { entities.append(lastEntity!) } // Add the final entity
+        if lastEntity != nil { entities.insert(lastEntity!) } // Add the final entity
         print("Completed Parsing XCODE XML For \(xml.name)")
         callDelegate()
     }
@@ -65,7 +65,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         if elementName == ParseType.Entity.rawValue {
             
             let name = attributeDict["name"]!
-            if lastEntity != nil { entities.append(lastEntity!) }
+            if lastEntity != nil { entities.insert(lastEntity!) }
             lastEntity = Entity(name: name, attributes: [], relationships: [])
             return
         }
@@ -87,11 +87,22 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         if elementName == ParseType.Relationship.rawValue {
             
             if lastEntity != nil {
-                let entity = attributeDict["destinationEntity"].string
+                // get desitionation entity
+                let dEntity = attributeDict["destinationEntity"].string
+                
+                // check if its currently in the set
+                let eEntity = entities.filter { $0.name == dEntity }
+                
+                // get the entity or create it
+                let entity = eEntity.count > 0 ? eEntity[0] : Entity(name: dEntity, attributes: [], relationships: [])
+                
+                // if entity was created, add it to set
+                if eEntity.count == 0 { entities.insert(entity) }
+                
+                // get rest of attribute data and set it
                 let type = attributeDict["toMany"].relationshipType
                 let deletionRule = attributeDict["deletionRule"].deletionRule
-                let name = attributeDict["name"].string
-                let relationship = Relationship(name: name, entity: entity, type: type, deletionRule: deletionRule)
+                let relationship = Relationship(entity: entity, type: type, deletionRule: deletionRule)
                 lastEntity!.relationships.append(relationship)
                 return
             }
@@ -116,16 +127,16 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     }
     
     private func parseErrorMissing(name: String, type: ParseType) {
-        appDelegate.error.report("HGParseError Error: Missing \(type.rawValue): \(name)" , type: HGErrorResponse.Error)
+        HGReportHandler.shared.report("HGParseError Error: Missing \(type.rawValue): \(name)" , type: .Error)
     }
     
     private func parseErrorFile(xml: ImportFile) {
         do {
             let _ = try String(contentsOfFile: xml.path, encoding: NSUTF8StringEncoding)
-            appDelegate.error.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .Error)
+            HGReportHandler.shared.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .Error)
         }
         catch {
-            appDelegate.error.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .Error)
+            HGReportHandler.shared.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .Error)
         }
     }
     

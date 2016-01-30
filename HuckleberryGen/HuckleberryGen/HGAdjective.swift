@@ -94,7 +94,7 @@ extension HGAdjective: HGEncodable {
 	static func decode(object object: AnyObject) -> HGAdjective {
 		if let int = object as? Int { return int.hGAdjective }
 		if let string = object as? String { return string.hGAdjective }
-		appDelegate.error.report("object \(object) is not |HGAdjective| decodable, returning Exceptional", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGAdjective| decodable, returning Exceptional", type: .Error)
 		return HGAdjective.new
 	}
 }

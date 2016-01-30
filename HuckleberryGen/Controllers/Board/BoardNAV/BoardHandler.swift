@@ -69,7 +69,7 @@ class BoardHandler {
         nav = storyboard.instantiateControllerWithIdentifier("NavController") as? NavController
         
         if nav == nil {
-            appDelegate.error.report("NavController not properly created from StoryBoard", type: .Error)
+            HGReportHandler.shared.report("NavController not properly created from StoryBoard", type: .Error)
         }
     }
 }

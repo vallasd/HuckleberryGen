@@ -10,63 +10,80 @@ import AppKit
 import CoreData
 
 struct Relationship {
-    var name: String
-    var entity: String
+    var entity: Entity
     var type: RelationshipType
     var deletionRule: DeletionRule
 }
 
 extension Relationship: HGTypeRepresentable {
     
-    func typeRep() -> String { return entity.typeRepresentable }
+    func typeRep() -> String {
+        switch type {
+        case .TooMany: return entity.typeRep() + "?"
+        case .TooOne: return entity.typeRep().pluralRep
+        }
+    }
 }
 
 extension Relationship: HGVarRepresentable {
     
-    func varRep() -> String { return name.lowerFirstLetter }
-    func varArrayRep() -> String { return name.lowerFirstLetter.pluralized }
+    func varRep() -> String {
+        switch type {
+        case .TooMany: return entity.varRep().lowerCaseFirstLetter.setRep
+        case .TooOne: return entity.varRep().lowerCaseFirstLetter
+        }
+    }
 }
 
-extension Relationship: OptionalCheckable {
+extension Relationship: HGDefaultRepresentable {
     
-    func isOptional() -> Bool { return type.isOptional() }
+    func defaultRep() -> String {
+        switch type {
+        case .TooMany: return "nil"
+        case .TooOne: return "[]"
+        }
+    }
 }
 
-extension Relationship: HGArrayCheckable {
+extension Relationship: HGDecodeRepresentable {
     
-    func isArray() -> Bool { return type.isOptional() }
+    func decodeRep() -> String {
+        switch type {
+        case .TooMany: return varRep()
+        case .TooOne: return entity.varRep().nilRep
+        }
+    }
 }
 
-extension Relationship: HGLetCheckable {
-    
-    func isLet() -> Bool { return false }
-}
-
-extension Relationship: Hashable { var hashValue: Int { return name.hashValue } }
-extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool { return lhs.name == rhs.name }
+extension Relationship: Hashable { var hashValue: Int { return entity.name.hashValue } }
+extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool { return lhs.entity.name == rhs.entity.name }
 
 extension Relationship: HGEncodable {
     
     static var new: Relationship {
-        return Relationship(name: "New Relationship", entity: "NotDefined", type: .TooOne, deletionRule: .NoAction)
+        return Relationship(entity: Entity.new, type: .TooOne, deletionRule: .NoAction)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
-        dict["entity"] = entity
+        dict["entity"] = entity.encode
         dict["type"] = type.int
         dict["deletionRule"] = deletionRule.int
         return dict
     }
     
     static func decode(object object: AnyObject) -> Relationship {
+        
         let dict = hgdict(fromObject: object, decoderName: "Relationship")
-        let name = dict["name"].string
-        let entity = dict["entity"].string
+        let entity = dict["entity"].entity
         let type = dict["type"].relationshipType
         let deletionRule =  dict["deletionRule"].deletionRule
-        return Relationship(name: name, entity: entity, type: type, deletionRule: deletionRule)
+        var relationship = Relationship(entity: entity, type: type, deletionRule: deletionRule)
+        
+        // append relationship to below array
+        relationship.entity.relationships.append(relationship)
+        
+        return relationship
     }
 }
 
@@ -99,7 +116,7 @@ enum DeletionRule: Int16 {
         case 2: return .Cascade
         case 3: return .Deny
         default:
-            appDelegate.error.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
+            HGReportHandler.shared.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
@@ -111,7 +128,7 @@ enum DeletionRule: Int16 {
         case "Cascade": return .Cascade
         case "Deny": return .Deny
         default:
-            appDelegate.error.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
+            HGReportHandler.shared.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
             return .NoAction
         }
     }
@@ -121,7 +138,6 @@ enum RelationshipType {
     
     case TooMany
     case TooOne
-    case TooOneOptional
     
     static var set: [RelationshipType] = [.TooMany, .TooOne]
     static var imageStringSet = ["toManyIcon", "toOneIcon"]
@@ -131,7 +147,6 @@ enum RelationshipType {
             switch self {
             case TooMany: return NSImage(named: "toManyIcon")!
             case TooOne: return NSImage(named: "toOneIcon")!
-            case TooOneOptional: return NSImage.image(named: "toOneIcon", title: "Optional")
             }
         }
     }
@@ -140,7 +155,6 @@ enum RelationshipType {
         switch self {
         case TooMany: return 0
         case TooOne: return 1
-        case TooOneOptional: return 2
         }
     }
     
@@ -148,9 +162,8 @@ enum RelationshipType {
         switch int {
         case 0: return .TooMany
         case 1: return .TooOne
-        case 3: return .TooOneOptional
         default:
-            appDelegate.error.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
+            HGReportHandler.shared.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
             return .TooOne
         }
     }
@@ -160,20 +173,11 @@ enum RelationshipType {
         case "YES", "TooMany": return .TooMany
         case "NO", "TooOne": return .TooOne
         default:
-            appDelegate.error.report("string: |\(string)| is not RelationshipType mapable, using .TooOneOptional", type: .Error)
-            return .TooOneOptional
+            HGReportHandler.shared.report("string: |\(string)| is not RelationshipType mapable, using .TooOne", type: .Error)
+            return .TooOne
         }
     }
     
 }
-
-extension RelationshipType: OptionalCheckable {
-    
-    func isOptional() -> Bool {
-        if self == TooOneOptional { return true }
-        return false
-    }
-}
-
 
 

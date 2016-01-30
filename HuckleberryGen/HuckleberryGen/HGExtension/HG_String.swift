@@ -101,11 +101,6 @@ extension String {
         return self.typeRepresentable.lowerFirstLetter
     }
     
-    /// makes a variable Array representation of the string
-    var varArrayRepresentable: String {
-        return self.varArrayRepresentable.pluralized
-    }
-    
     var capitalFirstLetter: String {
         if self.isEmpty { return "" }
         var string = self
@@ -122,9 +117,21 @@ extension String {
         return string
     }
     
-    var pluralized: String {
-        return self + "Array"
+    /// adds "Set" to end of string
+    var setRep: String {
+        return self + "Set"
     }
+    
+    /// wraps Set<> around string
+    var pluralRep: String {
+        return "Set<\(self)>"
+    }
+    
+    /// add "Nullable" to end of string
+    var nilRep: String {
+        return self + "Nullable"
+    }
+    
     
     
     /// makes first letter of string lower case

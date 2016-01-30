@@ -42,7 +42,7 @@ extension Array {
             return self[index]
         }
         
-        appDelegate.error.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .Error)
+        HGReportHandler.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .Error)
         return nil
     }
     
@@ -53,7 +53,7 @@ extension Array {
             return self[index]
         }
         
-        if (error) { appDelegate.error.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .Error) }
+        if (error) { HGReportHandler.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .Error) }
         return nil
     }
     

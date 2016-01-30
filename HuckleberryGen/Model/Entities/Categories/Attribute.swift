@@ -49,7 +49,6 @@ extension Attribute: HGTypeRepresentable {
 extension Attribute: HGVarRepresentable {
     
     func varRep() -> String { return name }
-    func varArrayRep() -> String { return name }
 }
 
 
@@ -224,7 +223,7 @@ enum Primitive {
         case 7: return ._Date
         case 8: return ._Binary
         default:
-            appDelegate.error.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
+            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
         }
     }
@@ -233,7 +232,7 @@ enum Primitive {
         if let primitive = prim(fromString: string) {
             return primitive
         }
-        appDelegate.error.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
+        HGReportHandler.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
         return ._Int
     }
     
@@ -274,7 +273,7 @@ extension Primitive: HGEncodable {
     static func decode(object object: AnyObject) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        appDelegate.error.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
+        HGReportHandler.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
         return ._Int
     }
 }

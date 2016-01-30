@@ -55,7 +55,7 @@ extension HGEncodable {
             let decoded = Self.decode(object: object)
             return decoded
         }
-        appDelegate.error.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
+        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
         return self.new
     }
 }

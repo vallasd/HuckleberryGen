@@ -138,7 +138,7 @@ extension FolderBoard: BoardRetrievable {
             self.context = fbc.type;
             return
         }
-        appDelegate.error.report("FolderBoard Context \(context) not valid", type: .Error)
+        HGReportHandler.shared.report("FolderBoard Context \(context) not valid", type: .Error)
     }
 }
 

@@ -33,7 +33,6 @@ extension Protocol {
         
         return generics
     }
-    
 }
 
 extension Protocol: HGEncodable {
@@ -65,7 +64,6 @@ extension Protocol: HGTypeRepresentable {
 extension Protocol: HGVarRepresentable {
     
     func varRep() -> String { return name.varRepresentable }
-    func varArrayRep() -> String { return name.varArrayRepresentable }
 }
 
 

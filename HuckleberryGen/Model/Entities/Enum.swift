@@ -56,7 +56,6 @@ extension Enum: HGTypeRepresentable {
 extension Enum: HGVarRepresentable {
     
     func varRep() -> String { return name.varRepresentable }
-    func varArrayRep() -> String { return name.varArrayRepresentable }
 }
 
 extension Enum: HGDefaultRepresentable {

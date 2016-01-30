@@ -45,7 +45,6 @@ extension EnumCase: HGTypeRepresentable {
 extension EnumCase: HGVarRepresentable {
     
     func varRep() -> String { return string.varRepresentable }
-    func varArrayRep() -> String { return string.varArrayRepresentable }
 }
 
 extension EnumCase: Hashable { var hashValue: Int { return string.hashValue } }

@@ -39,7 +39,7 @@ enum ProgressionType {
         case 900: self = .Next
         case 901: self = .Finished
         default:
-            appDelegate.error.report("Int: |\(int)| is not ProgressionType mapable, returning .Next", type: .Error)
+            HGReportHandler.shared.report("Int: |\(int)| is not ProgressionType mapable, returning .Next", type: .Error)
             self = .Next
         }
     }
@@ -77,7 +77,7 @@ enum RegressionType {
         case 801: self = .Back
         case 802: self = .Home
         default:
-            appDelegate.error.report("Int: |\(int)| is not RegressionType mapable, returning .Cancel", type: .Error)
+            HGReportHandler.shared.report("Int: |\(int)| is not RegressionType mapable, returning .Cancel", type: .Error)
             self = .Cancel
         }
     }
@@ -271,7 +271,7 @@ class NavController: NSViewController {
         
         // check success of VC instantiation from nib
         if currentVC == nil {
-            appDelegate.error.report("Nav Controller, currentVC was not properly instantiated from BoardData", type: .Error)
+            HGReportHandler.shared.report("Nav Controller, currentVC was not properly instantiated from BoardData", type: .Error)
             return
         }
         
@@ -280,7 +280,7 @@ class NavController: NSViewController {
             if let saveableVC = currentVC as? BoardRetrievable {
                 saveableVC.set(context: context)
             } else {
-                appDelegate.error.report("Nav Controller, attempting to set context for NSViewController that is not BoardRetrievable", type: .Error)
+                HGReportHandler.shared.report("Nav Controller, attempting to set context for NSViewController that is not BoardRetrievable", type: .Error)
             }
         }
         
@@ -414,7 +414,7 @@ extension NavController {
             return RegressionType(int: tag).string
         }
         
-        appDelegate.error.report("\(tag) is Not A Regression or Progression Type Tag", type: .Error)
+        HGReportHandler.shared.report("\(tag) is Not A Regression or Progression Type Tag", type: .Error)
         return ""
     }
 

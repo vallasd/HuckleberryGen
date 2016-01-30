@@ -24,7 +24,7 @@ class SBD_Entities: SelectionBoardDelegate {
     let celltype = CellType.Image5Cell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
-    let entities: [String] = appDelegate.store.project.entities.map { $0.name }
+    let entities: [Entity] = appDelegate.store.project.entities
     
     /// initializes object with relationship and entity indexes
     init(entityIndex: Int, relationshipIndex: Int) {
@@ -36,7 +36,7 @@ class SBD_Entities: SelectionBoardDelegate {
     func cellImageDatas(forEntityIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
         for index in indexes {
-            let name = entities[index]
+            let name = entities[index].typeRep()
             let image = Entity.image(withName: name)
             let imagedata = HGImageData(title: name, image: image)
             imagedatas.append(imagedata)
@@ -46,8 +46,8 @@ class SBD_Entities: SelectionBoardDelegate {
     
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
-        let entityString = entities[index]
-        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].entity = entityString
+        let entity = entities[index]
+        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].entity = entity
         appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
     }
 }

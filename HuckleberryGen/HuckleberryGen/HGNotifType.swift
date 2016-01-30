@@ -38,6 +38,9 @@ enum HGNotifType {
         case RelationshipSelected: return "RelationshipSelected"
         }
     }
+}
+
+extension HGNotifType {
     
     /// returns a unique string that identifies an HGNotifType for a particular uniq ID
     func uniqString(forUniqId uniqID: String) -> String {

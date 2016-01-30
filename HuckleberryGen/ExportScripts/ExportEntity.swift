@@ -34,7 +34,7 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 && entity.relationships.count == 0 {
-            appDelegate.error.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
+            HGReportHandler.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
             return false
         }
         
@@ -74,13 +74,7 @@ class ExportEntity {
         let ind = HGIndent.indent
         
         // begin entity stanza
-        var string: String = ""
-        
-        // define entity with entityType
-        switch entityType {
-        case .ClassObject: string = "final class \(entity.name) {\n"
-        case .StructObject: string = "struct \(entity.name) {\n"
-        }
+        var string: String = "final class \(entity.name) {\n"
         
         string += "\n"
         
@@ -91,11 +85,7 @@ class ExportEntity {
         
         // add relationships to entity stanza
         for relationship in entity.relationships {
-            if relationship.type == .TooMany {
-                string += "\(ind)var \(relationship.name): [\(relationship.entity)]\n"
-            } else {
-                string += "\(ind)var \(relationship.name): \(relationship.entity)?\n"
-            }
+            string += "\(ind)var \(relationship.varRep()): \(relationship.typeRep())\n"
         }
         
         string += "\n"
@@ -116,12 +106,8 @@ class ExportEntity {
         
         // new variable relationships
         for relationship in entity.relationships {
-            if relationship.type == .TooMany {
-                string += "\(relationship.name): [\(relationship.entity)], "
-            } else {
-                string += "\(relationship.name): \(relationship.entity)?, "
-            }
-            let relAssign = "\(ind)\(ind)self.\(relationship.name) = \(relationship.name)\n"
+            string += "\(relationship.varRep): \(relationship.typeRep), "
+            let relAssign = "\(ind)\(ind)self.\(relationship.varRep) = \(relationship.varRep)\n"
             assigns.append(relAssign)
         }
         
@@ -174,11 +160,7 @@ class ExportEntity {
         
         // new variable relationships
         for relationship in entity.relationships {
-            if relationship.type == .TooMany {
-                string += "\(relationship.name): [], "
-            } else {
-                string += "\(relationship.name): nil, "
-            }
+            string += "\(relationship.varRep()): \(relationship.defaultRep()), "
         }
         
         // remove last , from new var
@@ -204,12 +186,9 @@ class ExportEntity {
         
         // encode variable relationships
         for relationship in entity.relationships {
-            let name = relationship.name.lowerCaseFirstLetter
-            if relationship.type == .TooMany {
-                string += "\(ind)\(ind)dict[\"\(name)\"] = \(name).encode\n"
-            } else {
-                string += "\(ind)\(ind)dict[\"\(name)\"] =? \(name)?.encode\n"
-            }
+            let name = relationship.varRep()
+            let equals = relationship.type == .TooOne ? "=?" : "="
+            string += "\(ind)\(ind)dict[\"\(name)\"] \(equals) \(name).encode\n"
         }
         
         // end encode variable
@@ -218,7 +197,7 @@ class ExportEntity {
         
         // begin decode function
         string += "\(ind)static func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "\(ind)\(ind)appDelegate.error.track(name: \"\(entity.name)\", object: object)\n"
+        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.name)\", object: object)\n"
         string += "\(ind)\(ind)let dict = hgdict(fromObject: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
@@ -228,17 +207,12 @@ class ExportEntity {
         
         // decode function relationships
         for relationship in entity.relationships {
-            if relationship.type == .TooMany {
-                let arrayName = relationship.entity.lowerCaseFirstLetterAndArray
-                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(arrayName)\n"
-            } else {
-                let name = relationship.entity.lowerCaseFirstLetter
-                string += "\(ind)\(ind)let \(relationship.name) = dict[\"\(relationship.name)\"].\(name)Nillable\n"
-            }
+            let name = relationship.varRep()
+            string += "\(ind)\(ind)let \(name) = dict[\"\(name)\"].\(relationship.decodeRep())\n"
         }
         
         // decode function return statement
-        string += "\(ind)\(ind)appDelegate.error.untrack()\n"
+        string += "\(ind)\(ind)HGReportHandler.shared.untrack()\n"
         string += "\(ind)\(ind)return \(entity.name)("
         
         // decode function return statement attributes
@@ -248,7 +222,7 @@ class ExportEntity {
         
         // decode function return statement relationships
         for relationship in entity.relationships {
-            string += "\(relationship.name): \(relationship.name), "
+            string += "\(relationship.varRep()): \(relationship.varRep()), "
         }
         
         // decode function return statement cleanup , from last object

@@ -8,6 +8,8 @@
 
 import Cocoa
 
+
+
 struct Entity {
     
     var name: String
@@ -51,7 +53,7 @@ extension Entity: HGTypeRepresentable {
 extension Entity: HGVarRepresentable {
     
     func varRep() -> String { return name.lowerFirstLetter }
-    func varArrayRep() -> String { return name.lowerFirstLetter.pluralized }
+    
 }
 
 extension Entity: HGLetCheckable {
@@ -60,6 +62,8 @@ extension Entity: HGLetCheckable {
 }
 
 extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
-extension Entity: Equatable {}; func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.name == rhs.name }
+extension Entity: Equatable {};
+func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep() == rhs.typeRep() }
+func ==(lhs: Entity, rhs: String) -> Bool { return lhs.typeRep() == rhs.typeRepresentable }
 
 

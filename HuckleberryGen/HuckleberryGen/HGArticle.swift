@@ -94,7 +94,7 @@ extension HGArticle: HGEncodable {
 	static func decode(object object: AnyObject) -> HGArticle {
 		if let int = object as? Int { return int.hGArticle }
 		if let string = object as? String { return string.hGArticle }
-		appDelegate.error.report("object \(object) is not |HGArticle| decodable, returning The", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGArticle| decodable, returning The", type: .Error)
 		return HGArticle.new
 	}
 }

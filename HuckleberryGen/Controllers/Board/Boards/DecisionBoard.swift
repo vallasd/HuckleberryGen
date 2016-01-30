@@ -88,7 +88,7 @@ extension DecisionBoard: BoardRetrievable {
     func set(context context: AnyObject) {
         // assign context if it is of type DecisionBoard
         if let c = context as? DecisionBoardDelegate { self.context = c; return }
-        appDelegate.error.report("DecisionBoard Context \(context) not valid", type: .Error)
+        HGReportHandler.shared.report("DecisionBoard Context \(context) not valid", type: .Error)
     }
 }
 
