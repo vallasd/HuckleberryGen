@@ -10,7 +10,7 @@ import Cocoa
 
 
 
-struct Entity: HGTypeRepresentable {
+struct Entity: TypeRepresentable {
     
     var typeRep: String
     var attributes: [Attribute]
@@ -44,7 +44,7 @@ extension Entity: HGEncodable {
     }
 }
 
-extension Entity: HGVarRepresentable {
+extension Entity: VarRepresentable {
     
     var varRep: String { return typeRep.lowerFirstLetter }
     

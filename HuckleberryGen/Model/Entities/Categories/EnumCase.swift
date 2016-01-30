@@ -37,12 +37,12 @@ extension EnumCase: HGEncodable {
     }
 }
 
-extension EnumCase: HGTypeRepresentable {
+extension EnumCase: TypeRepresentable {
     
     var typeRep: String { return string.typeRepresentable }
 }
 
-extension EnumCase: HGVarRepresentable {
+extension EnumCase: VarRepresentable {
     
     var varRep: String { return string.varRepresentable }
 }

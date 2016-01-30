@@ -15,7 +15,7 @@ struct Relationship {
     var deletionRule: DeletionRule
 }
 
-extension Relationship: HGTypeRepresentable {
+extension Relationship: TypeRepresentable {
     
     var typeRep: String {
         switch type {
@@ -25,7 +25,7 @@ extension Relationship: HGTypeRepresentable {
     }
 }
 
-extension Relationship: HGVarRepresentable {
+extension Relationship: VarRepresentable {
     
     var varRep: String {
         switch type {
@@ -35,7 +35,7 @@ extension Relationship: HGVarRepresentable {
     }
 }
 
-extension Relationship: HGDefaultRepresentable {
+extension Relationship: DefaultRepresentable {
     
     var defaultRep: String {
         switch type {
@@ -45,7 +45,7 @@ extension Relationship: HGDefaultRepresentable {
     }
 }
 
-extension Relationship: HGDecodeRepresentable {
+extension Relationship: DecodeRepresentable {
     
     var decodeRep: String {
         switch type {

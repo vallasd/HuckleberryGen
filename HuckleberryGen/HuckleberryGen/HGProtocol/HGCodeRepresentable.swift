@@ -11,25 +11,25 @@ import Foundation
 // This objects used for Exporting Code.  They should be string representations of XCODE key terms.  Stuff that will turn Blue.
 
 /// A string representation of the objects Type. Example: RecordingState
-protocol HGTypeRepresentable {
+protocol TypeRepresentable {
     
     var typeRep: String { get }
 }
 
 /// A string representation of the objects variable.  Example: recordingState || recordingStateSet
-protocol HGVarRepresentable {
+protocol VarRepresentable {
     
     var varRep: String { get }
 }
 
 /// A string representation of the objects default return value.  Example: Float, "0.0".  Entity, Entity.new
-protocol HGDefaultRepresentable {
+protocol DefaultRepresentable {
     
     var defaultRep: String { get }
 }
 
 /// A string representation of the objects default return value.  Example: Thing is Float, defaultRep -> "0.0".  Thing is enum HGErrorType, defaultRep -> "Warn"
-protocol HGDecodeRepresentable {
+protocol DecodeRepresentable {
     
     var decodeRep: String { get }
 }
@@ -37,7 +37,7 @@ protocol HGDecodeRepresentable {
 /// whether object has
 protocol HashRepresentable {
     
-    var string: [HGVarRepresentable] { get }
+    var string: [VarRepresentable] { get }
 }
 
 /// whether object is let vs var object when typed

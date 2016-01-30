@@ -48,17 +48,17 @@ extension Enum: HGEncodable {
 }
 
 
-extension Enum: HGTypeRepresentable {
+extension Enum: TypeRepresentable {
     
     var typeRep: String { return name.typeRepresentable }
 }
 
-extension Enum: HGVarRepresentable {
+extension Enum: VarRepresentable {
     
     var varRep: String { return name.varRepresentable }
 }
 
-extension Enum: HGDefaultRepresentable {
+extension Enum: DefaultRepresentable {
     
     var defaultRep: String { return cases.count > 0 ? cases.first!.typeRep : "Missing Cases!!!" }
 }

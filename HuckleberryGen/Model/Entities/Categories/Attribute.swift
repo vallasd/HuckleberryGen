@@ -41,12 +41,12 @@ struct Attribute {
     }
 }
 
-extension Attribute: HGTypeRepresentable {
+extension Attribute: TypeRepresentable {
     
     var typeRep: String { return type.typeRepresentable }
 }
 
-extension Attribute: HGVarRepresentable {
+extension Attribute: VarRepresentable {
     
     var varRep: String { return name }
 }

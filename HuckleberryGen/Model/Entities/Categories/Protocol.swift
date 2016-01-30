@@ -55,13 +55,13 @@ extension Protocol: HGEncodable {
 }
 
 
-extension Protocol: HGTypeRepresentable {
+extension Protocol: TypeRepresentable {
     
     var typeRep: String { return name.typeRepresentable }
     
 }
 
-extension Protocol: HGVarRepresentable {
+extension Protocol: VarRepresentable {
     
     var varRep: String { return name.varRepresentable }
 }

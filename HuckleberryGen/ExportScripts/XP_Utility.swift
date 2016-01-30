@@ -18,7 +18,7 @@ struct XP_Utility {
     }
     
     // create extension line
-    static func beginExtension(withMark: String?, type: HGTypeRepresentable, protocols: [Protocol]?) -> String {
+    static func beginExtension(withMark: String?, type: TypeRepresentable, protocols: [Protocol]?) -> String {
         var string = withMark != nil ? "// MARK: \(withMark!)\n" : ""
         string += "extension \(type)"
         string += protocols?.count > 0 ? extendProtocols(protocols!) : ""
