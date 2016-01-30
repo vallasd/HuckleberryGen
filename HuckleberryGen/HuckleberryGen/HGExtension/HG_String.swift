@@ -86,9 +86,36 @@ extension String {
     }
     
     /// simple string, removes all characters besides caps, lower case, and spaces
-    var simple: String {
-        let chars: Set<Character> = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ".characters)
+    private var simple: String {
+        let chars: Set<Character> = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ_1234567890".characters)
         return stripOutCharacterExcept(characters: chars, fromString: self)
+    }
+    
+    /// returns a new string if change was made, else returns nil if the string is already TypeRepresentable
+    var changeToTypeRep: String? {
+        
+        // trim
+        var typeRep = self.trimmed
+        
+        // remove crap symbols, capitalize words and remove spaces
+        typeRep = typeRep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("")
+        
+        // if it is blank, make a New typeRep
+        if self == "" || self == "_" {
+            typeRep = "New"
+        }
+        
+        // if type is still same as self, return nil
+        if typeRep == self {
+            return nil
+        }
+        
+        return typeRep
+    }
+    
+    /// removes extra white spaces and new lines
+    var trimmed: String {
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
     
     /// makes a Type [Entity, Struct,  representation of the string
@@ -103,10 +130,11 @@ extension String {
     
     var capitalFirstLetter: String {
         if self.isEmpty { return "" }
-        var string = self
-        let firstChar = String(string.characters.first!).uppercaseString
-        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
-        return string
+        var s = self
+        s.replaceRange(s.startIndex...s.startIndex, with: String(s[s.startIndex]).capitalizedString)
+//        let firstChar = String(s.characters.first!).uppercaseString
+//        s.replaceRange(s.startIndex...s.startIndex, with: firstChar)
+        return s
     }
     
     var lowerFirstLetter: String {
@@ -131,8 +159,6 @@ extension String {
     var nilRep: String {
         return self + "Nullable"
     }
-    
-    
     
     /// makes first letter of string lower case
     var lowerCaseFirstLetter: String {

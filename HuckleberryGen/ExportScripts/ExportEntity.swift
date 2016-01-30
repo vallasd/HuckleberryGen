@@ -34,12 +34,12 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 && entity.relationships.count == 0 {
-            HGReportHandler.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .Error)
+            HGReportHandler.shared.report("ExportEntity |\(entity.typeRep)| failed, no attributes and relationships for entity", type: .Error)
             return false
         }
         
         // set default variables
-        let name = entity.name
+        let name = entity.typeRep
         let filePath = path + "/\(name).swift"
         let store = appDelegate.store
         let header = licenseInfo.string(store.project.name, fileName: name)
@@ -74,7 +74,7 @@ class ExportEntity {
         let ind = HGIndent.indent
         
         // begin entity stanza
-        var string: String = "final class \(entity.name) {\n"
+        var string: String = "final class \(entity.typeRep) {\n"
         
         string += "\n"
         
@@ -143,12 +143,12 @@ class ExportEntity {
         let primitivesDefault = Primitive.array.map { $0.defaultValue }
         
         // begin hgencodable stanza
-        var string = "extension \(entity.name): HGEncodable {\n"
+        var string = "extension \(entity.typeRep): HGEncodable {\n"
         string += "\n"
         
         // new variable
-        string += "\(ind)static var new: \(entity.name) {\n"
-        string += "\(ind)\(ind)return \(entity.name)("
+        string += "\(ind)static var new: \(entity.typeRep) {\n"
+        string += "\(ind)\(ind)return \(entity.typeRep)("
         
         // new variable attributes
         for attribute in entity.attributes {
@@ -196,9 +196,9 @@ class ExportEntity {
         string += "\(ind)}\n\n"
         
         // begin decode function
-        string += "\(ind)static func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.name)\", object: object)\n"
-        string += "\(ind)\(ind)let dict = hgdict(fromObject: object, decoderName: \"\(entity.name)\")\n"
+        string += "\(ind)static func decode(object object: AnyObject) -> \(entity.typeRep) {\n"
+        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.typeRep)\", object: object)\n"
+        string += "\(ind)\(ind)let dict = hgdict(fromObject: object, decoderName: \"\(entity.typeRep)\")\n"
         
         // decode function attributes
         for attribute in entity.attributes {
@@ -213,7 +213,7 @@ class ExportEntity {
         
         // decode function return statement
         string += "\(ind)\(ind)HGReportHandler.shared.untrack()\n"
-        string += "\(ind)\(ind)return \(entity.name)("
+        string += "\(ind)\(ind)return \(entity.typeRep)("
         
         // decode function return statement attributes
         for attribute in entity.attributes {

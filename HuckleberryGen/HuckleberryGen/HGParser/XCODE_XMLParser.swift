@@ -64,9 +64,9 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         
         if elementName == ParseType.Entity.rawValue {
             
-            let name = attributeDict["name"]!
+            let typeRep = attributeDict["name"]!
             if lastEntity != nil { entities.insert(lastEntity!) }
-            lastEntity = Entity(name: name, attributes: [], relationships: [])
+            lastEntity = Entity(typeRep: typeRep, attributes: [], relationships: [])
             return
         }
         
@@ -91,10 +91,10 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
                 let dEntity = attributeDict["destinationEntity"].string
                 
                 // check if its currently in the set
-                let eEntity = entities.filter { $0.name == dEntity }
+                let eEntity = entities.filter { $0.typeRep == dEntity }
                 
                 // get the entity or create it
-                let entity = eEntity.count > 0 ? eEntity[0] : Entity(name: dEntity, attributes: [], relationships: [])
+                let entity = eEntity.count > 0 ? eEntity[0] : Entity(typeRep: dEntity, attributes: [], relationships: [])
                 
                 // if entity was created, add it to set
                 if eEntity.count == 0 { entities.insert(entity) }

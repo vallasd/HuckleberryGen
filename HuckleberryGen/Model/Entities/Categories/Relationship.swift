@@ -19,8 +19,8 @@ extension Relationship: HGTypeRepresentable {
     
     var typeRep: String {
         switch type {
-        case .TooMany: return entity.typeRep + "?"
-        case .TooOne: return entity.typeRep.pluralRep
+        case .TooMany: return entity.typeRep.pluralRep
+        case .TooOne: return entity.typeRep + "?"
         }
     }
 }
@@ -55,8 +55,8 @@ extension Relationship: HGDecodeRepresentable {
     }
 }
 
-extension Relationship: Hashable { var hashValue: Int { return entity.name.hashValue } }
-extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool { return lhs.entity.name == rhs.entity.name }
+extension Relationship: Hashable { var hashValue: Int { return entity.hashValue } }
+extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool { return lhs.entity.hashValue == rhs.entity.hashValue }
 
 extension Relationship: HGEncodable {
     

@@ -171,7 +171,8 @@ class HGTable: NSObject {
     
     /// reloads specific row Of tableView
     private func update(row row: Int) {
-        tableview.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))
+
+        // TODO: Implement - Need to get cell and then call delegate to get HGCellData then update cell with data
     }
 
     // MARK: Cell Nib Loading

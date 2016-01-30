@@ -10,9 +10,9 @@ import Cocoa
 
 
 
-struct Entity {
+struct Entity: HGTypeRepresentable {
     
-    var name: String
+    var typeRep: String
     var attributes: [Attribute]
     var relationships: [Relationship]
     
@@ -24,12 +24,12 @@ struct Entity {
 extension Entity: HGEncodable {
     
     static var new: Entity {
-        return Entity(name: "New Entity", attributes: [], relationships: [])
+        return Entity(typeRep: "NewEntity", attributes: [], relationships: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
+        dict["typeRep"] = typeRep
         dict["attributes"] = attributes.encode
         dict["relationships"] = relationships.encode
         return dict
@@ -37,22 +37,16 @@ extension Entity: HGEncodable {
     
     static func decode(object object: AnyObject) -> Entity {
         let dict = hgdict(fromObject: object, decoderName: "Entity")
-        let name = dict["name"].string
+        let typeRep = dict["typeRep"].string
         let attributes = dict["attributes"].attributes
         let relationships = dict["relationships"].relationships
-        return Entity(name: name, attributes: attributes, relationships: relationships)
+        return Entity(typeRep: typeRep, attributes: attributes, relationships: relationships)
     }
-}
-
-
-extension Entity: HGTypeRepresentable {
-    
-    var typeRep: String { return name.typeRepresentable }
 }
 
 extension Entity: HGVarRepresentable {
     
-    var varRep: String { return name.lowerFirstLetter }
+    var varRep: String { return typeRep.lowerFirstLetter }
     
 }
 
@@ -61,7 +55,7 @@ extension Entity: Mutable {
     var mutable: Bool { return false }
 }
 
-extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
+extension Entity: Hashable { var hashValue: Int { return typeRep.hashValue } }
 extension Entity: Equatable {};
 func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
 func ==(lhs: Entity, rhs: String) -> Bool { return lhs.typeRep == rhs.typeRepresentable }
