@@ -50,7 +50,7 @@ extension AttributeVC: HGTableDisplayable {
         return HGCellData.defaultCell(
             field0: HGFieldData(title: attribute.varRep),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: "", image: attribute.image)
+            image0: HGImageData(title: "", image: attribute.typeImage)
         )
     }
 }

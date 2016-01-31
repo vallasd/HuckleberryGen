@@ -99,7 +99,7 @@ extension RelationshipVC: HGTableItemSelectable {
     func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         
         /// Select Relationship's Entity or Deletion Rule
-        if type == .Field && ( tag == 2 || tag == 4 ) {
+        if type == .Field && ( tag == 1 || tag == 4 ) {
             return true
         }
         

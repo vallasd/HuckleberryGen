@@ -50,6 +50,10 @@ struct Attribute: TypeRepresentable, DecodeRepresentable, VarRepresentable {
     }
     
     var image: NSImage {
+        return NSImage.image(named: "attributeIcon", title: varRep)
+    }
+    
+    var typeImage: NSImage {
         if isPrimitive {
             return NSImage.image(named: "typeIcon", title: typeRep.lowerCaseFirstLetter)
         }

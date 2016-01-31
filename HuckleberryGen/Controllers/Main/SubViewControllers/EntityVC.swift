@@ -50,7 +50,7 @@ extension EntityVC: HGTableDisplayable {
         let entity = appDelegate.store.project.entities[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.typeRep),
-            field1: HGFieldData(title: ""),
+            field1: HGFieldData(title: entity.hashRep),
             image0: HGImageData(title: "", image: NSImage(named: "entityIcon"))
         )
     }
@@ -101,6 +101,31 @@ extension EntityVC: HGTableFieldEditable {
     }
     
 }
+
+// MARK: HGTableItemSelectable
+extension EntityVC: HGTableItemSelectable {
+    
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+        
+        /// select hash field
+        if tag == 1 {
+            return true
+        }
+        
+        return false
+    }
+    
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+        
+        /// set hash
+        let entity = appDelegate.store.getEntity(index: row)
+        let hashes = entity.attributes.filter { entity.hashes.contains($0) == false } // only ones that are not set
+        let context = SBD_Hash(entityIndex: row, attributes: hashes)
+        let boarddata = SelectionBoard.boardData(withContext: context)
+        appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
+    }
+}
+
 
 // MARK: HGTableRowAppendable
 extension EntityVC: HGTableRowAppendable {

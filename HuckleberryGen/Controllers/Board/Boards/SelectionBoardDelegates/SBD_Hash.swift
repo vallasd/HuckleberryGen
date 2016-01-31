@@ -1,0 +1,98 @@
+//
+//  SBD_Hash.swift
+//  HuckleberryGen
+//
+//  Created by David Vallas on 1/31/16.
+//  Copyright © 2016 Phoenix Labs. All rights reserved.
+//
+
+import Foundation
+
+
+class SBD_Hash: SelectionBoardDelegate {
+    
+    var index: Int
+    var attributes: [Attribute]
+    
+    /// reference to the cell type used
+    let celltype = CellType.Image5Cell
+    
+    init(entityIndex ei: Int, attributes a: [Attribute]) {
+        index = ei
+        attributes = a
+    }
+    
+    /// reference to the selection board
+    weak var selectionBoard: SelectionBoard? {
+        didSet {
+            selectionBoard?.automaticNext = true
+        }
+    }
+    
+    /// SelectionBoardDelegate function
+    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+        
+        // no locations selected, remove all hashes
+        if locations.count == 0 {
+            // remove hashes
+            var entity = appDelegate.store.getEntity(index: index)
+            entity.hashes = []
+            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+        } else {
+            // add selected hash
+            let attIndex = celltype.index(forlocation: locations[0])
+            var entity = appDelegate.store.getEntity(index: index)
+            let att = attributes[attIndex]
+            entity.hashes.append(att)
+            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+        }
+        
+        appDelegate.store.post(forNotifType: .EntityUpdated) // post notification so other classes are in the know
+    }
+}
+
+extension SBD_Hash: HGTableDisplayable {
+    
+    func numberOfRows(fortable table: HGTable) -> Int {
+    
+        let numImages = attributes.count
+        let numRows = celltype.rows(forImagesWithCount: numImages)
+        return numRows
+    }
+    
+    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+        return celltype.rowHeightForTable(selectionBoard?.tableview)
+    }
+    
+    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+        return celltype
+    }
+    
+    func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
+        var imagedatas: [HGImageData] = []
+        for index in indexes {
+            let att = attributes[index]
+            let imagedata = HGImageData(title: att.typeRep, image: att.image)
+            imagedatas.append(imagedata)
+        }
+        return imagedatas
+    }
+    
+    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: attributes.count)
+        let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
+        return HGCellData.onlyImages(imagedatas)
+    }
+}
+
+extension SBD_Hash: HGTableItemSelectable {
+    
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+        return true
+    }
+    
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+        // Do Nothing
+    }
+}
+

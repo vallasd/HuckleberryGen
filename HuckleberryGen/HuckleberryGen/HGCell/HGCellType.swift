@@ -111,6 +111,7 @@ enum CellType {
     
     /// returns the cooresponding index, if HGCellLocation is for an image, assumes the index is for an array of images
     func index(forlocation location: HGCellLocation) -> Int {
+        
         if let identifier = location.identifier {
             if identifier.type == .Image {
                 return (location.row * imagesPerRow) + identifier.tag

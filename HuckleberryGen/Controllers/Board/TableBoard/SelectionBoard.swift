@@ -21,6 +21,20 @@ class SelectionBoard: NSViewController, NavControllerReferable {
         hgtable.update()
     }
     
+    /// will make SelectionBoard finish or move to next without a field selected.
+    var automaticNext = false {
+        didSet {
+            updateProgression()
+        }
+    }
+    
+    /// function currently broken
+    var allowMultipleSelect = false {
+        didSet {
+            tableview?.allowsMultipleRowSelection = allowMultipleSelect
+        }
+    }
+    
     /// reference to the HGTable
     private var hgtable: HGTable!
     
@@ -40,11 +54,12 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSelectionBoardIfReady()
-        nav?.disableProgression()
+        updateProgression()
     }
     
     private func updateProgression() {
-        if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
+        if automaticNext { nav?.enableProgression() }
+        else if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
         else { nav?.disableProgression() }
     }
     

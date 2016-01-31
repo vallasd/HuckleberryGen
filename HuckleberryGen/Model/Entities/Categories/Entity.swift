@@ -16,25 +16,35 @@ struct Entity: TypeRepresentable {
     var attributes: [Attribute]
     var relationships: [Relationship]
     
-    init(typeRep: String, attributes: [Attribute], relationships: [Relationship]) {
+    var hashes: [Attribute]
+    
+    var hashRep: String {
+        
+        if hashes.count == 0 {
+            return "define #Hash"
+        }
+        
+        return hashes.map { $0.varRep }.joinWithSeparator(", ")
+    }
+    
+    init(typeRep: String, attributes: [Attribute], relationships: [Relationship], hashes: [Attribute]) {
         self.typeRep = typeRep
         self.attributes = attributes
         self.relationships = relationships
+        self.hashes = hashes
     }
     
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "entityIcon", title: name)
     }
     
-    func removeRelationships(forEntity entity: Entity) {
-        //relationships = relationships.filter { $0.entity.typeRep != typeRep }
-    }
+    
 }
 
 extension Entity: HGEncodable {
     
     static var new: Entity {
-        return Entity(typeRep: "NewEntity", attributes: [], relationships: [])
+        return Entity(typeRep: "NewEntity", attributes: [], relationships: [], hashes: [])
     }
     
     var encode: AnyObject {
@@ -42,6 +52,7 @@ extension Entity: HGEncodable {
         dict["typeRep"] = typeRep
         dict["attributes"] = attributes.encode
         dict["relationships"] = relationships.encode
+        dict["hashes"] = hashes.encode
         return dict
     }
     
@@ -50,7 +61,8 @@ extension Entity: HGEncodable {
         let typeRep = dict["typeRep"].string
         let attributes = dict["attributes"].attributes
         let relationships = dict["relationships"].relationships
-        return Entity(typeRep: typeRep, attributes: attributes, relationships: relationships)
+        let hashes = dict["hashes"].attributes
+        return Entity(typeRep: typeRep, attributes: attributes, relationships: relationships, hashes: hashes)
     }
 }
 
