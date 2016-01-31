@@ -30,7 +30,7 @@ extension HuckleberryGen {
     func replaceEnum(atIndex i: Int, withEnum e2: Enum) {
         
         // check if index is in bounds
-        if i >= project.enums.count {
+        if i < 0 || i >= project.enums.count {
             HGReportHandler.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .Error)
             return
         }
@@ -69,7 +69,7 @@ extension HuckleberryGen {
     func getEnum(index i: Int) -> Enum {
         
         // check if index is in bounds
-        if i >= project.enums.count {
+        if i < 0 || i >= project.enums.count {
             HGReportHandler.shared.report("Enum GET index: |\(i)| is out of bounds", type: .Error)
             assert(true)
             return Enum.new
@@ -96,7 +96,7 @@ extension HuckleberryGen {
     func replaceEntity(atIndex i: Int, withEntity e2: Entity) {
         
         // check if index is in bounds
-        if i >= project.entities.count {
+        if i < 0 || i >= project.entities.count {
             HGReportHandler.shared.report("Entity REPLACE index: |\(i)| is out of bounds", type: .Error)
             return
         }
@@ -123,7 +123,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         let maxIndex = project.entities.count - 1
-        let boundErrors = a.filter { $0 > maxIndex }.count
+        let boundErrors = a.filter { $0 > maxIndex || $0 < 0 }.count
         if  boundErrors > 0 {
             HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .Error)
             return false
@@ -137,10 +137,10 @@ extension HuckleberryGen {
     func getEntity(index i: Int) -> Entity {
         
         // check if index is in bounds
-        if i >= project.entities.count {
+        if i < 0 || i >= project.entities.count {
             HGReportHandler.shared.report("Entity GET index: |\(i)| is out of bounds", type: .Error)
+            if i == 0 { return createEntity() }
             assert(true)
-            return Entity.new
         }
         
         return project.entities[i]
