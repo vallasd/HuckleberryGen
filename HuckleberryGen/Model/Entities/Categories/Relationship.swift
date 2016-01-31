@@ -69,7 +69,7 @@ extension Relationship: HGEncodable {
     var encode: AnyObject {
         var dict = HGDICT()
         dict["tag"] = tag
-        dict["entity"] = entity.encode
+        dict["eTypeRep"] = entity.typeRep
         dict["type"] = type.int
         dict["deletionRule"] = deletionRule.int
         return dict
@@ -79,15 +79,10 @@ extension Relationship: HGEncodable {
         
         let dict = hgdict(fromObject: object, decoderName: "Relationship")
         let tag = dict["tag"].int
-        let entity = dict["entity"].entity
+        let entity = dict["eTypeRep"].entity
         let type = dict["type"].relationshipType
         let deletionRule =  dict["deletionRule"].deletionRule
-        var relationship = Relationship(tag: tag, entity: entity, type: type, deletionRule: deletionRule)
-        
-        // append relationship to below array
-        relationship.entity.relationships.append(relationship)
-        
-        return relationship
+        return Relationship(tag: tag, entity: entity, type: type, deletionRule: deletionRule)
     }
 }
 

@@ -13,6 +13,8 @@ struct Index: VarRepresentable {
     var varRep: String
     var entity: Entity
     
+    var byAttribute: Attribute?
+    
     init(varRep: String, entity: Entity) {
         self.varRep = varRep
         self.entity = entity
@@ -35,6 +37,7 @@ extension Index: HGEncodable {
         var dict = HGDICT()
         dict["varRep"] = varRep
         dict["entity"] = entity.encode
+        dict["byEntity"] = entity.encode
         return dict
     }
     

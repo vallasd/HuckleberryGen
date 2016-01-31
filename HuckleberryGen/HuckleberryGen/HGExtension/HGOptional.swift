@@ -39,6 +39,11 @@ extension Optional {
     }
     
     var entity: Entity {
+        if let string = self as? String {
+            var e = Entity.new
+            e.typeRep = string
+            return e
+        }
         if let dict = self as? HGDICT { return Entity.decode(object: dict) }
         HGReportHandler.shared.report("optional: |\(self)| is not Entity mapable, returning new Entity", type: .Error)
         return Entity.new

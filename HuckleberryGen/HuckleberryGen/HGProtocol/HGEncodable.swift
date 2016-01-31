@@ -64,7 +64,9 @@ extension SequenceType where Generator.Element: HGEncodable {
     
     var encode: [AnyObject] {
         var jsonArray: [AnyObject] = []
-        for encodable in self { jsonArray.append(encodable.encode) }
+        for encodable in self {
+            jsonArray.append(encodable.encode)
+        }
         return jsonArray
     }
     

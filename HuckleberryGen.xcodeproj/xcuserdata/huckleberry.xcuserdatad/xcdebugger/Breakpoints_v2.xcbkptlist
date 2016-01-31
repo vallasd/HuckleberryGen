@@ -38,16 +38,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/HuckleberryGen/HGExtension/HGOptional.swift"
-            timestampString = "475950723.077251"
+            filePath = "HuckleberryGen/Model/Entities/Categories/Project.swift"
+            timestampString = "475951439.316015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "Optional"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "Project"
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
