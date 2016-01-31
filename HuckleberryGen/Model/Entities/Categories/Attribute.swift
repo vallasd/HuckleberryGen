@@ -72,7 +72,7 @@ extension Attribute: HGEncodable {
         dict["varRep"] = varRep
         dict["decodeRep"] = decodeRep
         dict["isPrimitive"] = isPrimitive
-        dict["mutable"].bool
+        dict["mutable"] = mutable
         return dict
     }
     
