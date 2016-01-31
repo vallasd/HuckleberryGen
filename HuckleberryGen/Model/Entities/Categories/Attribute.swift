@@ -51,7 +51,7 @@ struct Attribute: TypeRepresentable, DecodeRepresentable, VarRepresentable {
     
     var image: NSImage {
         if isPrimitive {
-            return NSImage.image(named: "typeIcon", title: typeRep)
+            return NSImage.image(named: "typeIcon", title: varRep)
         }
         return NSImage.image(named: "enumIcon", title: typeRep)
     }
@@ -98,8 +98,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     case _Bool
     case _Date
     case _Binary
-    
-    // Structs
     case _TimeRange
     case _ImageURL
     
@@ -187,6 +185,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case 6: return ._Bool
         case 7: return ._Date
         case 8: return ._Binary
+        case 9: return ._TimeRange
+        case 10: return ._ImageURL
         default:
             HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
