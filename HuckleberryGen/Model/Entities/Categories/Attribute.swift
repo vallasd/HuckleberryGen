@@ -15,33 +15,38 @@ struct Attribute: TypeRepresentable, DecodeRepresentable, VarRepresentable {
     let typeRep: String
     let decodeRep: String
     let isPrimitive: Bool
+    var mutable: Bool
     
     init(varRep: String, primitive: Primitive) {
         self.varRep = varRep
         self.typeRep = primitive.typeRep
         self.decodeRep = primitive.varRep
         self.isPrimitive = true
+        mutable = false
     }
     
-    init(primitive: Primitive) {
-        self.varRep = "newAttribute"
-        self.typeRep = primitive.typeRep
-        self.decodeRep = primitive.varRep
-        self.isPrimitive = true
+    init(primitive: Primitive, oldAttribute o: Attribute) {
+        varRep = o.varRep
+        typeRep = primitive.typeRep
+        decodeRep = primitive.varRep
+        isPrimitive = true
+        mutable = o.mutable
     }
     
-    init(enuM: Enum) {
-        self.varRep = "newAttribute"
-        self.typeRep = enuM.typeRep
-        self.decodeRep = enuM.varRep
-        self.isPrimitive = false
+    init(enuM: Enum, oldAttribute o: Attribute) {
+        varRep = o.varRep
+        typeRep = enuM.typeRep
+        decodeRep = enuM.varRep
+        isPrimitive = false
+        mutable = o.mutable
     }
     
-    init(typeRep: String, varRep: String, decodeRep: String, isPrimitive: Bool) {
+    init(typeRep: String, varRep: String, decodeRep: String, isPrimitive: Bool, mutable: Bool) {
         self.typeRep = typeRep
         self.varRep = varRep
         self.decodeRep = decodeRep
         self.isPrimitive = isPrimitive
+        self.mutable = mutable
     }
     
     var image: NSImage {
@@ -58,7 +63,7 @@ extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bo
 extension Attribute: HGEncodable {
     
     static var new: Attribute {
-        return Attribute(primitive: ._Int)
+        return Attribute(varRep: "newAttribute", primitive: ._Int)
     }
     
     var encode: AnyObject {
@@ -67,6 +72,7 @@ extension Attribute: HGEncodable {
         dict["varRep"] = varRep
         dict["decodeRep"] = decodeRep
         dict["isPrimitive"] = isPrimitive
+        dict["mutable"].bool
         return dict
     }
     
@@ -76,7 +82,8 @@ extension Attribute: HGEncodable {
         let varRep = dict["varRep"].string
         let decodeRep = dict["decodeRep"].string
         let isPrimitive = dict["isPrimitive"].bool
-        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive)
+        let mutable = dict["mutable"].bool
+        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive, mutable: mutable)
     }
 }
 

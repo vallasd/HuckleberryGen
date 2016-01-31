@@ -34,14 +34,13 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// SelectionBoardDelegate function
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
-        let oldAttribute = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
-        var newAttribute = attribute(fromIndex: index)
-        newAttribute.varRep = oldAttribute.varRep
+        let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
+        let newAttribute = attribute(fromIndex: index, oldAttribute: o)
         appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute
         appDelegate.store.post(forNotifType: .AttributeUpdated) // post notification so other classes are in the know
     }
     
-    func attribute(fromIndex i: Int) -> Attribute {
+    func attribute(fromIndex i: Int, oldAttribute o: Attribute) -> Attribute {
         
         // check if index held primitive
         let isPrimitive = i < firstEnumIndex ? true : false
@@ -49,13 +48,13 @@ class SBD_Attributes: SelectionBoardDelegate {
         // return attribute from primitive
         if isPrimitive {
             let primitive = Primitive.create(int: i)
-            return Attribute(primitive: primitive)
+            return Attribute(primitive: primitive, oldAttribute: o)
         }
         
         // return attribute from enum
         let index = i - firstEnumIndex
         let enuM = appDelegate.store.getEnum(index: index)
-        return Attribute(enuM: enuM)
+        return Attribute(enuM: enuM, oldAttribute: o)
     }
     
     /// a list of strings of all attributes types that can be assigned
