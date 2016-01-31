@@ -19,7 +19,7 @@ struct Index: VarRepresentable {
     }
     
     // creates and image of var reps Entity
-    func entityImage(withName name: String) -> NSImage {
+    var entityImage: NSImage {
         return NSImage.image(named: "entityIcon", title: entity.typeRep)
     }
 }
@@ -45,3 +45,6 @@ extension Index: HGEncodable {
         return Index(varRep: varRep, entity: entity)
     }
 }
+
+extension Index: Hashable { var hashValue: Int { return varRep.hashValue } }
+extension Index: Equatable {}; func ==(lhs: Index, rhs: Index) -> Bool { return lhs.varRep == rhs.varRep }

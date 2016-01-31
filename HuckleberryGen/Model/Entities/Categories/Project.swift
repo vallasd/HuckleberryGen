@@ -10,11 +10,13 @@ import Foundation
 
 final class Project {
     var name: String
+    var indexes: [Index]
     var enums: [Enum]
     var entities: [Entity]
     
-    init(name: String, enums:[Enum], entities: [Entity]) {
+    init(name: String, indexes: [Index], enums:[Enum], entities: [Entity]) {
         self.name = name
+        self.indexes = indexes
         self.enums = enums
         self.entities = entities
     }
@@ -35,12 +37,13 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: Enum.genericEnums(), entities: [])
+        return Project(name: Project.newName, indexes: [], enums: Enum.genericEnums(), entities: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
         dict["name"] = name
+        dict["indexes"] = indexes.encode
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
         return dict
@@ -49,9 +52,10 @@ extension Project: HGEncodable {
     static func decode(object object: AnyObject) -> Project {
         let dict = hgdict(fromObject: object, decoderName: "Project")
         let name = dict["name"].string
+        let indexes = dict["indexes"].indexes
         let enums = dict["enums"].enums
         let entities = dict["entities"].entities
-        let project = Project(name: name, enums: enums, entities: entities)
+        let project = Project(name: name, indexes: indexes, enums: enums, entities: entities)
         return project
     }
 }

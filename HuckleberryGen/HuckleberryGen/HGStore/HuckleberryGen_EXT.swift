@@ -56,7 +56,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         let maxIndex = project.enums.count - 1
-        let boundErrors = a.filter { $0 > maxIndex }.count
+        let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
         if  boundErrors > 0 {
             HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .Error)
             return false
@@ -150,7 +150,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         let maxIndex = project.entities.count - 1
-        let boundErrors = a.filter { $0 > maxIndex }.count
+        let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
         if  boundErrors > 0 {
             HGReportHandler.shared.report("Enum GET indexes: |\(a)| is out of bounds", type: .Error)
             return []
@@ -162,6 +162,74 @@ extension HuckleberryGen {
         }
         
         return entities
+    }
+    
+    func createIndex() -> Index  {
+        
+        // create new Enum
+        var index = Index.new
+        
+        // make iterated version of Enum if necessary
+        if let itr = index.iteratedVarRep(forArray: project.indexes) { index.varRep = itr }
+        
+        // add Enum to store
+        project.indexes.append(index)
+        
+        // return enum
+        return index
+        
+    }
+    
+    func deleteIndexes(atIndexes a: [Int]) -> Bool {
+        
+        // check if index is in bounds
+        let maxIndex = project.indexes.count - 1
+        let boundErrors = a.filter { $0 > maxIndex || $0 < 0 }.count
+        if  boundErrors > 0 {
+            HGReportHandler.shared.report("Index DELETE indexes: |\(a)| is out of bounds", type: .Error)
+            return false
+        }
+        
+        project.enums.removeIndexes(a)
+        return true
+    }
+    
+    func replaceIndex(atIndex i: Int, withIndex i2: Index) {
+        
+        // check if index is in bounds
+        if i < 0 || i >= project.indexes.count {
+            HGReportHandler.shared.report("Index REPLACE index: |\(i)| is out of bounds", type: .Error)
+            return
+        }
+        
+        // get Entity
+        let i1 = getEntity(index: i)
+        
+        // make iterated version of EnIndextity if necessary, |If types are not already the same|
+        if i1.varRep != i2.varRep {
+            if let vtr = i2.iteratedVarRep(forArray: project.indexes) {
+                var i3 = i2
+                i3.varRep = vtr
+                project.indexes[i] = i3
+                return
+            }
+        }
+        
+        // add Enum to store
+        project.indexes[i] = i2
+    }
+    
+    
+    func getIndex(index i: Int) -> Index {
+        
+        // check if index is in bounds
+        if i < 0 || i >= project.indexes.count {
+            HGReportHandler.shared.report("Index GET index: |\(i)| is out of bounds", type: .Error)
+            assert(true)
+            return Index.new
+        }
+        
+        return project.indexes[i]
     }
     
 }

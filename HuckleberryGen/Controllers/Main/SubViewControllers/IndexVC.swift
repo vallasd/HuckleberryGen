@@ -31,7 +31,7 @@ extension IndexVC: HGTableDisplayable {
     }
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        return appDelegate.store.project.enums.count
+        return appDelegate.store.project.indexes.count
     }
     
     func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
@@ -43,11 +43,11 @@ extension IndexVC: HGTableDisplayable {
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let enuM = appDelegate.store.project.enums[row]
+        let index = appDelegate.store.getIndex(index: row)
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: enuM.name),
+            field0: HGFieldData(title: index.varRep),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: "", image: NSImage(named: "enumIcon"))
+            image0: HGImageData(title: "", image: index.entityImage)
         )
     }
 }
@@ -56,17 +56,10 @@ extension IndexVC: HGTableDisplayable {
 extension IndexVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EnumUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.IndexUpdated])
     }
 }
 
-// MARK: HGTablePostable
-extension IndexVC: HGTablePostable {
-    
-    func selectNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EnumSelected)
-    }
-}
 
 // MARK: HGTableRowSelectable
 extension IndexVC: HGTableRowSelectable {
@@ -76,23 +69,37 @@ extension IndexVC: HGTableRowSelectable {
     }
 }
 
-// MARK: HGTableFieldEditable
-extension IndexVC: HGTableFieldEditable {
+// MARK: HGItemSelectable
+extension IndexVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        if field == 0 {
-            let editable = appDelegate.store.project.enums[row].editable
-            return editable
+    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+        if type == .Image && tag == 0 {
+            // present a selection board to update current Attribute
+            let context = SBD_Entities(indexIndex: row)
+            let boarddata = SelectionBoard.boardData(withContext: context)
+            appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        var enuM = appDelegate.store.project.enums[row]
-        enuM.name = string
-        appDelegate.store.project.enums[row] = enuM
+    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+        // Do Nothing
+    }
+}
+
+
+// MARK: HGTableFieldEditable
+extension IndexVC: HGTableFieldEditable {
+    
+    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+        return field == 0 ? true : false
     }
     
+    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        var index = appDelegate.store.getIndex(index: row)
+        index.varRep = string
+        appDelegate.store.replaceIndex(atIndex: row, withIndex: index)
+    }
 }
 
 // MARK: HGTableRowAppendable
@@ -103,30 +110,14 @@ extension IndexVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let newEnum = Enum.new
-        appDelegate.store.project.enums.append(newEnum)
+        appDelegate.store.createIndex()
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        
-        var willAskUser = false
-        
-        for row in rows {
-            let enuM = appDelegate.store.project.enums[row]
-            if enuM.editable == false {
-                return .No
-            }
-            if enuM.cases.count > 0 {
-                willAskUser = true
-            }
-        }
-        
-        if willAskUser { return .AskUser }
-        
         return .Yes
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.project.enums.removeIndexes(rows)
+        appDelegate.store.deleteIndexes(atIndexes: rows)
     }
 }

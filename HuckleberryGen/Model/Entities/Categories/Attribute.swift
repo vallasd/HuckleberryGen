@@ -99,9 +99,14 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     case _Date
     case _Binary
     
-    static var count = 9
+    // Structs
+    case _TimeRange
+    case _ImageURL
+    
+    static var count = 11
     
     var defaultRep: String {
+        
         switch self {
         case _Int: return "0"
         case _Int16: return "0"
@@ -112,6 +117,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "false"
         case _Date: return "NSDate()"
         case _Binary: return "NSData()"
+        case _TimeRange: return "TimeRange"
+        case _ImageURL: return "ImageURL"
         }
     }
     
@@ -126,6 +133,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "Bool"
         case _Date: return "NSDate"
         case _Binary: return "NSData"
+        case _TimeRange: return "TimeRange"
+        case _ImageURL: return "ImageURL"
         }
     }
     
@@ -140,6 +149,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "bool"
         case _Date: return "date"
         case _Binary: return "data"
+        case _TimeRange: return "timeRange"
+        case _ImageURL: return "imageURL"
         }
     }
     
@@ -154,6 +165,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return 6
         case _Date: return 7
         case _Binary: return 8
+        case _TimeRange: return 9
+        case _ImageURL: return 10
         }
     }
     
@@ -161,7 +174,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         return NSImage.image(named: "typeIcon", title: varRep)
     }
     
-    static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary]
+    static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary, _TimeRange, _ImageURL]
     
     static func create(int int: Int) -> Primitive {
         switch(int) {
@@ -273,6 +286,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case "Boolean", "Bool", "bool": return ._Bool
         case "Date", "NSDate", "date": return ._Date
         case "Binary Data", "NSData", "Transformable", "data": return ._Binary
+        case "TimeRange", "timeRange": return ._TimeRange
+        case "ImageURL", "imageURL": return ._ImageURL
         default:
             return nil
         }

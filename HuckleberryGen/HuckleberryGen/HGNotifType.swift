@@ -21,6 +21,7 @@ enum HGNotifType {
     case AttributeSelected
     case RelationshipUpdated
     case RelationshipSelected
+    case IndexUpdated
     
     /// returns a string that identifies the HGNotifType
     var string: String {
@@ -36,6 +37,7 @@ enum HGNotifType {
         case AttributeSelected: return "AttributeSelected"
         case RelationshipUpdated: return "RelationshipUpdated"
         case RelationshipSelected: return "RelationshipSelected"
+        case IndexUpdated: return "IndexUpdate"
         }
     }
 }

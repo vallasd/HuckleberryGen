@@ -120,10 +120,7 @@ extension String {
         var varrep = self.trimmed
         
         // remove crap symbols, capitalize words and remove spaces
-        varrep = varrep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("")
-        
-        // make first character lower case
-        varrep.lowerCaseFirstLetter
+        varrep = varrep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("").lowerCaseFirstLetter
         
         // if it is blank, make a New typeRep
         if self == "" || self == "_" {

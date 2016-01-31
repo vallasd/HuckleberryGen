@@ -15,11 +15,14 @@ class SBD_Entities: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// index of Entity to be updated
-    let entityIndex: Int!
+    let index: Int
     
     /// index of Relationship to be updated
-    let relationshipIndex: Int!
+    let index2: Int!
     
+    // selection Object, hack to check selections, this should be clearer 0 handles a Relationship, 1 will hande an Index
+    let type: Int
+
     /// reference to the cell type used
     let celltype = CellType.Image5Cell
     
@@ -27,9 +30,16 @@ class SBD_Entities: SelectionBoardDelegate {
     let entities: [Entity] = appDelegate.store.project.entities
     
     /// initializes object with relationship and entity indexes
-    init(entityIndex: Int, relationshipIndex: Int) {
-        self.entityIndex = entityIndex
-        self.relationshipIndex = relationshipIndex
+    init(entityIndex i1: Int, relationshipIndex i2: Int) {
+        index = i1
+        index2 = i2
+        type = 0
+    }
+    
+    init(indexIndex i1: Int) {
+        index = i1
+        index2 = -99
+        type = 1
     }
     
     /// creates an array of HGImageData for an array indexes in attribute
@@ -47,8 +57,23 @@ class SBD_Entities: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let entity = entities[index]
-        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].entity = entity
+        switch type {
+        case 0: updateRelationship(forEntity: entity)
+        case 1: updateIndex(forEntity: entity)
+        default: HGReportHandler.shared.report("SBD_Entities: Did Not Update", type: .Error)
+        }
+    }
+    
+    func updateRelationship(forEntity e: Entity) {
+        appDelegate.store.project.entities[index].relationships[index2].entity = e
         appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
+    }
+    
+    func updateIndex(forEntity e: Entity) {
+        var i = appDelegate.store.getIndex(index: index)
+        i.entity = e
+        appDelegate.store.replaceIndex(atIndex: index, withIndex: i)
+        appDelegate.store.post(forNotifType: .IndexUpdated) // post notification so other classes are in the know
     }
 }
 
