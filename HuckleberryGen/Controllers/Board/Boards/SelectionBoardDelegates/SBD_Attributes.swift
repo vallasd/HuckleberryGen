@@ -53,7 +53,7 @@ class SBD_Attributes: SelectionBoardDelegate {
         }
         
         // return attribute from enum
-        let index = firstEnumIndex - i
+        let index = i - firstEnumIndex
         let enuM = appDelegate.store.getEnum(index: index)
         return Attribute(enuM: enuM)
     }

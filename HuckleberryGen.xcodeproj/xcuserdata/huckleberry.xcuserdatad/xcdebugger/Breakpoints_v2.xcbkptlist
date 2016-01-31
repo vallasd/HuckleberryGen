@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/HuckleberryGen/HGStore/HuckleberryGen_EXT.swift"
+            filePath = "HuckleberryGen/HuckleberryGen/HGExtension/HGArray.swift"
             timestampString = "475933097.254974"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "replaceEnum(atIndex:withEnum:)"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "objects(atIndexes:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HuckleberryGen/HuckleberryGen/HGExtension/HGArray.swift"
-            timestampString = "475933097.254974"
+            filePath = "HuckleberryGen/Model/Entities/Categories/Attribute.swift"
+            timestampString = "475936914.681016"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "objects(atIndexes:)"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "create(int:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

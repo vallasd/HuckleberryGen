@@ -151,7 +151,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     }
     
     var image: NSImage {
-        return NSImage.image(named: "typeIcon", title: typeRep)
+        return NSImage.image(named: "typeIcon", title: varRep)
     }
     
     static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary]
@@ -257,15 +257,15 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     
     private static func prim(fromString string: String) -> Primitive? {
         switch string {
-        case "Int", "Integer 64": return ._Int
-        case "Integer 16": return ._Int16
-        case "Integer 32": return ._Int32
-        case "Decimal", "Float": return ._Float
-        case "Double": return ._Double
-        case "String": return ._String
-        case "Boolean", "Bool": return ._Bool
-        case "Date", "NSDate": return ._Date
-        case "Binary Data", "NSData", "Transformable": return ._Binary
+        case "Int", "Integer 64", "int": return ._Int
+        case "Integer 16", "int16": return ._Int16
+        case "Integer 32", "int32": return ._Int32
+        case "Decimal", "Float", "float": return ._Float
+        case "Double", "double": return ._Double
+        case "String", "string": return ._String
+        case "Boolean", "Bool", "bool": return ._Bool
+        case "Date", "NSDate", "date": return ._Date
+        case "Binary Data", "NSData", "Transformable", "data": return ._Binary
         default:
             return nil
         }
