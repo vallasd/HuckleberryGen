@@ -74,8 +74,8 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
             
             if lastEntity != nil {
                 let primitive = attributeDict["attributeType"].primitive
-                let name = attributeDict["name"].string
-                let attribute = Attribute(name: name, primitive: primitive)
+                let varRep = attributeDict["name"].string
+                let attribute = Attribute(varRep: varRep, primitive: primitive)
                 lastEntity!.attributes.append(attribute)
                 return
             }
@@ -102,7 +102,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
                 // get rest of attribute data and set it
                 let type = attributeDict["toMany"].relationshipType
                 let deletionRule = attributeDict["deletionRule"].deletionRule
-                let relationship = Relationship(entity: entity, type: type, deletionRule: deletionRule)
+                let relationship = Relationship(tag: 0, entity: entity, type: type, deletionRule: deletionRule)
                 lastEntity!.relationships.append(relationship)
                 return
             }

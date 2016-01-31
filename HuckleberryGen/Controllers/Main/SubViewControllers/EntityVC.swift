@@ -111,7 +111,8 @@ extension EntityVC: HGTableRowAppendable {
     
     func hgtable(willAddRowToTable table: HGTable) {
         var entity = Entity.new
-        appDelegate.store.project.entities.append(Entity.new)
+        if let itr = entity.iteratedTypeRep(forArray: appDelegate.store.project.entities) { entity.typeRep = itr }
+        appDelegate.store.project.entities.append(entity)
     }
     
     func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -127,7 +128,8 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.project.entities.removeIndexes(rows)
+        
+        appDelegate.store.deleteEntities(atIndexes: rows)
     }
 }
 

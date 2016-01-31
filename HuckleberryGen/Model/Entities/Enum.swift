@@ -8,15 +8,19 @@
 
 import Cocoa
 
-struct Enum {
+struct Enum: TypeRepresentable {
+    
+    var name: String { didSet { typeRep = name.typeRepresentable } }
+    var typeRep: String
     var editable: Bool
-    var name: String
     var cases: [EnumCase]
+    
     
     init(editable: Bool, name: String, cases: [EnumCase]) {
         self.editable = editable
         self.name = name
         self.cases = cases
+        self.typeRep = name.typeRepresentable
     }
     
     static func image(withName name: String) -> NSImage {
@@ -45,12 +49,6 @@ extension Enum: HGEncodable {
         let cases = dict["cases"].enumcases
         return Enum(editable: editable, name: name, cases: cases)
     }
-}
-
-
-extension Enum: TypeRepresentable {
-    
-    var typeRep: String { return name.typeRepresentable }
 }
 
 extension Enum: VarRepresentable {

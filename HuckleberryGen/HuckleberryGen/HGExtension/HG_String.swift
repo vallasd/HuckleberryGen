@@ -102,7 +102,7 @@ extension String {
         
         // if it is blank, make a New typeRep
         if self == "" || self == "_" {
-            typeRep = "New"
+            typeRep = "NewEntity"
         }
         
         // if type is still same as self, return nil
@@ -111,6 +111,31 @@ extension String {
         }
         
         return typeRep
+    }
+    
+    /// returns a new string if change was made, else returns nil if the string is already VarRepresentable
+    var changeToVarRep: String? {
+        
+        // trim
+        var varrep = self.trimmed
+        
+        // remove crap symbols, capitalize words and remove spaces
+        varrep = varrep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("")
+        
+        // make first character lower case
+        varrep.lowerCaseFirstLetter
+        
+        // if it is blank, make a New typeRep
+        if self == "" || self == "_" {
+            varrep = "newVariable"
+        }
+        
+        // if type is still same as self, return nil
+        if varrep == self {
+            return nil
+        }
+        
+        return varrep
     }
     
     /// removes extra white spaces and new lines

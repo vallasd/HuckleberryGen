@@ -48,7 +48,7 @@ extension AttributeVC: HGTableDisplayable {
         
         let attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: attribute.name),
+            field0: HGFieldData(title: attribute.varRep),
             field1: HGFieldData(title: ""),
             image0: HGImageData(title: "", image: attribute.image)
         )
@@ -79,6 +79,8 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
+        var attribute = Attribute.new
+        if let itr = attribute.iteratedVarRep(forArray: appDelegate.store.project.entities[table.parentRow].attributes) { attribute.varRep = itr }
         appDelegate.store.project.entities[table.parentRow].attributes.append(Attribute.new)
     }
     
@@ -116,10 +118,13 @@ extension AttributeVC: HGTableFieldEditable {
     }
     
     func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        if field == 0 {
-            var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
-            attribute.name = string
-            appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
-        }
+        
+        var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
+        
+        attribute.varRep = string.changeToVarRep ?? string
+        
+        appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
+        
+        if attribute.varRep != string { table.update() }
     }
 }

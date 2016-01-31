@@ -34,17 +34,32 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// SelectionBoardDelegate function
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
-        var attribute = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
-        let type = types[index]
-        let isPrimitive = index < firstEnumIndex ? true : false
-        attribute.type = type;
-        attribute.isPrimitive = isPrimitive
-        appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = attribute
+        let oldAttribute = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
+        var newAttribute = attribute(fromIndex: index)
+        newAttribute.varRep = oldAttribute.varRep
+        appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute
         appDelegate.store.post(forNotifType: .AttributeUpdated) // post notification so other classes are in the know
     }
     
+    func attribute(fromIndex i: Int) -> Attribute {
+        
+        // check if index held primitive
+        let isPrimitive = i < firstEnumIndex ? true : false
+        
+        // return attribute from primitive
+        if isPrimitive {
+            let primitive = Primitive.create(int: i)
+            return Attribute(primitive: primitive)
+        }
+        
+        // return attribute from enum
+        let index = firstEnumIndex - i
+        let enuM = appDelegate.store.getEnum(index: index)
+        return Attribute(enuM: enuM)
+    }
+    
     /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.array.map { $0.string } + appDelegate.store.project.enums.map { $0.name }
+    let types: [String] = Primitive.array.map { $0.varRep } + appDelegate.store.project.enums.map { $0.typeRep }
     
     /// last index of Attribute Type in the attributes array
     let firstEnumIndex = Primitive.array.count

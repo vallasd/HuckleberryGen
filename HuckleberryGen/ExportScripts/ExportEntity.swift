@@ -80,7 +80,7 @@ class ExportEntity {
         
         // add attributes to entity stanza
         for attribute in entity.attributes {
-            string += "\(ind)let \(attribute.name): \(attribute.type)\n"
+            string += "\(ind)let \(attribute.varRep): \(attribute.typeRep)\n"
         }
         
         // add relationships to entity stanza
@@ -98,8 +98,8 @@ class ExportEntity {
         
         // new variable attributes
         for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.type), "
-            let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
+            string += "\(attribute.varRep): \(attribute.typeRep), "
+            let attAssign = "\(ind)\(ind)self.\(attribute.varRep) = \(attribute.varRep)\n"
             assigns.append(attAssign)
             
         }
@@ -139,8 +139,8 @@ class ExportEntity {
         let ind = HGIndent.indent
         
         // get Primitives
-        let primitives = Primitive.array.map { $0.string }
-        let primitivesDefault = Primitive.array.map { $0.defaultValue }
+        let primitives = Primitive.array.map { $0.typeRep }
+        let primitivesDefault = Primitive.array.map { $0.defaultRep }
         
         // begin hgencodable stanza
         var string = "extension \(entity.typeRep): HGEncodable {\n"
@@ -152,10 +152,10 @@ class ExportEntity {
         
         // new variable attributes
         for attribute in entity.attributes {
-            let type = attribute.type
+            let type = attribute.typeRep
             let index = primitives.indexOf(type)
-            if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
-            else { string += "\(attribute.name): \(attribute.type).new, " }
+            if let index = index { string += "\(attribute.varRep): \(primitivesDefault[index]), " }
+            else { string += "\(attribute.varRep): \(attribute.typeRep).new, " }
         }
         
         // new variable relationships
@@ -178,9 +178,9 @@ class ExportEntity {
         // encode variable attributes
         for attribute in entity.attributes {
             if attribute.isPrimitive {
-                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
+                string += "\(ind)\(ind)dict[\"\(attribute.varRep)\"] = \(attribute.varRep)\n"
             } else {
-                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name).encode\n"
+                string += "\(ind)\(ind)dict[\"\(attribute.varRep)\"] = \(attribute.varRep).encode\n"
             }
         }
         
@@ -202,7 +202,7 @@ class ExportEntity {
         
         // decode function attributes
         for attribute in entity.attributes {
-            string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.type.lowerCaseFirstLetter)\n"
+            string += "\(ind)\(ind)let \(attribute.varRep) = dict[\"\(attribute.varRep)\"].\(attribute.decodeRep)\n"
         }
         
         // decode function relationships
@@ -217,7 +217,7 @@ class ExportEntity {
         
         // decode function return statement attributes
         for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.name), "
+            string += "\(attribute.varRep): \(attribute.varRep), "
         }
         
         // decode function return statement relationships

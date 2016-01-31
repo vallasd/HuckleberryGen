@@ -219,43 +219,44 @@ class ExportOptional {
         for prim in primitives {
             
             // string representation of primitive
-            let pName = prim.string
+            let type = prim.typeRep
+            let varRep = prim.varRep
             
             // string representation of primitive's default value
-            let pDefault = prim.defaultValue
+            let pDefault = prim.defaultRep
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
-            string += "\(ind)/// returns \(pName) if optional unwraps.  Logs error and returns \(pDefault) if object is nil or can not unwrap.\n"
-            string += "\(ind)var \(pName.lowerCaseFirstLetter): \(pName) {\n"
-            string += returnStatement(pName, iInd: ind2)
+            string += "\(ind)/// returns \(type) if optional unwraps.  Logs error and returns \(pDefault) if object is nil or can not unwrap.\n"
+            string += "\(ind)var \(varRep): \(type) {\n"
+            string += returnStatement(type, iInd: ind2)
             string += prim.optionalReturnStatement(withInitialIndent: ind2)
-            string += errorReturnStatement(pName, stringValue: pDefault, iInd: ind2)
+            string += errorReturnStatement(type, stringValue: pDefault, iInd: ind2)
             string += "\(ind)}\n\n"
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
-            string += "\(ind)/// returns \(pName) if optional unwraps.  Logs error and returns nil if object can not unwrap.  Returns nil (without Error) on nil objects.\n"
-            string += "\(ind)var \(pName.lowerCaseFirstLetter)Nillable: \(pName)? {\n"
+            string += "\(ind)/// returns \(type) if optional unwraps.  Logs error and returns nil if object can not unwrap.  Returns nil (without Error) on nil objects.\n"
+            string += "\(ind)var \(varRep)Nillable: \(type)? {\n"
             string += returnOptionalIfNil(withInitialIndent: ind2)
-            string += returnStatement(pName, iInd: ind2)
+            string += returnStatement(type, iInd: ind2)
             string += prim.optionalReturnStatement(withInitialIndent: ind2)
-            string += errorReturnStatement(pName, stringValue: "nil", iInd: ind2)
+            string += errorReturnStatement(type, stringValue: "nil", iInd: ind2)
             string += "\(ind)}\n\n"
             
             // create var that expects an unwrapped existing array or logs an Error and returns a system default
-            string += "\(ind)/// returns [\(pName)] if optional unwraps.  Logs error and returns [] if object is nil or can not unwrap.\n"
-            string += "\(ind)var \(pName.lowerCaseFirstLetterAndArray): [\(pName)] {\n"
-            string += returnArrayStatement(pName, iInd: ind2)
+            string += "\(ind)/// returns [\(type)] if optional unwraps.  Logs error and returns [] if object is nil or can not unwrap.\n"
+            string += "\(ind)var \(varRep): [\(type)] {\n"
+            string += returnArrayStatement(type, iInd: ind2)
             string += prim.optionalArrayReturnStatement(withInitialIndent: ind2)
-            string += errorReturnArrayStatement(pName, iInd: ind2)
+            string += errorReturnArrayStatement(type, iInd: ind2)
             string += "\(ind)}\n\n"
             
             // create function allows optional to always return a default value define by user.  User can also define if error is reported when object is nil
-            string += "\(ind)/// returns \(pName) if optional unwraps.  Logs error and returns default if object is nil (and logErrorForNil) or can not unwrap.\n"
-            string += "\(ind)func \(pName.lowerCaseFirstLetter)(withDefault d: \(pName), logErrorForNil: Bool) -> \(pName) {\n"
-            string += returnDefaultIfNilWithOptionalError(pName, variable: "d", iInd: ind2)
-            string += returnStatement(pName, iInd: ind2)
+            string += "\(ind)/// returns \(type) if optional unwraps.  Logs error and returns default if object is nil (and logErrorForNil) or can not unwrap.\n"
+            string += "\(ind)func \(varRep)(withDefault d: \(type), logErrorForNil: Bool) -> \(type) {\n"
+            string += returnDefaultIfNilWithOptionalError(type, variable: "d", iInd: ind2)
+            string += returnStatement(type, iInd: ind2)
             string += prim.optionalReturnStatement(withInitialIndent: ind2)
-            string += errorReturnStatement(pName, variable: "d", iInd: ind2)
+            string += errorReturnStatement(type, variable: "d", iInd: ind2)
             string += "\(ind)}\n\n"
             
             index++

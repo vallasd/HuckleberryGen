@@ -9,76 +9,78 @@
 import CoreData
 import AppKit
 
-struct Attribute {
+struct Attribute: TypeRepresentable, DecodeRepresentable, VarRepresentable {
     
-    var name: String
-    var type: String
-    var isPrimitive: Bool
+    var varRep: String
+    let typeRep: String
+    let decodeRep: String
+    let isPrimitive: Bool
     
-    init(name: String, primitive: Primitive) {
-        self.name = name
-        self.type = primitive.string
+    init(varRep: String, primitive: Primitive) {
+        self.varRep = varRep
+        self.typeRep = primitive.typeRep
+        self.decodeRep = primitive.varRep
         self.isPrimitive = true
     }
     
-    init(name: String, enuM: Enum) {
-        self.name = name
-        self.type = enuM.name
+    init(primitive: Primitive) {
+        self.varRep = "newAttribute"
+        self.typeRep = primitive.typeRep
+        self.decodeRep = primitive.varRep
+        self.isPrimitive = true
+    }
+    
+    init(enuM: Enum) {
+        self.varRep = "newAttribute"
+        self.typeRep = enuM.typeRep
+        self.decodeRep = enuM.varRep
         self.isPrimitive = false
     }
     
-    init(name: String, type: String, isPrimitive: Bool) {
-        self.name = name
-        self.type = type
+    init(typeRep: String, varRep: String, decodeRep: String, isPrimitive: Bool) {
+        self.typeRep = typeRep
+        self.varRep = varRep
+        self.decodeRep = decodeRep
         self.isPrimitive = isPrimitive
     }
     
     var image: NSImage {
         if isPrimitive {
-            return NSImage.image(named: "typeIcon", title: type)
+            return NSImage.image(named: "typeIcon", title: typeRep)
         }
-        return NSImage.image(named: "enumIcon", title: type)
+        return NSImage.image(named: "enumIcon", title: typeRep)
     }
 }
 
-extension Attribute: TypeRepresentable {
-    
-    var typeRep: String { return type.typeRepresentable }
-}
-
-extension Attribute: VarRepresentable {
-    
-    var varRep: String { return name }
-}
-
-
-extension Attribute: Hashable { var hashValue: Int { return name.hashValue } }
-extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.name == rhs.name }
+extension Attribute: Hashable { var hashValue: Int { return varRep.hashValue } }
+extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.varRep == rhs.varRep }
 
 extension Attribute: HGEncodable {
     
     static var new: Attribute {
-        return Attribute(name: "New Attribute", primitive: Primitive._Int)
+        return Attribute(primitive: ._Int)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
-        dict["type"] = type
+        dict["typeRep"] = typeRep
+        dict["varRep"] = varRep
+        dict["decodeRep"] = decodeRep
         dict["isPrimitive"] = isPrimitive
         return dict
     }
     
     static func decode(object object: AnyObject) -> Attribute {
         let dict = hgdict(fromObject: object, decoderName: "Attribute")
-        let name = dict["name"].string
-        let type = dict["type"].string
+        let typeRep = dict["typeRep"].string
+        let varRep = dict["varRep"].string
+        let decodeRep = dict["decodeRep"].string
         let isPrimitive = dict["isPrimitive"].bool
-        return Attribute(name: name, type: type, isPrimitive: isPrimitive)
+        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive)
     }
 }
 
-enum Primitive {
+enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
  
     case _Int
     case _Int16
@@ -92,7 +94,7 @@ enum Primitive {
     
     static var count = 9
     
-    var defaultValue: String {
+    var defaultRep: String {
         switch self {
         case _Int: return "0"
         case _Int16: return "0"
@@ -106,7 +108,7 @@ enum Primitive {
         }
     }
     
-    var string: String {
+    var typeRep: String {
         switch self {
         case _Int: return "Int"
         case _Int16: return "Int16"
@@ -117,6 +119,20 @@ enum Primitive {
         case _Bool: return "Bool"
         case _Date: return "NSDate"
         case _Binary: return "NSData"
+        }
+    }
+    
+    var varRep: String {
+        switch self {
+        case _Int: return "int"
+        case _Int16: return "int16"
+        case _Int32: return "int32"
+        case _Double: return "double"
+        case _Float: return "float"
+        case _String: return "string"
+        case _Bool: return "bool"
+        case _Date: return "date"
+        case _Binary: return "data"
         }
     }
     
@@ -135,10 +151,27 @@ enum Primitive {
     }
     
     var image: NSImage {
-        return NSImage.image(named: "typeIcon", title: self.string)
+        return NSImage.image(named: "typeIcon", title: typeRep)
     }
     
     static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary]
+    
+    static func create(int int: Int) -> Primitive {
+        switch(int) {
+        case 0: return ._Int
+        case 1: return ._Int16
+        case 2: return ._Int32
+        case 3: return ._Double
+        case 4: return ._Float
+        case 5: return ._String
+        case 6: return ._Bool
+        case 7: return ._Date
+        case 8: return ._Binary
+        default:
+            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
+            return ._Int
+        }
+    }
     
     // create unique return statements for Primitive.  use for exporting optionals.
     func optionalReturnStatement(withInitialIndent iInd: String) -> String {
@@ -152,12 +185,9 @@ enum Primitive {
         // return Int16 || Int32
         if self == _Int16 || self == _Int32 {
             
-            // set name
-            let name = self.string
-            
             string += "\(iInd)if let int = self as? Int {\n"
-            string += "\(iInd)\(ind)if abs(int) <= Int(\(name).max) {\n"
-            string += "\(iInd)\(ind)\(ind)return \(name)(int)\n"
+            string += "\(iInd)\(ind)if abs(int) <= Int(\(typeRep).max) {\n"
+            string += "\(iInd)\(ind)\(ind)return \(typeRep)(int)\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)}\n"
             return string
@@ -190,19 +220,16 @@ enum Primitive {
         // return Int16 || Int32
         if self == _Int16 || self == _Int32 {
             
-            // set name
-            let name = self.string
-            
             string += "\(iInd)if let intArray = self as? [Int] {\n"
-            string += "\(iInd)\(ind)var arrayContainsAll\(name) = true\n"
+            string += "\(iInd)\(ind)var arrayContainsAll\(typeRep) = true\n"
             string += "\(iInd)\(ind)for int in intArray {\n"
-            string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(name).max) {\n"
-            string += "\(iInd)\(ind)\(ind)\(ind)arrayContainsAll\(name) = false\n"
+            string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(typeRep).max) {\n"
+            string += "\(iInd)\(ind)\(ind)\(ind)arrayContainsAll\(typeRep) = false\n"
             string += "\(iInd)\(ind)\(ind)\(ind)break\n"
             string += "\(iInd)\(ind)\(ind)}\n"
             string += "\(iInd)\(ind)}\n"
-            string += "\(iInd)\(ind)if arrayContainsAll\(name) == true {\n"
-            string += "\(iInd)\(ind)\(ind)return intArray.map { \(name)($0) }\n"
+            string += "\(iInd)\(ind)if arrayContainsAll\(typeRep) == true {\n"
+            string += "\(iInd)\(ind)\(ind)return intArray.map { \(typeRep)($0) }\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)}\n"
             return string
@@ -211,22 +238,7 @@ enum Primitive {
         return string
     }
     
-    static func create(int int: Int) -> Primitive {
-        switch(int) {
-        case 0: return ._Int
-        case 1: return ._Int16
-        case 2: return ._Int32
-        case 3: return ._Double
-        case 4: return ._Float
-        case 5: return ._String
-        case 6: return ._Bool
-        case 7: return ._Date
-        case 8: return ._Binary
-        default:
-            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
-            return ._Int
-        }
-    }
+    
     
     static func create(string string: String) -> Primitive {
         if let primitive = prim(fromString: string) {
