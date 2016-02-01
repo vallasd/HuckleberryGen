@@ -28,12 +28,12 @@ class SelectionBoard: NSViewController, NavControllerReferable {
         }
     }
     
-    /// function currently broken
-    var allowMultipleSelect = false {
-        didSet {
-            tableview?.allowsMultipleRowSelection = allowMultipleSelect
-        }
-    }
+//    /// function currently broken
+//    var allowMultipleSelect = false {
+//        didSet {
+//            tableview?.allowsMultipleRowSelection = allowMultipleSelect
+//        }
+//    }
     
     /// reference to the HGTable
     private var hgtable: HGTable!

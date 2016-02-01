@@ -66,17 +66,17 @@ extension Project: HGEncodable {
 
 // MARK : Exporting
 
-//struct EntityInfo {
-//    
-//    var 
-//    var pathFromArrays: Int
-//    var
-//    
-//    
-//    entity:
-//    
-//    
-//}
+struct EntityInfo {
+    
+    var entity: Entity
+    var specialTypes: [SpecialType] = []
+    var pathFromArrays: Int = 0
+
+    init(entity e: Entity) {
+        self.entity = e
+    }
+    
+}
 
 extension Project {
     
@@ -84,16 +84,42 @@ extension Project {
     
     func createEntityInfo()  {
         
-//        let totalEntities = entities.count
-//        
-//        var circularReferences: [
-//        
-//        for each entity in
+        _ = entities.map { EntityInfo(entity: $0) }
         
+        //pathFromArrays(forEntityInfos: entityInfos)
         
         
     }
     
+//    func goDownArrayPath(forEntity e: Entity, maxCount: Int) -> Int {
+//        
+//        let nCount = maxCount + 1
+//        if nCount > ( entities.count * 2 ) { return nCount }
+//        
+//        
+//        
+//        return 0
+//    }
+//    
+//    func pathFromArrays(forEntityInfos infos: [EntityInfo]) -> EntityInfo {
+//        
+//        
+//        
+//        for info in infos {
+//            
+//            let entity = info.entity
+//            
+//            
+//        }
+//        
+//    }
+    
+    
+//    func specialTypes(forEntityInfos infos: [EntityInfo]) -> EntityInfo {
+//        
+//        
+//        
+//    }
     
     
 }
