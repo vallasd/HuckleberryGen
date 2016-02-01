@@ -55,7 +55,8 @@ struct Attribute: HashRepresentable {
     
     var typeImage: NSImage {
         if isPrimitive {
-            return NSImage.image(named: "typeIcon", title: typeRep.lowerCaseFirstLetter)
+            let prim = Primitive.create(string: typeRep)
+            return prim.image
         }
         return NSImage.image(named: "enumIcon", title: typeRep)
     }
@@ -105,30 +106,18 @@ enum SpecialType {
     
     // returns special type for a combination of Primitive and varRep
     static func specialType(primitive p: Primitive, varRep v: String) -> SpecialType? {
-        
-        if v == "firstLetter" {
-            return .FirstLetter
-        }
-        
-        if v == "summary" {
-            return .LongText
-        }
-        
-        if v == "name" {
-            return .Name
-        }
-        
-        if v == "title" {
-            return .Title
-        }
-        
+
         switch p {
         case ._TimeRange: return TimeRange
         case ._Int, ._Int16, ._Int32:
             let check = v.getLast(3)
             if check == "Num" { return .IndexedSet }
             return nil
-        
+        case ._String:
+            if v == "firstLetter" { return .FirstLetter }
+            if v == "summary" { return .LongText }
+            if v == "name" { return .Name }
+            if v == "title" { return .Title }
         default: break
         }
         
@@ -332,15 +321,15 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         switch string {
         case "": return nil
         case "Int", "Integer 64", "int": return ._Int
-        case "Integer 16", "int16": return ._Int16
-        case "Integer 32", "int32": return ._Int32
+        case "Integer 16", "int16", "Int16": return ._Int16
+        case "Integer 32", "int32", "Int32": return ._Int32
         case "String", "string": return ._String
         case "Decimal", "Float", "float": return ._Float
         case "TimeRange", "timeRange": return ._TimeRange
         case "Double", "double": return ._Double
         case "Boolean", "Bool", "bool": return ._Bool
-        case "Date", "NSDate", "date": return ._Date
-        case "Binary Data", "NSData", "Transformable", "data": return ._Binary
+        case "Date", "NSDate", "date", "nSDate": return ._Date
+        case "Binary Data", "NSData", "Transformable", "data", "nSData": return ._Binary
         case "ImageURL", "imageURL": return ._ImageURL
         default:
             return nil
