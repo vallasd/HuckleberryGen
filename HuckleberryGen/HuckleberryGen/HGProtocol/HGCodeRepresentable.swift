@@ -6,7 +6,7 @@
 //  Copyright © 2016 Phoenix Labs. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 // This objects used for Exporting Code.  They should be string representations of XCODE key terms.  Stuff that will turn Blue.
 
@@ -59,10 +59,91 @@ protocol DecodeRepresentable {
 }
 
 /// whether object has
-protocol HashRepresentable {
-    
-    var string: [VarRepresentable] { get }
+protocol HashRepresentable: Hashable {
+    var typeRep: String { get }
+    var varRep: String { get }
 }
+
+struct HashObject: HashRepresentable {
+    let typeRep: String
+    let varRep: String
+    
+    var image: NSImage {
+        return NSImage.image(named: "hashIcon", title: varRep)
+    }
+}
+
+extension HashObject: HGEncodable {
+    
+    var encode: AnyObject {
+        var dict = HGDICT()
+        dict["typeRep"] = typeRep
+        dict["varRep"] = varRep
+        return dict
+    }
+    
+    static func decode(object object: AnyObject) -> HashObject {
+        let dict = hgdict(fromObject: object, decoderName: "HashObject")
+        let typeRep = dict["typeRep"].string
+        let varRep = dict["varRep"].string
+        return HashObject(typeRep: typeRep, varRep: varRep)
+    }
+    
+}
+
+extension HashObject: Hashable { var hashValue: Int { return varRep.hashValue } }
+extension HashObject: Equatable {}; func ==(lhs: HashObject, rhs: HashObject) -> Bool { return lhs.varRep == rhs.varRep }
+
+extension HashRepresentable  {
+    
+    var decodeHash: HashObject {
+        return HashObject(typeRep: typeRep, varRep: varRep)
+    }
+    
+    var encodeHash: HGDICT {
+        var dict = HGDICT()
+        dict["typeRep"] = typeRep
+        dict["varRep"] = varRep
+        return dict
+    }
+}
+
+extension HashRepresentable where Self: Hashable {
+    
+    
+    /// returns the varRep variable, iterated if another object in array already had value
+    func iteratedVarRep(forArray array: [Self]) -> String? {
+        if array.contains(self) {
+            let iterationNum = array.count + 1
+            return self.varRep + "\(iterationNum)"
+        }
+        return nil
+    }
+    
+    /// returns the varRep variable, iterated if another object in array already had value
+    func iteratedTypeRep(forArray array: [Self]) -> String? {
+        if array.contains(self) {
+            let iterationNum = array.count + 1
+            return self.varRep + "\(iterationNum)"
+        }
+        return nil
+    }
+    
+}
+
+
+extension SequenceType where Generator.Element: HashRepresentable {
+    
+    var encodeHash: [HGDICT] {
+        return self.map { $0.encodeHash }
+    }
+    
+    var decodeHashes: [HashObject] {
+        return self.map { $0.decodeHash }
+    }
+}
+
+
 
 /// whether object is let vs var object when typed
 protocol Mutable {

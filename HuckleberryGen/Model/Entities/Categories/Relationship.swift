@@ -9,7 +9,7 @@
 import AppKit
 import CoreData
 
-struct Relationship {
+struct Relationship: HashRepresentable {
     var tag: Int
     var entity: Entity
     var type: RelationshipType

@@ -36,7 +36,7 @@ final class HuckleberryGen {
     
     /// Checks defaults to see if a Huckleberry Gen was saved with same identifier and opens that data if available, else returns a blank project with identifier
     init(uniqIdentifier uniqID: String) {
-        let file = HuckleberryGen.openDefaults(uniqID)
+        let file = HuckleberryGen.openDefaults(uniqID, reportError: true) ?? HuckleberryGen.new
         uniqIdentifier = uniqID
         licenseInfo = file.licenseInfo
         importPath = file.importPath
@@ -155,7 +155,7 @@ final class HuckleberryGen {
         let key = Project.saveKey(withUniqID: uniqIdentifier, name: savedProjects[index])
         
         // opens project from defaults
-        project = Project.openDefaults(key)
+        project =? Project.openDefaults(key, reportError: true)
         
         return true
     }

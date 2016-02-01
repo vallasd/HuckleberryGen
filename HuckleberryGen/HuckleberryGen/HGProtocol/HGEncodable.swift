@@ -9,9 +9,13 @@
 import Foundation
 
 protocol HGEncodable {
-    static var new: Self { get }
+    //static var new: Self { get }
     var encode: AnyObject { get }
     static func decode(object object: AnyObject) -> Self
+}
+
+protocol NewCreatable {
+    static var new: Self { get }
 }
 
 extension HGEncodable {
@@ -49,25 +53,35 @@ extension HGEncodable {
     }
     
     /// opens and decodes object from standard user defaults given a key
-    static func openDefaults(key: String) -> Self {
+    static func openDefaults(key: String, reportError: Bool) -> Self? {
         let defaults = NSUserDefaults.standardUserDefaults()
         if let object = defaults.objectForKey(key) {
             let decoded = Self.decode(object: object)
             return decoded
         }
-        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
-        return self.new
+        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning nil", type: .Info)
+        return nil
     }
 }
+
+//extension HGEncodable where Self : NewCreatable {
+//    
+//    /// opens and decodes object from standard user defaults given a key
+//    static func openDefaults(key: String) -> Self {
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        if let object = defaults.objectForKey(key) {
+//            let decoded = Self.decode(object: object)
+//            return decoded
+//        }
+//        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning new Object", type: .Info)
+//        return self.new
+//    }
+//}
 
 extension SequenceType where Generator.Element: HGEncodable {
     
     var encode: [AnyObject] {
-        var jsonArray: [AnyObject] = []
-        for encodable in self {
-            jsonArray.append(encodable.encode)
-        }
-        return jsonArray
+        return self.map { $0.encode }
     }
-    
+
 }

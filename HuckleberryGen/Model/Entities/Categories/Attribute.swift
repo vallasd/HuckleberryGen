@@ -9,7 +9,7 @@
 import CoreData
 import AppKit
 
-struct Attribute: TypeRepresentable, DecodeRepresentable, VarRepresentable {
+struct Attribute: HashRepresentable {
     
     var varRep: String
     let typeRep: String
@@ -88,6 +88,55 @@ extension Attribute: HGEncodable {
         let isPrimitive = dict["isPrimitive"].bool
         let varMutable = dict["varMutable"].bool
         return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive, varMutable: varMutable)
+    }
+}
+
+enum SpecialType {
+    
+    // Attribute Special Types (for random)
+    case Title
+    case Name
+    case LongText
+    
+    // Entity Special Types (for indexing)
+    case IndexedSet
+    case TimeRange
+    case FirstLetter
+    
+    // returns special type for a combination of Primitive and varRep
+    static func specialType(primitive p: Primitive, varRep v: String) -> SpecialType? {
+        
+        if v == "firstLetter" {
+            return .FirstLetter
+        }
+        
+        if v == "summary" {
+            return .LongText
+        }
+        
+        if v == "name" {
+            return .Name
+        }
+        
+        if v == "title" {
+            return .Title
+        }
+        
+        switch p {
+        case ._TimeRange: return TimeRange
+        case ._Int, ._Int16, ._Int32:
+            let check = v.getLast(3)
+            if check == "Num" { return .IndexedSet }
+            return nil
+        
+        default: break
+        }
+        
+        return nil
+    }
+    
+    var color: NSColor {
+        return HGColor.Green.color()
     }
 }
 
@@ -281,16 +330,17 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     
     private static func prim(fromString string: String) -> Primitive? {
         switch string {
+        case "": return nil
         case "Int", "Integer 64", "int": return ._Int
         case "Integer 16", "int16": return ._Int16
         case "Integer 32", "int32": return ._Int32
-        case "Decimal", "Float", "float": return ._Float
-        case "Double", "double": return ._Double
         case "String", "string": return ._String
+        case "Decimal", "Float", "float": return ._Float
+        case "TimeRange", "timeRange": return ._TimeRange
+        case "Double", "double": return ._Double
         case "Boolean", "Bool", "bool": return ._Bool
         case "Date", "NSDate", "date": return ._Date
         case "Binary Data", "NSData", "Transformable", "data": return ._Binary
-        case "TimeRange", "timeRange": return ._TimeRange
         case "ImageURL", "imageURL": return ._ImageURL
         default:
             return nil

@@ -8,15 +8,16 @@
 
 import Cocoa
 
+// MARK: Struct Definition
 
-
+/// a struct that represents a model entity
 struct Entity: TypeRepresentable {
     
     var typeRep: String
     var attributes: [Attribute]
     var relationships: [Relationship]
     
-    var hashes: [Attribute]
+    var hashes: [HashObject]
     
     var hashRep: String {
         
@@ -27,7 +28,7 @@ struct Entity: TypeRepresentable {
         return hashes.map { $0.varRep }.joinWithSeparator(", ")
     }
     
-    init(typeRep: String, attributes: [Attribute], relationships: [Relationship], hashes: [Attribute]) {
+    init(typeRep: String, attributes: [Attribute], relationships: [Relationship], hashes: [HashObject]) {
         self.typeRep = typeRep
         self.attributes = attributes
         self.relationships = relationships
@@ -37,9 +38,9 @@ struct Entity: TypeRepresentable {
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "entityIcon", title: name)
     }
-    
-    
 }
+
+// MARK: Encoding
 
 extension Entity: HGEncodable {
     
@@ -61,7 +62,7 @@ extension Entity: HGEncodable {
         let typeRep = dict["typeRep"].string
         let attributes = dict["attributes"].attributes
         let relationships = dict["relationships"].relationships
-        let hashes = dict["hashes"].attributes
+        let hashes = dict["hashes"].hashes
         return Entity(typeRep: typeRep, attributes: attributes, relationships: relationships, hashes: hashes)
     }
 }
@@ -72,14 +73,13 @@ extension Entity: VarRepresentable {
     
 }
 
-extension Entity: Mutable {
-    
-    var mutable: Bool { return false }
-}
+// MARK: Hashing
 
 extension Entity: Hashable { var hashValue: Int { return typeRep.hashValue } }
 extension Entity: Equatable {};
 func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
+
+// MARK: Storing
 
 extension Entity {
     
@@ -118,14 +118,12 @@ extension Entity {
         relationships.removeAtIndex(i)
     }
     
-    
     mutating func updateRelationship(withRelationship r: Relationship) {
         
         deleteRelationship(forEntity: self)
         
         relationships.append(r)
     }
-    
     
     mutating func createAttribute() -> Attribute  {
         
@@ -171,6 +169,13 @@ extension Entity {
     
 }
 
+// MARK: Exporting
+
+extension Entity {
+    
+    
+    
+}
 
 
 

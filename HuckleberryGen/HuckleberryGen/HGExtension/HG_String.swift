@@ -159,6 +159,16 @@ extension String {
         return s
     }
     
+    func getLast(int: Int) -> String {
+        let last = min(int, self.characters.count)
+        return self.substringFromIndex(self.endIndex.advancedBy(-last))
+    }
+    
+    func getFirst(int: Int) -> String {
+        let last = min(int, self.characters.count)
+        return self.substringToIndex(self.startIndex.advancedBy(last))
+    }
+    
     var lowerFirstLetter: String {
         if self.isEmpty { return "" }
         var string = self

@@ -8,6 +8,8 @@
 
 import Foundation
 
+// MARK: struct Definition
+
 final class Project {
     var name: String
     var indexes: [Index]
@@ -34,6 +36,8 @@ final class Project {
     }
 }
 
+// MARK: Encoding
+
 extension Project: HGEncodable {
     
     static var new: Project {
@@ -58,4 +62,38 @@ extension Project: HGEncodable {
         let project = Project(name: name, indexes: indexes, enums: enums, entities: entities)
         return project
     }
+}
+
+// MARK : Exporting
+
+//struct EntityInfo {
+//    
+//    var 
+//    var pathFromArrays: Int
+//    var
+//    
+//    
+//    entity:
+//    
+//    
+//}
+
+extension Project {
+    
+    // Determine Entities Top Indexes
+    
+    func createEntityInfo()  {
+        
+//        let totalEntities = entities.count
+//        
+//        var circularReferences: [
+//        
+//        for each entity in
+        
+        
+        
+    }
+    
+    
+    
 }

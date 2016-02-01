@@ -120,6 +120,8 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     private(set) var row: Int = 0
     private(set) var selectedImages: [Int] = []
     
+    var firstImageName = ""
+    
     /// ordered array of images for HGCell
     lazy var images: [NSButton?] = {
         let _images = [self.image0, self.image1, self.image2, self.image3, self.image4, self.image5, self.image6, self.image7]
@@ -159,6 +161,9 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         // update row tag
         self.row = row
         
+        // get first Image Names for SpecialTypes
+        firstImageName = cellData.images.count > 0 ? cellData.images[0].title : ""
+        
         // Update and/or Clear Fields
         update(withData: cellData.fields)
         disable(missingData: cellData.fields)
@@ -167,7 +172,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         update(withData: cellData.images)
         disable(missingData: cellData.images)
         
-        // Update and/or Clear Fields
+        // Update and/or Clear Checks
         update(withData: cellData.checks)
         disable(missingData: cellData.checks)
     }
@@ -400,6 +405,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         if shouldEdit {
             field.editable = true
             field.textColor = NSColor.blueColor()
+            updateSpecialTextColors(forField: field)
             removeSelectFieldButton(field: field)
             return
         }
@@ -408,6 +414,14 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         field.editable = false
         field.textColor = NSColor.blackColor()
         removeSelectFieldButton(field: field)
+    }
+    
+    /// update colors for special items
+    func updateSpecialTextColors(forField field: NSTextField) {
+        if firstImageName == "" { return }
+        guard let primitive = Primitive.optionalPrimitive(string: firstImageName) else { return }
+        guard let stype = SpecialType.specialType(primitive: primitive, varRep: field.stringValue) else { return }
+        field.textColor = stype.color
     }
     
     /// Returns the appropriate field selection button for a field if it exists
@@ -442,7 +456,15 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Returns a call to delegate to let the delegate know that the field was edited once editing is done
     func control(control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
         let string = fieldEditor.string ?? ""
+        
+        // update color in a bit
+        delay(0.4) {
+            guard let field = self.fields[control.tag] else { return }
+            self.selectionSetup(field: field)
+        }
+        
         delegate?.hgcell(self, didEditField: control.tag, withString: string)
         return true
     }
+    
 }

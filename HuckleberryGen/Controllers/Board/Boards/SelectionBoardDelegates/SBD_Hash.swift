@@ -12,14 +12,14 @@ import Foundation
 class SBD_Hash: SelectionBoardDelegate {
     
     var index: Int
-    var attributes: [Attribute]
+    var hashes: [HashObject]
     
     /// reference to the cell type used
     let celltype = CellType.Image5Cell
     
-    init(entityIndex ei: Int, attributes a: [Attribute]) {
+    init(entityIndex ei: Int, hashes h: [HashObject]) {
         index = ei
-        attributes = a
+        hashes = h
     }
     
     /// reference to the selection board
@@ -42,7 +42,7 @@ class SBD_Hash: SelectionBoardDelegate {
             // add selected hash
             let attIndex = celltype.index(forlocation: locations[0])
             var entity = appDelegate.store.getEntity(index: index)
-            let att = attributes[attIndex]
+            let att = hashes[attIndex]
             entity.hashes.append(att)
             appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         }
@@ -55,7 +55,7 @@ extension SBD_Hash: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
     
-        let numImages = attributes.count
+        let numImages = hashes.count
         let numRows = celltype.rows(forImagesWithCount: numImages)
         return numRows
     }
@@ -71,15 +71,15 @@ extension SBD_Hash: HGTableDisplayable {
     func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
         for index in indexes {
-            let att = attributes[index]
-            let imagedata = HGImageData(title: att.typeRep, image: att.image)
+            let hash = hashes[index]
+            let imagedata = HGImageData(title: hash.typeRep, image: hash.image)
             imagedatas.append(imagedata)
         }
         return imagedatas
     }
     
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: attributes.count)
+        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: hashes.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
     }
