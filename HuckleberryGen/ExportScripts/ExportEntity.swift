@@ -187,7 +187,7 @@ class ExportEntity {
         // encode variable relationships
         for relationship in entity.relationships {
             let name = relationship.varRep
-            let equals = relationship.type == .TooOne ? "=?" : "="
+            let equals = relationship.relType == .TooOne ? "=?" : "="
             string += "\(ind)\(ind)dict[\"\(name)\"] \(equals) \(name).encode\n"
         }
         

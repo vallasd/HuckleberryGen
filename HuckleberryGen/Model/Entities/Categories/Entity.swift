@@ -11,7 +11,7 @@ import Cocoa
 // MARK: Struct Definition
 
 /// a struct that represents a model entity
-struct Entity: TypeRepresentable {
+struct Entity: HashRepresentable {
     
     var typeRep: String
     var attributes: [Attribute]
@@ -26,6 +26,36 @@ struct Entity: TypeRepresentable {
         }
         
         return hashes.map { $0.varRep }.joinWithSeparator(", ")
+    }
+    
+    var specialAttributeTypes: [SpecialAttribute] {
+        var specialAttributes: [SpecialAttribute] = []
+        for attribute in attributes {
+            if let st = SpecialAttribute.specialTypeFrom(varRep: attribute.varRep) { specialAttributes.append(st) }
+        }
+        return specialAttributes
+    }
+    
+    var isEndPoint: Bool {
+        return relationships.count == 1 ? true : false
+    }
+    
+    var isSinglePoint: Bool {
+        return relationships.count == 0 ? true : false
+    }
+    
+    var isCrossPoint: Bool {
+        return relationships.count > 1 ? true : false
+    }
+
+    var manyRelationships: [Relationship] {
+        let tooMany = RelationshipType.TooMany
+        return relationships.filter { $0.relType == tooMany }
+    }
+    
+    var singleRelationships: [Relationship] {
+        let tooOne = RelationshipType.TooOne
+        return relationships.filter { $0.relType == tooOne }
     }
     
     init(typeRep: String, attributes: [Attribute], relationships: [Relationship], hashes: [HashObject]) {
@@ -82,6 +112,18 @@ func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
 // MARK: Storing
 
 extension Entity {
+    
+    static func newEntity(withTypeRep t: String, fromEntity e: Entity, relType r: RelationshipType) -> Entity {
+        var newEntity = Entity.new
+        newEntity.typeRep = t.typeRepresentable
+        
+        var relationship = Relationship.new
+        relationship.entity = e
+        relationship.relType = r
+        
+        newEntity.relationships.append(relationship)
+        return newEntity
+    }
     
     mutating func createRelationship() -> Relationship  {
         

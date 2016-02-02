@@ -137,7 +137,7 @@ extension Optional {
     var relationshipType: RelationshipType {
         if let int = self as? Int { return RelationshipType.create(int: int) }
         if let string = self as? String { return RelationshipType.create(string: string) }
-        // HGReportHandler.shared.report("optional: |\(self)| is not RelationshipType mapable, using .TooOne", type: .Error)
+        HGReportHandler.shared.report("optional: |\(self)| is not RelationshipType mapable, using .TooOne", type: .Error)
         return .TooOne
     }
     

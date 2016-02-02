@@ -12,14 +12,14 @@ import CoreData
 struct Relationship: HashRepresentable {
     var tag: Int
     var entity: Entity
-    var type: RelationshipType
+    var relType: RelationshipType
     var deletionRule: DeletionRule
 }
 
 extension Relationship: TypeRepresentable {
     
     var typeRep: String {
-        switch type {
+        switch relType {
         case .TooMany: return entity.typeRep.pluralRep
         case .TooOne: return entity.typeRep + "?"
         }
@@ -30,7 +30,7 @@ extension Relationship: VarRepresentable {
     
     var varRep: String {
         let tagString = tag > 0 ? "\(tag)" : ""
-        switch type {
+        switch relType {
         case .TooMany: return (entity.varRep.lowerCaseFirstLetter + tagString).setRep
         case .TooOne: return entity.varRep.lowerCaseFirstLetter + tagString
         }
@@ -40,7 +40,7 @@ extension Relationship: VarRepresentable {
 extension Relationship: DefaultRepresentable {
     
     var defaultRep: String {
-        switch type {
+        switch relType {
         case .TooMany: return "nil"
         case .TooOne: return "[]"
         }
@@ -50,7 +50,7 @@ extension Relationship: DefaultRepresentable {
 extension Relationship: DecodeRepresentable {
     
     var decodeRep: String {
-        switch type {
+        switch relType {
         case .TooMany: return varRep
         case .TooOne: return entity.varRep.nilRep
         }
@@ -63,14 +63,14 @@ extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationsh
 extension Relationship: HGEncodable {
     
     static var new: Relationship {
-        return Relationship(tag: 0, entity: Entity.new, type: .TooOne, deletionRule: .NoAction)
+        return Relationship(tag: 0, entity: Entity.new, relType: .TooOne, deletionRule: .NoAction)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
         dict["tag"] = tag
         dict["eTypeRep"] = entity.typeRep
-        dict["type"] = type.int
+        dict["relType"] = relType.int
         dict["deletionRule"] = deletionRule.int
         return dict
     }
@@ -80,9 +80,9 @@ extension Relationship: HGEncodable {
         let dict = hgdict(fromObject: object, decoderName: "Relationship")
         let tag = dict["tag"].int
         let entity = dict["eTypeRep"].entity
-        let type = dict["type"].relationshipType
+        let relType = dict["relType"].relationshipType
         let deletionRule =  dict["deletionRule"].deletionRule
-        return Relationship(tag: tag, entity: entity, type: type, deletionRule: deletionRule)
+        return Relationship(tag: tag, entity: entity, relType: relType, deletionRule: deletionRule)
     }
 }
 

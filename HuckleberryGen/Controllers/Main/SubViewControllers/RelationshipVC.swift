@@ -52,7 +52,7 @@ extension RelationshipVC: HGTableDisplayable {
             field2: HGFieldData(title: relationship.typeRep),
             field3: HGFieldData(title: "Deletion Rule:"),
             field4: HGFieldData(title: relationship.deletionRule.string),
-            image0: HGImageData(title: "", image: relationship.type.image)
+            image0: HGImageData(title: "", image: relationship.relType.image)
         )
     }
 }

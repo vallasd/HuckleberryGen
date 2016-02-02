@@ -111,17 +111,17 @@ extension HashRepresentable  {
 extension HashRepresentable where Self: Hashable {
     
     
-    /// returns the varRep variable, iterated if another object in array already had value
-    func iteratedVarRep(forArray array: [Self]) -> String? {
+    /// returns the typeRep variable, iterated if another object in array already had value
+    func iteratedTypeRep(forArray array: [Self]) -> String? {
         if array.contains(self) {
             let iterationNum = array.count + 1
-            return self.varRep + "\(iterationNum)"
+            return self.typeRep + "\(iterationNum)"
         }
         return nil
     }
     
     /// returns the varRep variable, iterated if another object in array already had value
-    func iteratedTypeRep(forArray array: [Self]) -> String? {
+    func iteratedVarRep(forArray array: [Self]) -> String? {
         if array.contains(self) {
             let iterationNum = array.count + 1
             return self.varRep + "\(iterationNum)"

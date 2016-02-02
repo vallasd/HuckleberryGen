@@ -15,6 +15,7 @@ enum HGColor {
     case WhiteTranslucent
     case Blue
     case Green
+    case Purple
     case Clear
     case Test
     
@@ -25,6 +26,7 @@ enum HGColor {
         case .WhiteTranslucent: return CGColorCreateGenericRGB(1.0, 1.0, 1.0, 0.75)
         case .Blue: return CGColorCreateGenericRGB(0.0, 0.0, 1.0, 1.0)
         case .Green: return CGColorCreateGenericRGB(0.0, 1.0, 0.0, 1.0)
+        case .Purple: return CGColorCreateGenericRGB(1.0, 0.0, 1.0, 1.0)
         case .Clear: return CGColorCreateGenericRGB(1.0, 1.0, 1.0, 0.0)
         case .Test: return CGColorCreateGenericRGB(1.0, 0.0, 0.0, 0.2)
         }
@@ -37,6 +39,7 @@ enum HGColor {
         case .WhiteTranslucent: return NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 0.75)
         case .Blue: return NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         case .Green: return NSColor(calibratedRed: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+        case .Purple: return NSColor(calibratedRed: 1.0, green: 0.0, blue: 1.0, alpha: 1.0)
         case .Clear: return NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
         case .Test: return NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 0.2)
         }

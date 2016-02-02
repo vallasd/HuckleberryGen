@@ -100,9 +100,9 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
                 if eEntity.count == 0 { entities.insert(entity) }
                 
                 // get rest of attribute data and set it
-                let type = attributeDict["toMany"].relationshipType
+                let relType = attributeDict["toMany"].relationshipType
                 let deletionRule = attributeDict["deletionRule"].deletionRule
-                let relationship = Relationship(tag: 0, entity: entity, type: type, deletionRule: deletionRule)
+                let relationship = Relationship(tag: 0, entity: entity, relType: relType, deletionRule: deletionRule)
                 lastEntity!.relationships.append(relationship)
                 return
             }

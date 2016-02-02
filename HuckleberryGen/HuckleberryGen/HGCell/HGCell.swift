@@ -120,8 +120,6 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     private(set) var row: Int = 0
     private(set) var selectedImages: [Int] = []
     
-    var firstImageName = ""
-    
     /// ordered array of images for HGCell
     lazy var images: [NSButton?] = {
         let _images = [self.image0, self.image1, self.image2, self.image3, self.image4, self.image5, self.image6, self.image7]
@@ -160,9 +158,6 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         // update row tag
         self.row = row
-        
-        // get first Image Names for SpecialTypes
-        firstImageName = cellData.images.count > 0 ? cellData.images[0].title : ""
         
         // Update and/or Clear Fields
         update(withData: cellData.fields)
@@ -418,9 +413,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// update colors for special items
     func updateSpecialTextColors(forField field: NSTextField) {
-        if firstImageName == "" { return }
-        guard let primitive = Primitive.optionalPrimitive(string: firstImageName) else { return }
-        guard let stype = SpecialType.specialType(primitive: primitive, varRep: field.stringValue) else { return }
+        guard let stype = SpecialAttribute.specialTypeFrom(varRep: field.stringValue) else { return }
         field.textColor = stype.color
     }
     

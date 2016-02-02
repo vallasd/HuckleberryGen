@@ -47,7 +47,7 @@ class SBD_RelationshipType: SelectionBoardDelegate {
     func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let relationshiptype = RelationshipType.create(int: index)
-        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].type = relationshiptype
+        appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].relType = relationshiptype
         appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
     }
 }

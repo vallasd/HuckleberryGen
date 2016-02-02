@@ -92,39 +92,39 @@ extension Attribute: HGEncodable {
     }
 }
 
-enum SpecialType {
+enum SpecialAttribute {
     
     // Attribute Special Types (for random)
-    case Title
-    case Name
-    case LongText
+    case Title  // will generate random titles
+    case Name  // will generate random names
+    case LongText // will generate random text
+    case IndexedSet  // will treat the object as a set of its relationship
+    case TimeRange // will create a Date Index
+    case FirstLetter // will create a FirstLetter Index
+    case Folder // will create a folder index
+    case EnumAttribute // will create a Enum Index
     
-    // Entity Special Types (for indexing)
-    case IndexedSet
-    case TimeRange
-    case FirstLetter
+    case IsSpecial // tag that actual object is Special
     
-    // returns special type for a combination of Primitive and varRep
-    static func specialType(primitive p: Primitive, varRep v: String) -> SpecialType? {
-
-        switch p {
-        case ._TimeRange: return TimeRange
-        case ._Int, ._Int16, ._Int32:
-            let check = v.getLast(3)
-            if check == "Num" { return .IndexedSet }
-            return nil
-        case ._String:
-            if v == "firstLetter" { return .FirstLetter }
-            if v == "summary" { return .LongText }
-            if v == "name" { return .Name }
-            if v == "title" { return .Title }
-        default: break
-        }
+    static func specialTypeFrom(varRep v: String) -> SpecialAttribute? {
+        
+        if v == "title" { return .Title }
+        if v == "name" { return .Name }
+        if v == "summary" { return .LongText }
+        if v == "timeRange" { return .TimeRange }
+        if v == "firstLetter" { return .FirstLetter }
+        if v == "folder" { return .Folder }
+        if v.getLast(3) == "Num" { return .IndexedSet }
+        
+        // check if enums type is same as var, if so, return enum attribute
+        let checkEnums = appDelegate.store.project.enums.map { $0.varRep }.filter { $0 == v }.count
+        if checkEnums > 0 { return .EnumAttribute }
         
         return nil
     }
     
     var color: NSColor {
+        if self == .EnumAttribute { return HGColor.Purple.color() }
         return HGColor.Green.color()
     }
 }
