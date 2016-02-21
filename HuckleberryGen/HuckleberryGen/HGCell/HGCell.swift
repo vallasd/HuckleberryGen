@@ -215,7 +215,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         if selectedImages.contains(tag) { return }
         
         if let image = images[tag] {
-            image.backgroundColor(HGColor.Blue)
+            image.backgroundColor(HGColor.BlueBright)
             selectedImages.append(tag)
         }
     }

@@ -66,7 +66,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
             
             let typeRep = attributeDict["name"]!
             if lastEntity != nil { entities.insert(lastEntity!) }
-            lastEntity = Entity(typeRep: typeRep, attributes: [], relationships: [], hashes: [])
+            lastEntity = Entity(typeRep: typeRep)
             return
         }
         
@@ -87,23 +87,19 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         if elementName == ParseType.Relationship.rawValue {
             
             if lastEntity != nil {
-                // get desitionation entity
-                let dEntity = attributeDict["destinationEntity"].string
                 
-                // check if its currently in the set
-                let eEntity = entities.filter { $0.typeRep == dEntity }
+                let type = attributeDict["toMany"]
                 
-                // get the entity or create it
-                let entity = eEntity.count > 0 ? eEntity[0] : Entity(typeRep: dEntity, attributes: [], relationships: [], hashes: [])
+                // This app assumes too one relationship inverses are too many.  If you need a one to one relationship, use a struct
+                // nil means a too one relationship, we add the entity hash for these.
+                if type == nil {
+                    
+                    // get destination entity
+                    let typeRep = attributeDict["destinationEntity"].string
+                    let hash = HashObject(typeRep: typeRep.typeRepresentable, varRep: typeRep.varRepresentable, isEntity: true)
+                    lastEntity!.entityHashes.append(hash)
+                }
                 
-                // if entity was created, add it to set
-                if eEntity.count == 0 { entities.insert(entity) }
-                
-                // get rest of attribute data and set it
-                let relType = attributeDict["toMany"].relationshipType
-                let deletionRule = attributeDict["deletionRule"].deletionRule
-                let relationship = Relationship(tag: 0, entity: entity, relType: relType, deletionRule: deletionRule)
-                lastEntity!.relationships.append(relationship)
                 return
             }
             
@@ -118,6 +114,13 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
         let project = Project.new
         project.entities = project.entities + entities
         delegate?.parserDidParse(xml, success: !didError, project: project)
+    }
+    
+    private func createStructsFromEntities() {
+        
+        // any one to one relationship will use an optional struct as the reference
+        
+        
     }
     
     private enum ParseType: String {

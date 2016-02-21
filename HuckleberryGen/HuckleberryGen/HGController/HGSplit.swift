@@ -29,7 +29,7 @@ class HGSplit: NSObject, NSSplitViewDelegate {
     
     func add(splitview: NSSplitView, proportion: SplitProportion, reverse: Bool) {
         let num = splitview.numDividers()
-        if num > 2 || num == 0 { assert(true, "HGSplitVC only handles split views with at most 3 views, at least 2 views") }
+        if num > 2 || num <= 0 { assert(true, "HGSplitVC only handles split views with at most 3 views, at least 2 views") }
         let splitData = SplitData(split: splitview, proporation: proportion, reverse: reverse)
         splitview.delegate = self
         splitview.dividerStyle = .Thin
@@ -146,7 +146,8 @@ class HGSplit: NSObject, NSSplitViewDelegate {
 extension NSSplitView {
     
     func numDividers() -> Int {
-        return self.subviews.count - 1
+        let numDividers = self.subviews.count - 1
+        return numDividers
     }
     
     func length() -> CGFloat {

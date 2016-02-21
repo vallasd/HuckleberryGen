@@ -119,9 +119,8 @@ extension EntityVC: HGTableItemSelectable {
         
         /// set hash
         let entity = appDelegate.store.getEntity(index: row)
-        let hash1 = entity.attributes.decodeHashes.filter { entity.hashes.contains($0) == false } // only ones that are not set
-        let hash2 = entity.relationships.decodeHashes.filter { entity.hashes.contains($0) == false } // only ones that are not set
-        let context = SBD_Hash(entityIndex: row, hashes: hash1 + hash2)
+        let hashes = appDelegate.store.project.hashables(forEntity: entity)
+        let context = SBD_Hash(entityIndex: row, hashes: hashes)
         let boarddata = SelectionBoard.boardData(withContext: context)
         appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
     }

@@ -64,7 +64,25 @@ extension Project: HGEncodable {
     }
 }
 
-// MARK : Exporting
+// MARK: Hashing
+
+
+extension Project {
+    
+    var hashableEntities: [HashObject] {
+        return entities.filter { $0.attributeHash != nil }.map { $0.decodeHash }
+    }
+    
+    // returns a list of objects that can be selected as a hash for the specific entity
+    func hashables(forEntity e: Entity) -> [HashObject] {
+        let duplicateHashes = [e.decodeHash] + e.entityHashes
+        let okHashes = e.attributeHash == nil ? hashableEntities + e.attributes.decodeHashes : hashableEntities
+        let hashables = okHashes.filter { !duplicateHashes.contains($0) }
+        return hashables
+    }
+}
+
+// MARK: Exporting
 
 class ProjectMap {
     
@@ -116,7 +134,7 @@ extension Project {
                         let typeRep = entity.typeRep + "DateIndex"
                         let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
                         let newHash = newEntity.decodeHash
-                        entity.hashes.append(newHash)
+                        entity.entityHashes.append(newHash)
                         info.entity = entity
                         info.specialAttributes = [.IsSpecial, .TimeRange]
                         let newInfo = EntityInfo(entity: newEntity)
@@ -125,7 +143,7 @@ extension Project {
                         let typeRep = entity.typeRep + "FirstLetterIndex"
                         let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
                         let newHash = newEntity.decodeHash
-                        entity.hashes.append(newHash)
+                        entity.entityHashes.append(newHash)
                         info.entity = entity
                         info.specialAttributes = [.IsSpecial, .FirstLetter]
                         let newInfo = EntityInfo(entity: newEntity)
@@ -134,7 +152,7 @@ extension Project {
                         let typeRep = entity.typeRep + attribute.typeRep + "Index"
                         let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
                         let newHash = newEntity.decodeHash
-                        entity.hashes.append(newHash)
+                        entity.entityHashes.append(newHash)
                         info.entity = entity
                         info.specialAttributes = [.IsSpecial, .EnumAttribute]
                         let newInfo = EntityInfo(entity: newEntity)

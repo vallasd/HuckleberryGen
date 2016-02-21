@@ -17,7 +17,12 @@ struct Entity: HashRepresentable {
     var attributes: [Attribute]
     var relationships: [Relationship]
     
-    var hashes: [HashObject]
+    var attributeHash: HashObject?
+    var entityHashes: [HashObject]
+    
+    var hashes: [HashObject] {
+        return attributeHash == nil ? entityHashes : entityHashes + [attributeHash!]
+    }
     
     var hashRep: String {
         
@@ -25,8 +30,12 @@ struct Entity: HashRepresentable {
             return "define #Hash"
         }
         
-        return hashes.map { $0.varRep }.joinWithSeparator(", ")
+        let aString = attributeHash == nil ? "" : "\(attributeHash!.varRep) "
+        let eString = entityHashes.map { "#" + $0.varRep }.joinWithSeparator(" ")
+        return aString + eString
     }
+    
+    var isEntity: Bool { return true }
     
     var specialAttributeTypes: [SpecialAttribute] {
         var specialAttributes: [SpecialAttribute] = []
@@ -37,15 +46,15 @@ struct Entity: HashRepresentable {
     }
     
     var isEndPoint: Bool {
-        return relationships.count == 1 ? true : false
+        return entityHashes.count == 1 ? true : false
     }
     
     var isSinglePoint: Bool {
-        return relationships.count == 0 ? true : false
+        return entityHashes.count == 0 ? true : false
     }
     
     var isCrossPoint: Bool {
-        return relationships.count > 1 ? true : false
+        return entityHashes.count > 1 ? true : false
     }
 
     var manyRelationships: [Relationship] {
@@ -58,11 +67,20 @@ struct Entity: HashRepresentable {
         return relationships.filter { $0.relType == tooOne }
     }
     
-    init(typeRep: String, attributes: [Attribute], relationships: [Relationship], hashes: [HashObject]) {
-        self.typeRep = typeRep
-        self.attributes = attributes
-        self.relationships = relationships
-        self.hashes = hashes
+    init(typeRep t: String) {
+        typeRep = t
+        attributes = []
+        relationships = []
+        attributeHash = nil
+        entityHashes = []
+    }
+    
+    init(typeRep t: String, attributes a: [Attribute], relationships r: [Relationship], attributeHash at: HashObject?, entityHashes e: [HashObject]) {
+        typeRep = t
+        attributes = a
+        relationships = r
+        attributeHash = at
+        entityHashes = e
     }
     
     static func image(withName name: String) -> NSImage {
@@ -75,7 +93,7 @@ struct Entity: HashRepresentable {
 extension Entity: HGEncodable {
     
     static var new: Entity {
-        return Entity(typeRep: "NewEntity", attributes: [], relationships: [], hashes: [])
+        return Entity(typeRep: "NewEntity", attributes: [], relationships: [], attributeHash: nil, entityHashes: [])
     }
     
     var encode: AnyObject {
@@ -89,11 +107,14 @@ extension Entity: HGEncodable {
     
     static func decode(object object: AnyObject) -> Entity {
         let dict = hgdict(fromObject: object, decoderName: "Entity")
-        let typeRep = dict["typeRep"].string
-        let attributes = dict["attributes"].attributes
-        let relationships = dict["relationships"].relationships
-        let hashes = dict["hashes"].hashes
-        return Entity(typeRep: typeRep, attributes: attributes, relationships: relationships, hashes: hashes)
+        let t = dict["typeRep"].string
+        let a = dict["attributes"].attributes
+        let r = dict["relationships"].relationships
+        let h = dict["hashes"].hashes
+        let aHashes = h.filter { $0.isEntity == false }
+        let attributeHash: HashObject? = aHashes.count > 0 ? aHashes[0] : nil
+        let entityHashes = h.filter { $0.isEntity == true }
+        return Entity(typeRep: t, attributes: a, relationships: r, attributeHash: attributeHash, entityHashes: entityHashes)
     }
 }
 

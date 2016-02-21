@@ -62,16 +62,31 @@ protocol DecodeRepresentable {
 protocol HashRepresentable: Hashable {
     var typeRep: String { get }
     var varRep: String { get }
+    var isEntity: Bool { get }
 }
 
 struct HashObject: HashRepresentable {
     let typeRep: String
     let varRep: String
+    let isEntity: Bool
+    
+    init(typeRep t: String, varRep v: String, isEntity e: Bool) {
+        typeRep = t
+        varRep = v
+        isEntity = e
+    }
+    
+    var hashTitle: String {
+        return isEntity ? "#\(varRep)" : varRep
+    }
     
     var image: NSImage {
-        return NSImage.image(named: "hashIcon", title: varRep)
+        return NSImage.image(named: "hashIcon", title: hashTitle)
     }
 }
+
+extension HashObject: Hashable { var hashValue: Int { return typeRep.hashValue } }
+extension HashObject: Equatable {}; func ==(lhs: HashObject, rhs: HashObject) -> Bool { return lhs.typeRep == rhs.typeRep }
 
 extension HashObject: HGEncodable {
     
@@ -79,6 +94,7 @@ extension HashObject: HGEncodable {
         var dict = HGDICT()
         dict["typeRep"] = typeRep
         dict["varRep"] = varRep
+        dict["isEntity"] = isEntity
         return dict
     }
     
@@ -86,25 +102,24 @@ extension HashObject: HGEncodable {
         let dict = hgdict(fromObject: object, decoderName: "HashObject")
         let typeRep = dict["typeRep"].string
         let varRep = dict["varRep"].string
-        return HashObject(typeRep: typeRep, varRep: varRep)
+        let isEntity = dict["isEntity"].bool
+        return HashObject(typeRep: typeRep, varRep: varRep, isEntity: isEntity)
     }
     
 }
 
-extension HashObject: Hashable { var hashValue: Int { return varRep.hashValue } }
-extension HashObject: Equatable {}; func ==(lhs: HashObject, rhs: HashObject) -> Bool { return lhs.varRep == rhs.varRep }
-
 extension HashRepresentable  {
-    
-    var decodeHash: HashObject {
-        return HashObject(typeRep: typeRep, varRep: varRep)
-    }
     
     var encodeHash: HGDICT {
         var dict = HGDICT()
         dict["typeRep"] = typeRep
         dict["varRep"] = varRep
+        dict["isEntity"] = isEntity
         return dict
+    }
+    
+    var decodeHash: HashObject {
+        return HashObject(typeRep: typeRep, varRep: varRep, isEntity: isEntity)
     }
 }
 

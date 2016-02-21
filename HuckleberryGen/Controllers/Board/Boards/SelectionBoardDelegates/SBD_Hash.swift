@@ -36,14 +36,16 @@ class SBD_Hash: SelectionBoardDelegate {
         if locations.count == 0 {
             // remove hashes
             var entity = appDelegate.store.getEntity(index: index)
-            entity.hashes = []
+            entity.attributeHash = nil
+            entity.entityHashes = []
             appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         } else {
             // add selected hash
-            let attIndex = celltype.index(forlocation: locations[0])
+            let hashIndex = celltype.index(forlocation: locations[0])
             var entity = appDelegate.store.getEntity(index: index)
-            let att = hashes[attIndex]
-            entity.hashes.append(att)
+            let hash = hashes[hashIndex]
+            if hash.isEntity { entity.entityHashes.append(hash) }
+            else { entity.attributeHash = hash }
             appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         }
         

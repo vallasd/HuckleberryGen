@@ -15,38 +15,40 @@ struct Attribute: HashRepresentable {
     let typeRep: String
     let decodeRep: String
     let isPrimitive: Bool
-    var varMutable: Bool
+    var optional: Bool
     
-    init(varRep: String, primitive: Primitive) {
-        self.varRep = varRep
-        self.typeRep = primitive.typeRep
-        self.decodeRep = primitive.varRep
-        self.isPrimitive = true
-        varMutable = false
-    }
+    var isEntity: Bool { return false }
     
-    init(primitive: Primitive, oldAttribute o: Attribute) {
-        varRep = o.varRep
-        typeRep = primitive.typeRep
-        decodeRep = primitive.varRep
+    init(varRep v: String, primitive p: Primitive) {
+        varRep = v
+        typeRep = p.typeRep
+        decodeRep = p.varRep
         isPrimitive = true
-        varMutable = o.varMutable
+        optional = false
     }
     
-    init(enuM: Enum, oldAttribute o: Attribute) {
+    init(primitive p: Primitive, oldAttribute o: Attribute) {
         varRep = o.varRep
-        typeRep = enuM.typeRep
-        decodeRep = enuM.varRep
-        isPrimitive = false
-        varMutable = o.varMutable
+        typeRep = p.typeRep
+        decodeRep = p.varRep
+        isPrimitive = true
+        optional = o.optional
     }
     
-    init(typeRep: String, varRep: String, decodeRep: String, isPrimitive: Bool, varMutable: Bool) {
-        self.typeRep = typeRep
-        self.varRep = varRep
-        self.decodeRep = decodeRep
-        self.isPrimitive = isPrimitive
-        self.varMutable = varMutable
+    init(enuM e: Enum, oldAttribute o: Attribute) {
+        varRep = o.varRep
+        typeRep = e.typeRep
+        decodeRep = e.varRep
+        isPrimitive = false
+        optional = o.optional
+    }
+    
+    init(typeRep t: String, varRep v: String, decodeRep d: String, isPrimitive ip: Bool, optional o: Bool) {
+        typeRep = t
+        varRep = v
+        decodeRep = d
+        isPrimitive = ip
+        optional = o
     }
     
     var image: NSImage {
@@ -77,7 +79,7 @@ extension Attribute: HGEncodable {
         dict["varRep"] = varRep
         dict["decodeRep"] = decodeRep
         dict["isPrimitive"] = isPrimitive
-        dict["varMutable"] = varMutable
+        dict["optional"] = optional
         return dict
     }
     
@@ -87,8 +89,8 @@ extension Attribute: HGEncodable {
         let varRep = dict["varRep"].string
         let decodeRep = dict["decodeRep"].string
         let isPrimitive = dict["isPrimitive"].bool
-        let varMutable = dict["varMutable"].bool
-        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive, varMutable: varMutable)
+        let optional = dict["optional"].bool
+        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive, optional: optional)
     }
 }
 
@@ -98,10 +100,13 @@ enum SpecialAttribute {
     case Title  // will generate random titles
     case Name  // will generate random names
     case LongText // will generate random text
+    case ImageURL // will generate random images / stores and sets these images
+    
     case IndexedSet  // will treat the object as a set of its relationship
     case TimeRange // will create a Date Index
     case FirstLetter // will create a FirstLetter Index
     case Folder // will create a folder index
+    
     case EnumAttribute // will create a Enum Index
     
     case IsSpecial // tag that actual object is Special
@@ -111,6 +116,7 @@ enum SpecialAttribute {
         if v == "title" { return .Title }
         if v == "name" { return .Name }
         if v == "summary" { return .LongText }
+        if v == "imageURL" { return .ImageURL }
         if v == "timeRange" { return .TimeRange }
         if v == "firstLetter" { return .FirstLetter }
         if v == "folder" { return .Folder }
@@ -124,8 +130,15 @@ enum SpecialAttribute {
     }
     
     var color: NSColor {
-        if self == .EnumAttribute { return HGColor.Purple.color() }
-        return HGColor.Green.color()
+        
+        switch self {
+        case .TimeRange, .FirstLetter, .IndexedSet, .Folder: return HGColor.Green.color() // Indexes
+        case .EnumAttribute: return HGColor.Cyan.color() // Enums
+        case .Title, .Name, .LongText, .ImageURL: return HGColor.Orange.color() // Special Random
+        default:
+            HGReportHandler.shared.report("HGColor not found for Special Attribute, returning green", type: .Error)
+            return HGColor.Green.color()
+        }
     }
 }
 
@@ -140,10 +153,8 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     case _Bool
     case _Date
     case _Binary
-    case _TimeRange
-    case _ImageURL
     
-    static var count = 11
+    static var count = 9
     
     var defaultRep: String {
         
@@ -157,8 +168,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "false"
         case _Date: return "NSDate()"
         case _Binary: return "NSData()"
-        case _TimeRange: return "TimeRange"
-        case _ImageURL: return "ImageURL"
         }
     }
     
@@ -173,8 +182,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "Bool"
         case _Date: return "NSDate"
         case _Binary: return "NSData"
-        case _TimeRange: return "TimeRange"
-        case _ImageURL: return "ImageURL"
         }
     }
     
@@ -189,8 +196,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return "bool"
         case _Date: return "date"
         case _Binary: return "data"
-        case _TimeRange: return "timeRange"
-        case _ImageURL: return "imageURL"
         }
     }
     
@@ -205,8 +210,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case _Bool: return 6
         case _Date: return 7
         case _Binary: return 8
-        case _TimeRange: return 9
-        case _ImageURL: return 10
         }
     }
     
@@ -214,7 +217,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         return NSImage.image(named: "typeIcon", title: varRep)
     }
     
-    static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary, _TimeRange, _ImageURL]
+    static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary]
     
     static func create(int int: Int) -> Primitive {
         switch(int) {
@@ -227,8 +230,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case 6: return ._Bool
         case 7: return ._Date
         case 8: return ._Binary
-        case 9: return ._TimeRange
-        case 10: return ._ImageURL
         default:
             HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
             return ._Int
@@ -325,12 +326,10 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case "Integer 32", "int32", "Int32": return ._Int32
         case "String", "string": return ._String
         case "Decimal", "Float", "float": return ._Float
-        case "TimeRange", "timeRange": return ._TimeRange
         case "Double", "double": return ._Double
         case "Boolean", "Bool", "bool": return ._Bool
         case "Date", "NSDate", "date", "nSDate": return ._Date
         case "Binary Data", "NSData", "Transformable", "data", "nSData": return ._Binary
-        case "ImageURL", "imageURL": return ._ImageURL
         default:
             return nil
         }

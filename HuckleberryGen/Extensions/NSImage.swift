@@ -31,9 +31,4 @@ extension NSImage {
         view.addSubview(label)
         return view.imageRep
     }
-    
-    
-    
-    
-    
 }
