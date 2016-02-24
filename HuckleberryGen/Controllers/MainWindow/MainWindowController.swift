@@ -20,6 +20,7 @@ class MainWindowController: NSWindowController {
         window?.backgroundColor = HGColor.White.color()
         window?.title = appDelegate.store.project.name
         appDelegate.mainWindowController = self
+        //self.window?.setFrame(windowFrame(), display: true)
         boardHandler = BoardHandler(withWindowController: self)
         showWelcome()
     }
@@ -37,6 +38,13 @@ class MainWindowController: NSWindowController {
     /// displays the settings screen
     private func showSettings() {
         boardHandler.start(withBoardData: LicenseInfoBoard.boardData)
+    }
+    
+    /// displays the export screen
+    private func showExport() {
+        let context = FolderBoardContext(boardtype: .Export)
+        let boarddata = FolderBoard.boardData(withContext: context)
+        boardHandler.start(withBoardData: boarddata)
     }
     
     /// displays the import screens
@@ -57,10 +65,12 @@ class MainWindowController: NSWindowController {
         }
     }
     
-    private func showExport() {
-        let context = FolderBoardContext(boardtype: .Export)
-        let boarddata = FolderBoard.boardData(withContext: context)
-        boardHandler.start(withBoardData: boarddata)
+    /// returns the required frame for the window
+    private func windowFrame() -> CGRect {
+        let screens = NSScreen.screenRects()
+        let mainScreen = screens.count > 0 ? screens[0] : CGRect(x: 0, y: 0, width: 240, height: 960)
+        let windowFrame = CGRect(x: mainScreen.origin.x, y: mainScreen.origin.y, width: 240, height: mainScreen.size.height)
+        return windowFrame
     }
     
     /// completes appropriate actions for header button presses
@@ -73,4 +83,7 @@ class MainWindowController: NSWindowController {
         default: assert(true, "Tag - \(sender.tag) Not Defined For Menu Button")
         }
     }
+    
+    
+    
 }

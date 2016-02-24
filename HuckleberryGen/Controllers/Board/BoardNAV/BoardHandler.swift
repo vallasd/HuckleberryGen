@@ -32,15 +32,13 @@ class BoardHandler {
     /// pops board nav controller (holding board) on window controller
     func start(withBoardData boarddata: BoardData){
         if (nav == nil) {
+            createHolder()
             createNav()
             nav?.loadData = boarddata
             nav?.delegate = self
-            holder = createHolder()
             windowcontroller.window!.toolbar?.visible = false
-            holder.center(parent: background)
-            background.addSubview(holder)
-            nav?.view.center(parent: holder)
-            holder.addSubview(nav!.view)
+            holder.resize(inParent: background)
+            nav?.view.resize(inParent: holder)
         }
     }
     
@@ -56,11 +54,11 @@ class BoardHandler {
     }
     
     /// creates a empty holding view that is clear but blocks touches to the window
-    private func createHolder() -> HGBlockView {
+    private func createHolder() {
         let frame = background.frame
-        let holder = HGBlockView(frame: frame)
-        holder.backgroundColor(HGColor.WhiteTranslucent)
-        return holder
+        let h = HGBlockView(frame: frame)
+        h.backgroundColor(HGColor.WhiteTranslucent)
+        holder = h
     }
     
     // creates a navigation controller
@@ -80,4 +78,7 @@ extension BoardHandler: NavControllerDelegate {
         endBoard()
     }
     
+    func navcontrollerRect() -> CGRect {
+        return CGRect(x: 0, y: 0, width: holder.frame.width - 10, height: holder.frame.height * 0.95)
+    }
 }

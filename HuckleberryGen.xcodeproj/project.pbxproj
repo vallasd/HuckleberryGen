@@ -25,6 +25,7 @@
 		033F3DEA1BB99DBD0089AEC2 /* HGTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */; };
 		033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */; };
 		033F3DEE1BBACE770089AEC2 /* HGTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F3DED1BBACE770089AEC2 /* HGTabVC.swift */; };
+		033FD1851C7A027B008FCEAF /* NSScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FD1841C7A027B008FCEAF /* NSScreen.swift */; };
 		0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034614091BDF81E40002F0AA /* DecisionBoard.swift */; };
 		034985071C56D50B0048F44C /* ExportString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985061C56D50B0048F44C /* ExportString.swift */; };
 		034985091C56D5220048F44C /* ExportInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034985081C56D5220048F44C /* ExportInt.swift */; };
@@ -165,6 +166,7 @@
 		033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTableView.swift; sourceTree = "<group>"; };
 		033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabView.swift; sourceTree = "<group>"; };
 		033F3DED1BBACE770089AEC2 /* HGTabVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTabVC.swift; sourceTree = "<group>"; };
+		033FD1841C7A027B008FCEAF /* NSScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSScreen.swift; sourceTree = "<group>"; };
 		034614091BDF81E40002F0AA /* DecisionBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionBoard.swift; sourceTree = "<group>"; };
 		034985061C56D50B0048F44C /* ExportString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportString.swift; path = ExportScripts/ExportExtensions/ExportString.swift; sourceTree = "<group>"; };
 		034985081C56D5220048F44C /* ExportInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportInt.swift; path = ExportScripts/ExportExtensions/ExportInt.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				03660ADC1BBDED6600DE41D5 /* NSImage.swift */,
 				03660ADE1BBE03FC00DE41D5 /* TextField.swift */,
 				030657471C286C1200ED8722 /* NSEvent.swift */,
+				033FD1841C7A027B008FCEAF /* NSScreen.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -949,6 +952,7 @@
 				035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */,
 				03A278F71C51315100DA353C /* ExportType.swift in Sources */,
 				036D23BF1BACA12D002824E9 /* HGTableCellIdentifier.swift in Sources */,
+				033FD1851C7A027B008FCEAF /* NSScreen.swift in Sources */,
 				038C79E01B6297560008D29C /* Entity.swift in Sources */,
 				03A20B4E1B99E4C900149AF5 /* SelectionBoard.swift in Sources */,
 				03D56F231C4F29BF00A3A8DC /* ExportProject.swift in Sources */,

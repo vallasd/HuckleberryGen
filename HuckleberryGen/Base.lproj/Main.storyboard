@@ -654,7 +654,7 @@
                     <window key="window" title="Huckleberry Generator" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" topStrut="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="0.0" y="0.0" width="240" height="893"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="F770EC45-9DC4-4FB6-976C-10EDA1EA3AD9" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="small" id="Np8-B6-q3X">
@@ -703,6 +703,11 @@
                                         <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="UpC-XC-VqV"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="89AA544F-1AA3-4F93-89A9-69A86E1773ED" label="info" paletteLabel="info" tag="3" image="infoIcon" id="DEZ-3K-p1x">
+                                    <connections>
+                                        <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="Qh5-am-ddL"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="3my-Xg-2s9"/>
@@ -710,6 +715,7 @@
                                 <toolbarItem reference="6Tx-Gr-5rh"/>
                                 <toolbarItem reference="Vso-H6-Aw0"/>
                                 <toolbarItem reference="Cx7-0x-RWq"/>
+                                <toolbarItem reference="DEZ-3K-p1x"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
@@ -719,7 +725,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-30" y="-12.5"/>
+            <point key="canvasLocation" x="-124" y="-12.5"/>
         </scene>
         <!--Entity-->
         <scene sceneID="VIx-pP-GI8">
@@ -729,43 +735,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="240" height="960"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="FPf-RN-TbS">
+                            <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="CnE-xq-VZN">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="960"/>
                                 <subviews>
-                                    <customView id="czX-SD-u0H">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="464"/>
+                                    <customView id="2Rn-bc-jqS">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="465"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
-                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="oNU-Am-cF5">
-                                                <rect key="frame" x="0.0" y="0.0" width="240" height="464"/>
+                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="YnI-Rk-jl3">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="465"/>
                                                 <connections>
-                                                    <segue destination="Znc-GD-HEx" kind="embed" id="mnz-sx-8uv"/>
+                                                    <segue destination="Znc-GD-HEx" kind="embed" id="N6Y-NI-rCS"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="oNU-Am-cF5" firstAttribute="leading" secondItem="czX-SD-u0H" secondAttribute="leading" id="IWe-x0-LiZ"/>
-                                            <constraint firstAttribute="trailing" secondItem="oNU-Am-cF5" secondAttribute="trailing" id="MKt-Kq-zp0"/>
-                                            <constraint firstItem="oNU-Am-cF5" firstAttribute="top" secondItem="czX-SD-u0H" secondAttribute="top" id="fEk-gj-Laq"/>
-                                            <constraint firstAttribute="bottom" secondItem="oNU-Am-cF5" secondAttribute="bottom" id="vlg-ql-Yac"/>
+                                            <constraint firstItem="YnI-Rk-jl3" firstAttribute="top" secondItem="2Rn-bc-jqS" secondAttribute="top" id="X2g-7A-7cB"/>
+                                            <constraint firstAttribute="trailing" secondItem="YnI-Rk-jl3" secondAttribute="trailing" id="cyi-Mr-1Cl"/>
+                                            <constraint firstAttribute="bottom" secondItem="YnI-Rk-jl3" secondAttribute="bottom" id="sIt-8d-0a8"/>
+                                            <constraint firstItem="YnI-Rk-jl3" firstAttribute="leading" secondItem="2Rn-bc-jqS" secondAttribute="leading" id="wx0-9E-RIb"/>
                                         </constraints>
                                     </customView>
-                                    <customView id="ddj-W3-IMT">
-                                        <rect key="frame" x="0.0" y="474" width="240" height="486"/>
+                                    <customView id="HYi-cY-gSg">
+                                        <rect key="frame" x="0.0" y="475" width="240" height="485"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
-                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="08o-Mo-DAw">
-                                                <rect key="frame" x="0.0" y="0.0" width="240" height="486"/>
+                                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Yk7-gM-3xV">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="485"/>
                                                 <connections>
-                                                    <segue destination="mir-TR-CNv" kind="embed" id="fDj-xh-Mze"/>
+                                                    <segue destination="mir-TR-CNv" kind="embed" id="fSW-jD-q6R"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="08o-Mo-DAw" secondAttribute="trailing" id="18I-sH-Q7s"/>
-                                            <constraint firstAttribute="bottom" secondItem="08o-Mo-DAw" secondAttribute="bottom" id="WSv-El-IBr"/>
-                                            <constraint firstItem="08o-Mo-DAw" firstAttribute="leading" secondItem="ddj-W3-IMT" secondAttribute="leading" id="oMd-bc-mvY"/>
-                                            <constraint firstItem="08o-Mo-DAw" firstAttribute="top" secondItem="ddj-W3-IMT" secondAttribute="top" id="sha-xw-Pln"/>
+                                            <constraint firstAttribute="bottom" secondItem="Yk7-gM-3xV" secondAttribute="bottom" id="RIr-7d-LoG"/>
+                                            <constraint firstItem="Yk7-gM-3xV" firstAttribute="top" secondItem="HYi-cY-gSg" secondAttribute="top" id="U3H-Kl-FmP"/>
+                                            <constraint firstItem="Yk7-gM-3xV" firstAttribute="leading" secondItem="HYi-cY-gSg" secondAttribute="leading" id="fTS-oa-AWW"/>
+                                            <constraint firstAttribute="trailing" secondItem="Yk7-gM-3xV" secondAttribute="trailing" id="vXu-Td-qKn"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
@@ -776,10 +782,10 @@
                             </splitView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="FPf-RN-TbS" firstAttribute="leading" secondItem="W4N-Jl-lht" secondAttribute="leading" id="coo-jG-OVD"/>
-                            <constraint firstAttribute="bottom" secondItem="FPf-RN-TbS" secondAttribute="bottom" id="dV5-cl-VMj"/>
-                            <constraint firstAttribute="trailing" secondItem="FPf-RN-TbS" secondAttribute="trailing" id="tQs-eG-wh3"/>
-                            <constraint firstItem="FPf-RN-TbS" firstAttribute="top" secondItem="W4N-Jl-lht" secondAttribute="top" id="xMo-QK-E7r"/>
+                            <constraint firstItem="CnE-xq-VZN" firstAttribute="leading" secondItem="W4N-Jl-lht" secondAttribute="leading" id="ZNH-Go-bUN"/>
+                            <constraint firstAttribute="bottom" secondItem="CnE-xq-VZN" secondAttribute="bottom" id="dq0-7Q-ka3"/>
+                            <constraint firstAttribute="trailing" secondItem="CnE-xq-VZN" secondAttribute="trailing" id="pS6-v9-lcU"/>
+                            <constraint firstItem="CnE-xq-VZN" firstAttribute="top" secondItem="W4N-Jl-lht" secondAttribute="top" id="znL-3y-knf"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -808,24 +814,24 @@
                 </tabViewController>
                 <customObject id="AoI-cn-AbV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="325.5" y="-53.5"/>
+            <point key="canvasLocation" x="256.5" y="-43.5"/>
         </scene>
         <!--EntityVC-->
         <scene sceneID="sCB-gb-Duq">
             <objects>
                 <viewController id="Znc-GD-HEx" customClass="EntityVC" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="aFy-Yn-XOF">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="460"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PR3-sl-l30">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="460"/>
                                 <clipView key="contentView" id="WqU-xu-5AZ">
-                                    <rect key="frame" x="1" y="1" width="238" height="478"/>
+                                    <rect key="frame" x="1" y="1" width="238" height="458"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dPH-vO-ShQ" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="478"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -850,7 +856,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="9Oh-3l-Rsc">
-                                    <rect key="frame" x="1" y="463" width="238" height="16"/>
+                                    <rect key="frame" x="1" y="443" width="238" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="db1-ZA-9F9">
@@ -872,7 +878,7 @@
                 </viewController>
                 <customObject id="qrY-Ln-a0S" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="612" y="820"/>
+            <point key="canvasLocation" x="613" y="810"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="h8l-9X-tig">
@@ -895,7 +901,7 @@
                 </tabViewController>
                 <customObject id="Bty-7U-X0v" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="611.5" y="1368"/>
+            <point key="canvasLocation" x="613.5" y="1355"/>
         </scene>
         <!--Store-->
         <scene sceneID="e0b-hy-QVQ">
@@ -948,24 +954,24 @@
                 </viewController>
                 <customObject id="XFe-qU-iFo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="963" y="820"/>
+            <point key="canvasLocation" x="967" y="820"/>
         </scene>
         <!--Attributes-->
         <scene sceneID="AdT-Lc-gh3">
             <objects>
                 <viewController title="Attributes" id="CCI-Qy-dX0" customClass="AttributeVC" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="EFm-pz-1va">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qix-bq-cXm">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="776"/>
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="480"/>
                                 <clipView key="contentView" id="X6x-gX-1op">
-                                    <rect key="frame" x="1" y="1" width="238" height="774"/>
+                                    <rect key="frame" x="1" y="1" width="238" height="478"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="zzk-BR-TCe" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="774"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -990,7 +996,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="JO6-2k-9eX">
-                                    <rect key="frame" x="1" y="759" width="238" height="16"/>
+                                    <rect key="frame" x="1" y="463" width="238" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="eyn-lL-6C4">
@@ -1001,7 +1007,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="qix-bq-cXm" firstAttribute="leading" secondItem="EFm-pz-1va" secondAttribute="leading" id="2sY-8d-26c"/>
-                            <constraint firstItem="qix-bq-cXm" firstAttribute="top" secondItem="EFm-pz-1va" secondAttribute="top" constant="-316" id="9Y5-ck-c8k"/>
+                            <constraint firstItem="qix-bq-cXm" firstAttribute="top" secondItem="EFm-pz-1va" secondAttribute="top" id="9Y5-ck-c8k"/>
                             <constraint firstAttribute="bottom" secondItem="qix-bq-cXm" secondAttribute="bottom" id="GL2-px-lc6"/>
                             <constraint firstAttribute="trailing" secondItem="qix-bq-cXm" secondAttribute="trailing" id="mC6-Hf-ume"/>
                         </constraints>
@@ -1012,7 +1018,7 @@
                 </viewController>
                 <customObject id="h5n-BA-ezg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="963" y="1360"/>
+            <point key="canvasLocation" x="967" y="1357"/>
         </scene>
         <!--Enum-->
         <scene sceneID="IVe-VR-jQu">
@@ -1078,7 +1084,7 @@
                 </viewController>
                 <customObject id="gd2-yt-V32" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="683" y="-42.5"/>
+            <point key="canvasLocation" x="613" y="-43"/>
         </scene>
         <!--EnumVC-->
         <scene sceneID="3lF-Gu-Fdy">
@@ -1095,7 +1101,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="ToS-dV-Km3" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="458"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1142,7 +1148,7 @@
                 </viewController>
                 <customObject id="Iod-CC-sRl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1038" y="-345"/>
+            <point key="canvasLocation" x="968" y="-345"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="N9h-hb-AAu">
@@ -1165,7 +1171,7 @@
                     </connections>
                 </tabViewController>
             </objects>
-            <point key="canvasLocation" x="1038.5" y="191.5"/>
+            <point key="canvasLocation" x="967.5" y="191.5"/>
         </scene>
         <!--Cases-->
         <scene sceneID="dmc-N5-MYX">
@@ -1183,7 +1189,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="gRZ-sQ-BEb" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="478"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1229,7 +1235,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1386" y="194"/>
+            <point key="canvasLocation" x="1324" y="194"/>
         </scene>
         <!--OtherStuff-->
         <scene sceneID="hhH-IF-xcK">
@@ -1242,17 +1248,30 @@
                     </view>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1386" y="-345"/>
+            <point key="canvasLocation" x="1324" y="-345"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="vZ1-ar-vFI">
+            <objects>
+                <viewController id="IkI-f0-HdK" sceneMemberID="viewController">
+                    <view key="view" id="9Jd-zz-v7v">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="gAW-4J-gYo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
-        <image name="bottomMenu" width="204" height="204"/>
-        <image name="exportIcon" width="204" height="204"/>
-        <image name="importIcon" width="204" height="204"/>
-        <image name="leftMenu" width="204" height="204"/>
-        <image name="openIcon" width="204" height="204"/>
-        <image name="refreshIcon" width="204" height="204"/>
-        <image name="rightMenu" width="204" height="204"/>
-        <image name="settingsIcon" width="204" height="204"/>
+        <image name="bottomMenu" width="210" height="210"/>
+        <image name="exportIcon" width="210" height="210"/>
+        <image name="importIcon" width="210" height="210"/>
+        <image name="infoIcon" width="210" height="210"/>
+        <image name="leftMenu" width="210" height="210"/>
+        <image name="openIcon" width="210" height="210"/>
+        <image name="refreshIcon" width="210" height="210"/>
+        <image name="rightMenu" width="210" height="210"/>
+        <image name="settingsIcon" width="210" height="210"/>
     </resources>
 </document>

@@ -10,9 +10,20 @@ import Cocoa
 
 extension NSView {
     
-    func center(parent parent: NSView) {
-        self.frame.origin = NSMakePoint((parent.bounds.width / 2.0) - (self.frame.width / 2.0), (parent.bounds.height / 2.0) - (self.frame.height / 2.0))
+    func center(inParent p: NSView) {
+        self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
         self.autoresizingMask =  [.ViewMinXMargin, .ViewMaxXMargin, .ViewMinYMargin, .ViewMaxYMargin]
+        p.addSubview(self)
+    }
+    
+    func resize(inParent p: NSView) {
+        self.frame = CGRect(x: 0, y: 0, width: p.frame.width, height: p.frame.height)
+        self.translatesAutoresizingMaskIntoConstraints = true
+        
+        p.addSubview(self)
+        
+        self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
+        self.autoresizingMask = [.ViewWidthSizable, .ViewHeightSizable]
     }
     
     func disableInteraction() { self.interaction(false) }
