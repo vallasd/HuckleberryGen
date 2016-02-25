@@ -703,7 +703,7 @@
                                         <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="UpC-XC-VqV"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="89AA544F-1AA3-4F93-89A9-69A86E1773ED" label="info" paletteLabel="info" tag="3" image="infoIcon" id="DEZ-3K-p1x">
+                                <toolbarItem implicitItemIdentifier="89AA544F-1AA3-4F93-89A9-69A86E1773ED" label="info" paletteLabel="info" tag="9" image="infoIcon" id="DEZ-3K-p1x">
                                     <connections>
                                         <action selector="menuButtonPressed:" target="B8D-0N-5wS" id="Qh5-am-ddL"/>
                                     </connections>
