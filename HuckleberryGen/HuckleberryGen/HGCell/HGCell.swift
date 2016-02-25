@@ -16,7 +16,7 @@
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
-
+//
 //  You should have received a copy of the GNU General Public License
 //  along with HuckleberryGen.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -414,7 +414,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         if shouldEdit {
             field.editable = true
             field.textColor = NSColor.blueColor()
-            updateSpecialTextColors(forField: field)
+            updateSpecialType(forField: field)
             removeSelectFieldButton(field: field)
             return
         }
@@ -425,10 +425,12 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         removeSelectFieldButton(field: field)
     }
     
-    /// update colors for special items
-    func updateSpecialTextColors(forField field: NSTextField) {
+    /// update specials data for special types
+    func updateSpecialType(forField field: NSTextField) {
         guard let stype = SpecialAttribute.specialTypeFrom(varRep: field.stringValue) else { return }
+        let image = images[0]
         field.textColor = stype.color
+        image?.image = stype.image
     }
     
     /// Returns the appropriate field selection button for a field if it exists

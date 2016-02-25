@@ -99,5 +99,51 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HuckleberryGen/AppDelegate.swift"
+            timestampString = "478114534.655204"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "globalinit_33_42E222735B8E3B544C4FE16FF079DE79_func0"
+                  moduleName = "HuckleberryGen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/huckleberry/Developer/XCODE/MySideProjects/HuckleberryGen/HuckleberryGen/AppDelegate.swift"
+                  timestampString = "478114534.707516"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HuckleberryGen.appDelegate.unsafeMutableAddressor : HuckleberryGen.AppDelegate"
+                  moduleName = "HuckleberryGen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/huckleberry/Developer/XCODE/MySideProjects/HuckleberryGen/HuckleberryGen/AppDelegate.swift"
+                  timestampString = "478114534.707987"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

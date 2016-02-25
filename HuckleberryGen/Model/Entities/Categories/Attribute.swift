@@ -16,12 +16,13 @@
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
-
+//
 //  You should have received a copy of the GNU General Public License
 //  along with HuckleberryGen.  If not, see <http://www.gnu.org/licenses/>.
 
 import CoreData
 import AppKit
+import Cocoa
 
 struct Attribute: HashRepresentable {
     
@@ -152,6 +153,18 @@ enum SpecialAttribute {
         default:
             HGReportHandler.shared.report("HGColor not found for Special Attribute, returning green", type: .Error)
             return HGColor.Green.color()
+        }
+    }
+    
+    var image: NSImage {
+        
+        switch self {
+        case .TimeRange, .FirstLetter, .IndexedSet, .Folder: return NSImage(named: "specialGreen")!
+        case .EnumAttribute: return NSImage(named: "specialCyan")!
+        case .Title, .Name, .LongText, .ImageURL: return NSImage(named: "specialOrange")!
+        default:
+            HGReportHandler.shared.report("Special Type image not found for Special Attribute, returning specialGreen image", type: .Error)
+            return NSImage(named: "specialGreen")!
         }
     }
 }

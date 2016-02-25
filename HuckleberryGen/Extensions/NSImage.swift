@@ -16,7 +16,7 @@
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
-
+//
 //  You should have received a copy of the GNU General Public License
 //  along with HuckleberryGen.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -36,6 +36,7 @@ extension NSImage {
         let font = NSFont.systemFontOfSize(labelWidth * 0.20)
         label.alignment = .Center
         label.font = font
+        label.textColor = HGColor.Blue.color()
         label.bezeled = false
         label.drawsBackground = false
         label.editable = false
