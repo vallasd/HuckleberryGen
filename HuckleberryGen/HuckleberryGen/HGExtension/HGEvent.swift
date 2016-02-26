@@ -27,6 +27,7 @@ let HGDownArrowCharacter = 63233
 let HGLeftArrowCharacter = 63234
 let HGRightArrowCharacter = 63235
 let HGACharacter = 97
+let HGDCharacter = 100
 
 /// List of Available Commands For Huckleberry Gen App generated through Keyboard Interaction.
 enum HGCocoaCommand {
@@ -77,11 +78,11 @@ extension NSEvent {
         
         if let scalars = self.charactersIgnoringModifiers?.unicodeScalars {
             let int = Int(scalars[scalars.startIndex].value)
-//            Swift.print(int) // Check Value of Key
+            // Swift.print(int) // Check Value of Key
             switch int {
             case HGUpArrowCharacter: return .PreviousRow
             case HGDownArrowCharacter: return .NextRow
-            case NSDeleteCharacter: return .DeleteRow
+            case HGDCharacter, NSDeleteCharacter: return .DeleteRow
             case HGACharacter: return .AddRow
             case HGLeftArrowCharacter: return .TabLeft
             case HGRightArrowCharacter: return .TabRight
