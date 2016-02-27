@@ -305,19 +305,6 @@ class NavController: NSViewController {
         }
     }
     
-    /// adds constraints to expand currentVC to fit navController
-//    private func addConstraintsForCurrentVC() {
-//        
-//        print("container frame is \(container.frame.origin.x), \(container.frame.origin.y), \(container.frame.size.width), \(container.frame.size.height)")
-//        
-//        let leading = NSLayoutConstraint(item: currentVC!.view, attribute: .Leading, relatedBy: .Equal, toItem: container, attribute: .Leading, multiplier: 1, constant: 0.0)
-//        let trailing = NSLayoutConstraint(item: currentVC!.view, attribute: .Trailing, relatedBy: .Equal, toItem: container, attribute: .Leading, multiplier: 1, constant: 0.0)
-//        let top = NSLayoutConstraint(item: currentVC!.view, attribute: .Top, relatedBy: .Equal, toItem: container, attribute: .Leading, multiplier: 1, constant: 0.0)
-//        let bottom = NSLayoutConstraint(item: currentVC!.view, attribute: .Bottom, relatedBy: .Equal, toItem: container, attribute: .Leading, multiplier: 1, constant: 0.0)
-//        
-//        container.addConstraints([leading, trailing, top, bottom])
-//    }
-    
     /// removes top view from container
     private func removeTopView() {
         currentVC?.view.removeFromSuperview()
@@ -326,8 +313,7 @@ class NavController: NSViewController {
     /// adds top view to container
     private func addTopView() {
         if let view = currentVC?.view {
-            container.addSubview(view)
-            //addConstraintsForCurrentVC()
+            view.resize(inParent: container)
         }
     }
     
