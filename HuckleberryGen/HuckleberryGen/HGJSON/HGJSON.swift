@@ -18,7 +18,7 @@ func hgdict(fromObject object: AnyObject, decoderName: String?) -> HGDICT {
 infix operator ??? { associativity left precedence 150 }
 infix operator <<< { associativity right precedence 100 assignment }
 
-func <<< (var lhs: AnyObject?, rhs: String) {
+func <<< (inout lhs: AnyObject?, rhs: String) {
     if lhs is String { lhs = rhs; return }
     lhs = nil
 }

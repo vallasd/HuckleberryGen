@@ -248,7 +248,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         guard let button = button else { return }
         button.image = nil
         button.target = self
-        button.action = "didSelectImage:"
+        button.action = #selector(HGCell.didSelectImage(_:))
         button.tag = tag
     }
     
@@ -264,7 +264,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Updates fields with HGFieldData (assumes [HGFieldData] is correctly ordered)
     private func update(withData data: [HGFieldData]) {
         let maxCount = min(data.count, fields.count)
-        for var index = 0; index < maxCount; index++ {
+        for index in 0 ..< maxCount {
             update(field: fields[index], withData: data[index])
         }
     }
@@ -272,7 +272,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Updates images with HGImageData (assumes [HGImageData] is correctly ordered)
     private func update(withData data: [HGImageData]) {
         let maxCount = min(data.count, images.count)
-        for var index = 0; index < maxCount; index++ {
+        for index in 0 ..< maxCount {
             update(image: images[index], withData: data[index])
         }
     }
@@ -280,7 +280,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Updates checks with HGCheckData (assumes [HGCheckData] is correctly ordered)
     private func update(withData data: [HGCheckData]) {
         let maxCount = min(data.count, checks.count)
-        for var index = 0; index < maxCount; index++ {
+        for index in 0 ..< maxCount {
             update(check: checks[index], withData: data[index])
         }
     }
@@ -328,7 +328,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Disables fields that do not have cooresponding HGFieldData (assumes [HGFieldData] is correctly ordered)
     private func disable(missingData data: [HGFieldData]) {
         if data.count < fields.count {
-            for var index = data.count; index < fields.count; index++ {
+            for index in data.count ..< fields.count {
                 disable(field: fields[index])
             }
         }
@@ -337,7 +337,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Disables images that do not have cooresponding HGImageData (assumes [HGImageData] is correctly ordered)
     private func disable(missingData data: [HGImageData]) {
         if data.count < images.count {
-            for var index = data.count; index < images.count; index++ {
+            for index in data.count ..< images.count {
                 disable(image: images[index])
             }
         }
@@ -346,7 +346,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Disables checks that do not have cooresponding HGCheckData (assumes [HGCheckData] is correctly ordered)
     private func disable(missingData data: [HGCheckData]) {
         if data.count < checks.count {
-            for var index = data.count; index < checks.count; index++ {
+            for index in data.count ..< checks.count {
                 disable(check: checks[index])
             }
         }
@@ -449,7 +449,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         button.tag = field.tag
         button.title = ""
         button.alphaValue = 0.1 // Hides button but it is still functional
-        button.action = "didSelectField:"
+        button.action = #selector(HGCell.didSelectField(_:))
         button.target = self
         field.addSubview(button)
     }

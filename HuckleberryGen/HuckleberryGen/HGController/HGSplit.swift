@@ -171,7 +171,7 @@ extension NSSplitView {
     
     func position(ofDividerIndex dividerIndex: Int) -> CGFloat {
         var finalIndex = dividerIndex
-        while finalIndex >= 0 && isSubviewCollapsed(subviews[finalIndex]) { finalIndex-- }
+        while finalIndex >= 0 && isSubviewCollapsed(subviews[finalIndex]) { finalIndex -= 1 }
         if finalIndex < 0 { return 0.0 }
         let priorViewFrame = self.subviews[finalIndex].frame
         return self.vertical ? NSMaxX(priorViewFrame) : NSMaxY(priorViewFrame)
@@ -204,7 +204,7 @@ extension NSSplitView {
                 
             }
             
-            indexOfParameters++
+            indexOfParameters += 1
         }
         
         CATransaction.begin()

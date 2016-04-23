@@ -124,7 +124,9 @@ class HGTableView: NSTableView {
     }
     
     /// selects or unselects (if row is currently selected) a row
-    private func selectRow(var row: Int) {
+    private func selectRow(r: Int) {
+        
+        var row = r
         
         if row != notSelected {
             
