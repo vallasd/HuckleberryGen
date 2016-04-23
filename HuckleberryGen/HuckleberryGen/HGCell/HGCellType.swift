@@ -27,6 +27,7 @@ enum CellType {
     case DefaultCell
     case MixedCell1
     case Check4Cell
+    case Image3Cell
     case Image4Cell
     case Image5Cell
     case Image6Cell
@@ -40,6 +41,7 @@ enum CellType {
         case DefaultCell: return "DefaultCell"
         case MixedCell1: return "MixedCell1"
         case Check4Cell: return "CheckCell"
+        case Image3Cell: return "Image3Cell"
         case Image4Cell: return "Image4Cell"
         case Image5Cell: return "Image5Cell"
         case Image6Cell: return "Image6Cell"
@@ -55,6 +57,7 @@ enum CellType {
         case DefaultCell: return 1
         case MixedCell1: return 1
         case Check4Cell: return 1
+        case Image3Cell: return 4
         case Image4Cell: return 4
         case Image5Cell: return 5
         case Image6Cell: return 6
@@ -73,6 +76,7 @@ enum CellType {
         case DefaultCell: requiredHeight = 40
         case MixedCell1: requiredHeight = 40
         case Check4Cell: requiredHeight = 40
+        case Image3Cell: requiredHeight = (table.frame.size.width - 20) / 3
         case Image4Cell: requiredHeight = (table.frame.size.width - 24) / 4
         case Image5Cell: requiredHeight = (table.frame.size.width - 28) / 5
         case Image6Cell: requiredHeight = (table.frame.size.width - 32) / 6
