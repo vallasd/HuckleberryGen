@@ -104,7 +104,7 @@ class ExportEnum {
         var index = 0
         for enumcase in enuM.cases {
             string += "\(ind)\(ind)case \(enumcase.typeRep): return \(index)\n"
-            index++
+            index += 1
         }
         
         // end int for enum stanza

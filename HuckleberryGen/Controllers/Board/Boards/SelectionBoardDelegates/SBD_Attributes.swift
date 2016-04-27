@@ -35,7 +35,7 @@ class SBD_Attributes: SelectionBoardDelegate {
     let attributeIndex: Int
     
     /// reference to the cell type used 
-    let celltype = CellType.Image5Cell
+    let celltype = CellType.Image3Cell
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?

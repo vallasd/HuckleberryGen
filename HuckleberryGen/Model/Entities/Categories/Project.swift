@@ -163,7 +163,7 @@ extension Project {
                         let newInfo = EntityInfo(entity: newEntity)
                         newInfos.append(newInfo)
                     case .EnumAttribute:
-                        let typeRep = entity.typeRep + attribute.typeRep + "Index"
+                        let typeRep = entity.typeRep + attribute.varRep.capitalizedString + "Index"
                         let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
@@ -225,17 +225,7 @@ extension Project {
         // add self to string
         var newPathString = pathString + e.typeRep
         
-        // get hashed entities for object
-        let hashedEntity = self.hasEntity(forHashes: e.hashes)
-        
-        // get singleRelationshipEnitites
-        let singleRelEntities = e.singleRelationships.map { $0.entity }
-        
-        // combine and unique
-        
-        
-        
-        //
+        // 
         if let entity = self.hasEntity(forHashes: e.hashes) {
             newPathString += "->"
             newPathString = goDownHashPath(forEntity: entity, count: count+1, pathString: newPathString)

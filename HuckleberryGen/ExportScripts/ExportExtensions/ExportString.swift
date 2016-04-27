@@ -82,7 +82,7 @@ class ExportString {
             var count = 0
             for enumcase in enuM.cases {
                 string += "\(ind)\(ind)case \"\(enumcase.string)\": return .\(enumcase.typeRep) \n"
-                count++
+                count += 1
             }
             string += "\(ind)\(ind)default:\n"
             string += "\(ind)\(ind)\(ind)HGReportHandler.shared.report(\"int: |\\(self)| is not enum |\(enumtype)| mapable, using \(defaultValue)\", type: .Error)\n"

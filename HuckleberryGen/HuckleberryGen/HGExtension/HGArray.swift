@@ -51,7 +51,7 @@ extension Array {
         var index_offset = 0
         for index in bounded {
             self.removeAtIndex(index - index_offset)
-            index_offset++
+            index_offset += 1
         }
     }
     

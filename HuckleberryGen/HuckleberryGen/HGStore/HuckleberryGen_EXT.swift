@@ -143,7 +143,7 @@ extension HuckleberryGen {
             return false
         }
         
-        project.enums.removeIndexes(a)
+        project.entities.removeIndexes(a)
         return true
         
     }

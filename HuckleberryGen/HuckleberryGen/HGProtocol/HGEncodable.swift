@@ -34,7 +34,7 @@ protocol NewCreatable {
 
 extension HGEncodable {
     
-    func encode(var dict: HGDICT, key: String) {
+    func encode(inout dict: HGDICT, key: String) {
         dict[key] = self.encode
     }
     

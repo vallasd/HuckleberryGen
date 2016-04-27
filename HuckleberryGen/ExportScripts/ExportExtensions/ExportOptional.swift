@@ -273,7 +273,7 @@ class ExportOptional {
             string += errorReturnStatement(type, variable: "d", iInd: ind2)
             string += "\(ind)}\n\n"
             
-            index++
+            index += 1
         }
         
         // end primitive optional extension

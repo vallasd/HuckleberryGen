@@ -61,10 +61,23 @@ extension AttributeVC: HGTableDisplayable {
     func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
         
         let attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
+        
+        // define images and text going into attribute
+        let varRep = attribute.varRep
+        let typeRep = attribute.typeRep.lowerCaseFirstLetter
+        var image: NSImage
+        
+        // set appropriate images if they are special types, else get image for type
+        if let stype = SpecialAttribute.specialTypeFrom(varRep: varRep) {
+            image = stype.image
+        } else {
+            image = attribute.typeImage
+        }
+        
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: attribute.varRep),
+            field0: HGFieldData(title: varRep),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: attribute.typeRep.lowerCaseFirstLetter, image: attribute.typeImage)
+            image0: HGImageData(title: typeRep, image: image)
         )
     }
 }
@@ -139,6 +152,6 @@ extension AttributeVC: HGTableFieldEditable {
         
         appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         
-        if attribute.varRep != string { table.update() }
+        table.update()
     }
 }

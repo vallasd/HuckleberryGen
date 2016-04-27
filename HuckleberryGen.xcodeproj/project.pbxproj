@@ -15,6 +15,7 @@
 		030963091C5BD00F00DEE9C4 /* HGInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030963081C5BD00F00DEE9C4 /* HGInt.swift */; };
 		0309630B1C5BD01E00DEE9C4 /* HGString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0309630A1C5BD01E00DEE9C4 /* HGString.swift */; };
 		0309630D1C5BD0DE00DEE9C4 /* HGNoun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0309630C1C5BD0DE00DEE9C4 /* HGNoun.swift */; };
+		0312EF0A1CCBEBF300E334B6 /* Image3Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0312EF091CCBEBF300E334B6 /* Image3Cell.xib */; };
 		031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A1A531B8F81F50077FD56 /* HGParser.swift */; };
 		0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3A1B586F6500CB132B /* HGColor.swift */; };
 		0322FA3E1B59038100CB132B /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3D1B59038100CB132B /* NSView.swift */; };
@@ -157,6 +158,7 @@
 		030963081C5BD00F00DEE9C4 /* HGInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGInt.swift; path = ../HGInt.swift; sourceTree = "<group>"; };
 		0309630A1C5BD01E00DEE9C4 /* HGString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGString.swift; sourceTree = "<group>"; };
 		0309630C1C5BD0DE00DEE9C4 /* HGNoun.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGNoun.swift; sourceTree = "<group>"; };
+		0312EF091CCBEBF300E334B6 /* Image3Cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Image3Cell.xib; sourceTree = "<group>"; };
 		031A1A531B8F81F50077FD56 /* HGParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGParser.swift; path = HGParser/HGParser.swift; sourceTree = "<group>"; };
 		0322FA3A1B586F6500CB132B /* HGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGColor.swift; sourceTree = "<group>"; };
 		0322FA3D1B59038100CB132B /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 				03673A671BEA4C8900CF8F21 /* FieldCell3.xib */,
 				036E329F1BB2DED00024AA4E /* DefaultCell.xib */,
 				036E32A11BB2DEE00024AA4E /* Check4Cell.xib */,
+				0312EF091CCBEBF300E334B6 /* Image3Cell.xib */,
 				036E32A31BB2DEED0024AA4E /* Image4Cell.xib */,
 				036E32A51BB2DEFB0024AA4E /* Image5Cell.xib */,
 				036E32A71BB2DF070024AA4E /* Image6Cell.xib */,
@@ -843,6 +846,7 @@
 				035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */,
 				036E32A61BB2DEFB0024AA4E /* Image5Cell.xib in Resources */,
 				035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */,
+				0312EF0A1CCBEBF300E334B6 /* Image3Cell.xib in Resources */,
 				036E32A01BB2DED00024AA4E /* DefaultCell.xib in Resources */,
 				03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */,
 				035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */,
