@@ -60,6 +60,9 @@ struct Entity: HashRepresentable {
     }
     
     var isEndPoint: Bool {
+        if typeRep.getLast(5) == "Index" { return true }
+        let sa = specialAttributeTypes
+        if sa.contains(.IsSpecial) || sa.contains(.TimeRange) || sa.contains(.FirstLetter) { return false }
         return entityHashes.count == 1 ? true : false
     }
     
