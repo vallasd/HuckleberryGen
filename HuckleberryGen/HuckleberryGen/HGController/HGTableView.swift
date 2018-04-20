@@ -142,7 +142,7 @@ class HGTableView: NSTableView {
                 if allowsMultipleRowSelection {
                     iSelectedRows.add(row)
                 } else {
-                    iSelectedRows = NSMutableIndexSet(integer: row)
+                    iSelectedRows = NSMutableIndexSet(index: row)
                 }
             }
         }

@@ -91,10 +91,18 @@ extension HGEncodable {
 //    }
 //}
 
-extension Sequence where Iterator.Element: HGEncodable {
+extension Array where Iterator.Element: HGEncodable {
     
     var encode: [AnyObject] {
         return self.map { $0.encode }
     }
-
+    
 }
+
+//extension Sequence where Iterator.Element: HGEncodable {
+//    
+//    var encode: [AnyObject] {
+//        return self.map { $0.encode }
+//    }
+//
+//}

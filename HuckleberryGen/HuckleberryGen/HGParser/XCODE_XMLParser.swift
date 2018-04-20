@@ -150,9 +150,9 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
     fileprivate func parseErrorFile(_ xml: ImportFile) {
         do {
             let _ = try String(contentsOfFile: xml.path, encoding: String.Encoding.utf8)
-            HGReportHandler.shared.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .error)
-        }
-        catch {
+            let error = xmlParser.parserError?.localizedDescription ?? ""
+            HGReportHandler.shared.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(error)", type: .error)
+        } catch {
             HGReportHandler.shared.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .error)
         }
     }
