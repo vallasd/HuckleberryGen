@@ -57,11 +57,11 @@ extension Protocol: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
-        return dict
+        dict["name"] = name as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Protocol {
+    static func decode(object: AnyObject) -> Protocol {
         let dict = hgdict(fromObject: object, decoderName: "Enum")
         let name = dict["name"].string
         return Protocol(name: name)
@@ -83,13 +83,13 @@ extension Protocol: VarRepresentable {
 
 enum HG_Protocol {
     
-    case HGEncodable
+    case hgEncodable
     
-    static var set: [HG_Protocol] = [.HGEncodable]
+    static var set: [HG_Protocol] = [.hgEncodable]
     
     var name: String {
         switch self {
-        case .HGEncodable: return "HGEncodable"
+        case .hgEncodable: return "HGEncodable"
         }
     }
 }

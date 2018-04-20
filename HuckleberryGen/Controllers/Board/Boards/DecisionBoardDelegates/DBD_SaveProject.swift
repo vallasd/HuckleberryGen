@@ -37,25 +37,25 @@ class DBD_SaveProject {
 
 extension DBD_SaveProject: DecisionBoardDelegateProgressable {
     
-    func decisionboardNavAction(db: DecisionBoard) -> NavAction {
-        return .None
+    func decisionboardNavAction(_ db: DecisionBoard) -> NavAction {
+        return .none
     }
 }
 
 extension DBD_SaveProject: DecisionBoardDelegateCancelable {
 
-    func decisionboardCanCancel(db: DecisionBoard) -> Bool {
+    func decisionboardCanCancel(_ db: DecisionBoard) -> Bool {
         return canCancel
     }
 }
 
 extension DBD_SaveProject: DecisionBoardDelegate {
     
-    func decisionboardQuestion(db: DecisionBoard) -> String {
+    func decisionboardQuestion(_ db: DecisionBoard) -> String {
         return "Do you want to save \(project.name)?"
     }
     
-    func decisionboard(db: DecisionBoard, didChoose: Bool) {
+    func decisionboard(_ db: DecisionBoard, didChoose: Bool) {
         
         /// save project if yes was pressed
         if didChoose {

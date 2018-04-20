@@ -36,7 +36,7 @@ class ExportEnum {
     
     /// creates a base folder
     func createBaseFolder() -> Bool {
-        do { try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil) }
+        do { try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil) }
         catch { return false }
         return true
     }
@@ -46,7 +46,7 @@ class ExportEnum {
         
         // return immediately if enum cases count is 0
         if enuM.cases.count == 0 {
-            HGReportHandler.shared.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .Error)
+            HGReportHandler.shared.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .error)
             return false
         }
         
@@ -71,7 +71,7 @@ class ExportEnum {
         
         // write to file, if there is an error, return false
         do {
-            try file.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try file.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             return false
         }
@@ -80,7 +80,7 @@ class ExportEnum {
     }
     
     /// creates a struct definition for the Entity in string format
-    private func enumDefinition(enuM: Enum) -> String {
+    fileprivate func enumDefinition(_ enuM: Enum) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -132,7 +132,7 @@ class ExportEnum {
     }
     
     /// creates a HGEncodable extensions for the Entity in string format
-    private func encodableExtension(enuM: Enum) -> String {
+    fileprivate func encodableExtension(_ enuM: Enum) -> String {
         
         // get indent
         let ind = HGIndent.indent

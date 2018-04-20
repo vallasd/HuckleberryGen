@@ -26,7 +26,7 @@ extension NSView {
     
     func center(inParent p: NSView) {
         self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask =  [.ViewMinXMargin, .ViewMaxXMargin, .ViewMinYMargin, .ViewMaxYMargin]
+        self.autoresizingMask =  [.viewMinXMargin, .viewMaxXMargin, .viewMinYMargin, .viewMaxYMargin]
         p.addSubview(self)
     }
     
@@ -37,21 +37,21 @@ extension NSView {
         p.addSubview(self)
         
         self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask = [.ViewWidthSizable, .ViewHeightSizable]
+        self.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
     }
     
     func disableInteraction() { self.interaction(false) }
     
     func enableInteraction() { self.interaction(true) }
     
-    private func interaction(enabled: Bool) {
+    fileprivate func interaction(_ enabled: Bool) {
         for view in self.subviews {
-            if let control = view as? NSControl { control.enabled = enabled }
+            if let control = view as? NSControl { control.isEnabled = enabled }
             else { view.interaction(enabled) }
         }
     }
     
-    func backgroundColor(color: HGColor) {
+    func backgroundColor(_ color: HGColor) {
         let layer = CALayer()
         layer.backgroundColor = color.cgColor()
         self.wantsLayer = true
@@ -88,7 +88,7 @@ extension NSView {
     
     func dropshadow() {
         let shadow = NSShadow()
-        shadow.shadowColor = NSColor.blackColor()
+        shadow.shadowColor = NSColor.black
         shadow.shadowOffset = NSMakeSize(0, -10.0)
         shadow.shadowBlurRadius = 10.0
         
@@ -98,14 +98,14 @@ extension NSView {
 
     var imageRep: NSImage {
         
-        hidden = false
+        isHidden = false
         wantsLayer = true
         
         let image = NSImage(size: bounds.size)
         image.lockFocus()
-        let graphicsContext = NSGraphicsContext.currentContext()!
-        let context = unsafeBitCast(graphicsContext.graphicsPort, CGContext.self)
-        layer?.renderInContext(context)
+        let graphicsContext = NSGraphicsContext.current()!
+        let context = unsafeBitCast(graphicsContext.graphicsPort, to: CGContext.self)
+        layer?.render(in: context)
         image.unlockFocus()
         return image
     }

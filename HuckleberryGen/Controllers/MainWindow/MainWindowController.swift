@@ -31,7 +31,7 @@ class MainWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        window?.backgroundColor = HGColor.White.color()
+        window?.backgroundColor = HGColor.white.color()
         window?.title = appDelegate.store.project.name
         appDelegate.mainWindowController = self
         //self.window?.setFrame(windowFrame(), display: true)
@@ -40,35 +40,35 @@ class MainWindowController: NSWindowController {
     }
     
     /// displays the welcome screen
-    private func showSave() {
+    fileprivate func showSave() {
         boardHandler.start(withBoardData: SaveBoard.boardData)
     }
     
     /// displays the welcome screen
-    private func showWelcome() {
+    fileprivate func showWelcome() {
         boardHandler.start(withBoardData: WelcomeBoard.boardData)
     }
     
     /// displays the settings screen
-    private func showSettings() {
+    fileprivate func showSettings() {
         boardHandler.start(withBoardData: LicenseInfoBoard.boardData)
     }
     
     /// displays the export screen
-    private func showExport() {
-        let context = FolderBoardContext(boardtype: .Export)
+    fileprivate func showExport() {
+        let context = FolderBoardContext(boardtype: .export)
         let boarddata = FolderBoard.boardData(withContext: context)
         boardHandler.start(withBoardData: boarddata)
     }
     
     /// displays the info board
-    private func showInfo() {
+    fileprivate func showInfo() {
         let boarddata = KeyBoardInfoBoard.boardData
         boardHandler.start(withBoardData: boarddata)
     }
     
     /// displays the import screens
-    private func showOpen() {
+    fileprivate func showOpen() {
         
         /// check if current project is new, if so, ask user first if they want to save the project in Decision Board that pushes to OpenBoard
         if appDelegate.store.project.isNew {
@@ -86,7 +86,7 @@ class MainWindowController: NSWindowController {
     }
     
     /// returns the required frame for the window
-    private func windowFrame() -> CGRect {
+    fileprivate func windowFrame() -> CGRect {
         let screens = NSScreen.screenRects()
         let mainScreen = screens.count > 0 ? screens[0] : CGRect(x: 0, y: 0, width: 240, height: 960)
         let windowFrame = CGRect(x: mainScreen.origin.x, y: mainScreen.origin.y, width: 240, height: mainScreen.size.height)
@@ -94,7 +94,7 @@ class MainWindowController: NSWindowController {
     }
     
     /// completes appropriate actions for header button presses
-    @IBAction func menuButtonPressed(sender: NSToolbarItem) {
+    @IBAction func menuButtonPressed(_ sender: NSToolbarItem) {
         switch (sender.tag) {
         case 2: showOpen()
         case 3: showExport()

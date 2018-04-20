@@ -32,17 +32,17 @@ extension Array where Element: Hashable {
 
 extension Array {
     
-    func bounded(indexes: [Int]) -> [Int] {
+    func bounded(_ indexes: [Int]) -> [Int] {
         
         // creates a unique / sorted list
-        let sorted = indexes.unique.sort()
+        let sorted = indexes.unique.sorted()
         
         // only uses acceptable index set in bounds of array
         return sorted.filter { $0 >= 0 && $0 < self.count }
     }
     
     /// Removes all indexes from the Array if they are valid indexes.  Checks for array bounds and redundant indexes and appropriately handles.
-    mutating func removeIndexes(indexes: [Int]) {
+    mutating func removeIndexes(_ indexes: [Int]) {
         
         // only uses acceptable index set in bounds of array
         let bounded = self.bounded(indexes)
@@ -50,7 +50,7 @@ extension Array {
         // removes all uniq / sorted / bounded index values
         var index_offset = 0
         for index in bounded {
-            self.removeAtIndex(index - index_offset)
+            self.remove(at: index - index_offset)
             index_offset += 1
         }
     }
@@ -63,7 +63,7 @@ extension Array {
         
         if goodIndexes.count < a.count {
             let difference = goodIndexes.count - a.count
-            HGReportHandler.shared.report("objects: |\(difference)| indexe(s) out of bounds", type: .Error)
+            HGReportHandler.shared.report("objects: |\(difference)| indexe(s) out of bounds", type: .error)
         }
         
         // get objects from good indexes
@@ -83,7 +83,7 @@ extension Array {
             return self[index]
         }
         
-        HGReportHandler.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .Error)
+        HGReportHandler.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .error)
         return nil
     }
 }

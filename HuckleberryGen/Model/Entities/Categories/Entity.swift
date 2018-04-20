@@ -45,7 +45,7 @@ struct Entity: HashRepresentable {
         }
         
         let aString = attributeHash == nil ? "" : "\(attributeHash!.varRep) "
-        let eString = entityHashes.map { "#" + $0.varRep }.joinWithSeparator(" ")
+        let eString = entityHashes.map { "#" + $0.varRep }.joined(separator: " ")
         return aString + eString
     }
     
@@ -62,7 +62,7 @@ struct Entity: HashRepresentable {
     var isEndPoint: Bool {
         if typeRep.getLast(5) == "Index" { return true }
         let sa = specialAttributeTypes
-        if sa.contains(.IsSpecial) || sa.contains(.TimeRange) || sa.contains(.FirstLetter) { return false }
+        if sa.contains(.isSpecial) || sa.contains(.timeRange) || sa.contains(.firstLetter) { return false }
         return entityHashes.count == 1 ? true : false
     }
     
@@ -75,12 +75,12 @@ struct Entity: HashRepresentable {
     }
 
     var manyRelationships: [Relationship] {
-        let tooMany = RelationshipType.TooMany
+        let tooMany = RelationshipType.tooMany
         return relationships.filter { $0.relType == tooMany }
     }
     
     var singleRelationships: [Relationship] {
-        let tooOne = RelationshipType.TooOne
+        let tooOne = RelationshipType.tooOne
         return relationships.filter { $0.relType == tooOne }
     }
     
@@ -115,14 +115,14 @@ extension Entity: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep
+        dict["typeRep"] = typeRep as AnyObject?
         dict["attributes"] = attributes.encode
         dict["relationships"] = relationships.encode
         dict["hashes"] = hashes.encode
-        return dict
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Entity {
+    static func decode(object: AnyObject) -> Entity {
         let dict = hgdict(fromObject: object, decoderName: "Entity")
         let t = dict["typeRep"].string
         let a = dict["attributes"].attributes
@@ -190,12 +190,12 @@ extension Entity {
         // check if index is in bounds
         let maxIndex = relationships.count - 1
         if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
             return
         }
         
         // remove index
-        relationships.removeAtIndex(i)
+        relationships.remove(at: i)
     }
     
     mutating func updateRelationship(withRelationship r: Relationship) {
@@ -225,12 +225,12 @@ extension Entity {
         // check if index is in bounds
         let maxIndex = attributes.count - 1
         if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
             return
         }
         
         // remove index
-        attributes.removeAtIndex(i)
+        attributes.remove(at: i)
     }
     
     
@@ -239,7 +239,7 @@ extension Entity {
         // check if index is in bounds
         let maxIndex = attributes.count - 1
         if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
             return
         }
         

@@ -26,11 +26,11 @@ class AttributeVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let celltype = CellType.DefaultCell
+    let celltype = CellType.defaultCell
     
     var hgtable: HGTable!
 
-    private var editingLocation: HGCellLocation?
+    fileprivate var editingLocation: HGCellLocation?
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -50,15 +50,15 @@ extension AttributeVC: HGTableDisplayable {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].attributes.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         
         let attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         
@@ -86,14 +86,14 @@ extension AttributeVC: HGTableDisplayable {
 extension AttributeVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EntitySelected, .AttributeUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.entitySelected, .attributeUpdated])
     }
 }
 
 // MARK: HGTableRowSelectable
 extension AttributeVC: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -111,19 +111,19 @@ extension AttributeVC: HGTableRowAppendable {
         appDelegate.store.project.entities[table.parentRow].attributes.append(Attribute.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        return .Yes
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+        return .yes
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         appDelegate.store.project.entities[table.parentRow].attributes.removeIndexes(rows)
     }
 }
 
 extension AttributeVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
-        if type == .Image && tag == 0 {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+        if type == .image && tag == 0 {
             // present a selection board to update current Attribute
             let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: row)
             let boarddata = SelectionBoard.boardData(withContext: context)
@@ -132,19 +132,19 @@ extension AttributeVC: HGTableItemSelectable {
         return false
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }
 
 extension AttributeVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
         if field == 0 { return true }
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+    func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         
         var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         

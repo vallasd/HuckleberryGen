@@ -35,7 +35,7 @@ class SBD_RelationshipType: SelectionBoardDelegate {
     let relationshipIndex: Int!
     
     /// reference to the cell type used
-    let celltype = CellType.Image3Cell
+    let celltype = CellType.image3Cell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let relationshipTypes: [RelationshipType] = RelationshipType.set
@@ -58,11 +58,11 @@ class SBD_RelationshipType: SelectionBoardDelegate {
         return imagedatas
     }
     
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let relationshiptype = RelationshipType.create(int: index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].relType = relationshiptype
-        appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
     }
 }
 
@@ -75,15 +75,15 @@ extension SBD_RelationshipType: HGTableDisplayable {
         return numRows
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: relationshipTypes.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
@@ -92,11 +92,11 @@ extension SBD_RelationshipType: HGTableDisplayable {
 
 extension SBD_RelationshipType: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

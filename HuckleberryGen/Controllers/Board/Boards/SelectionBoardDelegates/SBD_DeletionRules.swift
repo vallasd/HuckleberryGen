@@ -35,7 +35,7 @@ class SBD_DeletionRules: SelectionBoardDelegate {
     let relationshipIndex: Int!
     
     /// reference to the cell type used
-    let celltype = CellType.FieldCell1
+    let celltype = CellType.fieldCell1
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let deletionRules: [DeletionRule] = DeletionRule.set
@@ -46,11 +46,11 @@ class SBD_DeletionRules: SelectionBoardDelegate {
         self.relationshipIndex = relationshipIndex
     }
     
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let deletionrule = DeletionRule.create(int: index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].deletionRule = deletionrule
-        appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
     }
 }
 
@@ -61,15 +61,15 @@ extension SBD_DeletionRules: HGTableDisplayable {
         return deletionRules.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let rule = deletionRules[row]
         let fieldData = HGFieldData(title: rule.string)
         return HGCellData.fieldCell1(field0: fieldData)
@@ -78,7 +78,7 @@ extension SBD_DeletionRules: HGTableDisplayable {
 
 extension SBD_DeletionRules: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
     

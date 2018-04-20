@@ -32,7 +32,7 @@ class OpenBoard: NSViewController, NavControllerReferable {
     
     // MARK: Button Commands
     
-    @IBAction func buttonPressed(sender: NSButton) {
+    @IBAction func buttonPressed(_ sender: NSButton) {
         displayBoardForTag(sender.tag)
     }
     
@@ -41,7 +41,7 @@ class OpenBoard: NSViewController, NavControllerReferable {
     }
     
     /// displays next nav controller based on button tag
-    private func displayBoardForTag(tag: Int) {
+    fileprivate func displayBoardForTag(_ tag: Int) {
         switch tag {
         case 1: // New Project
             appDelegate.store.project = Project.new

@@ -24,65 +24,65 @@ import Cocoa
 
 enum CellType {
     
-    case DefaultCell
-    case MixedCell1
-    case Check4Cell
-    case Image3Cell
-    case Image4Cell
-    case Image5Cell
-    case Image6Cell
-    case FieldCell1
-    case FieldCell2
-    case FieldCell3
+    case defaultCell
+    case mixedCell1
+    case check4Cell
+    case image3Cell
+    case image4Cell
+    case image5Cell
+    case image6Cell
+    case fieldCell1
+    case fieldCell2
+    case fieldCell3
     
     /// The nib identifier
     var identifier: String {
         switch (self) {
-        case DefaultCell: return "DefaultCell"
-        case MixedCell1: return "MixedCell1"
-        case Check4Cell: return "CheckCell"
-        case Image3Cell: return "Image3Cell"
-        case Image4Cell: return "Image4Cell"
-        case Image5Cell: return "Image5Cell"
-        case Image6Cell: return "Image6Cell"
-        case FieldCell1: return "FieldCell1"
-        case FieldCell2: return "FieldCell2"
-        case FieldCell3: return "FieldCell3"
+        case .defaultCell: return "DefaultCell"
+        case .mixedCell1: return "MixedCell1"
+        case .check4Cell: return "CheckCell"
+        case .image3Cell: return "Image3Cell"
+        case .image4Cell: return "Image4Cell"
+        case .image5Cell: return "Image5Cell"
+        case .image6Cell: return "Image6Cell"
+        case .fieldCell1: return "FieldCell1"
+        case .fieldCell2: return "FieldCell2"
+        case .fieldCell3: return "FieldCell3"
         }
     }
     
     /// Number of image buttons per row for given cell type
     var imagesPerRow: Int {
         switch (self) {
-        case DefaultCell: return 1
-        case MixedCell1: return 1
-        case Check4Cell: return 1
-        case Image3Cell: return 4
-        case Image4Cell: return 4
-        case Image5Cell: return 5
-        case Image6Cell: return 6
-        case FieldCell1: return 0
-        case FieldCell2: return 0
-        case FieldCell3: return 0
+        case .defaultCell: return 1
+        case .mixedCell1: return 1
+        case .check4Cell: return 1
+        case .image3Cell: return 4
+        case .image4Cell: return 4
+        case .image5Cell: return 5
+        case .image6Cell: return 6
+        case .fieldCell1: return 0
+        case .fieldCell2: return 0
+        case .fieldCell3: return 0
         }
     }
     
     /// Returns an suggested row height for HGCell given a Table
-    func rowHeightForTable(table: NSTableView?) -> CGFloat {
+    func rowHeightForTable(_ table: NSTableView?) -> CGFloat {
         guard let table = table else { return 50.0 }
         let height = max(table.frame.size.height - 8.0, 50)
         var requiredHeight: CGFloat = 0
         switch (self) {
-        case DefaultCell: requiredHeight = 40
-        case MixedCell1: requiredHeight = 40
-        case Check4Cell: requiredHeight = 40
-        case Image3Cell: requiredHeight = (table.frame.size.width - 20) / 3
-        case Image4Cell: requiredHeight = (table.frame.size.width - 24) / 4
-        case Image5Cell: requiredHeight = (table.frame.size.width - 28) / 5
-        case Image6Cell: requiredHeight = (table.frame.size.width - 32) / 6
-        case FieldCell1: requiredHeight = 40
-        case FieldCell2: requiredHeight = 40
-        case FieldCell3: requiredHeight = 55
+        case .defaultCell: requiredHeight = 40
+        case .mixedCell1: requiredHeight = 40
+        case .check4Cell: requiredHeight = 40
+        case .image3Cell: requiredHeight = (table.frame.size.width - 20) / 3
+        case .image4Cell: requiredHeight = (table.frame.size.width - 24) / 4
+        case .image5Cell: requiredHeight = (table.frame.size.width - 28) / 5
+        case .image6Cell: requiredHeight = (table.frame.size.width - 32) / 6
+        case .fieldCell1: requiredHeight = 40
+        case .fieldCell2: requiredHeight = 40
+        case .fieldCell3: requiredHeight = 55
         }
         
         let numberOfRowsOnScreen: CGFloat = max(floor(height / requiredHeight), 1)
@@ -131,7 +131,7 @@ enum CellType {
     func index(forlocation location: HGCellLocation) -> Int {
         
         if let identifier = location.identifier {
-            if identifier.type == .Image {
+            if identifier.type == .image {
                 return (location.row * imagesPerRow) + identifier.tag
             }
         }

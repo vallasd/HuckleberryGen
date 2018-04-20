@@ -28,7 +28,7 @@ class EntityVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let cellType = CellType.DefaultCell
+    let cellType = CellType.defaultCell
     
     var hgtable: HGTable!
     
@@ -52,15 +52,15 @@ extension EntityVC: HGTableDisplayable {
         return appDelegate.store.project.entities.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return cellType
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let entity = appDelegate.store.project.entities[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.typeRep),
@@ -74,7 +74,7 @@ extension EntityVC: HGTableDisplayable {
 extension EntityVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EntityUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.entityUpdated])
     }
 }
 
@@ -82,14 +82,14 @@ extension EntityVC: HGTableObservable {
 extension EntityVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EntitySelected)
+        return appDelegate.store.notificationName(forNotifType: .entitySelected)
     }
 }
 
 // MARK: HGTableRowSelectable
 extension EntityVC: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -97,12 +97,12 @@ extension EntityVC: HGTableRowSelectable {
 // MARK: HGTableFieldEditable
 extension EntityVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
         if field == 0 { return true }
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+    func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         
         var entity = appDelegate.store.project.entities[row]
         
@@ -119,7 +119,7 @@ extension EntityVC: HGTableFieldEditable {
 // MARK: HGTableItemSelectable
 extension EntityVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         
         /// select hash field
         if tag == 1 {
@@ -129,7 +129,7 @@ extension EntityVC: HGTableItemSelectable {
         return false
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         
         /// set hash
         let entity = appDelegate.store.getEntity(index: row)
@@ -154,19 +154,19 @@ extension EntityVC: HGTableRowAppendable {
         appDelegate.store.project.entities.append(entity)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         for row in rows {
             let entity = appDelegate.store.project.entities[row]
             if entity.attributes.count > 0 || entity.relationships.count > 0 {
-                return .AskUser
+                return .askUser
             }
         }
         
-        return .Yes
+        return .yes
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         
         appDelegate.store.deleteEntities(atIndexes: rows)
     }

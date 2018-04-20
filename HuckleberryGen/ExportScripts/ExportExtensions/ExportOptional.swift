@@ -54,7 +54,7 @@ class ExportOptional {
         
         // write to file, if there is an error, return false
         do {
-        try file.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        try file.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch {
         return false
         }
@@ -62,7 +62,7 @@ class ExportOptional {
         return true
     }
     
-    private func returnOptionalIfNil(withInitialIndent iInd: String) -> String {
+    fileprivate func returnOptionalIfNil(withInitialIndent iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -75,7 +75,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnDefaultIfNilWithOptionalError(name: String, variable: String, iInd: String) -> String {
+    fileprivate func returnDefaultIfNilWithOptionalError(_ name: String, variable: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -92,7 +92,7 @@ class ExportOptional {
     }
     
     // creates an error return statement for a variable value.
-    private func errorReturnStatement(name: String, variable: String, iInd: String) -> String  {
+    fileprivate func errorReturnStatement(_ name: String, variable: String, iInd: String) -> String  {
         
         // return string
         var string = ""
@@ -102,7 +102,7 @@ class ExportOptional {
     }
     
     // creates an error return statement for a string value.
-    private func errorReturnStatement(name: String, stringValue: String, iInd: String) -> String  {
+    fileprivate func errorReturnStatement(_ name: String, stringValue: String, iInd: String) -> String  {
         
         // return string
         let literalString = stringValue.removeQuotes
@@ -113,7 +113,7 @@ class ExportOptional {
     }
     
     // creates an error return statement for an array.
-    private func errorReturnArrayStatement(name: String, iInd: String) -> String  {
+    fileprivate func errorReturnArrayStatement(_ name: String, iInd: String) -> String  {
         
         // return string
         var string = ""
@@ -122,7 +122,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnArrayStatement(name: String, iInd: String) -> String {
+    fileprivate func returnArrayStatement(_ name: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -135,7 +135,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnHGDICTStatement(entityName: String, iInd: String) -> String {
+    fileprivate func returnHGDICTStatement(_ entityName: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -148,7 +148,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnHGARRAYStatement(entityName: String, iInd: String) -> String {
+    fileprivate func returnHGARRAYStatement(_ entityName: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -161,7 +161,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnIntStatement(name: String, iInd: String) -> String {
+    fileprivate func returnIntStatement(_ name: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -174,7 +174,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnStringStatement(name: String, iInd: String) -> String {
+    fileprivate func returnStringStatement(_ name: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -187,7 +187,7 @@ class ExportOptional {
         return string
     }
     
-    private func returnIntArrayStatement(name: String, iInd: String) -> String {
+    fileprivate func returnIntArrayStatement(_ name: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -201,7 +201,7 @@ class ExportOptional {
     }
     
     /// creates return statements that attempt to unwrap and return the object if it exists
-    private func returnStatement(name: String, iInd: String) -> String {
+    fileprivate func returnStatement(_ name: String, iInd: String) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -216,7 +216,7 @@ class ExportOptional {
     }
     
     /// creates optional definitions for standard Swift types
-    private func primitiveDefinitions() -> String {
+    fileprivate func primitiveDefinitions() -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -283,7 +283,7 @@ class ExportOptional {
     }
     
     /// creates optional definitions for the Entity in string format
-    private func entityDefinitions() -> String {
+    fileprivate func entityDefinitions() -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -332,7 +332,7 @@ class ExportOptional {
     }
     
     /// creates optional definitions for the Enum in string format
-    private func enumDefinitions() -> String {
+    fileprivate func enumDefinitions() -> String {
         
         // get indent
         let ind = HGIndent.indent

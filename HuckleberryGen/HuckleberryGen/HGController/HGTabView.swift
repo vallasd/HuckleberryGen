@@ -25,11 +25,11 @@ import Cocoa
 /// This class is not implemented yet
 class HGTabView: NSTabView {
     
-    override func keyDown(theEvent: NSEvent) {
+    override func keyDown(with theEvent: NSEvent) {
         let command = theEvent.command()
         switch command {
-        case .TabLeft: selectPreviousTabViewItem(self)
-        case .TabRight: selectNextTabViewItem(self)
+        case .tabLeft: selectPreviousTabViewItem(self)
+        case .tabRight: selectNextTabViewItem(self)
         default: break // Do Nothing
         }
     }

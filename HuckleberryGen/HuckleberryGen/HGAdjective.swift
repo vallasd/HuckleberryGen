@@ -9,74 +9,74 @@ import Foundation
 
 enum HGAdjective {
 
-	case Exceptional
-	case Great
-	case Good
-	case Ugly
-	case Timid
-	case Fantastic
-	case Humble
-	case Lost
-	case Petulant
-	case Irksome
-	case Zealous
-	case Wretched
-	case Curious
-	case Naive
-	case Wicked
-	case Poor
-	case Stupendous
-	case Futuristic
-	case Crappy
-	case Excellent
+	case exceptional
+	case great
+	case good
+	case ugly
+	case timid
+	case fantastic
+	case humble
+	case lost
+	case petulant
+	case irksome
+	case zealous
+	case wretched
+	case curious
+	case naive
+	case wicked
+	case poor
+	case stupendous
+	case futuristic
+	case crappy
+	case excellent
 
 	var int: Int {
 		switch self {
-		case Exceptional: return 0
-		case Great: return 1
-		case Good: return 2
-		case Ugly: return 3
-		case Timid: return 4
-		case Fantastic: return 5
-		case Humble: return 6
-		case Lost: return 7
-		case Petulant: return 8
-		case Irksome: return 9
-		case Zealous: return 10
-		case Wretched: return 11
-		case Curious: return 12
-		case Naive: return 13
-		case Wicked: return 14
-		case Poor: return 15
-		case Stupendous: return 16
-		case Futuristic: return 17
-		case Crappy: return 18
-		case Excellent: return 19
+		case .exceptional: return 0
+		case .great: return 1
+		case .good: return 2
+		case .ugly: return 3
+		case .timid: return 4
+		case .fantastic: return 5
+		case .humble: return 6
+		case .lost: return 7
+		case .petulant: return 8
+		case .irksome: return 9
+		case .zealous: return 10
+		case .wretched: return 11
+		case .curious: return 12
+		case .naive: return 13
+		case .wicked: return 14
+		case .poor: return 15
+		case .stupendous: return 16
+		case .futuristic: return 17
+		case .crappy: return 18
+		case .excellent: return 19
 		}
 	}
 
 	var string: String {
 		switch self {
-		case Exceptional: return "Exceptional"
-		case Great: return "Great"
-		case Good: return "Good"
-		case Ugly: return "Ugly"
-		case Timid: return "Timid"
-		case Fantastic: return "Fantastic"
-		case Humble: return "Humble"
-		case Lost: return "Lost"
-		case Petulant: return "Petulant"
-		case Irksome: return "Irksome"
-		case Zealous: return "Zealous"
-		case Wretched: return "Wretched"
-		case Curious: return "Curious"
-		case Naive: return "Naive"
-		case Wicked: return "Wicked"
-		case Poor: return "Poor"
-		case Stupendous: return "Stupendous"
-		case Futuristic: return "Futuristic"
-		case Crappy: return "Crappy"
-		case Excellent: return "Excellent"
+		case .exceptional: return "Exceptional"
+		case .great: return "Great"
+		case .good: return "Good"
+		case .ugly: return "Ugly"
+		case .timid: return "Timid"
+		case .fantastic: return "Fantastic"
+		case .humble: return "Humble"
+		case .lost: return "Lost"
+		case .petulant: return "Petulant"
+		case .irksome: return "Irksome"
+		case .zealous: return "Zealous"
+		case .wretched: return "Wretched"
+		case .curious: return "Curious"
+		case .naive: return "Naive"
+		case .wicked: return "Wicked"
+		case .poor: return "Poor"
+		case .stupendous: return "Stupendous"
+		case .futuristic: return "Futuristic"
+		case .crappy: return "Crappy"
+		case .excellent: return "Excellent"
 		}
 	}
 }
@@ -84,17 +84,17 @@ enum HGAdjective {
 extension HGAdjective: HGEncodable {
 
 	static var new: HGAdjective {
-		return HGAdjective.Exceptional
+		return HGAdjective.exceptional
 	}
 
 	var encode: AnyObject {
-		return self.int
+		return self.int as AnyObject
 	}
 
-	static func decode(object object: AnyObject) -> HGAdjective {
+	static func decode(object: AnyObject) -> HGAdjective {
 		if let int = object as? Int { return int.hGAdjective }
 		if let string = object as? String { return string.hGAdjective }
-		HGReportHandler.shared.report("object \(object) is not |HGAdjective| decodable, returning Exceptional", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGAdjective| decodable, returning Exceptional", type: .error)
 		return HGAdjective.new
 	}
 }

@@ -29,9 +29,9 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// reference to the cell type used
-    let celltype = CellType.FieldCell2
+    let celltype = CellType.fieldCell2
     
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = locations[0].row
         appDelegate.store.openProject(atIndex: index)
     }
@@ -45,15 +45,15 @@ extension SBD_SavedProjects: HGTableDisplayable {
         return count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let savedProjectName = appDelegate.store.savedProjects[row]
         let fieldData = HGFieldData(title: savedProjectName)
         return HGCellData.fieldCell2(field0: fieldData, field1: HGFieldData(title: ""))
@@ -63,7 +63,7 @@ extension SBD_SavedProjects: HGTableDisplayable {
 // MARK: HGTableRowSelectable
 extension SBD_SavedProjects: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -79,11 +79,11 @@ extension SBD_SavedProjects: HGTableRowAppendable {
         // do nothing
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        return .Yes
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+        return .yes
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         let row = rows[0]
         appDelegate.store.deleteProject(atIndex: row)
     }

@@ -14,14 +14,14 @@ struct HGReportHandler {
     let hgReportHandlerAlert = true
     let hgReportHandlerAssert = true
     
-    func report(msg: String, type: HGErrorType) {
+    func report(_ msg: String, type: HGErrorType) {
 
         switch (type) {
-        case .Info:    if hgReportHandlerInfo == false { return }
-        case .Warn:    if hgReportHandlerInfo == false { return }
-        case .Error:   if hgReportHandlerInfo == false { return }
-        case .Alert:   if hgReportHandlerInfo == false { return }
-        case .Assert:  if hgReportHandlerInfo == false { return }
+        case .info:    if hgReportHandlerInfo == false { return }
+        case .warn:    if hgReportHandlerInfo == false { return }
+        case .error:   if hgReportHandlerInfo == false { return }
+        case .alert:   if hgReportHandlerInfo == false { return }
+        case .assert:  if hgReportHandlerInfo == false { return }
         }
         
         let report = "[\(type.string)]" + msg

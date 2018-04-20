@@ -9,74 +9,74 @@ import Foundation
 
 enum HGNoun {
 
-	case Boy
-	case Girl
-	case Man
-	case Woman
-	case Dancer
-	case Cowboy
-	case Spy
-	case Monster
-	case Banshee
-	case Fella
-	case Balloon
-	case Whale
-	case Swan
-	case Film
-	case Individual
-	case Pyscho
-	case Violin
-	case Show
-	case Kid
-	case Movie
+	case boy
+	case girl
+	case man
+	case woman
+	case dancer
+	case cowboy
+	case spy
+	case monster
+	case banshee
+	case fella
+	case balloon
+	case whale
+	case swan
+	case film
+	case individual
+	case pyscho
+	case violin
+	case show
+	case kid
+	case movie
 
 	var int: Int {
 		switch self {
-		case Boy: return 0
-		case Girl: return 1
-		case Man: return 2
-		case Woman: return 3
-		case Dancer: return 4
-		case Cowboy: return 5
-		case Spy: return 6
-		case Monster: return 7
-		case Banshee: return 8
-		case Fella: return 9
-		case Balloon: return 10
-		case Whale: return 11
-		case Swan: return 12
-		case Film: return 13
-		case Individual: return 14
-		case Pyscho: return 15
-		case Violin: return 16
-		case Show: return 17
-		case Kid: return 18
-		case Movie: return 19
+		case .boy: return 0
+		case .girl: return 1
+		case .man: return 2
+		case .woman: return 3
+		case .dancer: return 4
+		case .cowboy: return 5
+		case .spy: return 6
+		case .monster: return 7
+		case .banshee: return 8
+		case .fella: return 9
+		case .balloon: return 10
+		case .whale: return 11
+		case .swan: return 12
+		case .film: return 13
+		case .individual: return 14
+		case .pyscho: return 15
+		case .violin: return 16
+		case .show: return 17
+		case .kid: return 18
+		case .movie: return 19
 		}
 	}
 
 	var string: String {
 		switch self {
-		case Boy: return "Boy"
-		case Girl: return "Girl"
-		case Man: return "Man"
-		case Woman: return "Woman"
-		case Dancer: return "Dancer"
-		case Cowboy: return "Cowboy"
-		case Spy: return "Spy"
-		case Monster: return "Monster"
-		case Banshee: return "Banshee"
-		case Fella: return "Fella"
-		case Balloon: return "Balloon"
-		case Whale: return "Whale"
-		case Swan: return "Swan"
-		case Film: return "Film"
-		case Individual: return "Individual"
-		case Pyscho: return "Pyscho"
-		case Violin: return "Violin"
-		case Show: return "Show"
-		case Kid: return "Kid"
-		case Movie: return "Movie"
+		case .boy: return "Boy"
+		case .girl: return "Girl"
+		case .man: return "Man"
+		case .woman: return "Woman"
+		case .dancer: return "Dancer"
+		case .cowboy: return "Cowboy"
+		case .spy: return "Spy"
+		case .monster: return "Monster"
+		case .banshee: return "Banshee"
+		case .fella: return "Fella"
+		case .balloon: return "Balloon"
+		case .whale: return "Whale"
+		case .swan: return "Swan"
+		case .film: return "Film"
+		case .individual: return "Individual"
+		case .pyscho: return "Pyscho"
+		case .violin: return "Violin"
+		case .show: return "Show"
+		case .kid: return "Kid"
+		case .movie: return "Movie"
 		}
 	}
 }
@@ -84,17 +84,17 @@ enum HGNoun {
 extension HGNoun: HGEncodable {
 
 	static var new: HGNoun {
-		return HGNoun.Boy
+		return HGNoun.boy
 	}
 
 	var encode: AnyObject {
-		return self.int
+		return self.int as AnyObject
 	}
 
-	static func decode(object object: AnyObject) -> HGNoun {
+	static func decode(object: AnyObject) -> HGNoun {
 		if let int = object as? Int { return int.hGNoun }
 		if let string = object as? String { return string.hGNoun }
-		HGReportHandler.shared.report("object \(object) is not |HGNoun| decodable, returning Boy", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGNoun| decodable, returning Boy", type: .error)
 		return HGNoun.new
 	}
 }

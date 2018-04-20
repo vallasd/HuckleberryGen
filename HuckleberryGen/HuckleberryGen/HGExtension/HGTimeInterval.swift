@@ -22,8 +22,8 @@
 
 import Foundation
 
-extension NSTimeInterval {
+extension TimeInterval {
     
-    func date() -> NSDate { return NSDate(timeIntervalSince1970: self) }
+    func date() -> Date { return Date(timeIntervalSince1970: self) }
     
 }

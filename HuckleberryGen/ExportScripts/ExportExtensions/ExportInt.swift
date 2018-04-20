@@ -50,7 +50,7 @@ class ExportInt {
         
         // write to file, if there is an error, return false
         do {
-            try file.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try file.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             return false
         }
@@ -59,7 +59,7 @@ class ExportInt {
     }
     
     /// creates optional definitions for the Enum in string format
-    private func enumDefinitions() -> String {
+    fileprivate func enumDefinitions() -> String {
         
         // begin string extension
         var string = "// MARK: Enums\n"

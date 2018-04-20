@@ -43,7 +43,7 @@ class ExportExtensions {
     
     /// creates a base folder
     func createBaseFolder() -> Bool {
-        do { try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil) }
+        do { try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil) }
         catch { return false }
         return true
     }

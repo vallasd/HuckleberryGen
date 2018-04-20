@@ -6,19 +6,19 @@ Erica Sadun, http://ericasadun.com
 // MARK: Casting
 //--------------------------------------------------------------
 
-infix operator --> {}
+infix operator -->
 
 /// The ashcast: a better cast. Thanks Mike Ash
 func --><T, U>(value: T, target: U.Type) -> U? {
-    guard sizeof(T.self) == sizeof(U.self) else { return nil }
-    return unsafeBitCast(value, target)
+    guard MemoryLayout<T>.size == MemoryLayout<U>.size else { return nil }
+    return unsafeBitCast(value, to: target)
 }
 
 //--------------------------------------------------------------
 // MARK: Postfix Printing
 //--------------------------------------------------------------
 
-postfix operator *** {}
+postfix operator ***
 
 /// Postfix printing for quick playground tests
 public postfix func *** <T>(item: T) -> T {
@@ -30,11 +30,11 @@ public postfix func *** <T>(item: T) -> T {
 // MARK: Conditional Assignment
 //--------------------------------------------------------------
 
-infix operator =? {}
+infix operator =?
 
 /// Conditionally assign optional value to target via unwrapping
 /// Thanks, Mike Ash
-func =?<T>(inout target: T, newValue: T?) {
+func =?<T>(target: inout T, newValue: T?) {
     if let unwrapped = newValue { target = unwrapped }
 }
 
@@ -43,11 +43,11 @@ func =?<T>(inout target: T, newValue: T?) {
 // MARK: In-Place Value Assignment
 //--------------------------------------------------------------
 
-infix operator <- {}
+infix operator <-
 
 /// Replace the value of `a` with `b` and return the old value.
 /// The EridiusAssignment courtesy of Kevin Ballard
-public func <- <T>(inout a: T, b: T) -> T {
+public func <- <T>(a: inout T, b: T) -> T {
     var value = b; swap(&a, &value); return value
 }
 
@@ -58,13 +58,13 @@ public func <- <T>(inout a: T, b: T) -> T {
 infix operator >>> { associativity left }
 
 /// Failable chaining
-public func >>><T, U>(x: T?, f: T -> U?) -> U? {
+public func >>><T, U>(x: T?, f: (T) -> U?) -> U? {
     if let x = x { return f(x) }
     return nil
 }
 
 /// Direct chaining
-public func >>><T, U>(x: T, f: T -> U) -> U {
+public func >>><T, U>(x: T, f: (T) -> U) -> U {
     return f(x)
 }
 
@@ -72,10 +72,10 @@ public func >>><T, U>(x: T, f: T -> U) -> U {
 // MARK: Extended Initialization / Chaining
 //--------------------------------------------------------------
 
-infix operator •-> {}
+infix operator •->
 
 /// Prepare instance
-func •-> <T>(object: T, @noescape f: (inout T) -> Void) -> T {
+func •-> <T>(object: T, f: (inout T) -> Void) -> T {
     var newValue = object
     f(&newValue)
     return newValue

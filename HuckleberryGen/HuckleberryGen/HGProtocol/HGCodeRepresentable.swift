@@ -106,13 +106,13 @@ extension HashObject: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep
-        dict["varRep"] = varRep
-        dict["isEntity"] = isEntity
-        return dict
+        dict["typeRep"] = typeRep as AnyObject?
+        dict["varRep"] = varRep as AnyObject?
+        dict["isEntity"] = isEntity as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> HashObject {
+    static func decode(object: AnyObject) -> HashObject {
         let dict = hgdict(fromObject: object, decoderName: "HashObject")
         let typeRep = dict["typeRep"].string
         let varRep = dict["varRep"].string
@@ -126,9 +126,9 @@ extension HashRepresentable  {
     
     var encodeHash: HGDICT {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep
-        dict["varRep"] = varRep
-        dict["isEntity"] = isEntity
+        dict["typeRep"] = typeRep as AnyObject?
+        dict["varRep"] = varRep as AnyObject?
+        dict["isEntity"] = isEntity as AnyObject?
         return dict
     }
     
@@ -161,7 +161,7 @@ extension HashRepresentable where Self: Hashable {
 }
 
 
-extension SequenceType where Generator.Element: HashRepresentable {
+extension Sequence where Iterator.Element: HashRepresentable {
     
     var encodeHash: [HGDICT] {
         return self.map { $0.encodeHash }

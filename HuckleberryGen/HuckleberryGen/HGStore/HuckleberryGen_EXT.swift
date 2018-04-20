@@ -45,7 +45,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.enums.count {
-            HGReportHandler.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .error)
             return
         }
         
@@ -72,7 +72,7 @@ extension HuckleberryGen {
         let maxIndex = project.enums.count - 1
         let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
         if  boundErrors > 0 {
-            HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .error)
             return false
         }
         
@@ -84,7 +84,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.enums.count {
-            HGReportHandler.shared.report("Enum GET index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Enum GET index: |\(i)| is out of bounds", type: .error)
             assert(true)
             return Enum.new
         }
@@ -111,7 +111,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.entities.count {
-            HGReportHandler.shared.report("Entity REPLACE index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Entity REPLACE index: |\(i)| is out of bounds", type: .error)
             return
         }
         
@@ -139,7 +139,7 @@ extension HuckleberryGen {
         let maxIndex = project.entities.count - 1
         let boundErrors = a.filter { $0 > maxIndex || $0 < 0 }.count
         if  boundErrors > 0 {
-            HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .error)
             return false
         }
         
@@ -152,7 +152,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.entities.count {
-            HGReportHandler.shared.report("Entity GET index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Entity GET index: |\(i)| is out of bounds", type: .error)
             if i == 0 { return createEntity() }
             assert(true)
         }
@@ -166,7 +166,7 @@ extension HuckleberryGen {
         let maxIndex = project.entities.count - 1
         let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
         if  boundErrors > 0 {
-            HGReportHandler.shared.report("Enum GET indexes: |\(a)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Enum GET indexes: |\(a)| is out of bounds", type: .error)
             return []
         }
         
@@ -200,7 +200,7 @@ extension HuckleberryGen {
         let maxIndex = project.indexes.count - 1
         let boundErrors = a.filter { $0 > maxIndex || $0 < 0 }.count
         if  boundErrors > 0 {
-            HGReportHandler.shared.report("Index DELETE indexes: |\(a)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Index DELETE indexes: |\(a)| is out of bounds", type: .error)
             return false
         }
         
@@ -212,7 +212,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.indexes.count {
-            HGReportHandler.shared.report("Index REPLACE index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Index REPLACE index: |\(i)| is out of bounds", type: .error)
             return
         }
         
@@ -238,7 +238,7 @@ extension HuckleberryGen {
         
         // check if index is in bounds
         if i < 0 || i >= project.indexes.count {
-            HGReportHandler.shared.report("Index GET index: |\(i)| is out of bounds", type: .Error)
+            HGReportHandler.shared.report("Index GET index: |\(i)| is out of bounds", type: .error)
             assert(true)
             return Index.new
         }

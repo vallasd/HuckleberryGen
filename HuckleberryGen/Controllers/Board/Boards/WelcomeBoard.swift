@@ -37,11 +37,11 @@ extension WelcomeBoard: BoardInstantiable {
 
 extension WelcomeBoard: NavControllerRegressable {
     
-    func navcontrollerRegressionTypes(nav: NavController) -> [RegressionType] {
+    func navcontrollerRegressionTypes(_ nav: NavController) -> [RegressionType] {
         return [] // We just want to remove the cancel option for the Welcome Board
     }
     
-    func navcontroller(nav: NavController, hitRegressWithType: RegressionType) {
+    func navcontroller(_ nav: NavController, hitRegressWithType: RegressionType) {
         // Do Nothing
     }
     
@@ -49,13 +49,13 @@ extension WelcomeBoard: NavControllerRegressable {
 
 extension WelcomeBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
-        if appDelegate.store.licenseInfo.needsMoreInformation { return .Next }
-        else { return .Finished }
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
+        if appDelegate.store.licenseInfo.needsMoreInformation { return .next }
+        else { return .finished }
     }
     
     /// push license info if nav controller is going to next
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
-        if progressionType == .Next { nav.push(LicenseInfoBoard.boardData) }
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .next { nav.push(LicenseInfoBoard.boardData) }
     }
 }

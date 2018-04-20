@@ -36,12 +36,12 @@ class DBD_DeleteRows {
 
 extension DBD_DeleteRows: DecisionBoardDelegate {
  
-    func decisionboardQuestion(db: DecisionBoard) -> String {
+    func decisionboardQuestion(_ db: DecisionBoard) -> String {
         if rowsToDelete.count > 1 { return "Do you really want to delete \(rowsToDelete.count) rows?" }
         return "Do you really want to delete row?"
     }
     
-    func decisionboard(db: DecisionBoard, didChoose: Bool) {
+    func decisionboard(_ db: DecisionBoard, didChoose: Bool) {
         if didChoose { tableview?.delete(rows: rowsToDelete) }
     }
 }

@@ -49,13 +49,13 @@ extension Index: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["varRep"] = varRep
+        dict["varRep"] = varRep as AnyObject?
         dict["entity"] = entity.encode
         dict["byEntity"] = entity.encode
-        return dict
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Index {
+    static func decode(object: AnyObject) -> Index {
         let dict = hgdict(fromObject: object, decoderName: "Index")
         let varRep = dict["varRep"].string
         let entity = dict["entity"].entity

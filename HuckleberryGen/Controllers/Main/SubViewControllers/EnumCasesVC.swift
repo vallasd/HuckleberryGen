@@ -26,13 +26,13 @@ class EnumCasesVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let celltype = CellType.FieldCell2
+    let celltype = CellType.fieldCell2
     
     var hgtable: HGTable!
     
     // MARK: HGTableDisplayable
     
-    private var editingLocation: HGCellLocation?
+    fileprivate var editingLocation: HGCellLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,15 +51,15 @@ extension EnumCasesVC: HGTableDisplayable {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         
         let casE = appDelegate.store.project.enums[table.parentRow].cases[row]
         return HGCellData.fieldCell2(
@@ -73,14 +73,14 @@ extension EnumCasesVC: HGTableDisplayable {
 extension EnumCasesVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EnumSelected, .EnumCaseUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.enumSelected, .enumCaseUpdated])
     }
 }
 
 // MARK: HGTableRowSelectable
 extension EnumCasesVC: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -101,12 +101,12 @@ extension EnumCasesVC: HGTableRowAppendable {
         appDelegate.store.project.enums[table.parentRow].cases.append(EnumCase.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
-        return appDelegate.store.project.enums[table.parentRow].editable == true ? .Yes : .No
+        return appDelegate.store.project.enums[table.parentRow].editable == true ? .yes : .no
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         appDelegate.store.project.enums[table.parentRow].cases.removeIndexes(rows)
     }
 }
@@ -114,14 +114,14 @@ extension EnumCasesVC: HGTableRowAppendable {
 // MARK: HGTableFieldEditable
 extension EnumCasesVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
         if field == 0 {
             return appDelegate.store.project.enums[table.parentRow].editable
         }
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+    func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         var enumcase = appDelegate.store.project.enums[table.parentRow].cases[row]
         enumcase.string = string
         appDelegate.store.project.enums[table.parentRow].cases[row] = enumcase

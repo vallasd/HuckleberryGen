@@ -28,7 +28,7 @@ class ExportEntity {
     let path: String
     let licenseInfo: LicenseInfo
     var encodeAvail = true
-    var entityType = ExportObject.ClassObject
+    var entityType = ExportObject.classObject
     
     /// initializes the class with a baseDir and entity
     init(baseDir: String, licenseInfo: LicenseInfo) {
@@ -38,7 +38,7 @@ class ExportEntity {
     
     /// creates a base folder
     func createBaseFolder() -> Bool {
-        do { try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil) }
+        do { try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil) }
         catch { return false }
         return true
     }
@@ -48,7 +48,7 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 && entity.relationships.count == 0 {
-            HGReportHandler.shared.report("ExportEntity |\(entity.typeRep)| failed, no attributes and relationships for entity", type: .Error)
+            HGReportHandler.shared.report("ExportEntity |\(entity.typeRep)| failed, no attributes and relationships for entity", type: .error)
             return false
         }
         
@@ -73,7 +73,7 @@ class ExportEntity {
         
         // write to file, if there is an error, return false
         do {
-            try file.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try file.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             return false
         }
@@ -82,7 +82,7 @@ class ExportEntity {
     }
     
     /// creates a struct definition for the Entity in string format
-    private func entityDefinition(entity: Entity) -> String {
+    fileprivate func entityDefinition(_ entity: Entity) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -147,7 +147,7 @@ class ExportEntity {
     }
     
     /// creates a HGEncodable extensions for the Entity in string format
-    private func encodableExtension(entity: Entity) -> String {
+    fileprivate func encodableExtension(_ entity: Entity) -> String {
         
         // get indent
         let ind = HGIndent.indent
@@ -167,7 +167,7 @@ class ExportEntity {
         // new variable attributes
         for attribute in entity.attributes {
             let type = attribute.typeRep
-            let index = primitives.indexOf(type)
+            let index = primitives.index(of: type)
             if let index = index { string += "\(attribute.varRep): \(primitivesDefault[index]), " }
             else { string += "\(attribute.varRep): \(attribute.typeRep).new, " }
         }
@@ -201,7 +201,7 @@ class ExportEntity {
         // encode variable relationships
         for relationship in entity.relationships {
             let name = relationship.varRep
-            let equals = relationship.relType == .TooOne ? "=?" : "="
+            let equals = relationship.relType == .tooOne ? "=?" : "="
             string += "\(ind)\(ind)dict[\"\(name)\"] \(equals) \(name).encode\n"
         }
         

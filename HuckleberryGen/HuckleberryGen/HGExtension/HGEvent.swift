@@ -31,18 +31,18 @@ let HGDCharacter = 100
 
 /// List of Available Commands For Huckleberry Gen App generated through Keyboard Interaction.
 enum HGCocoaCommand {
-    case None
-    case AddRow
-    case DeleteRow
-    case NextRow
-    case PreviousRow
-    case TabLeft
-    case TabRight
+    case none
+    case addRow
+    case deleteRow
+    case nextRow
+    case previousRow
+    case tabLeft
+    case tabRight
 
 }
 
 // List of Available Command Options For Huckleberry Gen App generated through Keyboard Interaction.
-public struct HGCommandOptions : OptionSetType {
+public struct HGCommandOptions : OptionSet {
     
     public let rawValue: Int
     
@@ -66,7 +66,7 @@ extension NSEvent {
     /// Returns HGCommandOptions for an NSEvent by checking modifier flags to see which option keys (such as Command, Shift, etc) are pressed, returns appropriate Huckleberry Gen option commands to implement.  Use when checking a flagChanged Event.
     func commandOptions() -> HGCommandOptions {
         
-        if self.modifierFlags.contains(NSEventModifierFlags.CommandKeyMask) {
+        if self.modifierFlags.contains(NSEventModifierFlags.command) {
             return .MultiSelectOn
         }
         
@@ -80,16 +80,16 @@ extension NSEvent {
             let int = Int(scalars[scalars.startIndex].value)
             // Swift.print(int) // Check Value of Key
             switch int {
-            case HGUpArrowCharacter: return .PreviousRow
-            case HGDownArrowCharacter: return .NextRow
-            case HGDCharacter, NSDeleteCharacter: return .DeleteRow
-            case HGACharacter: return .AddRow
-            case HGLeftArrowCharacter: return .TabLeft
-            case HGRightArrowCharacter: return .TabRight
-            default: return .None
+            case HGUpArrowCharacter: return .previousRow
+            case HGDownArrowCharacter: return .nextRow
+            case HGDCharacter, NSDeleteCharacter: return .deleteRow
+            case HGACharacter: return .addRow
+            case HGLeftArrowCharacter: return .tabLeft
+            case HGRightArrowCharacter: return .tabRight
+            default: return .none
             }
         }
         
-        return .None
+        return .none
     }
 }

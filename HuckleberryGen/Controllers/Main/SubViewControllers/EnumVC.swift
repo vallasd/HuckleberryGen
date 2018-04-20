@@ -24,7 +24,7 @@ import Foundation
 import Cocoa
 
 protocol EnumVCDelegate: AnyObject {
-    func enumVC(vc: EnumVC, selectedEnum: Enum)
+    func enumVC(_ vc: EnumVC, selectedEnum: Enum)
 }
 
 /// NSViewController that displays a table of Enums
@@ -34,7 +34,7 @@ class EnumVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
-    let cellType = CellType.DefaultCell
+    let cellType = CellType.defaultCell
     
     var hgtable: HGTable!
     
@@ -54,15 +54,15 @@ extension EnumVC: HGTableDisplayable {
         return appDelegate.store.project.enums.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return 50.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return cellType
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let enuM = appDelegate.store.project.enums[row]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
@@ -76,7 +76,7 @@ extension EnumVC: HGTableDisplayable {
 extension EnumVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EnumUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.enumUpdated])
     }
 }
 
@@ -84,14 +84,14 @@ extension EnumVC: HGTableObservable {
 extension EnumVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .EnumSelected)
+        return appDelegate.store.notificationName(forNotifType: .enumSelected)
     }
 }
 
 // MARK: HGTableRowSelectable
 extension EnumVC: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -99,7 +99,7 @@ extension EnumVC: HGTableRowSelectable {
 // MARK: HGTableFieldEditable
 extension EnumVC: HGTableFieldEditable {
     
-    func hgtable(table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
         if field == 0 {
             let editable = appDelegate.store.project.enums[row].editable
             return editable
@@ -107,7 +107,7 @@ extension EnumVC: HGTableFieldEditable {
         return false
     }
     
-    func hgtable(table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+    func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         var enuM = appDelegate.store.project.enums[row]
         enuM.name = string
         appDelegate.store.project.enums[row] = enuM
@@ -127,26 +127,26 @@ extension EnumVC: HGTableRowAppendable {
         appDelegate.store.project.enums.append(newEnum)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         var willAskUser = false
         
         for row in rows {
             let enuM = appDelegate.store.project.enums[row]
             if enuM.editable == false {
-                return .No
+                return .no
             }
             if enuM.cases.count > 0 {
                 willAskUser = true
             }
         }
         
-        if willAskUser { return .AskUser }
+        if willAskUser { return .askUser }
         
-        return .Yes
+        return .yes
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         appDelegate.store.project.enums.removeIndexes(rows)
     }
 }

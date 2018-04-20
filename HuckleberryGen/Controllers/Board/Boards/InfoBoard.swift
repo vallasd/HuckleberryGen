@@ -34,11 +34,11 @@ extension KeyBoardInfoBoard: BoardInstantiable {
 
 extension KeyBoardInfoBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
-        return .Next
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
+        return .next
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
         nav.push(ColorInfoBoard.boardData)
     }
 }
@@ -57,11 +57,11 @@ class ColorInfoBoard: NSViewController, NavControllerReferable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        editableFC.backgroundColor(.Blue)
-        nonEditableFC.backgroundColor(.Black)
-        indexableFC.backgroundColor(.Green)
-        enumFC.backgroundColor(.Cyan)
-        specialFC.backgroundColor(.Orange)
+        editableFC.backgroundColor(.blue)
+        nonEditableFC.backgroundColor(.black)
+        indexableFC.backgroundColor(.green)
+        enumFC.backgroundColor(.cyan)
+        specialFC.backgroundColor(.orange)
     }
 }
 
@@ -72,12 +72,12 @@ extension ColorInfoBoard: BoardInstantiable {
 
 extension ColorInfoBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
-        if appDelegate.store.licenseInfo.needsMoreInformation { return .Next }
-        else { return .Finished }
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
+        if appDelegate.store.licenseInfo.needsMoreInformation { return .next }
+        else { return .finished }
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
-        if progressionType == .Next { nav.push(LicenseInfoBoard.boardData) }
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .next { nav.push(LicenseInfoBoard.boardData) }
     }
 }

@@ -25,7 +25,7 @@ import Cocoa
 
 extension String {
     
-    static func random(length: Int) -> String {
+    static func random(_ length: Int) -> String {
     
         let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let allowedCharsCount = UInt32(allowedChars.characters.count)
@@ -33,7 +33,7 @@ extension String {
         
         for _ in 0..<length {
             let randNum = Int(arc4random_uniform(allowedCharsCount))
-            let newChar = allowedChars[allowedChars.startIndex.advancedBy(randNum)]
+            let newChar = allowedChars[allowedChars.characters.index(allowedChars.startIndex, offsetBy: randNum)]
             randString += String(newChar)
         }
         
@@ -43,7 +43,7 @@ extension String {
     var stringByDeletingPathExtension: String {
         get {
             let nsstring = self as NSString
-            return nsstring.stringByDeletingPathExtension
+            return nsstring.deletingPathExtension
         }
     }
     
@@ -60,7 +60,7 @@ extension String {
     }
     
     /// returns an indexed list of iterated objects that match string in a set of string objects.  Example, string is "New Case", iterated objects are ["Hello", "New Case 2", "Bleepy", "new case 3", "New Case"].  Function will return ["New Case", "New Case 2"].  This search is case sensitive.
-    func iteratedObjects(objects: [String]) -> [String] {
+    func iteratedObjects(_ objects: [String]) -> [String] {
         
         // TODO: Implement Function
         
@@ -71,7 +71,7 @@ extension String {
     /// adds a space and number to end of string. If number does not exist, adds 1, if number exists, add next number.
     var iterated: String {
         
-        let stringArray = self.characters.split(" ").map(String.init)
+        let stringArray = self.characters.split(separator: " ").map(String.init)
         
         // is not already iterated, return with 2
         if stringArray.count <= 1 {
@@ -95,12 +95,12 @@ extension String {
     
     /// returns string with quotes removed inside string
     var removeQuotes: String {
-        let string = self.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        let string = self.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
         return string
     }
     
     /// simple string, removes all characters besides caps, lower case, and spaces
-    private var simple: String {
+    fileprivate var simple: String {
         let chars: Set<Character> = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ_1234567890".characters)
         return stripOutCharacterExcept(characters: chars, fromString: self)
     }
@@ -112,7 +112,7 @@ extension String {
         var typeRep = self.trimmed
         
         // remove crap symbols, capitalize words and remove spaces
-        typeRep = typeRep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("")
+        typeRep = typeRep.simple.components(separatedBy: " ").map { $0.capitalFirstLetter }.joined(separator: "")
         
         // if it is blank, make a New typeRep
         if self == "" || self == "_" {
@@ -134,7 +134,7 @@ extension String {
         var varrep = self.trimmed
         
         // remove crap symbols, capitalize words and remove spaces
-        varrep = varrep.simple.componentsSeparatedByString(" ").map { $0.capitalFirstLetter }.joinWithSeparator("").lowerCaseFirstLetter
+        varrep = varrep.simple.components(separatedBy: " ").map { $0.capitalFirstLetter }.joined(separator: "").lowerCaseFirstLetter
         
         // if it is blank, make a New typeRep
         if self == "" || self == "_" {
@@ -151,12 +151,12 @@ extension String {
     
     /// removes extra white spaces and new lines
     var trimmed: String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
     
     /// makes a Type [Entity, Struct,  representation of the string
     var typeRepresentable: String {
-        return self.simple.componentsSeparatedByString(" ").flatMap { $0.capitalFirstLetter }.joinWithSeparator("")
+        return self.simple.components(separatedBy: " ").flatMap { $0.capitalFirstLetter }.joined(separator: "")
     }
     
     /// makes a variable representation of the string
@@ -167,27 +167,27 @@ extension String {
     var capitalFirstLetter: String {
         if self.isEmpty { return "" }
         var s = self
-        s.replaceRange(s.startIndex...s.startIndex, with: String(s[s.startIndex]).capitalizedString)
+        s.replaceSubrange(s.startIndex...s.startIndex, with: String(s[s.startIndex]).capitalized)
 //        let firstChar = String(s.characters.first!).uppercaseString
 //        s.replaceRange(s.startIndex...s.startIndex, with: firstChar)
         return s
     }
     
-    func getLast(int: Int) -> String {
+    func getLast(_ int: Int) -> String {
         let last = min(int, self.characters.count)
-        return self.substringFromIndex(self.endIndex.advancedBy(-last))
+        return self.substring(from: self.characters.index(self.endIndex, offsetBy: -last))
     }
     
-    func getFirst(int: Int) -> String {
+    func getFirst(_ int: Int) -> String {
         let last = min(int, self.characters.count)
-        return self.substringToIndex(self.startIndex.advancedBy(last))
+        return self.substring(to: self.characters.index(self.startIndex, offsetBy: last))
     }
     
     var lowerFirstLetter: String {
         if self.isEmpty { return "" }
         var string = self
-        let firstChar = String(string.characters.first!).lowercaseString
-        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
+        let firstChar = String(string.characters.first!).lowercased()
+        string.replaceSubrange(string.startIndex...string.startIndex, with: firstChar)
         return string
     }
     
@@ -210,8 +210,8 @@ extension String {
     var lowerCaseFirstLetter: String {
         if self.isEmpty { return "" }
         var string = self
-        let firstChar = String(string.characters.first!).lowercaseString
-        string.replaceRange(string.startIndex...string.startIndex, with: firstChar)
+        let firstChar = String(string.characters.first!).lowercased()
+        string.replaceSubrange(string.startIndex...string.startIndex, with: firstChar)
         return string
     }
     

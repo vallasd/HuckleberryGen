@@ -32,8 +32,8 @@ class FolderBoardContext {
 }
 
 enum FolderBoardType {
-    case Import
-    case Export
+    case `import`
+    case export
 }
 
 class FolderBoard: NSViewController, NavControllerReferable {
@@ -42,17 +42,17 @@ class FolderBoard: NSViewController, NavControllerReferable {
     
     @IBOutlet weak var folderButton: NSButton!
     
-    @IBAction func folderPressed(sender: AnyObject) {
+    @IBAction func folderPressed(_ sender: AnyObject) {
         self.openFileChooser()
     }
     
     /// context that will allow user to define which type of board to use, default is Import
-    private var context: FolderBoardType = .Import
+    fileprivate var context: FolderBoardType = .import
     
     /// reference to the NavController that may be holding this board
     weak var nav: NavController?
     
-    private func openFileChooser() {
+    fileprivate func openFileChooser() {
         
         nav?.disableProgression()
         
@@ -65,15 +65,15 @@ class FolderBoard: NSViewController, NavControllerReferable {
         
         if panel.runModal() == NSModalResponseOK {
             
-            let directory = panel.URL!
-            let path = directory.path!
+            let directory = panel.url!
+            let path = directory.path
         
             setPath(path)
             updateFolderBoard(withPath: path)
         }
     }
     
-    private func updateFolderBoard(withPath path: String) {
+    fileprivate func updateFolderBoard(withPath path: String) {
         
         if path.isEmpty {
             folderButton.title = "Choose Folder"
@@ -91,41 +91,41 @@ class FolderBoard: NSViewController, NavControllerReferable {
         updateFolderBoard(withPath: startingPath)
     }
     
-    func setPath(path: String) {
+    func setPath(_ path: String) {
         switch context {
-        case .Import: appDelegate.store.importPath = path
-        case .Export: appDelegate.store.exportPath = path
+        case .import: appDelegate.store.importPath = path
+        case .export: appDelegate.store.exportPath = path
         }
     }
     
     var folderTitle: String {
         switch context {
-        case .Import: return "Choose Import Folder"
-        case .Export: return "Choose Export Folder"
+        case .import: return "Choose Import Folder"
+        case .export: return "Choose Export Folder"
         }
     }
     
     var path: String {
         switch context {
-        case .Import: return appDelegate.store.importPath
-        case .Export: return appDelegate.store.exportPath
+        case .import: return appDelegate.store.importPath
+        case .export: return appDelegate.store.exportPath
         }
     }
     
     var progression: ProgressionType {
         switch context {
-        case .Import: return .Next
-        case .Export: return .Finished
+        case .import: return .next
+        case .export: return .finished
         }
     }
     
     func executeProgression() {
         switch context {
-        case .Import:
+        case .import:
             let context = SBD_Import()
             let boarddata = SelectionBoard.boardData(withContext: context)
             nav?.push(boarddata)
-        case .Export:
+        case .export:
             appDelegate.store.exportProject()
         }
     }
@@ -146,13 +146,13 @@ extension FolderBoard: BoardRetrievable {
     }
     
     
-    func set(context context: AnyObject) {
+    func set(context: AnyObject) {
         // assign context if it is of type SelectionBoardDelegate
         if let fbc = context as? FolderBoardContext {
             self.context = fbc.type;
             return
         }
-        HGReportHandler.shared.report("FolderBoard Context \(context) not valid", type: .Error)
+        HGReportHandler.shared.report("FolderBoard Context \(context) not valid", type: .error)
     }
 }
 
@@ -160,11 +160,11 @@ extension FolderBoard: BoardRetrievable {
 
 extension FolderBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
         return progression
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
         executeProgression()
     }
 }

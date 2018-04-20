@@ -32,16 +32,16 @@ class BoardHandler {
     }
     
     /// windowController which boards will be pushed to
-    private(set) weak var windowcontroller: NSWindowController!
+    fileprivate(set) weak var windowcontroller: NSWindowController!
     
     /// background view which we blur when we display boards
-    private var background: NSView { get { return windowcontroller.window!.contentViewController!.view } }
+    fileprivate var background: NSView { get { return windowcontroller.window!.contentViewController!.view } }
     
     /// controllers that handles pushing and popping view controllers from Board navigation stack
-    private(set) var nav: NavController?
+    fileprivate(set) var nav: NavController?
     
     /// view that holds the Board and blocks the background from touches
-    private var holder: NSView!
+    fileprivate var holder: NSView!
     
     /// pops board nav controller (holding board) on window controller
     func start(withBoardData boarddata: BoardData){
@@ -50,7 +50,7 @@ class BoardHandler {
             createNav()
             nav?.loadData = boarddata
             nav?.delegate = self
-            windowcontroller.window!.toolbar?.visible = false
+            windowcontroller.window!.toolbar?.isVisible = false
             holder.resize(inParent: background)
             nav?.view.resize(inParent: holder)
         }
@@ -62,33 +62,33 @@ class BoardHandler {
         nav?.removeFromParentViewController()
         nav?.view.removeFromSuperview()
         holder.removeFromSuperview()
-        windowcontroller.window!.toolbar?.visible = true
+        windowcontroller.window!.toolbar?.isVisible = true
         holder = nil
         nav = nil
     }
     
     /// creates a empty holding view that is clear but blocks touches to the window
-    private func createHolder() {
+    fileprivate func createHolder() {
         let frame = background.frame
         let h = HGBlockView(frame: frame)
-        h.backgroundColor(HGColor.WhiteTranslucent)
+        h.backgroundColor(HGColor.whiteTranslucent)
         holder = h
     }
     
     // creates a navigation controller
-    private func createNav() {
+    fileprivate func createNav() {
         let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        nav = storyboard.instantiateControllerWithIdentifier("NavController") as? NavController
+        nav = storyboard.instantiateController(withIdentifier: "NavController") as? NavController
         
         if nav == nil {
-            HGReportHandler.shared.report("NavController not properly created from StoryBoard", type: .Error)
+            HGReportHandler.shared.report("NavController not properly created from StoryBoard", type: .error)
         }
     }
 }
 
 extension BoardHandler: NavControllerDelegate {
     
-    func navcontrollerShouldDismiss(nav: NavController) {
+    func navcontrollerShouldDismiss(_ nav: NavController) {
         endBoard()
     }
     

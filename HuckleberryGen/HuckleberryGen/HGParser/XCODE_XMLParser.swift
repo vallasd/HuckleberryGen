@@ -23,13 +23,13 @@
 import Foundation
 
 /// Turns XCODE XML from a CoreData model into a Huckleberry Gen project
-class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
+class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
 
-    private var xml: ImportFile
-    private var xmlParser: NSXMLParser = NSXMLParser()
-    private var lastEntity: Entity? = nil
-    private var entities: Set<Entity> = []
-    private var didError: Bool = false
+    fileprivate var xml: ImportFile
+    fileprivate var xmlParser: XMLParser = XMLParser()
+    fileprivate var lastEntity: Entity? = nil
+    fileprivate var entities: Set<Entity> = []
+    fileprivate var didError: Bool = false
     
     // MARK: Initialization
     
@@ -42,7 +42,7 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     weak var delegate: HGImportParserDelegate? = nil
     
     func parse() {
-        if let parser = NSXMLParser(contentsOfURL: NSURL(fileURLWithPath: xml.path)) {
+        if let parser = XMLParser(contentsOf: URL(fileURLWithPath: xml.path)) {
             xmlParser = parser
             xmlParser.delegate = self
             let success = xmlParser.parse()
@@ -64,17 +64,17 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     
     // MARK: NSXMLParserDelegate
     
-    func parserDidStartDocument(parser: NSXMLParser) {
+    func parserDidStartDocument(_ parser: XMLParser) {
         print("Started Parsing XCODE XML For \(xml.name)")
     }
     
-    func parserDidEndDocument(parser: NSXMLParser) {
+    func parserDidEndDocument(_ parser: XMLParser) {
         if lastEntity != nil { entities.insert(lastEntity!) } // Add the final entity
         print("Completed Parsing XCODE XML For \(xml.name)")
         callDelegate()
     }
     
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         
         if elementName == ParseType.Entity.rawValue {
             
@@ -124,36 +124,36 @@ class XCODE_XMLParser: NSObject, NSXMLParserDelegate, HGImportParser {
     
     // MARK: Private Methods
     
-    private func callDelegate() {
+    fileprivate func callDelegate() {
         let project = Project.new
         project.entities = project.entities + entities
         delegate?.parserDidParse(xml, success: !didError, project: project)
     }
     
-    private func createStructsFromEntities() {
+    fileprivate func createStructsFromEntities() {
         
         // any one to one relationship will use an optional struct as the reference
         
         
     }
     
-    private enum ParseType: String {
+    fileprivate enum ParseType: String {
         case Entity = "entity"
         case Attribute = "attribute"
         case Relationship = "relationship"
     }
     
-    private func parseErrorMissing(name: String, type: ParseType) {
-        HGReportHandler.shared.report("HGParseError Error: Missing \(type.rawValue): \(name)" , type: .Error)
+    fileprivate func parseErrorMissing(_ name: String, type: ParseType) {
+        HGReportHandler.shared.report("HGParseError Error: Missing \(type.rawValue): \(name)" , type: .error)
     }
     
-    private func parseErrorFile(xml: ImportFile) {
+    fileprivate func parseErrorFile(_ xml: ImportFile) {
         do {
-            let _ = try String(contentsOfFile: xml.path, encoding: NSUTF8StringEncoding)
-            HGReportHandler.shared.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .Error)
+            let _ = try String(contentsOfFile: xml.path, encoding: String.Encoding.utf8)
+            HGReportHandler.shared.report("HGParse Error: can not parse at path: |\(xml.path)| error: \(xmlParser.parserError?.description)", type: .error)
         }
         catch {
-            HGReportHandler.shared.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .Error)
+            HGReportHandler.shared.report("HGParse Error: can not parse file at path: |\(xml.path)| can not be parsed", type: .error)
         }
     }
     

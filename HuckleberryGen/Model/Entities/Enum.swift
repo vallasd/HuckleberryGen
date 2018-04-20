@@ -51,13 +51,13 @@ extension Enum: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["editable"] = editable
-        dict["name"] = name
-        dict["cases"] = cases.encode
-        return dict
+        dict["editable"] = editable as? AnyObject
+        dict["name"] = name as AnyObject?
+        dict["cases"] = cases.encode as! AnyObject
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Enum {
+    static func decode(object: AnyObject) -> Enum {
         let dict = hgdict(fromObject: object, decoderName: "Enum")
         let editable = dict["editable"].bool
         let name = dict["name"].string

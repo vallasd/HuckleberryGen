@@ -23,9 +23,8 @@
 import Foundation
 
 protocol HGEncodable {
-    //static var new: Self { get }
     var encode: AnyObject { get }
-    static func decode(object object: AnyObject) -> Self
+    static func decode(object: AnyObject) -> Self
 }
 
 protocol NewCreatable {
@@ -34,12 +33,12 @@ protocol NewCreatable {
 
 extension HGEncodable {
     
-    func encode(inout dict: HGDICT, key: String) {
+    func encode(_ dict: inout HGDICT, key: String) {
         dict[key] = self.encode
     }
     
     /// decodes an array of objects into an array of [HGEncodable]
-    static func decodeArray(objects objects: [AnyObject]) -> [Self] {
+    static func decodeArray(objects: [AnyObject]) -> [Self] {
         var array: [Self] = []
         for object in objects {
             let decodedObject: Self = decode(object: object)
@@ -49,31 +48,31 @@ extension HGEncodable {
     }
     
     /// encodes and saves an object to standard user defaults given a key
-    func saveDefaults(key: String) {
+    func saveDefaults(_ key: String) {
         let encoded = self.encode
-        NSUserDefaults.standardUserDefaults().setValue(encoded, forKey: key)
+        UserDefaults.standard.setValue(encoded, forKey: key)
     }
     
     /// removes object with key from standard user defaults
-    static func removeDefaults(key: String) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+    static func removeDefaults(_ key: String) {
+        UserDefaults.standard.removeObject(forKey: key)
     }
     
     /// switches key names for object in standard user defaults
-    static func switchDefaults(oldkey oldkey: String, newkey: String) {
-        let project = NSUserDefaults.standardUserDefaults().valueForKey(oldkey)
-        NSUserDefaults.standardUserDefaults().setValue(project, forKey: newkey)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(oldkey)
+    static func switchDefaults(oldkey: String, newkey: String) {
+        let project = UserDefaults.standard.value(forKey: oldkey)
+        UserDefaults.standard.setValue(project, forKey: newkey)
+        UserDefaults.standard.removeObject(forKey: oldkey)
     }
     
     /// opens and decodes object from standard user defaults given a key
-    static func openDefaults(key: String, reportError: Bool) -> Self? {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let object = defaults.objectForKey(key) {
-            let decoded = Self.decode(object: object)
+    static func openDefaults(_ key: String, reportError: Bool) -> Self? {
+        let defaults = UserDefaults.standard
+        if let object = defaults.object(forKey: key) {
+            let decoded = Self.decode(object: object as AnyObject)
             return decoded
         }
-        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning nil", type: .Info)
+        HGReportHandler.shared.report("Open Defaults: Object with Key - \(key) was not found in user defaults, returning nil", type: .info)
         return nil
     }
 }
@@ -92,7 +91,7 @@ extension HGEncodable {
 //    }
 //}
 
-extension SequenceType where Generator.Element: HGEncodable {
+extension Sequence where Iterator.Element: HGEncodable {
     
     var encode: [AnyObject] {
         return self.map { $0.encode }

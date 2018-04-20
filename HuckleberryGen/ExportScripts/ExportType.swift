@@ -24,6 +24,6 @@ import Foundation
 
 enum ExportObject {
     
-    case StructObject
-    case ClassObject
+    case structObject
+    case classObject
 }

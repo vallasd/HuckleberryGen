@@ -90,15 +90,15 @@ extension Attribute: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep
-        dict["varRep"] = varRep
-        dict["decodeRep"] = decodeRep
-        dict["isPrimitive"] = isPrimitive
-        dict["optional"] = optional
-        return dict
+        dict["typeRep"] = typeRep as AnyObject?
+        dict["varRep"] = varRep as AnyObject?
+        dict["decodeRep"] = decodeRep as AnyObject?
+        dict["isPrimitive"] = isPrimitive as AnyObject?
+        dict["optional"] = optional as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Attribute {
+    static func decode(object: AnyObject) -> Attribute {
         let dict = hgdict(fromObject: object, decoderName: "Attribute")
         let typeRep = dict["typeRep"].string
         let varRep = dict["varRep"].string
@@ -112,34 +112,34 @@ extension Attribute: HGEncodable {
 enum SpecialAttribute {
     
     // Attribute Special Types (for random)
-    case Title  // will generate random titles
-    case Name  // will generate random names
-    case LongText // will generate random text
-    case ImageURL // will generate random images / stores and sets these images
+    case title  // will generate random titles
+    case name  // will generate random names
+    case longText // will generate random text
+    case imageURL // will generate random images / stores and sets these images
     
-    case IndexedSet  // will treat the object as a set of its relationship
-    case TimeRange // will create a Date Index
-    case FirstLetter // will create a FirstLetter Index
-    case Folder // will create a folder index
+    case indexedSet  // will treat the object as a set of its relationship
+    case timeRange // will create a Date Index
+    case firstLetter // will create a FirstLetter Index
+    case folder // will create a folder index
     
-    case EnumAttribute // will create a Enum Index
+    case enumAttribute // will create a Enum Index
     
-    case IsSpecial // tag that actual object is Special
+    case isSpecial // tag that actual object is Special
     
     static func specialTypeFrom(varRep v: String) -> SpecialAttribute? {
         
-        if v == "title" { return .Title }
-        if v == "name" { return .Name }
-        if v == "summary" { return .LongText }
-        if v == "imageURL" { return .ImageURL }
-        if v == "timeRange" { return .TimeRange }
-        if v == "firstLetter" { return .FirstLetter }
-        if v == "folder" { return .Folder }
-        if v.getLast(3) == "Num" { return .IndexedSet }
+        if v == "title" { return .title }
+        if v == "name" { return .name }
+        if v == "summary" { return .longText }
+        if v == "imageURL" { return .imageURL }
+        if v == "timeRange" { return .timeRange }
+        if v == "firstLetter" { return .firstLetter }
+        if v == "folder" { return .folder }
+        if v.getLast(3) == "Num" { return .indexedSet }
         
         // check if enums type is same as var, if so, return enum attribute
         let checkEnums = appDelegate.store.project.enums.map { $0.varRep }.filter { $0 == v }.count
-        if checkEnums > 0 { return .EnumAttribute }
+        if checkEnums > 0 { return .enumAttribute }
         
         return nil
     }
@@ -147,23 +147,23 @@ enum SpecialAttribute {
     var color: NSColor {
         
         switch self {
-        case .TimeRange, .FirstLetter, .IndexedSet, .Folder: return HGColor.Green.color() // Indexes
-        case .EnumAttribute: return HGColor.Cyan.color() // Enums
-        case .Title, .Name, .LongText, .ImageURL: return HGColor.Orange.color() // Special Random
+        case .timeRange, .firstLetter, .indexedSet, .folder: return HGColor.green.color() // Indexes
+        case .enumAttribute: return HGColor.cyan.color() // Enums
+        case .title, .name, .longText, .imageURL: return HGColor.orange.color() // Special Random
         default:
-            HGReportHandler.shared.report("HGColor not found for Special Attribute, returning green", type: .Error)
-            return HGColor.Green.color()
+            HGReportHandler.shared.report("HGColor not found for Special Attribute, returning green", type: .error)
+            return HGColor.green.color()
         }
     }
     
     var image: NSImage {
         
         switch self {
-        case .TimeRange, .FirstLetter, .IndexedSet, .Folder: return NSImage(named: "specialGreen")!
-        case .EnumAttribute: return NSImage(named: "specialCyan")!
-        case .Title, .Name, .LongText, .ImageURL: return NSImage(named: "specialOrange")!
+        case .timeRange, .firstLetter, .indexedSet, .folder: return NSImage(named: "specialGreen")!
+        case .enumAttribute: return NSImage(named: "specialCyan")!
+        case .title, .name, .longText, .imageURL: return NSImage(named: "specialOrange")!
         default:
-            HGReportHandler.shared.report("Special Type image not found for Special Attribute, returning specialGreen image", type: .Error)
+            HGReportHandler.shared.report("Special Type image not found for Special Attribute, returning specialGreen image", type: .error)
             return NSImage(named: "specialGreen")!
         }
     }
@@ -186,57 +186,57 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     var defaultRep: String {
         
         switch self {
-        case _Int: return "0"
-        case _Int16: return "0"
-        case _Int32: return "0"
-        case _Double: return "0.0"
-        case _Float: return "0.0"
-        case _String: return "\"notDefined\""
-        case _Bool: return "false"
-        case _Date: return "NSDate()"
-        case _Binary: return "NSData()"
+        case ._Int: return "0"
+        case ._Int16: return "0"
+        case ._Int32: return "0"
+        case ._Double: return "0.0"
+        case ._Float: return "0.0"
+        case ._String: return "\"notDefined\""
+        case ._Bool: return "false"
+        case ._Date: return "NSDate()"
+        case ._Binary: return "NSData()"
         }
     }
     
     var typeRep: String {
         switch self {
-        case _Int: return "Int"
-        case _Int16: return "Int16"
-        case _Int32: return "Int32"
-        case _Double: return "Double"
-        case _Float: return "Float"
-        case _String: return "String"
-        case _Bool: return "Bool"
-        case _Date: return "NSDate"
-        case _Binary: return "NSData"
+        case ._Int: return "Int"
+        case ._Int16: return "Int16"
+        case ._Int32: return "Int32"
+        case ._Double: return "Double"
+        case ._Float: return "Float"
+        case ._String: return "String"
+        case ._Bool: return "Bool"
+        case ._Date: return "NSDate"
+        case ._Binary: return "NSData"
         }
     }
     
     var varRep: String {
         switch self {
-        case _Int: return "int"
-        case _Int16: return "int16"
-        case _Int32: return "int32"
-        case _Double: return "double"
-        case _Float: return "float"
-        case _String: return "string"
-        case _Bool: return "bool"
-        case _Date: return "date"
-        case _Binary: return "data"
+        case ._Int: return "int"
+        case ._Int16: return "int16"
+        case ._Int32: return "int32"
+        case ._Double: return "double"
+        case ._Float: return "float"
+        case ._String: return "string"
+        case ._Bool: return "bool"
+        case ._Date: return "date"
+        case ._Binary: return "data"
         }
     }
     
     var int: Int {
         switch self {
-        case _Int: return 0
-        case _Int16: return 1
-        case _Int32: return 2
-        case _Double: return 3
-        case _Float: return 4
-        case _String: return 5
-        case _Bool: return 6
-        case _Date: return 7
-        case _Binary: return 8
+        case ._Int: return 0
+        case ._Int16: return 1
+        case ._Int32: return 2
+        case ._Double: return 3
+        case ._Float: return 4
+        case ._String: return 5
+        case ._Bool: return 6
+        case ._Date: return 7
+        case ._Binary: return 8
         }
     }
     
@@ -246,7 +246,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     
     static var array: [Primitive] = [_Int, _Int16, _Int32, _Double, _Float, _String, _Bool, _Date, _Binary]
     
-    static func create(int int: Int) -> Primitive {
+    static func create(int: Int) -> Primitive {
         switch(int) {
         case 0: return ._Int
         case 1: return ._Int16
@@ -258,7 +258,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         case 7: return ._Date
         case 8: return ._Binary
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .Error)
+            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .error)
             return ._Int
         }
     }
@@ -273,7 +273,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         var string = ""
         
         // return Int16 || Int32
-        if self == _Int16 || self == _Int32 {
+        if self == Primitive._Int16 || self == Primitive._Int32 {
             
             string += "\(iInd)if let int = self as? Int {\n"
             string += "\(iInd)\(ind)if abs(int) <= Int(\(typeRep).max) {\n"
@@ -284,7 +284,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         }
         
         // return Bool
-        if self == _Bool {
+        if self == Primitive._Bool {
             string += "\(iInd)if let string = self as? String {\n"
             string += "\(iInd)\(ind)switch string {\n"
             string += "\(iInd)\(ind)case \"YES\", \"TRUE\", \"Yes\", \"1\", \"true\", \"True\", \"yes\": return true\n"
@@ -308,7 +308,7 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         var string = ""
         
         // return Int16 || Int32
-        if self == _Int16 || self == _Int32 {
+        if self == Primitive._Int16 || self == Primitive._Int32 {
             
             string += "\(iInd)if let intArray = self as? [Int] {\n"
             string += "\(iInd)\(ind)var arrayContainsAll\(typeRep) = true\n"
@@ -330,22 +330,22 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
     
     
     
-    static func create(string string: String) -> Primitive {
+    static func create(string: String) -> Primitive {
         if let primitive = prim(fromString: string) {
             return primitive
         }
-        HGReportHandler.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .Error)
+        HGReportHandler.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .error)
         return ._Int
     }
     
-    static func optionalPrimitive(string string: String) -> Primitive? {
+    static func optionalPrimitive(string: String) -> Primitive? {
         if let primitive = prim(fromString: string) {
             return primitive
         }
         return nil
     }
     
-    private static func prim(fromString string: String) -> Primitive? {
+    fileprivate static func prim(fromString string: String) -> Primitive? {
         switch string {
         case "": return nil
         case "Int", "Integer 64", "int": return ._Int
@@ -370,13 +370,13 @@ extension Primitive: HGEncodable {
     }
     
     var encode: AnyObject {
-        return int
+        return int as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Primitive {
+    static func decode(object: AnyObject) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        HGReportHandler.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .Error)
+        HGReportHandler.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .error)
         return ._Int
     }
 }

@@ -45,7 +45,7 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
         companyField.stringValue = license.company
         emailField.stringValue = license.contact1
         contact2Field.stringValue = license.contact2
-        licenseButton.selectItemAtIndex(license.type.int)
+        licenseButton.selectItem(at: license.type.int)
         
         nameField.delegate = self
         
@@ -72,12 +72,12 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
 
 extension LicenseInfoBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
-        return .Finished
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
+        return .finished
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
-        if progressionType == .Finished {
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .finished {
             updateLicenseInfo()
         }
     }
@@ -92,7 +92,7 @@ extension LicenseInfoBoard: BoardInstantiable {
 
 extension LicenseInfoBoard: NSTextFieldDelegate {
     
-    override func controlTextDidChange(obj: NSNotification) {
+    override func controlTextDidChange(_ obj: Notification) {
         updateProgression()
     }
     

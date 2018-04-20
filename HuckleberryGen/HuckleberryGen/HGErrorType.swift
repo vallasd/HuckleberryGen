@@ -9,29 +9,29 @@ import Foundation
 
 enum HGErrorType {
 
-	case Info
-	case Warn
-	case Error
-	case Alert
-	case Assert
+	case info
+	case warn
+	case error
+	case alert
+	case assert
 
 	var int: Int {
 		switch self {
-		case Info: return 0
-		case Warn: return 1
-		case Error: return 2
-		case Alert: return 3
-		case Assert: return 4
+		case .info: return 0
+		case .warn: return 1
+		case .error: return 2
+		case .alert: return 3
+		case .assert: return 4
 		}
 	}
 
 	var string: String {
 		switch self {
-		case Info: return "Info"
-		case Warn: return "Warn"
-		case Error: return "Error"
-		case Alert: return "Alert"
-		case Assert: return "Assert"
+		case .info: return "Info"
+		case .warn: return "Warn"
+		case .error: return "Error"
+		case .alert: return "Alert"
+		case .assert: return "Assert"
 		}
 	}
 }
@@ -39,17 +39,17 @@ enum HGErrorType {
 extension HGErrorType: HGEncodable {
 
 	static var new: HGErrorType {
-		return HGErrorType.Info
+		return HGErrorType.info
 	}
 
 	var encode: AnyObject {
-		return self.int
+		return self.int as AnyObject
 	}
 
-	static func decode(object object: AnyObject) -> HGErrorType {
+	static func decode(object: AnyObject) -> HGErrorType {
 		if let int = object as? Int { return int.hGErrorType }
 		if let string = object as? String { return string.hGErrorType }
-		HGReportHandler.shared.report("object \(object) is not |HGErrorType| decodable, returning Info", type: .Error)
+		HGReportHandler.shared.report("object \(object) is not |HGErrorType| decodable, returning Info", type: .error)
 		return HGErrorType.new
 	}
 }

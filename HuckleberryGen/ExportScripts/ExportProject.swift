@@ -69,28 +69,28 @@ class ExportProject {
     }
 
     /// reads file in project, if there is an error, returns false
-    static func read(file file: String) -> String {
+    static func read(file: String) -> String {
         
-        let path = NSBundle.mainBundle().pathForResource(file, ofType: "txt") ?? ""
+        let path = Bundle.main.path(forResource: file, ofType: "txt") ?? ""
         
         do  {
-            let content = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding) // crash right away, you are looking for file that DNE
+            let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8) // crash right away, you are looking for file that DNE
             return content
         } catch {
-            HGReportHandler.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .Error)
+            HGReportHandler.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .error)
         }
         
         return ""
     }
     
     /// write to file, if there is an error, return false
-    static func write(file file: String, toPath path: String) -> Bool {
+    static func write(file: String, toPath path: String) -> Bool {
         
         do {
-            try file.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+            try file.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
             return true
         } catch {
-            HGReportHandler.shared.report("ExportProject: can not package \(file) to path \(path)", type: .Error)
+            HGReportHandler.shared.report("ExportProject: can not package \(file) to path \(path)", type: .error)
         }
         
         return false
@@ -100,7 +100,7 @@ class ExportProject {
         
         // create base directory from path
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: false, attributes: nil)
+            try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil)
         } catch {
             // do nothing
         }

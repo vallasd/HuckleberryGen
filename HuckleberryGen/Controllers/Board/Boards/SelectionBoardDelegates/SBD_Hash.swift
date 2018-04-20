@@ -29,7 +29,7 @@ class SBD_Hash: SelectionBoardDelegate {
     var hashes: [HashObject]
     
     /// reference to the cell type used
-    let celltype = CellType.Image3Cell
+    let celltype = CellType.image3Cell
     
     init(entityIndex ei: Int, hashes h: [HashObject]) {
         index = ei
@@ -44,7 +44,7 @@ class SBD_Hash: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         
         // no locations selected, remove all hashes
         if locations.count == 0 {
@@ -63,7 +63,7 @@ class SBD_Hash: SelectionBoardDelegate {
             appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         }
         
-        appDelegate.store.post(forNotifType: .EntityUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
 }
 
@@ -76,11 +76,11 @@ extension SBD_Hash: HGTableDisplayable {
         return numRows
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
@@ -94,7 +94,7 @@ extension SBD_Hash: HGTableDisplayable {
         return imagedatas
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: hashes.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
@@ -103,11 +103,11 @@ extension SBD_Hash: HGTableDisplayable {
 
 extension SBD_Hash: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

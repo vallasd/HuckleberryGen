@@ -13,98 +13,98 @@ extension Int {
 	/// returns HGErrorTypes.  Logs error and returns Info if not a valid Int.
 	var hGErrorType: HGErrorType {
  		switch self {
-		case 0: return .Info 
-		case 1: return .Warn 
-		case 2: return .Error 
-		case 3: return .Alert 
-		case 4: return .Assert 
+		case 0: return .info 
+		case 1: return .warn 
+		case 2: return .error 
+		case 3: return .alert 
+		case 4: return .assert 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .error)
 		}
-		return .Info
+		return .info
 	}
 	/// returns HGArticles.  Logs error and returns The if not a valid Int.
 	var hGArticle: HGArticle {
  		switch self {
-		case 0: return .The 
-		case 1: return .Any 
-		case 2: return .One 
-		case 3: return .That 
-		case 4: return .Most 
-		case 5: return .Some 
-		case 6: return .AKindOf 
-		case 7: return .TheLeast 
-		case 8: return .AParticularly 
-		case 9: return .AClearly 
-		case 10: return .TheOriginal 
-		case 11: return .AFairly 
-		case 12: return .Another 
-		case 13: return .Oh 
-		case 14: return .ACompletely 
-		case 15: return .OneCrazy 
-		case 16: return .DefinatelyOne 
-		case 17: return .BewareOfThe 
-		case 18: return .AHistoryOfThe 
-		case 19: return .AStoryAboutThe 
+		case 0: return .the 
+		case 1: return .any 
+		case 2: return .one 
+		case 3: return .that 
+		case 4: return .most 
+		case 5: return .some 
+		case 6: return .aKindOf 
+		case 7: return .theLeast 
+		case 8: return .aParticularly 
+		case 9: return .aClearly 
+		case 10: return .theOriginal 
+		case 11: return .aFairly 
+		case 12: return .another 
+		case 13: return .oh 
+		case 14: return .aCompletely 
+		case 15: return .oneCrazy 
+		case 16: return .definatelyOne 
+		case 17: return .bewareOfThe 
+		case 18: return .aHistoryOfThe 
+		case 19: return .aStoryAboutThe 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGArticle| mapable, using The", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGArticle| mapable, using The", type: .error)
 		}
-		return .The
+		return .the
 	}
 	/// returns HGAdjectives.  Logs error and returns Exceptional if not a valid Int.
 	var hGAdjective: HGAdjective {
  		switch self {
-		case 0: return .Exceptional 
-		case 1: return .Great 
-		case 2: return .Good 
-		case 3: return .Ugly 
-		case 4: return .Timid 
-		case 5: return .Fantastic 
-		case 6: return .Humble 
-		case 7: return .Lost 
-		case 8: return .Petulant 
-		case 9: return .Irksome 
-		case 10: return .Zealous 
-		case 11: return .Wretched 
-		case 12: return .Curious 
-		case 13: return .Naive 
-		case 14: return .Wicked 
-		case 15: return .Poor 
-		case 16: return .Fantastic 
-		case 17: return .Futuristic 
-		case 18: return .Crappy 
-		case 19: return .Excellent 
+		case 0: return .exceptional 
+		case 1: return .great 
+		case 2: return .good 
+		case 3: return .ugly 
+		case 4: return .timid 
+		case 5: return .fantastic 
+		case 6: return .humble 
+		case 7: return .lost 
+		case 8: return .petulant 
+		case 9: return .irksome 
+		case 10: return .zealous 
+		case 11: return .wretched 
+		case 12: return .curious 
+		case 13: return .naive 
+		case 14: return .wicked 
+		case 15: return .poor 
+		case 16: return .fantastic 
+		case 17: return .futuristic 
+		case 18: return .crappy 
+		case 19: return .excellent 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGAdjective| mapable, using Exceptional", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGAdjective| mapable, using Exceptional", type: .error)
 		}
-		return .Exceptional
+		return .exceptional
 	}
 	/// returns HGNouns.  Logs error and returns Boy if not a valid Int.
 	var hGNoun: HGNoun {
  		switch self {
-		case 0: return .Boy 
-		case 1: return .Girl 
-		case 2: return .Man 
-		case 3: return .Woman 
-		case 4: return .Dancer 
-		case 5: return .Cowboy 
-		case 6: return .Spy 
-		case 7: return .Monster 
-		case 8: return .Banshee 
-		case 9: return .Fella 
-		case 10: return .Balloon 
-		case 11: return .Whale 
-		case 12: return .Swan 
-		case 13: return .Film 
-		case 14: return .Individual 
-		case 15: return .Pyscho 
-		case 16: return .Violin 
-		case 17: return .Show 
-		case 18: return .Kid 
-		case 19: return .Movie 
+		case 0: return .boy 
+		case 1: return .girl 
+		case 2: return .man 
+		case 3: return .woman 
+		case 4: return .dancer 
+		case 5: return .cowboy 
+		case 6: return .spy 
+		case 7: return .monster 
+		case 8: return .banshee 
+		case 9: return .fella 
+		case 10: return .balloon 
+		case 11: return .whale 
+		case 12: return .swan 
+		case 13: return .film 
+		case 14: return .individual 
+		case 15: return .pyscho 
+		case 16: return .violin 
+		case 17: return .show 
+		case 18: return .kid 
+		case 19: return .movie 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGNoun| mapable, using Boy", type: .Error)
+			HGReportHandler.shared.report("int: |\(self)| is not enum |HGNoun| mapable, using Boy", type: .error)
 		}
-		return .Boy
+		return .boy
 	}
 }

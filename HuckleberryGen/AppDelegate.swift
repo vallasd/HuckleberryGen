@@ -23,7 +23,7 @@
 import Cocoa
 
 /// global reference to the app Delegate.
-let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
+let appDelegate = NSApplication.shared().delegate as! AppDelegate
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var store: HuckleberryGen = HuckleberryGen(uniqIdentifier: "defaultStore")
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // Insert code here to initialize your application
         
@@ -43,7 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // store.clear()
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
         store.save()
     }

@@ -81,12 +81,12 @@ class SaveBoard: NSViewController, NavControllerReferable {
 
 extension SaveBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
-        return .Finished
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
+        return .finished
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType progressionType: ProgressionType) {
-        if progressionType == .Finished {
+    func navcontroller(_ nav: NavController, hitProgressWithType progressionType: ProgressionType) {
+        if progressionType == .finished {
             updateProjectName()
         }
     }
@@ -101,7 +101,7 @@ extension SaveBoard: BoardInstantiable {
 
 extension SaveBoard: NSTextFieldDelegate {
     
-    override func controlTextDidChange(obj: NSNotification) {
+    override func controlTextDidChange(_ obj: Notification) {
         updateProgression()
     }
     

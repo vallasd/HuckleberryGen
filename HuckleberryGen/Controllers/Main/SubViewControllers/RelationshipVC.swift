@@ -28,7 +28,7 @@ class RelationshipVC: NSViewController {
     
     var  hgtable: HGTable!
     
-    let celltype = CellType.MixedCell1
+    let celltype = CellType.mixedCell1
     
      // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -48,15 +48,15 @@ extension RelationshipVC: HGTableDisplayable {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].relationships.count
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return 65.0
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         
         let relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
         
@@ -75,14 +75,14 @@ extension RelationshipVC: HGTableDisplayable {
 extension RelationshipVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
-        return appDelegate.store.notificationNames(forNotifTypes: [.EntitySelected, .RelationshipUpdated])
+        return appDelegate.store.notificationNames(forNotifTypes: [.entitySelected, .relationshipUpdated])
     }
 }
 
 // MARK: HGTableRowSelectable
 extension RelationshipVC: HGTableRowSelectable {
     
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }
@@ -98,11 +98,11 @@ extension RelationshipVC: HGTableRowAppendable {
         appDelegate.store.project.entities[table.parentRow].relationships.append(Relationship.new)
     }
     
-    func hgtable(table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        return .Yes
+    func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
+        return .yes
     }
     
-    func hgtable(table: HGTable, willDeleteRows rows: [Int]) {
+    func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         appDelegate.store.project.entities[table.parentRow].relationships.removeIndexes(rows)
     }
 }
@@ -110,15 +110,15 @@ extension RelationshipVC: HGTableRowAppendable {
 // MARK: HGTableItemSelectable
 extension RelationshipVC: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         
         /// Select Relationship's Entity or Deletion Rule
-        if type == .Field && ( tag == 1 || tag == 4 ) {
+        if type == .field && ( tag == 1 || tag == 4 ) {
             return true
         }
         
         // Select Relationship's Type (Too Many or Too One)
-        if type == .Image && tag == 0 {
+        if type == .image && tag == 0 {
            return true
             
         }
@@ -126,24 +126,24 @@ extension RelationshipVC: HGTableItemSelectable {
         return false
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         
         /// Set Relationship's Type
-        if type == .Image && tag == 0 {
+        if type == .image && tag == 0 {
             let context = SBD_RelationshipType(entityIndex: table.parentRow, relationshipIndex: row)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
         
         // Set Relationship's Entity
-        if type == .Field && tag == 2 {
+        if type == .field && tag == 2 {
             let context = SBD_Entities(entityIndex: hgtable.parentRow, relationshipIndex: row)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
             
         // Set Relationship's Deletion Rule
-        else if type == .Field && tag == 4 {
+        else if type == .field && tag == 4 {
             let context = SBD_DeletionRules(entityIndex: hgtable.parentRow, relationshipIndex: row)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)

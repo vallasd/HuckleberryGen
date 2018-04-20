@@ -38,7 +38,7 @@ class SBD_Entities: SelectionBoardDelegate {
     let type: Int
 
     /// reference to the cell type used
-    let celltype = CellType.Image3Cell
+    let celltype = CellType.image3Cell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let entities: [Entity] = appDelegate.store.project.entities
@@ -68,26 +68,26 @@ class SBD_Entities: SelectionBoardDelegate {
         return imagedatas
     }
     
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let entity = entities[index]
         switch type {
         case 0: updateRelationship(forEntity: entity)
         case 1: updateIndex(forEntity: entity)
-        default: HGReportHandler.shared.report("SBD_Entities: Did Not Update", type: .Error)
+        default: HGReportHandler.shared.report("SBD_Entities: Did Not Update", type: .error)
         }
     }
     
     func updateRelationship(forEntity e: Entity) {
         appDelegate.store.project.entities[index].relationships[index2].entity = e
-        appDelegate.store.post(forNotifType: .RelationshipUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
     }
     
     func updateIndex(forEntity e: Entity) {
         var i = appDelegate.store.getIndex(index: index)
         i.entity = e
         appDelegate.store.replaceIndex(atIndex: index, withIndex: i)
-        appDelegate.store.post(forNotifType: .IndexUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .indexUpdated) // post notification so other classes are in the know
     }
 }
 
@@ -100,15 +100,15 @@ extension SBD_Entities: HGTableDisplayable {
         return numRows
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: entities.count)
         let imagedatas = cellImageDatas(forEntityIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
@@ -117,11 +117,11 @@ extension SBD_Entities: HGTableDisplayable {
 
 extension SBD_Entities: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

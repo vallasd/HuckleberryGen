@@ -26,41 +26,41 @@ import Foundation
 class HGNotif {
     
     /// removes object from observing Notifications
-    static func removeObserver(object: AnyObject) {
-        NSNotificationCenter.defaultCenter().removeObserver(object)
+    static func removeObserver(_ object: AnyObject) {
+        NotificationCenter.default.removeObserver(object)
     }
     
     /// adds an observer for a specific notificationName and will perform the block once notification is heard.
-    static func addObserverForName(name: String, usingBlock block: (NSNotification) -> Void) {
+    static func addObserverForName(_ name: String, usingBlock block: @escaping (Notification) -> Void) {
         asyncObserveOnMainThreadForName(name, usingBlock: block)
     }
     
     /// posts a single notification with an object
-    static func postNotification(name: String, withObject object: AnyObject) {
+    static func postNotification(_ name: String, withObject object: AnyObject) {
         asyncPostOnMainThreadWithName([name], object: object)
     }
     
     /// posts a single notification without an object
-    static func postNotification(name: String) {
+    static func postNotification(_ name: String) {
         asyncPostOnMainThreadWithName([name], object: nil)
     }
     
     /// posts a multiple notifications without objects
-    static func postNotifications(names: [String]) {
+    static func postNotifications(_ names: [String]) {
         asyncPostOnMainThreadWithName(names, object: nil)
     }
     
-    private static func asyncPostOnMainThreadWithName(names: [String], object: AnyObject?) {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+    fileprivate static func asyncPostOnMainThreadWithName(_ names: [String], object: AnyObject?) {
+        DispatchQueue.main.async { () -> Void in
             for name in names {
-                NSNotificationCenter.defaultCenter().postNotificationName(name, object: object)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: object)
             }
         }
     }
     
-    private static func asyncObserveOnMainThreadForName(name: String, usingBlock block: (NSNotification) -> Void) {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            NSNotificationCenter.defaultCenter().addObserverForName(name, object: nil, queue: nil, usingBlock: block)
+    fileprivate static func asyncObserveOnMainThreadForName(_ name: String, usingBlock block: @escaping (Notification) -> Void) {
+        DispatchQueue.main.async { () -> Void in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: name), object: nil, queue: nil, using: block)
         }
     }
     

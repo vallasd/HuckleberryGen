@@ -60,14 +60,14 @@ extension Project: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
+        dict["name"] = name as AnyObject?
         dict["indexes"] = indexes.encode
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
-        return dict
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Project {
+    static func decode(object: AnyObject) -> Project {
         let dict = hgdict(fromObject: object, decoderName: "Project")
         let name = dict["name"].string
         let indexes = dict["indexes"].indexes
@@ -134,7 +134,7 @@ class EntityInfo {
 
 extension Project {
     
-    func addEntitiesFromSpecialAttributes(map: ProjectMap) {
+    func addEntitiesFromSpecialAttributes(_ map: ProjectMap) {
         
         var newInfos: [EntityInfo] = []
         
@@ -144,31 +144,31 @@ extension Project {
                 if let specialAttribute = SpecialAttribute.specialTypeFrom(varRep: attribute.varRep) {
                     // create Entities from Select Special Type
                     switch specialAttribute {
-                    case .TimeRange:
+                    case .timeRange:
                         let typeRep = entity.typeRep + "DateIndex"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
-                        info.specialAttributes = [.IsSpecial, .TimeRange]
+                        info.specialAttributes = [.isSpecial, .timeRange]
                         let newInfo = EntityInfo(entity: newEntity)
                         newInfos.append(newInfo)
-                    case .FirstLetter:
+                    case .firstLetter:
                         let typeRep = entity.typeRep + "FirstLetterIndex"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
-                        info.specialAttributes = [.IsSpecial, .FirstLetter]
+                        info.specialAttributes = [.isSpecial, .firstLetter]
                         let newInfo = EntityInfo(entity: newEntity)
                         newInfos.append(newInfo)
-                    case .EnumAttribute:
-                        let typeRep = entity.typeRep + attribute.varRep.capitalizedString + "Index"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .TooMany)
+                    case .enumAttribute:
+                        let typeRep = entity.typeRep + attribute.varRep.capitalized + "Index"
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
-                        info.specialAttributes = [.IsSpecial, .EnumAttribute]
+                        info.specialAttributes = [.isSpecial, .enumAttribute]
                         let newInfo = EntityInfo(entity: newEntity)
                         newInfos.append(newInfo)
                     default: break
@@ -177,7 +177,7 @@ extension Project {
             }
         }
         
-        map.entityInfos.appendContentsOf(newInfos)
+        map.entityInfos.append(contentsOf: newInfos)
     }
     
     // returns the hashed entity if it exists
@@ -205,7 +205,7 @@ extension Project {
         pMap.printMap()
     }
     
-    func updateInfo(pMap: ProjectMap) {
+    func updateInfo(_ pMap: ProjectMap) {
         
         for info in pMap.entityInfos {
             info.hashPath = goDownHashPath(forEntity: info.entity, count: 0, pathString: "")

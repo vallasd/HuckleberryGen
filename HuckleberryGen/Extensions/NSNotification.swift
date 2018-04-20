@@ -22,7 +22,7 @@
 
 import Cocoa
 
-extension NSNotification {
+extension Notification {
     
     /* Field Text Delivered from NSNotifications NSTextFieldDelegate (such as: controlTextDidEndEditing), this will return the string of the field */
     var textFieldString: String? {

@@ -40,11 +40,11 @@ extension EnumCase: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["string"] = string
-        return dict
+        dict["string"] = string as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> EnumCase {
+    static func decode(object: AnyObject) -> EnumCase {
         let dict = hgdict(fromObject: object, decoderName: "EnumCase")
         let name = dict["string"].string
         return EnumCase(string: name)

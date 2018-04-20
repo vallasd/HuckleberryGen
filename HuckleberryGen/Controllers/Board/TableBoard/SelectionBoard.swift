@@ -24,7 +24,7 @@ import Cocoa
 
 protocol SelectionBoardDelegate: HGTableDisplayable {
     weak var selectionBoard: SelectionBoard? { get set }
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation])
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation])
 }
 
 /// Board that allows class to select
@@ -50,13 +50,13 @@ class SelectionBoard: NSViewController, NavControllerReferable {
 //    }
     
     /// reference to the HGTable
-    private var hgtable: HGTable!
+    fileprivate var hgtable: HGTable!
     
     /// This object is the context that whandle delegation of the Selection Board and HGTable
-    private var context: SelectionBoardDelegate? { didSet { loadSelectionBoardIfReady() } }
+    fileprivate var context: SelectionBoardDelegate? { didSet { loadSelectionBoardIfReady() } }
     
     /// the default progression is to finish.  If we want to implement a Next progression, we would need a boardData for the next controller (need to implement this logic later if needed *** nextData for selectionBoard, handled by delegate.
-    private var progressionType: ProgressionType = .Finished
+    fileprivate var progressionType: ProgressionType = .finished
     
     @IBOutlet weak var boardtitle: NSTextField!
     
@@ -71,13 +71,13 @@ class SelectionBoard: NSViewController, NavControllerReferable {
         updateProgression()
     }
     
-    private func updateProgression() {
+    fileprivate func updateProgression() {
         if automaticNext { nav?.enableProgression() }
         else if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
         else { nav?.disableProgression() }
     }
     
-    private func loadSelectionBoardIfReady() {
+    fileprivate func loadSelectionBoardIfReady() {
     
         // check if not ready and return if so
         if context == nil || tableview == nil {
@@ -105,30 +105,30 @@ extension SelectionBoard: BoardRetrievable {
     }
     
     
-    func set(context context: AnyObject) {
+    func set(context: AnyObject) {
         // assign context if it is of type SelectionBoardDelegate
         if let context = context as? SelectionBoardDelegate {
             self.context = context;
             return
         }
-        HGReportHandler.shared.report("SelectionBoard Context \(context) not valid", type: .Error)
+        HGReportHandler.shared.report("SelectionBoard Context \(context) not valid", type: .error)
     }
 }
 
 extension SelectionBoard: NavControllerProgessable {
     
-    func navcontrollerProgressionType(nav: NavController) -> ProgressionType {
+    func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
         return progressionType
     }
     
-    func navcontroller(nav: NavController, hitProgressWithType: ProgressionType) {
+    func navcontroller(_ nav: NavController, hitProgressWithType: ProgressionType) {
         context?.selectionboard(self, didChooseLocations: hgtable.selectedLocations)
     }
 }
 
 extension SelectionBoard: HGTableSelectionTrackable {
     
-    func hgtableSelectedLocationsChanged(table: HGTable) {
+    func hgtableSelectedLocationsChanged(_ table: HGTable) {
         updateProgression()
     }
 }

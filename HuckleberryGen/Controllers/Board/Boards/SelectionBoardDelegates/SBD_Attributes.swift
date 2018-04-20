@@ -35,7 +35,7 @@ class SBD_Attributes: SelectionBoardDelegate {
     let attributeIndex: Int
     
     /// reference to the cell type used 
-    let celltype = CellType.Image3Cell
+    let celltype = CellType.image3Cell
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
@@ -46,12 +46,12 @@ class SBD_Attributes: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
         let newAttribute = attribute(fromIndex: index, oldAttribute: o)
         appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute
-        appDelegate.store.post(forNotifType: .AttributeUpdated) // post notification so other classes are in the know
+        appDelegate.store.post(forNotifType: .attributeUpdated) // post notification so other classes are in the know
     }
     
     func attribute(fromIndex i: Int, oldAttribute o: Attribute) -> Attribute {
@@ -99,15 +99,15 @@ extension SBD_Attributes: HGTableDisplayable {
         return numRows
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: types.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
         return HGCellData.onlyImages(imagedatas)
@@ -117,11 +117,11 @@ extension SBD_Attributes: HGTableDisplayable {
 // MARK: HGTableItemSelectable
 extension SBD_Attributes: HGTableItemSelectable {
     
-    func hgtable(table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
         return true
     }
     
-    func hgtable(table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
+    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
         // Do Nothing
     }
 }

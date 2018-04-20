@@ -33,7 +33,7 @@ class SBD_Import: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// reference to cellType
-    var celltype = CellType.FieldCell3
+    var celltype = CellType.fieldCell3
     
     /// holds reference to parser while the parser is parsing the current importFile
     var parser: HGImportParser?
@@ -42,14 +42,14 @@ class SBD_Import: SelectionBoardDelegate {
     var importFolder: Folder!
     
     /// creates a folder (of importfiles) from searchPath
-    private func createImportFolder() {
+    fileprivate func createImportFolder() {
         
         let path = appDelegate.store.importPath
         let name: String = path.lastPathComponent
         
         // Create a folder from path and name
         Folder.create(name: name, path: path, completion: { [weak self] (newfolder) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self?.importFolder = newfolder
                 self?.selectionBoard?.update()
             })
@@ -57,7 +57,7 @@ class SBD_Import: SelectionBoardDelegate {
     }
     
     /// parses the selected Import File (delegate will handle the project when it is returned)
-    func parse(importFile: ImportFile) {
+    func parse(_ importFile: ImportFile) {
         
         // reset, create, and execute parser
         parser?.resetParse()
@@ -67,12 +67,12 @@ class SBD_Import: SelectionBoardDelegate {
         
         // report error if parser was not successfully created
         if parser == nil {
-            HGReportHandler.shared.report("Project Importer was unable to create parser from importFile \(importFile)", type: .Error)
+            HGReportHandler.shared.report("Project Importer was unable to create parser from importFile \(importFile)", type: .error)
         }
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = celltype.index(forlocation: locations[0])
         let importFile = importFolder.importFiles[index]
         parse(importFile)
@@ -84,11 +84,11 @@ class SBD_Import: SelectionBoardDelegate {
 // MARK: HGImportParserDelegate
 extension SBD_Import: HGImportParserDelegate {
     
-    func parserDidParse(importFile: ImportFile, success: Bool, project: Project) {
+    func parserDidParse(_ importFile: ImportFile, success: Bool, project: Project) {
         if success {
             appDelegate.store.project = project
         } else {
-            HGReportHandler.shared.report("Import Error: could not parse import file: \(importFile.name)" , type: .Error)
+            HGReportHandler.shared.report("Import Error: could not parse import file: \(importFile.name)" , type: .error)
         }
     }
 }
@@ -101,15 +101,15 @@ extension SBD_Import: HGTableDisplayable {
         return num
     }
     
-    func hgtable(table: HGTable, heightForRow row: Int) -> CGFloat {
+    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
         return celltype.rowHeightForTable(selectionBoard?.tableview)
     }
     
-    func hgtable(table: HGTable, cellForRow row: Int) -> CellType {
+    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
         return celltype
     }
     
-    func hgtable(table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let file = importFolder!.importFiles[row]
         return HGCellData.fieldCell3(
             field0: HGFieldData(title: file.name),
@@ -123,7 +123,7 @@ extension SBD_Import: HGTableDisplayable {
 // MARK: HGTableRowSelectable
 extension SBD_Import: HGTableRowSelectable {
 
-    func hgtable(table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
         return true
     }
 }

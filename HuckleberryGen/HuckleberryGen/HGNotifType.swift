@@ -24,34 +24,34 @@ import Foundation
 
 enum HGNotifType {
     
-    case ProjectChanged
-    case EntityUpdated
-    case EntitySelected
-    case EnumUpdated
-    case EnumSelected
-    case EnumCaseUpdated
-    case EnumCaseSelected
-    case AttributeUpdated
-    case AttributeSelected
-    case RelationshipUpdated
-    case RelationshipSelected
-    case IndexUpdated
+    case projectChanged
+    case entityUpdated
+    case entitySelected
+    case enumUpdated
+    case enumSelected
+    case enumCaseUpdated
+    case enumCaseSelected
+    case attributeUpdated
+    case attributeSelected
+    case relationshipUpdated
+    case relationshipSelected
+    case indexUpdated
     
     /// returns a string that identifies the HGNotifType
     var string: String {
         switch self {
-        case ProjectChanged: return "ProjectChanged"
-        case EntityUpdated: return "EntityUpdated"
-        case EntitySelected: return "EntitySelected"
-        case EnumUpdated: return "EnumUpdated"
-        case EnumSelected: return "EnumSelected"
-        case EnumCaseUpdated: return "EnumCaseUpdated"
-        case EnumCaseSelected: return "EnumCaseSelected"
-        case AttributeUpdated: return "AttributeUpdated"
-        case AttributeSelected: return "AttributeSelected"
-        case RelationshipUpdated: return "RelationshipUpdated"
-        case RelationshipSelected: return "RelationshipSelected"
-        case IndexUpdated: return "IndexUpdate"
+        case .projectChanged: return "ProjectChanged"
+        case .entityUpdated: return "EntityUpdated"
+        case .entitySelected: return "EntitySelected"
+        case .enumUpdated: return "EnumUpdated"
+        case .enumSelected: return "EnumSelected"
+        case .enumCaseUpdated: return "EnumCaseUpdated"
+        case .enumCaseSelected: return "EnumCaseSelected"
+        case .attributeUpdated: return "AttributeUpdated"
+        case .attributeSelected: return "AttributeSelected"
+        case .relationshipUpdated: return "RelationshipUpdated"
+        case .relationshipSelected: return "RelationshipSelected"
+        case .indexUpdated: return "IndexUpdate"
         }
     }
 }

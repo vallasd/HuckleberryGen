@@ -29,9 +29,9 @@ struct Folder {
     let path: String
     let importFiles: [ImportFile]
     
-    static func create(name name: String, path: String, completion: (newfolder: Folder) -> Void) {
+    static func create(name: String, path: String, completion: @escaping (_ newfolder: Folder) -> Void) {
         ImportFile.importFiles(path: path) { (importFiles) -> Void in
-            completion(newfolder: Folder(name: name, path: path, importFiles: importFiles))
+            completion(Folder(name: name, path: path, importFiles: importFiles))
         }
     }
 }
@@ -44,13 +44,13 @@ extension Folder: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
-        dict["path"] = path
+        dict["name"] = name as AnyObject?
+        dict["path"] = path as AnyObject?
         dict["importFiles"] = importFiles.encode
-        return dict
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Folder {
+    static func decode(object: AnyObject) -> Folder {
         let dict = hgdict(fromObject: object, decoderName: "Folder")
         let name = dict["name"].string
         let path = dict["path"].string

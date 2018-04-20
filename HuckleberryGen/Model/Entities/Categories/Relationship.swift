@@ -34,8 +34,8 @@ extension Relationship: TypeRepresentable {
     
     var typeRep: String {
         switch relType {
-        case .TooMany: return entity.typeRep.pluralRep
-        case .TooOne: return entity.typeRep + "?"
+        case .tooMany: return entity.typeRep.pluralRep
+        case .tooOne: return entity.typeRep + "?"
         }
     }
 }
@@ -45,8 +45,8 @@ extension Relationship: VarRepresentable {
     var varRep: String {
         let tagString = tag > 0 ? "\(tag)" : ""
         switch relType {
-        case .TooMany: return (entity.varRep.lowerCaseFirstLetter + tagString).setRep
-        case .TooOne: return entity.varRep.lowerCaseFirstLetter + tagString
+        case .tooMany: return (entity.varRep.lowerCaseFirstLetter + tagString).setRep
+        case .tooOne: return entity.varRep.lowerCaseFirstLetter + tagString
         }
     }
 }
@@ -55,8 +55,8 @@ extension Relationship: DefaultRepresentable {
     
     var defaultRep: String {
         switch relType {
-        case .TooMany: return "nil"
-        case .TooOne: return "[]"
+        case .tooMany: return "nil"
+        case .tooOne: return "[]"
         }
     }
 }
@@ -65,8 +65,8 @@ extension Relationship: DecodeRepresentable {
     
     var decodeRep: String {
         switch relType {
-        case .TooMany: return varRep
-        case .TooOne: return entity.varRep.nilRep
+        case .tooMany: return varRep
+        case .tooOne: return entity.varRep.nilRep
         }
     }
 }
@@ -77,19 +77,19 @@ extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationsh
 extension Relationship: HGEncodable {
     
     static var new: Relationship {
-        return Relationship(tag: 0, entity: Entity.new, relType: .TooOne, deletionRule: .NoAction)
+        return Relationship(tag: 0, entity: Entity.new, relType: .tooOne, deletionRule: .noAction)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["tag"] = tag
-        dict["eTypeRep"] = entity.typeRep
-        dict["relType"] = relType.int
-        dict["deletionRule"] = deletionRule.int
-        return dict
+        dict["tag"] = tag as AnyObject?
+        dict["eTypeRep"] = entity.typeRep as AnyObject?
+        dict["relType"] = relType.int as AnyObject?
+        dict["deletionRule"] = deletionRule.int as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> Relationship {
+    static func decode(object: AnyObject) -> Relationship {
         
         let dict = hgdict(fromObject: object, decoderName: "Relationship")
         let tag = dict["tag"].int
@@ -102,12 +102,12 @@ extension Relationship: HGEncodable {
 
 enum DeletionRule: Int16 {
     
-    case NoAction = 0
-    case Nullify = 1 
-    case Cascade = 2
-    case Deny = 3
+    case noAction = 0
+    case nullify = 1 
+    case cascade = 2
+    case deny = 3
     
-    static var set: [DeletionRule] { return [.NoAction, .Nullify, .Cascade, .Deny] }
+    static var set: [DeletionRule] { return [.noAction, .nullify, .cascade, .deny] }
     
     var int: Int {
         return Int(self.rawValue)
@@ -115,79 +115,79 @@ enum DeletionRule: Int16 {
     
     var string: String {
         switch self {
-        case NoAction: return "No Action"
-        case Nullify: return "Nullify"
-        case Cascade: return "Cascade"
-        case Deny: return "Deny"
+        case .noAction: return "No Action"
+        case .nullify: return "Nullify"
+        case .cascade: return "Cascade"
+        case .deny: return "Deny"
         }
     }
     
-    static func create(int int: Int) -> DeletionRule {
+    static func create(int: Int) -> DeletionRule {
         switch int {
-        case 0: return .NoAction
-        case 1: return .Nullify
-        case 2: return .Cascade
-        case 3: return .Deny
+        case 0: return .noAction
+        case 1: return .nullify
+        case 2: return .cascade
+        case 3: return .deny
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .Error)
-            return .NoAction
+            HGReportHandler.shared.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .error)
+            return .noAction
         }
     }
     
-    static func create(string string: String) -> DeletionRule {
+    static func create(string: String) -> DeletionRule {
         switch string {
-        case "No Action": return .NoAction
-        case "Nullify": return .Nullify
-        case "Cascade": return .Cascade
-        case "Deny": return .Deny
+        case "No Action": return .noAction
+        case "Nullify": return .nullify
+        case "Cascade": return .cascade
+        case "Deny": return .deny
         default:
-            HGReportHandler.shared.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .Error)
-            return .NoAction
+            HGReportHandler.shared.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .error)
+            return .noAction
         }
     }
 }
 
 enum RelationshipType {
     
-    case TooMany
-    case TooOne
+    case tooMany
+    case tooOne
     
-    static var set: [RelationshipType] = [.TooMany, .TooOne]
+    static var set: [RelationshipType] = [.tooMany, .tooOne]
     static var imageStringSet = ["toManyIcon", "toOneIcon"]
     
     var image: NSImage {
         get {
             switch self {
-            case TooMany: return NSImage(named: "toManyIcon")!
-            case TooOne: return NSImage(named: "toOneIcon")!
+            case .tooMany: return NSImage(named: "toManyIcon")!
+            case .tooOne: return NSImage(named: "toOneIcon")!
             }
         }
     }
     
     var int: Int {
         switch self {
-        case TooMany: return 0
-        case TooOne: return 1
+        case .tooMany: return 0
+        case .tooOne: return 1
         }
     }
     
-    static func create(int int: Int) -> RelationshipType {
+    static func create(int: Int) -> RelationshipType {
         switch int {
-        case 0: return .TooMany
-        case 1: return .TooOne
+        case 0: return .tooMany
+        case 1: return .tooOne
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .Error)
-            return .TooOne
+            HGReportHandler.shared.report("int: |\(int)| is not RelationshipType mapable, using .Nullify", type: .error)
+            return .tooOne
         }
     }
     
-    static func create(string string: String) -> RelationshipType {
+    static func create(string: String) -> RelationshipType {
         switch string {
-        case "YES", "TooMany": return .TooMany
-        case "NO", "TooOne": return .TooOne
+        case "YES", "TooMany": return .tooMany
+        case "NO", "TooOne": return .tooOne
         default:
-            HGReportHandler.shared.report("string: |\(string)| is not RelationshipType mapable, using .TooOne", type: .Error)
-            return .TooOne
+            HGReportHandler.shared.report("string: |\(string)| is not RelationshipType mapable, using .TooOne", type: .error)
+            return .tooOne
         }
     }
     

@@ -26,7 +26,7 @@ import CoreData
 final class HuckleberryGen {
     
     /// unique identifier for this Huckleberry Gen store
-    private(set) var uniqIdentifier: String
+    fileprivate(set) var uniqIdentifier: String
     
     /// user and license info
     var licenseInfo: LicenseInfo
@@ -46,7 +46,7 @@ final class HuckleberryGen {
     }
     
     /// a list of saved projects for this store
-    private(set) var savedProjects: [String]
+    fileprivate(set) var savedProjects: [String]
     
     /// Checks defaults to see if a Huckleberry Gen was saved with same identifier and opens that data if available, else returns a blank project with identifier
     init(uniqIdentifier uniqID: String) {
@@ -71,21 +71,21 @@ final class HuckleberryGen {
     
     /// clears NSUserDefaults completely
     static func clear() {
-        let appDomain = NSBundle.mainBundle().bundleIdentifier
-        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
+        let appDomain = Bundle.main.bundleIdentifier
+        UserDefaults.standard.removePersistentDomain(forName: appDomain!)
     }
     
     
     /// clears all variables to default values
     func clear() {
-        let keys = Array(NSUserDefaults.standardUserDefaults().dictionaryRepresentation().keys)
-        let storeKeys = keys.filter { $0.containsString(self.uniqIdentifier) }
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let keys = Array(UserDefaults.standard.dictionaryRepresentation().keys)
+        let storeKeys = keys.filter { $0.contains(self.uniqIdentifier) }
+        let defaults = UserDefaults.standard
         
         print("Deleting storeKeys: \n\(storeKeys)")
         
         for key in storeKeys {
-            defaults.removeObjectForKey(key)
+            defaults.removeObject(forKey: key)
         }
         
         licenseInfo = LicenseInfo.new
@@ -102,17 +102,17 @@ final class HuckleberryGen {
     // MARK: Project Manipulation
     
     /// saves or overwrites a project to user defaults
-    func saveProject(project: Project) {
+    func saveProject(_ project: Project) {
         
         // if project was not already named, name it and append it to savedProjects
         if project.isNew {
-            project.name = "New Project \(NSDate().mmddyymmss)"
+            project.name = "New Project \(Date().mmddyymmss)"
             appDelegate.mainWindowController.window?.title = project.name
             savedProjects.append(project.name)
         }
         
         // create save key, this will always return a string because we know for sure that project has a name
-        let key = project.saveKey(withUniqID: uniqIdentifier) as String!
+        let key = project.saveKey(withUniqID: uniqIdentifier)
         
         // save defaults
         project.saveDefaults(key)
@@ -123,13 +123,13 @@ final class HuckleberryGen {
         
         // if project was not already named, name it and append it to savedProjects
         if project.isNew {
-            project.name = "New Project \(NSDate().mmddyymmss)"
+            project.name = "New Project \(Date().mmddyymmss)"
             appDelegate.mainWindowController.window?.title = project.name
             savedProjects.append(project.name)
         }
         
         // create save key, this will always return a string because we know for sure that project has a name
-        let key = project.saveKey(withUniqID: uniqIdentifier) as String!
+        let key = project.saveKey(withUniqID: uniqIdentifier)
         
         // save defaults
         project.saveDefaults(key)
@@ -140,7 +140,7 @@ final class HuckleberryGen {
     
         // index out of bounds
         if savedProjects.indices.contains(index) == false {
-            HGReportHandler.shared.report("savedProjects attempting to delete index that is out of bound", type: .Error)
+            HGReportHandler.shared.report("savedProjects attempting to delete index that is out of bound", type: .error)
             return false
         }
         
@@ -151,7 +151,7 @@ final class HuckleberryGen {
         Project.removeDefaults(key)
         
         // remove project from index
-        savedProjects.removeAtIndex(index)
+        savedProjects.remove(at: index)
         
         return true
     }
@@ -161,7 +161,7 @@ final class HuckleberryGen {
         
         // index out of bounds
         if savedProjects.indices.contains(index) == false {
-            HGReportHandler.shared.report("savedProjects attempting to open index that is out of bound", type: .Error)
+            HGReportHandler.shared.report("savedProjects attempting to open index that is out of bound", type: .error)
             return false
         }
         
@@ -190,14 +190,14 @@ final class HuckleberryGen {
         project.name = name
         
         // add new name to top of index
-        savedProjects.insert(name, atIndex: 0)
+        savedProjects.insert(name, at: 0)
         
         // update title bar
         appDelegate.mainWindowController.window?.title = project.name
     
         // create save keys
         let oldKey = Project.saveKey(withUniqID: uniqIdentifier, name: originalName)
-        let key = project.saveKey(withUniqID: uniqIdentifier) as String!
+        let key = project.saveKey(withUniqID: uniqIdentifier)
         
         // delete old key
         Project.removeDefaults(oldKey)
@@ -239,8 +239,8 @@ final class HuckleberryGen {
     }
     
     /// posts a mass notification to every sub component when the project has changed
-    private func postProjectChanged() {
-        let notifType = HGNotifType.ProjectChanged
+    fileprivate func postProjectChanged() {
+        let notifType = HGNotifType.projectChanged
         let post = notifType.uniqString(forUniqId: uniqIdentifier)
         HGNotif.postNotification(post)
     }
@@ -249,22 +249,22 @@ final class HuckleberryGen {
 extension HuckleberryGen: HGEncodable {
     
     static var new: HuckleberryGen {
-        let uuid = NSUUID().UUIDString
+        let uuid = UUID().uuidString
         return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importPath: "/", exportPath: "/", project: Project.new, savedProjects: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["uniqIdentifier"] = uniqIdentifier
+        dict["uniqIdentifier"] = uniqIdentifier as AnyObject?
         dict["licenseInfo"] = licenseInfo.encode
-        dict["importPath"] = importPath
-        dict["exportPath"] = exportPath
+        dict["importPath"] = importPath as AnyObject?
+        dict["exportPath"] = exportPath as AnyObject?
         dict["project"] = project.encode
-        dict["savedProjects"] = savedProjects
-        return dict
+        dict["savedProjects"] = savedProjects as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> HuckleberryGen {
+    static func decode(object: AnyObject) -> HuckleberryGen {
         let dict = hgdict(fromObject: object, decoderName: "HuckleberryGen")
         let uniqIdentifier = dict["uniqIdentifier"].string
         let licenseInfo = dict["licenseInfo"].licenseInfo

@@ -23,15 +23,15 @@
 import Cocoa
 
 enum Option {
-    case Yes
-    case No
-    case AskUser // Will Display a Prompt
+    case yes
+    case no
+    case askUser // Will Display a Prompt
 }
 
 enum CellItemType: Int16 {
-    case Field
-    case Image
-    case Check
+    case field
+    case image
+    case check
 }
 
 /// Defines HGCell locations, row determines which HGCell was selected in the table.  HGCellIdentifier determines the actual item in the cell that was selected.  If this is nil, the entire row was selected.
@@ -45,7 +45,7 @@ struct HGCellLocation: Hashable {
     }
     
     /// creates an array of HGCellLocations from an NSIndexSet of rows
-    static func locations(fromIndexSet set: NSIndexSet) -> [HGCellLocation] {
+    static func locations(fromIndexSet set: IndexSet) -> [HGCellLocation] {
         var locations: [HGCellLocation] = []
         for index in set {
             locations.append(HGCellLocation(row: index, identifier: nil) )
@@ -94,10 +94,10 @@ func ==(lhs: HGImageCellItemIdentifier, rhs: HGImageCellItemIdentifier) -> Bool 
 }
 
 protocol HGCellDelegate: AnyObject {
-    func hgcell(cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool
-    func hgcell(cell: HGCell, didSelectTag tag: Int, type: CellItemType)
-    func hgcell(cell: HGCell, shouldEditField field: Int) -> Bool
-    func hgcell(cell: HGCell, didEditField field: Int, withString string: String)
+    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool
+    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: CellItemType)
+    func hgcell(_ cell: HGCell, shouldEditField field: Int) -> Bool
+    func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String)
 }
 
 
@@ -131,8 +131,8 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     weak var delegate: HGCellDelegate?
     
-    private(set) var row: Int = 0
-    private(set) var selectedImages: [Int] = []
+    fileprivate(set) var row: Int = 0
+    fileprivate(set) var selectedImages: [Int] = []
     
     /// ordered array of images for HGCell
     lazy var images: [NSButton?] = {
@@ -189,17 +189,17 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: Button and Field Target Actions
     
     /// function called when user selects an image
-    func didSelectImage(sender: NSButton!) {
+    func didSelectImage(_ sender: NSButton!) {
         // We can not select an image in HGCell
-        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: sender.tag, type: .Image) ?? false
+        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: sender.tag, type: .image) ?? false
         if shouldSelect == true {
-            delegate?.hgcell(self, didSelectTag: sender.tag, type: .Image)
+            delegate?.hgcell(self, didSelectTag: sender.tag, type: .image)
         }
     }
     
     /// function called when a user selects a field (if field is selectable)
-    func didSelectField(sender: NSTextField!) {
-        delegate?.hgcell(self, didSelectTag: sender.tag, type: .Field)
+    func didSelectField(_ sender: NSTextField!) {
+        delegate?.hgcell(self, didSelectTag: sender.tag, type: .field)
     }
     
     /// unselects and unhighlights all image in HGCell
@@ -207,7 +207,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         for index in 0...7 {
             if let image = images[index] {
-                image.backgroundColor(HGColor.Clear)
+                image.backgroundColor(HGColor.clear)
             }
         }
         
@@ -218,7 +218,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     func unselect(imagetag tag: Int) {
         
         if let image = images[tag] {
-            image.backgroundColor(HGColor.Clear)
+            image.backgroundColor(HGColor.clear)
             selectedImages = selectedImages.filter() { $0 != tag }
         }
     }
@@ -229,7 +229,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         if selectedImages.contains(tag) { return }
         
         if let image = images[tag] {
-            image.backgroundColor(HGColor.BlueBright)
+            image.backgroundColor(HGColor.blueBright)
             selectedImages.append(tag)
         }
     }
@@ -237,14 +237,14 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: Set Fields and Buttons
     
     /// sets field with approprate tag and delegate
-    private func set(field field: NSTextField?, withTag tag: Int) {
+    fileprivate func set(field: NSTextField?, withTag tag: Int) {
         guard let field = field else { return }
         field.delegate = self
         field.tag = tag
     }
     
     /// sets image with approprate tag and action
-    private func set(imagebutton button: NSButton?, withTag tag: Int) {
+    fileprivate func set(imagebutton button: NSButton?, withTag tag: Int) {
         guard let button = button else { return }
         button.image = nil
         button.target = self
@@ -253,7 +253,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// set check with appropriate tag and target
-    private func set(checkbutton button: NSButton?, withTag tag: Int) {
+    fileprivate func set(checkbutton button: NSButton?, withTag tag: Int) {
         guard let button = button else { return }
         button.target = self
         button.tag = tag
@@ -262,7 +262,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: Update Cell Data
     
     /// Updates fields with HGFieldData (assumes [HGFieldData] is correctly ordered)
-    private func update(withData data: [HGFieldData]) {
+    fileprivate func update(withData data: [HGFieldData]) {
         let maxCount = min(data.count, fields.count)
         for index in 0 ..< maxCount {
             update(field: fields[index], withData: data[index])
@@ -270,7 +270,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Updates images with HGImageData (assumes [HGImageData] is correctly ordered)
-    private func update(withData data: [HGImageData]) {
+    fileprivate func update(withData data: [HGImageData]) {
         let maxCount = min(data.count, images.count)
         for index in 0 ..< maxCount {
             update(image: images[index], withData: data[index])
@@ -278,7 +278,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Updates checks with HGCheckData (assumes [HGCheckData] is correctly ordered)
-    private func update(withData data: [HGCheckData]) {
+    fileprivate func update(withData data: [HGCheckData]) {
         let maxCount = min(data.count, checks.count)
         for index in 0 ..< maxCount {
             update(check: checks[index], withData: data[index])
@@ -286,18 +286,18 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Updates a field with appropriate HGFieldData and makes field ready for custom display
-    private func update(field field: NSTextField?, withData data: HGFieldData) {
+    fileprivate func update(field: NSTextField?, withData data: HGFieldData) {
         
         guard let field = field else { return }
         
         field.stringValue = data.title
-        field.enabled = true
-        field.hidden = false
+        field.isEnabled = true
+        field.isHidden = false
         selectionSetup(field: field)
     }
     
     /// Updates an image with appropriate HGImageData and makes image ready for custom display
-    private func update(image image: NSButton?, withData data: HGImageData) {
+    fileprivate func update(image: NSButton?, withData data: HGImageData) {
         
         guard let image = image else { return }
         
@@ -308,25 +308,25 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
             image.image = NSImage(named: data.title)
         }
         
-        image.enabled = true
-        image.hidden = false
+        image.isEnabled = true
+        image.isHidden = false
     }
     
     /// Updates an check with appropriate HGCheckData and makes check ready for custom display
-    private func update(check check: NSButton?, withData data: HGCheckData) {
+    fileprivate func update(check: NSButton?, withData data: HGCheckData) {
         
         guard let check = check else { return }
         
         check.title = data.title
         check.state = data.state == true ? 1 : 0
-        check.enabled = true
-        check.hidden = false
+        check.isEnabled = true
+        check.isHidden = false
     }
     
     // MARK: Disable Cells
     
     /// Disables fields that do not have cooresponding HGFieldData (assumes [HGFieldData] is correctly ordered)
-    private func disable(missingData data: [HGFieldData]) {
+    fileprivate func disable(missingData data: [HGFieldData]) {
         if data.count < fields.count {
             for index in data.count ..< fields.count {
                 disable(field: fields[index])
@@ -335,7 +335,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Disables images that do not have cooresponding HGImageData (assumes [HGImageData] is correctly ordered)
-    private func disable(missingData data: [HGImageData]) {
+    fileprivate func disable(missingData data: [HGImageData]) {
         if data.count < images.count {
             for index in data.count ..< images.count {
                 disable(image: images[index])
@@ -344,7 +344,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Disables checks that do not have cooresponding HGCheckData (assumes [HGCheckData] is correctly ordered)
-    private func disable(missingData data: [HGCheckData]) {
+    fileprivate func disable(missingData data: [HGCheckData]) {
         if data.count < checks.count {
             for index in data.count ..< checks.count {
                 disable(check: checks[index])
@@ -353,57 +353,57 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Disables field so that it will not be used by the HGCell
-    private func disable(field field: NSTextField?) {
+    fileprivate func disable(field: NSTextField?) {
         
         guard let field = field else { return }
         
         field.stringValue = ""
-        field.enabled = false
-        field.hidden = true
-        field.editable = false
+        field.isEnabled = false
+        field.isHidden = true
+        field.isEditable = false
         removeSelectFieldButton(field: field)
     }
     
     /// Disables image so that it will not be used by the HGCell
-    private func disable(image image: NSButton?) {
+    fileprivate func disable(image: NSButton?) {
         
         guard let image = image else { return }
         
         image.title = ""
         image.image = nil
-        image.enabled = false
-        image.hidden = true
+        image.isEnabled = false
+        image.isHidden = true
     }
     
     /// Disables check so that it will not be used by the HGCell
-    private func disable(check check: NSButton?) {
+    fileprivate func disable(check: NSButton?) {
         
         guard let check = check else { return }
         
         check.title = ""
         check.state = 0
-        check.enabled = false
-        check.hidden = true
+        check.isEnabled = false
+        check.isHidden = true
     }
     
     // MARK: Errors Reporting
     
     /// Reports an error if there is more data than cell objects available
-    private func reportExtraDataErrorIfApplicable(cellCount cellCount: Int, dataCount: Int, typeOfObject: String) {
+    fileprivate func reportExtraDataErrorIfApplicable(cellCount: Int, dataCount: Int, typeOfObject: String) {
         //
     }
     
     // MARK: Field Select Button
     
     /// Sets up appropriate field selection button, edit ability, and field text color for a field by polling delegate
-    private func selectionSetup(field field: NSTextField) {
+    fileprivate func selectionSetup(field: NSTextField) {
         
-        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: field.tag, type: .Field) ?? false
+        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: field.tag, type: .field) ?? false
         
         // Selectable Field
         if shouldSelect {
-            field.editable = false
-            field.textColor = NSColor.blueColor()
+            field.isEditable = false
+            field.textColor = NSColor.blue
             addSelectFieldButton(field: field)
             return
         }
@@ -412,16 +412,16 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         // Editable Field
         if shouldEdit {
-            field.editable = true
-            field.textColor = NSColor.blueColor()
+            field.isEditable = true
+            field.textColor = NSColor.blue
             updateSpecialType(forField: field)
             removeSelectFieldButton(field: field)
             return
         }
         
         // Not Selectable or Editable Field (Just Displayable)
-        field.editable = false
-        field.textColor = NSColor.blackColor()
+        field.isEditable = false
+        field.textColor = NSColor.black
         removeSelectFieldButton(field: field)
     }
     
@@ -433,15 +433,15 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Returns the appropriate field selection button for a field if it exists
-    private func selectFieldButton(field field: NSTextField) -> NSButton? {
+    fileprivate func selectFieldButton(field: NSTextField) -> NSButton? {
         for view in field.subviews {
-            if let view = view as? NSButton where view.tag == field.tag { return view }
+            if let view = view as? NSButton, view.tag == field.tag { return view }
         }
         return nil
     }
     
     /// Adds a field selection button for a field
-    private func addSelectFieldButton(field field: NSTextField) {
+    fileprivate func addSelectFieldButton(field: NSTextField) {
         if selectFieldButton(field: field) != nil { return }
         let frame = NSRect(x: 0, y: 0, width: field.frame.width, height: field.frame.height)
         let button = NSButton(frame: frame)
@@ -454,7 +454,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// Removes a field selection button from the field if the button exists
-    private func removeSelectFieldButton(field field: NSTextField) {
+    fileprivate func removeSelectFieldButton(field: NSTextField) {
         let button = selectFieldButton(field: field)
         button?.removeFromSuperview()
     }
@@ -462,7 +462,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: NSTextFieldDelegate
 
     /// Returns a call to delegate to let the delegate know that the field was edited once editing is done
-    func control(control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
+    func control(_ control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
         let string = fieldEditor.string ?? ""
         
         // update color in a bit

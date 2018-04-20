@@ -22,50 +22,50 @@
 
 import Foundation
 
-extension NSDate
+extension Date
 {
     
     /// returns second integer value of NSDate
     var second: Int {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Second, fromDate: self)
-        return components.second
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components(.second, from: self)
+        return components.second!
     }
     
     /// returns minute integer value of NSDate
     var minute: Int {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Minute, fromDate: self)
-        return components.minute
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components(.minute, from: self)
+        return components.minute!
     }
     
     /// returns hour integer value of NSDate
     var hour: Int {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Hour, fromDate: self)
-        return components.hour
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components(.hour, from: self)
+        return components.hour!
     }
     
     /// returns year integer value of NSDate
     var year: Int {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Year, fromDate: self)
-        return components.year
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components(.year, from: self)
+        return components.year!
     }
     
     /// creates a string of MM/DD/YY for NSDate
     var mmddyy: String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        let dateString = dateFormatter.stringFromDate(self)
+        let dateString = dateFormatter.string(from: self)
         return dateString
     }
     
     /// creates a string of MM/DD/YY h:mm:ss a for NSDate
     var mmddyymmss: String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy hh:mm:ss a"
-        let dateString = dateFormatter.stringFromDate(self)
+        let dateString = dateFormatter.string(from: self)
         return dateString
     }
     
@@ -77,9 +77,9 @@ extension NSDate
     /// creates a short style string of NSDate
     var short: String {
         //Get Short Time String
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
-        let timeString = formatter.stringFromDate(self)
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        let timeString = formatter.string(from: self)
         
         //Return Short Time String
         return timeString
@@ -90,10 +90,10 @@ extension NSDate
 
 // Sorting Dates
 
-func <(a: NSDate, b: NSDate) -> Bool {
-    return a.compare(b) == NSComparisonResult.OrderedAscending
+func <(a: Date, b: Date) -> Bool {
+    return a.compare(b) == ComparisonResult.orderedAscending
 }
 
-func ==(a: NSDate, b: NSDate) -> Bool {
-    return a.compare(b) == NSComparisonResult.OrderedSame
+func ==(a: Date, b: Date) -> Bool {
+    return a.compare(b) == ComparisonResult.orderedSame
 }

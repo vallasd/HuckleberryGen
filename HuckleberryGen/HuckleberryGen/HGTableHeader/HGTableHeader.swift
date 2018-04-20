@@ -23,14 +23,14 @@
 import Cocoa
 
 protocol HGTableHeaderDelegate: AnyObject {
-    func hgtableheaderDidAdd(header: HGTableHeader)
+    func hgtableheaderDidAdd(_ header: HGTableHeader)
 }
 
 class HGTableHeader: NSTableHeaderView {
     
     weak var delegate: HGTableHeaderDelegate?
     
-    @IBAction func pressedAdd(sender: AnyObject) {
+    @IBAction func pressedAdd(_ sender: AnyObject) {
         delegate?.hgtableheaderDidAdd(self)
     }
     

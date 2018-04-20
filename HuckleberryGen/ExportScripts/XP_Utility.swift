@@ -21,6 +21,30 @@
 //  along with HuckleberryGen.  If not, see <http://www.gnu.org/licenses/>.
 
 import Foundation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 /// A set of generic static functions for exporting
@@ -32,7 +56,7 @@ struct XP_Utility {
     }
     
     // create extension line
-    static func beginExtension(withMark: String?, type: TypeRepresentable, protocols: [Protocol]?) -> String {
+    static func beginExtension(_ withMark: String?, type: TypeRepresentable, protocols: [Protocol]?) -> String {
         var string = withMark != nil ? "// MARK: \(withMark!)\n" : ""
         string += "extension \(type)"
         string += protocols?.count > 0 ? extendProtocols(protocols!) : ""
@@ -40,14 +64,14 @@ struct XP_Utility {
         return ""
     }
     
-    static func endBracket(iInd: String) -> String {
+    static func endBracket(_ iInd: String) -> String {
         return "\(iInd)}\n"
     }
     
     // MARK: Helper Methods
     
     /// returns a string that is needed to add protocols to an extension or Type
-    private static func extendProtocols(protocols: [Protocol]) -> String {
+    fileprivate static func extendProtocols(_ protocols: [Protocol]) -> String {
         
         // return blank if no protocols
         if protocols.count == 0 { return "" }

@@ -30,11 +30,11 @@ class HGTabVC: NSTabViewController {
         tabView.delegate = self
     }
     
-    override func keyDown(theEvent: NSEvent) {
+    override func keyDown(with theEvent: NSEvent) {
         let command = theEvent.command()
         switch command {
-        case .TabLeft: tabView.selectPreviousTabViewItem(self)
-        case .TabRight: tabView.selectNextTabViewItem(self)
+        case .tabLeft: tabView.selectPreviousTabViewItem(self)
+        case .tabRight: tabView.selectNextTabViewItem(self)
         default: break // Do Nothing
         }
     }

@@ -24,18 +24,18 @@ import Foundation
 import CoreData
 
 enum ImportFileType: Int16 {
-    case XCODE_XML = 0
+    case xcode_XML = 0
     
     var int: Int {
         return Int(self.rawValue)
     }
     
-    static func create(int int: Int) -> ImportFileType {
+    static func create(int: Int) -> ImportFileType {
         switch int {
-        case 0: return .XCODE_XML
+        case 0: return .xcode_XML
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not an ImportFileType mapable, using .XCODE_XML", type: .Error)
-            return .XCODE_XML
+            HGReportHandler.shared.report("int: |\(int)| is not an ImportFileType mapable, using .XCODE_XML", type: .error)
+            return .xcode_XML
         }
     }
 }
@@ -43,24 +43,24 @@ enum ImportFileType: Int16 {
 struct ImportFile {
     
     let name: String
-    let lastUpdate: NSDate
-    let modificationDate: NSDate
-    let creationDate: NSDate
+    let lastUpdate: Date
+    let modificationDate: Date
+    let creationDate: Date
     let path: String
     let type: ImportFileType
     
-    static func importFiles(path path: String, completion: (importFiles: [ImportFile]) -> Void) {
-        HGFileQuery.shared.importFiles(forPath: path) { (importFiles) -> Void in completion(importFiles: importFiles) }
+    static func importFiles(path: String, completion: @escaping (_ importFiles: [ImportFile]) -> Void) {
+        HGFileQuery.shared.importFiles(forPath: path) { (importFiles) -> Void in completion(importFiles) }
     }
     
-    func save(key: String) {
-        NSUserDefaults.standardUserDefaults().setValue(self.encode, forKey: key)
+    func save(_ key: String) {
+        UserDefaults.standard.setValue(self.encode, forKey: key)
     }
     
-    static func open(key: String) -> ImportFile? {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let dict = defaults.objectForKey(key) as? HGDICT {
-            return ImportFile.decode(object: dict)
+    static func open(_ key: String) -> ImportFile? {
+        let defaults = UserDefaults.standard
+        if let dict = defaults.object(forKey: key) as? HGDICT {
+            return ImportFile.decode(object: dict as AnyObject)
         }
         return nil
     }
@@ -74,22 +74,22 @@ extension ImportFile: Equatable {}; func ==(lhs: ImportFile, rhs: ImportFile) ->
 extension ImportFile: HGEncodable {
     
     static var new: ImportFile {
-        let date = NSDate()
-        return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .XCODE_XML)
+        let date = Date()
+        return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .xcode_XML)
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["name"] = name
-        dict["lastUpdate"] = lastUpdate.timeIntervalSince1970
-        dict["modificationDate"] = modificationDate.timeIntervalSince1970
-        dict["creationDate"] = creationDate.timeIntervalSince1970
-        dict["path"] = path
-        dict["type"] = type.int
-        return dict
+        dict["name"] = name as AnyObject?
+        dict["lastUpdate"] = lastUpdate.timeIntervalSince1970 as AnyObject?
+        dict["modificationDate"] = modificationDate.timeIntervalSince1970 as AnyObject?
+        dict["creationDate"] = creationDate.timeIntervalSince1970 as AnyObject?
+        dict["path"] = path as AnyObject?
+        dict["type"] = type.int as AnyObject?
+        return dict as AnyObject
     }
     
-    static func decode(object object: AnyObject) -> ImportFile {
+    static func decode(object: AnyObject) -> ImportFile {
         let dict = hgdict(fromObject: object, decoderName: "ImportFile")
         let name = dict["name"] as! String
         let lastUpdate = dict["lastUpdate"].interval.date()

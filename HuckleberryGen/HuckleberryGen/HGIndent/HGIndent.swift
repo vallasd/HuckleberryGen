@@ -31,7 +31,7 @@ struct HGIndent {
     
     static var indent: String { return self.shared.indent }
     
-    static func indent(count: Int) -> String {
+    static func indent(_ count: Int) -> String {
         var ind = ""
         for _ in 1...count { ind += indent }
         return ind
