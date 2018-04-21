@@ -41,22 +41,19 @@ extension String {
     }
     
     var stringByDeletingPathExtension: String {
-        get {
-            let nsstring = self as NSString
-            return nsstring.deletingPathExtension
-        }
+        let nsstring = self as NSString
+        return nsstring.deletingPathExtension
     }
     
     var lastPathComponent: String {
-        get {
-            let nsstring = self as NSString
-            return nsstring.lastPathComponent
-        }
+        let nsstring = self as NSString
+        return nsstring.lastPathComponent
     }
     
     /// removes all characters
-    func stripOutCharacterExcept(characters set: Set<Character>, fromString string: String) -> String {
-        return String(string.characters.filter { set.contains($0) })
+    func stripOutCharactersExcept(_ set: CharacterSet) -> String {
+        let stripped = self.components(separatedBy: set.inverted).joined()
+        return stripped
     }
     
     /// returns an indexed list of iterated objects that match string in a set of string objects.  Example, string is "New Case", iterated objects are ["Hello", "New Case 2", "Bleepy", "new case 3", "New Case"].  Function will return ["New Case", "New Case 2"].  This search is case sensitive.
@@ -101,8 +98,8 @@ extension String {
     
     /// simple string, removes all characters besides caps, lower case, and spaces
     fileprivate var simple: String {
-        let chars: Set<Character> = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ_1234567890".characters)
-        return stripOutCharacterExcept(characters: chars, fromString: self)
+        let chars = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ_1234567890")
+        return self.stripOutCharactersExcept(chars)
     }
     
     /// returns a new string if change was made, else returns nil if the string is already TypeRepresentable
@@ -134,7 +131,7 @@ extension String {
         var varrep = self.trimmed
         
         // remove crap symbols, capitalize words and remove spaces
-        varrep = varrep.simple.components(separatedBy: " ").map { $0.capitalFirstLetter }.joined(separator: "").lowerCaseFirstLetter
+        varrep = varrep.simple.components(separatedBy: " ").map { $0.capitalFirstLetter }.joined(separator: "").lowerFirstLetter
         
         // if it is blank, make a New typeRep
         if self == "" || self == "_" {
@@ -181,6 +178,13 @@ extension String {
         return string
     }
     
+    /// makes first letter of string lower case and appends "Array" to the end of string
+    var lowerFirstLetterAndArray: String {
+        if self.isEmpty { return "" }
+        let string = self.lowerFirstLetter
+        return string + "Array"
+    }
+    
     /// adds "Set" to end of string
     var setRep: String {
         return self + "Set"
@@ -196,22 +200,5 @@ extension String {
         return self + "Nullable"
     }
     
-    /// makes first letter of string lower case
-    var lowerCaseFirstLetter: String {
-        if self.isEmpty { return "" }
-        var string = self
-        let firstChar = String(string.characters.first!).lowercased()
-        string.replaceSubrange(string.startIndex...string.startIndex, with: firstChar)
-        return string
-    }
     
-    /// makes first letter of string lower case and appends "Array" to the end of string
-    var lowerCaseFirstLetterAndArray: String {
-        
-        if self.isEmpty { return "" }
-        
-        let string = self.lowerCaseFirstLetter
-        
-        return string + "Array"
-    }
 }

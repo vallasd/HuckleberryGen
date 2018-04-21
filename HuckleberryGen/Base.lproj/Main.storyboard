@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -652,7 +653,7 @@
             <objects>
                 <windowController showSeguePresentationStyle="single" id="B8D-0N-5wS" customClass="MainWindowController" customModule="HuckleberryGen" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Huckleberry Generator" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="0.0" y="0.0" width="240" height="893"/>
@@ -718,6 +719,9 @@
                                 <toolbarItem reference="DEZ-3K-p1x"/>
                             </defaultToolbarItems>
                         </toolbar>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="dWk-Hd-HOk"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="C6o-DP-Iae" kind="relationship" relationship="window.shadowedContentViewController" id="79i-5S-k58"/>
@@ -805,9 +809,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="249" height="975"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
-                        <tabViewItems/>
+                        <connections>
+                            <outlet property="delegate" destination="C6o-DP-Iae" id="RZX-aD-XJC"/>
+                        </connections>
                     </tabView>
                     <connections>
+                        <outlet property="tabView" destination="EG6-tp-N4H" id="Gn4-mm-A0b"/>
                         <segue destination="pQg-jq-5Nx" kind="relationship" relationship="tabItems" id="HXE-qG-dT9"/>
                         <segue destination="Rjb-OR-1Xp" kind="relationship" relationship="tabItems" id="DAQ-OT-fU4"/>
                     </connections>
@@ -831,13 +838,13 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dPH-vO-ShQ" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="458"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="234.65290034479372" minWidth="40" maxWidth="1000" id="76t-5H-2fd">
+                                                <tableColumn identifier="" width="234.65290034479372" minWidth="40" maxWidth="1000" id="76t-5H-2fd">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="This is title">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -853,7 +860,6 @@
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="9Oh-3l-Rsc">
                                     <rect key="frame" x="1" y="444" width="238" height="15"/>
@@ -892,9 +898,12 @@
                         <rect key="frame" x="-3" y="-87" width="239" height="476"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
-                        <tabViewItems/>
+                        <connections>
+                            <outlet property="delegate" destination="mir-TR-CNv" id="3eS-DT-ap3"/>
+                        </connections>
                     </tabView>
                     <connections>
+                        <outlet property="tabView" destination="D4O-pX-CW2" id="ZSI-9s-NaD"/>
                         <segue destination="QoH-xe-My8" kind="relationship" relationship="tabItems" id="npA-Qi-yMU"/>
                         <segue destination="CCI-Qy-dX0" kind="relationship" relationship="tabItems" id="H97-gC-Twk"/>
                     </connections>
@@ -942,6 +951,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="MXQ-Y9-LJy" firstAttribute="top" secondItem="PVK-vC-xaI" secondAttribute="bottom" constant="6" id="0YK-aG-KQn"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="L8C-Xw-3oL" secondAttribute="trailing" constant="20" symbolic="YES" id="4E9-7A-rId"/>
                             <constraint firstItem="RUf-cq-WF6" firstAttribute="top" secondItem="L8C-Xw-3oL" secondAttribute="bottom" constant="6" id="9rc-Nh-ppm"/>
                             <constraint firstItem="RUf-cq-WF6" firstAttribute="leading" secondItem="bRA-4W-Vs9" secondAttribute="leading" constant="20" id="DbB-rD-TED"/>
                             <constraint firstItem="L8C-Xw-3oL" firstAttribute="leading" secondItem="bRA-4W-Vs9" secondAttribute="leading" constant="20" id="Dsn-Ux-aJ2"/>
@@ -949,6 +959,9 @@
                             <constraint firstItem="PVK-vC-xaI" firstAttribute="top" secondItem="bRA-4W-Vs9" secondAttribute="top" constant="20" id="Qlx-2G-mvL"/>
                             <constraint firstItem="L8C-Xw-3oL" firstAttribute="top" secondItem="MXQ-Y9-LJy" secondAttribute="bottom" constant="6" id="Y7g-5U-tee"/>
                             <constraint firstItem="PVK-vC-xaI" firstAttribute="leading" secondItem="bRA-4W-Vs9" secondAttribute="leading" constant="20" id="Z7t-aI-m9M"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PVK-vC-xaI" secondAttribute="trailing" constant="20" symbolic="YES" id="oaS-15-6px"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RUf-cq-WF6" secondAttribute="trailing" constant="20" symbolic="YES" id="u49-FH-RYc"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MXQ-Y9-LJy" secondAttribute="trailing" constant="20" symbolic="YES" id="w6x-ZG-hlB"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -971,13 +984,13 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="zzk-BR-TCe" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="478"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="235" minWidth="40" maxWidth="1000" id="MAB-Ry-3jQ">
+                                                <tableColumn identifier="" width="235" minWidth="40" maxWidth="1000" id="MAB-Ry-3jQ">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="This is title">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -993,7 +1006,6 @@
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="JO6-2k-9eX">
                                     <rect key="frame" x="1" y="464" width="238" height="15"/>
@@ -1101,13 +1113,13 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="ToS-dV-Km3" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="458"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="234.79871002417664" minWidth="40" maxWidth="1000" id="I43-jB-1nX">
+                                                <tableColumn identifier="" width="234.79871002417664" minWidth="40" maxWidth="1000" id="I43-jB-1nX">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="This is title">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1123,7 +1135,6 @@
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="bGk-9P-BSW">
                                     <rect key="frame" x="1" y="444" width="238" height="15"/>
@@ -1163,9 +1174,12 @@
                         <rect key="frame" x="0.0" y="54" width="241" height="485"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
-                        <tabViewItems/>
+                        <connections>
+                            <outlet property="delegate" destination="UJK-4r-3Nn" id="tuS-Yx-HgI"/>
+                        </connections>
                     </tabView>
                     <connections>
+                        <outlet property="tabView" destination="QCQ-KH-8U2" id="ySn-Nd-bh5"/>
                         <segue destination="EfA-V2-bZh" kind="relationship" relationship="tabItems" id="7Rj-nJ-9l4"/>
                         <segue destination="G4R-Gt-T9S" kind="relationship" relationship="tabItems" id="RjR-oq-Sbg"/>
                     </connections>
@@ -1189,13 +1203,13 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="gRZ-sQ-BEb" customClass="HGTableView" customModule="HuckleberryGen" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="478"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="234.78768704699408" minWidth="40" maxWidth="1000" id="n5J-K3-ovG">
+                                                <tableColumn identifier="" width="234.78768704699408" minWidth="40" maxWidth="1000" id="n5J-K3-ovG">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="This is title">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1211,7 +1225,6 @@
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="bSo-Ao-NxG">
                                     <rect key="frame" x="1" y="464" width="238" height="15"/>
@@ -1249,18 +1262,6 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1324" y="-345"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="vZ1-ar-vFI">
-            <objects>
-                <viewController id="IkI-f0-HdK" sceneMemberID="viewController">
-                    <view key="view" id="9Jd-zz-v7v">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
-                </viewController>
-                <customObject id="gAW-4J-gYo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>

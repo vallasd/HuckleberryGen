@@ -160,8 +160,8 @@ class ExportEnum {
         
         // begin decode function
         string += "\(ind)static func decode(object object: AnyObject) -> \(enuM.name) {\n"
-        string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.lowerCaseFirstLetter) }\n"
-        string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.lowerCaseFirstLetter) }\n"
+        string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.lowerFirstLetter) }\n"
+        string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.lowerFirstLetter) }\n"
         string += "\(ind)\(ind)HGReportHandler.shared.report(\"object \\(object) is not |\(enuM.typeRep)| decodable, returning \(defaultCaseType)\", type: .Error)\n"
         string += "\(ind)\(ind)return \(enuM.name).new\n"
         

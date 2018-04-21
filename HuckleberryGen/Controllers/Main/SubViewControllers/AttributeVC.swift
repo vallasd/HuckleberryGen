@@ -64,7 +64,7 @@ extension AttributeVC: HGTableDisplayable {
         
         // define images and text going into attribute
         let varRep = attribute.varRep
-        let typeRep = attribute.typeRep.lowerCaseFirstLetter
+        let typeRep = attribute.typeRep.lowerFirstLetter
         var image: NSImage
         
         // set appropriate images if they are special types, else get image for type

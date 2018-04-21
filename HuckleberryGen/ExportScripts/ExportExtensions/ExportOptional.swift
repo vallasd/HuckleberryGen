@@ -129,8 +129,8 @@ class ExportOptional {
         
         // return string
         var string = ""
-        string += "\(iInd)if let \(name.lowerCaseFirstLetterAndArray) = self as? [\(name)] {\n"
-        string += "\(iInd)\(ind)return \(name.lowerCaseFirstLetterAndArray)\n"
+        string += "\(iInd)if let \(name.lowerFirstLetterAndArray) = self as? [\(name)] {\n"
+        string += "\(iInd)\(ind)return \(name.lowerFirstLetterAndArray)\n"
         string += "\(iInd)}\n"
         return string
     }
@@ -169,7 +169,7 @@ class ExportOptional {
         // return string
         var string = ""
         string += "\(iInd)if let int = self as? Int {\n"
-        string += "\(iInd)\(ind)return int.\(name.lowerCaseFirstLetter)\n"
+        string += "\(iInd)\(ind)return int.\(name.lowerFirstLetter)\n"
         string += "\(iInd)}\n"
         return string
     }
@@ -182,7 +182,7 @@ class ExportOptional {
         // return string
         var string = ""
         string += "\(iInd)if let string = self as? String {\n"
-        string += "\(iInd)\(ind)return string.\(name.lowerCaseFirstLetter)\n"
+        string += "\(iInd)\(ind)return string.\(name.lowerFirstLetter)\n"
         string += "\(iInd)}\n"
         return string
     }
@@ -195,7 +195,7 @@ class ExportOptional {
         // return string
         var string = ""
         string += "\(iInd)if let int = self as? Int {\n"
-        string += "\(iInd)\(ind)return int.\(name.lowerCaseFirstLetter)\n"
+        string += "\(iInd)\(ind)return int.\(name.lowerFirstLetter)\n"
         string += "\(iInd)}\n"
         return string
     }
@@ -208,8 +208,8 @@ class ExportOptional {
         
         // default return
         var string = ""
-        string += "\(iInd)if let \(name.lowerCaseFirstLetter) = self as? \(name) {\n"
-        string += "\(iInd)\(ind)return \(name.lowerCaseFirstLetter)\n"
+        string += "\(iInd)if let \(name.lowerFirstLetter) = self as? \(name) {\n"
+        string += "\(iInd)\(ind)return \(name.lowerFirstLetter)\n"
         string += "\(iInd)}\n"
         
         return string
@@ -300,7 +300,7 @@ class ExportOptional {
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
             string += "\(ind)/// returns \(name) if optional unwraps.  Logs error and returns \(defaultValue) if object is nil or can not unwrap.\n"
-            string += "\(ind)var \(name.lowerCaseFirstLetter): \(name) {\n"
+            string += "\(ind)var \(name.lowerFirstLetter): \(name) {\n"
             string += returnStatement(name, iInd: ind2)
             string += returnHGDICTStatement(name, iInd: ind2)
             string += errorReturnStatement(name, stringValue: defaultValue, iInd: ind2)
@@ -308,7 +308,7 @@ class ExportOptional {
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
             string += "\(ind)/// returns \(name) if optional unwraps.  Logs error and returns nil if object can not unwrap.  Returns nil (without Error) on nil objects.\n"
-            string += "\(ind)var \(name.lowerCaseFirstLetter)Nillable: \(name)? {\n"
+            string += "\(ind)var \(name.lowerFirstLetter)Nillable: \(name)? {\n"
             string += returnOptionalIfNil(withInitialIndent: ind2)
             string += returnStatement(name, iInd: ind2)
             string += returnHGDICTStatement(name, iInd: ind2)
@@ -317,7 +317,7 @@ class ExportOptional {
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
             string += "\(ind)/// returns [\(name)] if optional unwraps.  Logs error and returns [] if object is nil or can not unwrap.\n"
-            string += "\(ind)var \(name.lowerCaseFirstLetterAndArray): [\(name)] {\n"
+            string += "\(ind)var \(name.lowerFirstLetter): [\(name)] {\n"
             string += returnArrayStatement(name, iInd: ind2)
             string += returnHGARRAYStatement(name, iInd: ind2)
             string += errorReturnArrayStatement(name, iInd: ind2)
@@ -349,7 +349,7 @@ class ExportOptional {
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
             string += "\(ind)/// returns \(name) if optional unwraps.  Logs error and returns \(defaultValue) if object is nil or can not unwrap.\n"
-            string += "\(ind)var \(name.lowerCaseFirstLetter): \(name) {\n"
+            string += "\(ind)var \(name.lowerFirstLetter): \(name) {\n"
             string += returnStatement(name, iInd: ind2)
             string += returnIntStatement(name, iInd: ind2)
             string += returnStringStatement(name, iInd: ind2)
@@ -358,7 +358,7 @@ class ExportOptional {
             
             // create var that expects an unwrapped existing object or logs an Error and returns a system default
             string += "\(ind)/// returns \(name) if optional unwraps.  Logs error and returns nil if object can not unwrap.  Returns nil (without Error) on nil objects.\n"
-            string += "\(ind)var \(name.lowerCaseFirstLetter)Nillable: \(name)? {\n"
+            string += "\(ind)var \(name.lowerFirstLetter)Nillable: \(name)? {\n"
             string += returnOptionalIfNil(withInitialIndent: ind2)
             string += returnStatement(name, iInd: ind2)
             string += returnIntStatement(name, iInd: ind2)

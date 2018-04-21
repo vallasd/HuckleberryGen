@@ -45,8 +45,8 @@ extension Relationship: VarRepresentable {
     var varRep: String {
         let tagString = tag > 0 ? "\(tag)" : ""
         switch relType {
-        case .tooMany: return (entity.varRep.lowerCaseFirstLetter + tagString).setRep
-        case .tooOne: return entity.varRep.lowerCaseFirstLetter + tagString
+        case .tooMany: return (entity.varRep.lowerFirstLetter + tagString).setRep
+        case .tooOne: return entity.varRep.lowerFirstLetter + tagString
         }
     }
 }

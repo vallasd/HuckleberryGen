@@ -51,8 +51,8 @@ extension Enum: HGEncodable {
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["editable"] = editable as? AnyObject
-        dict["name"] = name as AnyObject?
+        dict["editable"] = editable as AnyObject
+        dict["name"] = name as AnyObject
         dict["cases"] = cases.encode as AnyObject
         return dict as AnyObject
     }

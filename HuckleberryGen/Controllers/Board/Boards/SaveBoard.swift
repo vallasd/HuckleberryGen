@@ -46,7 +46,7 @@ class SaveBoard: NSViewController, NavControllerReferable {
         let requestedName = projectName.stringValue
         
         // name length too short
-        if requestedName.characters.count < 4 { return false }
+        if requestedName.count < 4 { return false }
         
         // project was previously saved and we just want to save it without changing new
         if requestedName == currentProjectName { return true }
@@ -68,7 +68,7 @@ class SaveBoard: NSViewController, NavControllerReferable {
     func updateProjectName() {
         
         if projectName.stringValue != currentProjectName {
-            appDelegate.store.changeCurrentProject(toName: projectName.stringValue)
+            let _ = appDelegate.store.changeCurrentProject(toName: projectName.stringValue)
             currentProjectName = projectName.stringValue
         } else {
             appDelegate.store.saveCurrentProject()

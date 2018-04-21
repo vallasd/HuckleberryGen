@@ -33,7 +33,7 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     
     func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
         let index = locations[0].row
-        appDelegate.store.openProject(atIndex: index)
+        let _ = appDelegate.store.openProject(atIndex: index)
     }
 }
 
@@ -85,7 +85,7 @@ extension SBD_SavedProjects: HGTableRowAppendable {
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         let row = rows[0]
-        appDelegate.store.deleteProject(atIndex: row)
+        let _ = appDelegate.store.deleteProject(atIndex: row)
     }
 
 }

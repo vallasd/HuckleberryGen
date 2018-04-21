@@ -273,13 +273,10 @@ class HGTableView: NSTableView {
     fileprivate class func isTopView(_ view: NSView, previousView: NSView?) -> Bool {
         
         if let superView = view.superview {
-            HGTableView.isTopView(superView, previousView: view)
+            let _ = HGTableView.isTopView(superView, previousView: view)
         }
-        
-        Swift.print("Top View is \(view), Previous View \(previousView)")
-        
-        Swift.print("Sub Views are \(view.subviews)")
-        
+        print("Top View is \(view), Previous View \(String(describing: previousView))")
+        print("Sub Views are \(view.subviews)")
         return false
     }
     
