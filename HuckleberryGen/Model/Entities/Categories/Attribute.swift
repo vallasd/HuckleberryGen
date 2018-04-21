@@ -315,8 +315,6 @@ enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
         return string
     }
     
-    
-    
     static func create(string: String) -> Primitive {
         if let primitive = prim(fromString: string) {
             return primitive

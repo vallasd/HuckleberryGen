@@ -93,20 +93,13 @@ extension NSView {
         self.wantsLayer = true
         self.layer = layer
     }
-
     
+    /// converts a NSView to an NSImage
     var imageRep: NSImage {
-        
-        isHidden = false
-        wantsLayer = true
-        
-        let image = NSImage(size: bounds.size)
-        image.lockFocus()
-        let graphicsContext = NSGraphicsContext.current!
-        let context = unsafeBitCast(graphicsContext.graphicsPort, to: CGContext.self)
-        layer?.render(in: context)
-        image.unlockFocus()
-        return image
+        let rep = self.bitmapImageRepForCachingDisplay(in: self.bounds)!
+        self.cacheDisplay(in: self.bounds, to: rep)
+        let img = NSImage(size: self.bounds.size)
+        img.addRepresentation(rep)
+        return img
     }
-    
 }
