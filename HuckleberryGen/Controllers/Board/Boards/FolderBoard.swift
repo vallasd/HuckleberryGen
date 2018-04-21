@@ -48,6 +48,7 @@ class FolderBoard: NSViewController, NavControllerReferable {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = true
         panel.prompt = folderTitle
         
         if panel.runModal() == NSApplication.ModalResponse.OK {
