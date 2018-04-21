@@ -15,6 +15,9 @@ class MainWindowController: NSWindowController {
     /// allows boards to be displayed on window (BoardHandlerHolder)
     var boardHandler: BoardHandler!
     
+    fileprivate let minWidth: CGFloat = 280.0
+    fileprivate let minHeight: CGFloat = 600.0
+    
     override func windowDidLoad() {
         super.windowDidLoad()
         
@@ -22,7 +25,7 @@ class MainWindowController: NSWindowController {
         window?.title = appDelegate.store.project.name
         appDelegate.mainWindowController = self
         window?.setFrame(windowFrame(), display: true)
-        window?.minSize = NSSize(width: 240.0, height: 600.0)
+        window?.minSize = NSSize(width: minWidth, height: minHeight)
         boardHandler = BoardHandler(withWindowController: self)
         showWelcome()
     }
@@ -76,8 +79,11 @@ class MainWindowController: NSWindowController {
     /// returns the required frame for the window
     fileprivate func windowFrame() -> CGRect {
         let screens = NSScreen.screenRects()
-        let mainScreen = screens.count > 0 ? screens[0] : CGRect(x: 0, y: 0, width: 240, height: 960)
-        let windowFrame = CGRect(x: mainScreen.origin.x, y: mainScreen.origin.y, width: 240, height: mainScreen.size.height)
+        let mainScreen = screens.count > 0 ? screens[0] : NSRect(x: 0, y: 0, width: minWidth, height: minHeight)
+        let windowFrame = NSRect(x: mainScreen.origin.x,
+                                 y: mainScreen.origin.y,
+                                 width: minWidth,
+                                 height: mainScreen.size.height)
         return windowFrame
     }
     

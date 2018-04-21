@@ -140,7 +140,7 @@ extension String {
     
     /// makes a Type [Entity, Struct,  representation of the string
     var typeRepresentable: String {
-        return self.simple.components(separatedBy: " ").compactMap { $0.capitalFirstLetter }.joined(separator: "")
+        return self.simple.components(separatedBy: " ").map { $0.capitalFirstLetter }.joined(separator: "")
     }
     
     /// makes a variable representation of the string

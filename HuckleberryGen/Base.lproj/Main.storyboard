@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -809,6 +809,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="249" height="975"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
+                        <tabViewItems/>
                         <connections>
                             <outlet property="delegate" destination="C6o-DP-Iae" id="RZX-aD-XJC"/>
                         </connections>
@@ -844,7 +845,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="" width="234.65290034479372" minWidth="40" maxWidth="1000" id="76t-5H-2fd">
+                                                <tableColumn identifier="" width="235.15290034479372" minWidth="40" maxWidth="1000" id="76t-5H-2fd">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="This is title">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -898,6 +899,7 @@
                         <rect key="frame" x="-3" y="-87" width="239" height="476"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
+                        <tabViewItems/>
                         <connections>
                             <outlet property="delegate" destination="mir-TR-CNv" id="3eS-DT-ap3"/>
                         </connections>
@@ -1174,6 +1176,7 @@
                         <rect key="frame" x="0.0" y="54" width="241" height="485"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
+                        <tabViewItems/>
                         <connections>
                             <outlet property="delegate" destination="UJK-4r-3Nn" id="tuS-Yx-HgI"/>
                         </connections>
