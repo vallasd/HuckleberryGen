@@ -116,7 +116,7 @@ class HGTable: NSObject {
     
     func updateTableView(withTableView tv: NSTableView) {
         tableview = tv
-        tableview.identifier = String.random(7)
+        tableview.identifier = NSUserInterfaceItemIdentifier(rawValue: String.random(7))
         tableview.delegate = self
         tableview.dataSource = self
         
@@ -193,10 +193,10 @@ class HGTable: NSObject {
     
     /// Registers HGCell's Nib with TableView one time
     fileprivate func register(_ cellType: CellType, forTableView tableView: NSTableView) {
-        let tci = TableCellIdentifier(tableId: tableView.identifier, cellId: cellType.identifier)
+        let tci = TableCellIdentifier(tableId: tableView.identifier.map { $0.rawValue }, cellId: cellType.identifier)
         if tableCellIdentifiers.contains(tci) { return }
-        let nib = NSNib(nibNamed: cellType.identifier, bundle: nil)
-        tableView.register(nib, forIdentifier: cellType.identifier)
+        let nib = NSNib(nibNamed: NSNib.Name(rawValue: cellType.identifier), bundle: nil)
+        tableView.register(nib, forIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellType.identifier))
         tableCellIdentifiers.append(tci)
     }
     
@@ -251,7 +251,7 @@ extension HGTable: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cellType = displayDelegate?.hgtable(self, cellForRow: row) ?? .defaultCell
         register(cellType, forTableView: tableView)
-        let cell = tableView.make(withIdentifier: cellType.identifier, owner: self) as! HGCell
+        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellType.identifier), owner: self) as! HGCell
         if cell.delegate == nil { cell.delegate = self }
         let data = displayDelegate?.hgtable(self, dataForRow: row) ?? HGCellData.empty
         cell.update(withRow: row, cellData: data)
@@ -288,7 +288,7 @@ extension HGTable: HGTableViewDelegate {
     
     func hgtableview(_ hgtableview: HGTableView, didSelectRow row: Int) {
         selectedLocations = HGCellLocation.locations(fromRows: hgtableview.selectedRows)
-        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row) }
+        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
     }
     
     func hgtableview(willAddRowToTable hgtableview: HGTableView) {
@@ -301,7 +301,7 @@ extension HGTable: HGTableViewDelegate {
     
     func hgtableview(_ hgtableview: HGTableView, didDeleteRows rows: [Int]) {
         let row = notSelected
-        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row) }
+        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
     }
     
 }

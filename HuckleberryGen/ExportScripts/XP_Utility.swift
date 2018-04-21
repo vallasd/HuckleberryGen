@@ -85,7 +85,7 @@ struct XP_Utility {
         }
         
         // drop last comma and return
-        return String(string.characters.dropLast())
+        return String(string.dropLast())
     }
     
 }

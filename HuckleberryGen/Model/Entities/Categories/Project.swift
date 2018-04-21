@@ -61,9 +61,9 @@ extension Project: HGEncodable {
     var encode: AnyObject {
         var dict = HGDICT()
         dict["name"] = name as AnyObject?
-        dict["indexes"] = indexes.encode
-        dict["enums"] = enums.encode
-        dict["entities"] = entities.encode
+        dict["indexes"] = indexes.encode as AnyObject
+        dict["enums"] = enums.encode as AnyObject
+        dict["entities"] = entities.encode as AnyObject
         return dict as AnyObject
     }
     

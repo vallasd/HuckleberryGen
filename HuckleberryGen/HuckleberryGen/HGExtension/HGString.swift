@@ -23,6 +23,7 @@ extension String {
 		}
 		return .info
 	}
+    
 	/// returns HGArticles.  Logs error and returns The if not a valid Int.
 	var hGArticle: HGArticle {
  		switch self {
@@ -51,6 +52,7 @@ extension String {
 		}
 		return .the
 	}
+    
 	/// returns HGAdjectives.  Logs error and returns Exceptional if not a valid Int.
 	var hGAdjective: HGAdjective {
  		switch self {
@@ -70,7 +72,7 @@ extension String {
 		case "Naive": return .naive 
 		case "Wicked": return .wicked 
 		case "Poor": return .poor 
-		case "Fantastic": return .fantastic 
+		case "Stupendous": return .stupendous
 		case "Futuristic": return .futuristic 
 		case "Crappy": return .crappy 
 		case "Excellent": return .excellent 

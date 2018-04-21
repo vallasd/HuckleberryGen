@@ -21,7 +21,6 @@
 //  along with HuckleberryGen.  If not, see <http://www.gnu.org/licenses/>.
 
 import XCTest
-@testable import HuckleberryGen
 
 class HuckleberryGenTests: XCTestCase {
     

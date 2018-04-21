@@ -60,7 +60,7 @@ struct Entity: HashRepresentable {
     }
     
     var isEndPoint: Bool {
-        if typeRep.getLast(5) == "Index" { return true }
+        if typeRep.suffix(5) == "Index" { return true }
         let sa = specialAttributeTypes
         if sa.contains(.isSpecial) || sa.contains(.timeRange) || sa.contains(.firstLetter) { return false }
         return entityHashes.count == 1 ? true : false
@@ -116,9 +116,9 @@ extension Entity: HGEncodable {
     var encode: AnyObject {
         var dict = HGDICT()
         dict["typeRep"] = typeRep as AnyObject?
-        dict["attributes"] = attributes.encode
-        dict["relationships"] = relationships.encode
-        dict["hashes"] = hashes.encode
+        dict["attributes"] = attributes.encode as AnyObject
+        dict["relationships"] = relationships.encode as AnyObject
+        dict["hashes"] = hashes.encode as AnyObject
         return dict as AnyObject
     }
     

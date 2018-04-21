@@ -23,7 +23,7 @@
 import Cocoa
 
 /// global reference to the app Delegate.
-let appDelegate = NSApplication.shared().delegate as! AppDelegate
+let appDelegate = NSApplication.shared.delegate as! AppDelegate
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

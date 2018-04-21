@@ -57,6 +57,6 @@ class ExportProtocols {
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_PRO_HGEncodable")
         let file = header + "\n" + code
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
 }

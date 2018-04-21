@@ -52,20 +52,23 @@ class ExportProject {
         createBaseFolders()
         
         // create Entity Files
-        for entity in store.project.entities { exportEntity.exportFile(forEntity: entity) }
+        for entity in store.project.entities {
+            let _ = exportEntity.exportFile(forEntity: entity)
+        }
         
         // create Store Enum Files
-        for enuM in store.project.enums { exportEnum.exportFile(forEnum: enuM) }
+        for enuM in store.project.enums {
+            let _ = exportEnum.exportFile(forEnum: enuM)
+        }
         
         // create Extension Files
-        exportExtensions.exportFiles()
+        let _ = exportExtensions.exportFiles()
         
         // create Protocol Files
-        exportProtocols.exportFiles()
+        let _ = exportProtocols.exportFiles()
         
         // create HGClass Files
-        exportHGClasses.exportFiles()
-        
+        let _ = exportHGClasses.exportFiles()
     }
 
     /// reads file in project, if there is an error, returns false
@@ -74,7 +77,8 @@ class ExportProject {
         let path = Bundle.main.path(forResource: file, ofType: "txt") ?? ""
         
         do  {
-            let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8) // crash right away, you are looking for file that DNE
+            // crash right away, you are looking for file that DNE
+            let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
             return content
         } catch {
             HGReportHandler.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .error)
@@ -106,19 +110,11 @@ class ExportProject {
         }
         
         // create sub folders in rest of path
-        exportEntity.createBaseFolder()
-        exportEnum.createBaseFolder()
-        exportExtensions.createBaseFolder()
-        exportProtocols.createBaseFolder()
-        exportHGClasses.createBaseFolder()
-        
-//        let entities = baseDirectory + "/Entities"
-//        let enums = baseDirectory + "/Enums"
-//        let errors = baseDirectory + "/Errors"
-//        let extensions = baseDirectory + "/Extensions"
-//        let options = baseDirectory + "/Options"
-//        let protocols = baseDirectory + "/Protocols"
-//
+        let _ = exportEntity.createBaseFolder()
+        let _ = exportEnum.createBaseFolder()
+        let _ = exportExtensions.createBaseFolder()
+        let _ = exportProtocols.createBaseFolder()
+        let _ = exportHGClasses.createBaseFolder()
     }
     
     

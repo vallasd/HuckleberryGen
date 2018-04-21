@@ -155,7 +155,7 @@ protocol NavControllerProgessable {
 
 /// protocol that allows a Nav Controller's NSViewController to gain reference to the nav controller when it is added to the stack.
 protocol NavControllerReferable {
-    weak var nav: NavController? { get set }
+    var nav: NavController? { get set }
 }
 
 /// protocol that allows another object to handle delegation methods from nav controller (like dismiss)
@@ -281,8 +281,8 @@ class NavController: NSViewController {
     fileprivate func setCurrentVC(withBoardData boardData: BoardData) {
         
         // create and assign new currentVC
-        let storyboard = NSStoryboard(name: boardData.storyboard, bundle: nil)
-        currentVC = storyboard.instantiateController(withIdentifier: boardData.nib) as? NSViewController
+        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: boardData.storyboard), bundle: nil)
+        currentVC = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: boardData.nib)) as? NSViewController
         
         // check success of VC instantiation from nib
         if currentVC == nil {

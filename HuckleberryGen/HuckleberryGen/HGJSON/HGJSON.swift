@@ -11,11 +11,3 @@ func hgdict(fromObject object: AnyObject, decoderName: String?) -> HGDICT {
     let dict: HGDICT = check ?? HGDICT()
     return dict
 }
-
-infix operator ??? { associativity left precedence 150 }
-infix operator <<< { associativity right precedence 100 assignment }
-
-func <<< (lhs: inout AnyObject?, rhs: String) {
-    if lhs is String { lhs = rhs as AnyObject?; return }
-    lhs = nil
-}

@@ -26,7 +26,7 @@ extension NSImage {
     
     /// Returns an image that has a title displayed in bottom half of icon
     static func image(named name: String, title: String) -> NSImage {
-        let image = NSImage(named: name)!
+        let image = NSImage(named: NSImage.Name(rawValue: name))!
         let width = image.size.width
         let height = image.size.height
         let labelWidth = width * 0.9

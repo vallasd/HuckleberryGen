@@ -31,7 +31,7 @@ protocol HGParser {
 
 /// protocol that defines a Huckleberry Gen parser that parses Import Files
 protocol HGImportParser: HGParser {
-    weak var delegate: HGImportParserDelegate? { get set }
+    var delegate: HGImportParserDelegate? { get set }
 }
 
 /// protocol that defines a Huckleberry Gen parser delegate that parses Import Files and produces a project

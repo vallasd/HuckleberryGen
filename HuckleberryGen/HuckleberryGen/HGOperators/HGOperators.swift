@@ -55,7 +55,11 @@ public func <- <T>(a: inout T, b: T) -> T {
 // MARK: Chaining
 // --------------------------------------------------
 
-infix operator >>> { associativity left }
+precedencegroup ChainingPrecedence {
+    associativity: left
+}
+
+infix operator >>>: ChainingPrecedence
 
 /// Failable chaining
 public func >>><T, U>(x: T?, f: (T) -> U?) -> U? {
@@ -79,6 +83,29 @@ func •-> <T>(object: T, f: (inout T) -> Void) -> T {
     var newValue = object
     f(&newValue)
     return newValue
+}
+
+//--------------------------------------------------------------
+// MARK: Additional Operators
+//--------------------------------------------------------------
+
+precedencegroup ReplacePrecedence {
+    associativity: left
+    higherThan: MultiplicationPrecedence
+}
+
+infix operator ???: ReplacePrecedence
+
+precedencegroup ChainFromRightPrecedence {
+    associativity: right
+    higherThan: AdditionPrecedence
+}
+
+infix operator <<<: ChainFromRightPrecedence
+
+func <<< (lhs: inout AnyObject?, rhs: String) {
+    if lhs is String { lhs = rhs as AnyObject?; return }
+    lhs = nil
 }
 
 /*

@@ -63,7 +63,7 @@ class FolderBoard: NSViewController, NavControllerReferable {
         panel.allowsMultipleSelection = false
         panel.prompt = folderTitle
         
-        if panel.runModal() == NSModalResponseOK {
+        if panel.runModal() == NSApplication.ModalResponse.OK {
             
             let directory = panel.url!
             let path = directory.path

@@ -72,7 +72,7 @@ class HGTableView: NSTableView {
         iSelectedRows.remove(indexSet as IndexSet)
         
         // remove rows from self (Tableview)
-        self.removeRows(at: indexSet as IndexSet, withAnimation: NSTableViewAnimationOptions())
+        self.removeRows(at: indexSet as IndexSet, withAnimation: NSTableView.AnimationOptions())
         
         // If we were trying to remove only one row at a time, we will auto-highlight the row above so the user can easily delete out multiple rows with a command
         if rows.count == 1 {
@@ -254,7 +254,7 @@ class HGTableView: NSTableView {
             let index = numberOfRows
             unSelectAll()
             extendedDelegate?.hgtableview(willAddRowToTable: self)
-            insertRows(at: IndexSet(integer: index), withAnimation: NSTableViewAnimationOptions())
+            insertRows(at: IndexSet(integer: index), withAnimation: NSTableView.AnimationOptions())
             selectRow(index)
         }
     }

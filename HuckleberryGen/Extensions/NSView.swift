@@ -26,7 +26,7 @@ extension NSView {
     
     func center(inParent p: NSView) {
         self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask =  [.viewMinXMargin, .viewMaxXMargin, .viewMinYMargin, .viewMaxYMargin]
+        self.autoresizingMask =  [NSView.AutoresizingMask.minXMargin, NSView.AutoresizingMask.maxXMargin, NSView.AutoresizingMask.minYMargin, NSView.AutoresizingMask.maxYMargin]
         p.addSubview(self)
     }
     
@@ -37,7 +37,7 @@ extension NSView {
         p.addSubview(self)
         
         self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
+        self.autoresizingMask = [NSView.AutoresizingMask.width, NSView.AutoresizingMask.height]
     }
     
     func disableInteraction() { self.interaction(false) }
@@ -103,7 +103,7 @@ extension NSView {
         
         let image = NSImage(size: bounds.size)
         image.lockFocus()
-        let graphicsContext = NSGraphicsContext.current()!
+        let graphicsContext = NSGraphicsContext.current!
         let context = unsafeBitCast(graphicsContext.graphicsPort, to: CGContext.self)
         layer?.render(in: context)
         image.unlockFocus()

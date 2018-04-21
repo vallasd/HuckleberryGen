@@ -66,7 +66,7 @@ extension NSEvent {
     /// Returns HGCommandOptions for an NSEvent by checking modifier flags to see which option keys (such as Command, Shift, etc) are pressed, returns appropriate Huckleberry Gen option commands to implement.  Use when checking a flagChanged Event.
     func commandOptions() -> HGCommandOptions {
         
-        if self.modifierFlags.contains(NSEventModifierFlags.command) {
+        if self.modifierFlags.contains(NSEvent.ModifierFlags.command) {
             return .MultiSelectOn
         }
         

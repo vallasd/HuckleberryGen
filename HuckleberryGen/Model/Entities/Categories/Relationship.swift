@@ -158,8 +158,8 @@ enum RelationshipType {
     var image: NSImage {
         get {
             switch self {
-            case .tooMany: return NSImage(named: "toManyIcon")!
-            case .tooOne: return NSImage(named: "toOneIcon")!
+            case .tooMany: return NSImage(named: NSImage.Name(rawValue: "toManyIcon"))!
+            case .tooOne: return NSImage(named: NSImage.Name(rawValue: "toOneIcon"))!
             }
         }
     }

@@ -53,7 +53,7 @@ class LicenseInfoBoard: NSViewController, NavControllerReferable {
     }
     
     var nameFieldFilledOut: Bool {
-        return nameField.stringValue.characters.count > 2 ? true : false
+        return nameField.stringValue.count > 2 ? true : false
     }
     
     func updateProgression() {

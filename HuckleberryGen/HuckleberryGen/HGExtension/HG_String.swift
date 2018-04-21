@@ -28,12 +28,12 @@ extension String {
     static func random(_ length: Int) -> String {
     
         let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let allowedCharsCount = UInt32(allowedChars.characters.count)
+        let allowedCharsCount = UInt32(allowedChars.count)
         var randString = ""
         
         for _ in 0..<length {
             let randNum = Int(arc4random_uniform(allowedCharsCount))
-            let newChar = allowedChars[allowedChars.characters.index(allowedChars.startIndex, offsetBy: randNum)]
+            let newChar = allowedChars[allowedChars.index(allowedChars.startIndex, offsetBy: randNum)]
             randString += String(newChar)
         }
         
@@ -71,7 +71,7 @@ extension String {
     /// adds a space and number to end of string. If number does not exist, adds 1, if number exists, add next number.
     var iterated: String {
         
-        let stringArray = self.characters.split(separator: " ").map(String.init)
+        let stringArray = self.split(separator: " ").map(String.init)
         
         // is not already iterated, return with 2
         if stringArray.count <= 1 {
@@ -151,12 +151,12 @@ extension String {
     
     /// removes extra white spaces and new lines
     var trimmed: String {
-        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     /// makes a Type [Entity, Struct,  representation of the string
     var typeRepresentable: String {
-        return self.simple.components(separatedBy: " ").flatMap { $0.capitalFirstLetter }.joined(separator: "")
+        return self.simple.components(separatedBy: " ").compactMap { $0.capitalFirstLetter }.joined(separator: "")
     }
     
     /// makes a variable representation of the string
@@ -164,29 +164,19 @@ extension String {
         return self.typeRepresentable.lowerFirstLetter
     }
     
+    /// capitalizes the first letter in the string
     var capitalFirstLetter: String {
         if self.isEmpty { return "" }
         var s = self
         s.replaceSubrange(s.startIndex...s.startIndex, with: String(s[s.startIndex]).capitalized)
-//        let firstChar = String(s.characters.first!).uppercaseString
-//        s.replaceRange(s.startIndex...s.startIndex, with: firstChar)
         return s
     }
     
-    func getLast(_ int: Int) -> String {
-        let last = min(int, self.characters.count)
-        return self.substring(from: self.characters.index(self.endIndex, offsetBy: -last))
-    }
-    
-    func getFirst(_ int: Int) -> String {
-        let last = min(int, self.characters.count)
-        return self.substring(to: self.characters.index(self.startIndex, offsetBy: last))
-    }
-    
+    /// lower cases the first letter in the string
     var lowerFirstLetter: String {
         if self.isEmpty { return "" }
         var string = self
-        let firstChar = String(string.characters.first!).lowercased()
+        let firstChar = String(string.first!).lowercased()
         string.replaceSubrange(string.startIndex...string.startIndex, with: firstChar)
         return string
     }

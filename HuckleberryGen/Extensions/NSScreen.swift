@@ -29,8 +29,8 @@ extension NSScreen {
         
         // create mainScreen rect and get all screens
         var rects: [CGRect] = []
-        let screenArray = self.screens() ?? []
-        let mainScreenFrame = self.main()?.visibleFrame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+        let screenArray = self.screens
+        let mainScreenFrame = self.main?.visibleFrame ?? CGRect(x: 0, y: 0, width: 0, height: 0)
         
         // convert screens to rects and store in sizes array
         for screen in screenArray {

@@ -46,7 +46,7 @@ extension Folder: HGEncodable {
         var dict = HGDICT()
         dict["name"] = name as AnyObject?
         dict["path"] = path as AnyObject?
-        dict["importFiles"] = importFiles.encode
+        dict["importFiles"] = importFiles.encode as AnyObject
         return dict as AnyObject
     }
     

@@ -77,8 +77,8 @@ class BoardHandler {
     
     // creates a navigation controller
     fileprivate func createNav() {
-        let storyboard = NSStoryboard(name: "Board", bundle: nil)
-        nav = storyboard.instantiateController(withIdentifier: "NavController") as? NavController
+        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Board"), bundle: nil)
+        nav = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "NavController")) as? NavController
         
         if nav == nil {
             HGReportHandler.shared.report("NavController not properly created from StoryBoard", type: .error)

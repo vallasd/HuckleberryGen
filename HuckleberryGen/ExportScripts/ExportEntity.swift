@@ -126,8 +126,8 @@ class ExportEntity {
         }
         
         // remove last , from init statement
-        string = String(string.characters.dropLast())
-        string = String(string.characters.dropLast())
+        string = String(string.dropLast())
+        string = String(string.dropLast())
         
         // end init first line
         string += ") {\n"
@@ -178,8 +178,8 @@ class ExportEntity {
         }
         
         // remove last , from new var
-        string = String(string.characters.dropLast())
-        string = String(string.characters.dropLast())
+        string = String(string.dropLast())
+        string = String(string.dropLast())
         
         // end new variable
         string += ")\n"
@@ -240,8 +240,8 @@ class ExportEntity {
         }
         
         // decode function return statement cleanup , from last object
-        string = String(string.characters.dropLast())
-        string = String(string.characters.dropLast())
+        string = String(string.dropLast())
+        string = String(string.dropLast())
         
         // end decode function
         string += ")\n"

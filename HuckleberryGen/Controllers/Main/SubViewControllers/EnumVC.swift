@@ -67,7 +67,7 @@ extension EnumVC: HGTableDisplayable {
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: "", image: NSImage(named: "enumIcon"))
+            image0: HGImageData(title: "", image: #imageLiteral(resourceName: "enumIcon"))
         )
     }
 }

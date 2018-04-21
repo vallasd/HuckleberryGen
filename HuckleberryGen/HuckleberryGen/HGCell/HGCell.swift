@@ -189,7 +189,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: Button and Field Target Actions
     
     /// function called when user selects an image
-    func didSelectImage(_ sender: NSButton!) {
+    @objc func didSelectImage(_ sender: NSButton!) {
         // We can not select an image in HGCell
         let shouldSelect = delegate?.hgcell(self, shouldSelectTag: sender.tag, type: .image) ?? false
         if shouldSelect == true {
@@ -198,7 +198,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     /// function called when a user selects a field (if field is selectable)
-    func didSelectField(_ sender: NSTextField!) {
+    @objc func didSelectField(_ sender: NSTextField!) {
         delegate?.hgcell(self, didSelectTag: sender.tag, type: .field)
     }
     
@@ -305,7 +305,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         if let dataImage = data.image {
             image.image = dataImage
         } else {
-            image.image = NSImage(named: data.title)
+            image.image = NSImage(named: NSImage.Name(rawValue: data.title))
         }
         
         image.isEnabled = true
@@ -318,7 +318,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         guard let check = check else { return }
         
         check.title = data.title
-        check.state = data.state == true ? 1 : 0
+        check.state = NSControl.StateValue(rawValue: data.state == true ? 1 : 0)
         check.isEnabled = true
         check.isHidden = false
     }
@@ -381,7 +381,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         guard let check = check else { return }
         
         check.title = ""
-        check.state = 0
+        check.state = NSControl.StateValue(rawValue: 0)
         check.isEnabled = false
         check.isHidden = true
     }
@@ -463,7 +463,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
 
     /// Returns a call to delegate to let the delegate know that the field was edited once editing is done
     func control(_ control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
-        let string = fieldEditor.string ?? ""
+        let string = fieldEditor.string
         
         // update color in a bit
         delay(0.4) {

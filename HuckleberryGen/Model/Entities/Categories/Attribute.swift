@@ -135,7 +135,7 @@ enum SpecialAttribute {
         if v == "timeRange" { return .timeRange }
         if v == "firstLetter" { return .firstLetter }
         if v == "folder" { return .folder }
-        if v.getLast(3) == "Num" { return .indexedSet }
+        if v.suffix(3) == "Num" { return .indexedSet }
         
         // check if enums type is same as var, if so, return enum attribute
         let checkEnums = appDelegate.store.project.enums.map { $0.varRep }.filter { $0 == v }.count
@@ -159,12 +159,12 @@ enum SpecialAttribute {
     var image: NSImage {
         
         switch self {
-        case .timeRange, .firstLetter, .indexedSet, .folder: return NSImage(named: "specialGreen")!
-        case .enumAttribute: return NSImage(named: "specialCyan")!
-        case .title, .name, .longText, .imageURL: return NSImage(named: "specialOrange")!
+        case .timeRange, .firstLetter, .indexedSet, .folder: return NSImage(named: NSImage.Name(rawValue: "specialGreen"))!
+        case .enumAttribute: return NSImage(named: NSImage.Name(rawValue: "specialCyan"))!
+        case .title, .name, .longText, .imageURL: return NSImage(named: NSImage.Name(rawValue: "specialOrange"))!
         default:
             HGReportHandler.shared.report("Special Type image not found for Special Attribute, returning specialGreen image", type: .error)
-            return NSImage(named: "specialGreen")!
+            return NSImage(named: NSImage.Name(rawValue: "specialGreen"))!
         }
     }
 }

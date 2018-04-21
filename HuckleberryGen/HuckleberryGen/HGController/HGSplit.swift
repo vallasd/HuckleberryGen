@@ -90,8 +90,11 @@ class HGSplit: NSObject, NSSplitViewDelegate {
             let status = self.status(divider, bounds: bounds)
             let currentPosition = split.position(ofDividerIndex: divider)
             let sv = split
-            if currentPosition == status.closed { sv?.setPosition(status.open, ofDividerAtIndex: divider, animated: animated) }
-            else { split.setPosition(status.closed, ofDividerAtIndex: divider, animated: animated) }
+            if currentPosition == status.closed {
+                let _ = sv?.setPosition(status.open, ofDividerAtIndex: divider, animated: animated)
+            } else {
+                let _ = split.setPosition(status.closed, ofDividerAtIndex: divider, animated: animated)
+            }
         }
         
         func open(_ animated: Bool) {
@@ -99,7 +102,7 @@ class HGSplit: NSObject, NSSplitViewDelegate {
             for divider in 0...dividers {
                 let bounds = self.bounds(divider)
                 let status = self.status(divider, bounds: bounds)
-                split.setPosition(status.open, ofDividerAtIndex: divider, animated: animated)
+                let _ = split.setPosition(status.open, ofDividerAtIndex: divider, animated: animated)
             }
         }
         
@@ -225,9 +228,9 @@ extension NSSplitView {
     func setPosition(_ position: CGFloat, ofDividerAtIndex dividerIndex: Int, animated: Bool) -> Bool {
         if animated {
             if dividerIndex >= subviews.count { return false }
-            setPositions([position], ofDividersAtIndexes: [dividerIndex])
+            let _ = setPositions([position], ofDividersAtIndexes: [dividerIndex])
         } else {
-            setPosition(position, ofDividerAt: dividerIndex)
+            let _ = setPosition(position, ofDividerAt: dividerIndex)
         }
         
         return true

@@ -59,7 +59,7 @@ class ExportHGClasses {
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_CLA_HGObject")
         let file = header + "\n" + code
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
     
     func exportHGErrorReporter() {
@@ -68,7 +68,7 @@ class ExportHGClasses {
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_CLA_HGErrorReporter")
         let file = header + "\n" + code
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
     
     func exportHGError() {
@@ -77,7 +77,7 @@ class ExportHGClasses {
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_CLA_HGError")
         let file = header + "\n" + code
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
     
     func exportHGErrorTrack() {
@@ -86,14 +86,14 @@ class ExportHGClasses {
         let header = licenseInfo.string(projectName, fileName: name)
         let code = ExportProject.read(file: "XP_CLA_HGErrorTrack")
         let file = header + "\n" + code
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
     
     func exportHGOperators() {
         let name = "HGOperators"
         let filePath = path + "/\(name).swift"
         let file = ExportProject.read(file: "XP_CLA_HGOperators")
-        ExportProject.write(file: file, toPath: filePath)
+        let _ = ExportProject.write(file: file, toPath: filePath)
     }
     
 }

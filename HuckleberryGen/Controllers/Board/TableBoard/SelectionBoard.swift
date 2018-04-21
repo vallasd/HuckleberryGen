@@ -23,7 +23,7 @@
 import Cocoa
 
 protocol SelectionBoardDelegate: HGTableDisplayable {
-    weak var selectionBoard: SelectionBoard? { get set }
+    var selectionBoard: SelectionBoard? { get set }
     func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation])
 }
 

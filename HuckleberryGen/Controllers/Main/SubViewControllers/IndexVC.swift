@@ -124,7 +124,7 @@ extension IndexVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        appDelegate.store.createIndex()
+        let _ = appDelegate.store.createIndex()
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -132,6 +132,6 @@ extension IndexVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.deleteIndexes(atIndexes: rows)
+        let _ = appDelegate.store.deleteIndexes(atIndexes: rows)
     }
 }

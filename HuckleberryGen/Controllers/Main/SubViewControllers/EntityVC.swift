@@ -65,7 +65,7 @@ extension EntityVC: HGTableDisplayable {
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.typeRep),
             field1: HGFieldData(title: entity.hashRep),
-            image0: HGImageData(title: "", image: NSImage(named: "entityIcon"))
+            image0: HGImageData(title: "", image: #imageLiteral(resourceName: "entityIcon"))
         )
     }
 }
@@ -167,8 +167,7 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        
-        appDelegate.store.deleteEntities(atIndexes: rows)
+        let _ = appDelegate.store.deleteEntities(atIndexes: rows)
     }
 }
 
