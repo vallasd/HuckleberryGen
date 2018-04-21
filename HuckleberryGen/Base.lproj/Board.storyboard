@@ -372,10 +372,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="277" height="240"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sd1-VQ-Qag">
-                                <rect key="frame" x="0.0" y="0.0" width="277" height="240"/>
-                                <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="axesIndependently" image="whiteBoard" id="t7u-25-u1x"/>
-                            </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bnD-Vz-Zfb">
                                 <rect key="frame" x="14" y="13" width="93" height="32"/>
                                 <buttonCell key="cell" type="push" title="Button A" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="065-fa-2sZ">
@@ -401,15 +397,11 @@
                             </containerView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="sd1-VQ-Qag" firstAttribute="top" secondItem="7Dn-qK-ace" secondAttribute="top" id="2Xs-dh-7Ca"/>
                             <constraint firstAttribute="trailing" secondItem="TNa-x0-YoB" secondAttribute="trailing" id="6F2-pi-CRO"/>
-                            <constraint firstAttribute="trailing" secondItem="sd1-VQ-Qag" secondAttribute="trailing" id="HkV-wx-arK"/>
                             <constraint firstItem="TNa-x0-YoB" firstAttribute="top" secondItem="7Dn-qK-ace" secondAttribute="top" id="I1G-U2-Yrm"/>
                             <constraint firstItem="I2h-TV-J0h" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7Dn-qK-ace" secondAttribute="leading" constant="20" symbolic="YES" id="Md5-8F-Qxu"/>
                             <constraint firstItem="bnD-Vz-Zfb" firstAttribute="leading" secondItem="7Dn-qK-ace" secondAttribute="leading" constant="20" id="NkX-eQ-62S"/>
                             <constraint firstAttribute="trailing" secondItem="I2h-TV-J0h" secondAttribute="trailing" constant="20" id="Qzd-qE-I8l"/>
-                            <constraint firstItem="sd1-VQ-Qag" firstAttribute="leading" secondItem="7Dn-qK-ace" secondAttribute="leading" id="b9x-94-JBM"/>
-                            <constraint firstAttribute="bottom" secondItem="sd1-VQ-Qag" secondAttribute="bottom" id="jcK-zX-NWf"/>
                             <constraint firstItem="TNa-x0-YoB" firstAttribute="leading" secondItem="7Dn-qK-ace" secondAttribute="leading" id="o9A-Bc-a1q"/>
                             <constraint firstAttribute="bottom" secondItem="I2h-TV-J0h" secondAttribute="bottom" constant="20" id="t28-Y9-22R"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bnD-Vz-Zfb" secondAttribute="trailing" constant="20" symbolic="YES" id="tV5-yY-Q1o"/>
@@ -427,7 +419,7 @@
                 </viewController>
                 <customObject id="WN7-nG-Uuw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-98" y="1716"/>
+            <point key="canvasLocation" x="-98.5" y="1716"/>
         </scene>
         <!--Open Board-->
         <scene sceneID="Rfr-Lf-Wfa">
@@ -910,6 +902,5 @@
     <resources>
         <image name="NSColorPanel" width="32" height="32"/>
         <image name="NSUserGuest" width="32" height="32"/>
-        <image name="whiteBoard" width="250" height="970"/>
     </resources>
 </document>

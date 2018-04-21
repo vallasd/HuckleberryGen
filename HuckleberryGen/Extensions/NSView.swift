@@ -24,26 +24,74 @@ import Cocoa
 
 extension NSView {
     
+    /// adds a corner to the view
+    func roundedCorner() {
+        layer?.masksToBounds = true
+        layer?.cornerRadius = 20.0
+    }
+    
+    /// adds a shadow to the view's sides
+    func dropshadow() {
+        let shadow = NSShadow()
+        shadow.shadowColor = NSColor.black
+        shadow.shadowOffset = NSMakeSize(0, -10.0)
+        shadow.shadowBlurRadius = 10.0
+        self.wantsLayer = true
+        self.shadow = shadow
+    }
+    
+    /// creates a background panel for the view
+    func addPanel(insets i: CGFloat) {
+        let frame = getFrame(self.bounds, inset: i)
+        let panel = NSView(frame: frame)
+        panel.backgroundColor(HGColor.white)
+        panel.roundedCorner()
+        panel.dropshadow()
+        panel.insert(inParent: self, below: nil, inset: i)
+    }
+    
+    /// inserts a view below the subview provided.  If no subview is provided, will insert the view at the bottom of the parent views hierarchy.  The view will resize according to the parent views size.
+    func insert(inParent p: NSView, below: NSView?, inset i: CGFloat) {
+        frame = getFrame(p.bounds, inset: i)
+        translatesAutoresizingMaskIntoConstraints = true
+        p.addSubview(self, positioned: .below, relativeTo: below)
+        frame.origin = origin(p, view: self)
+        autoresizingMask = [.width, .height]
+    }
+    
+    /// adds a view to be in the center of its parent, view will not resize with the parent
     func center(inParent p: NSView) {
-        self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask =  [NSView.AutoresizingMask.minXMargin, NSView.AutoresizingMask.maxXMargin, NSView.AutoresizingMask.minYMargin, NSView.AutoresizingMask.maxYMargin]
+        frame.origin = origin(p, view: self)
+        autoresizingMask =  [.minXMargin,
+                             .maxXMargin,
+                             .minYMargin,
+                             .maxYMargin]
         p.addSubview(self)
     }
     
+    /// adds view to be the same size as its parent, view will resize with the parent
     func resize(inParent p: NSView) {
-        self.frame = CGRect(x: 0, y: 0, width: p.frame.width, height: p.frame.height)
-        self.translatesAutoresizingMaskIntoConstraints = true
-        
+        frame = CGRect(x: 0, y: 0, width: p.frame.width, height: p.frame.height)
+        translatesAutoresizingMaskIntoConstraints = true
         p.addSubview(self)
-        
-        self.frame.origin = NSMakePoint((p.bounds.width / 2.0) - (self.frame.width / 2.0), (p.bounds.height / 2.0) - (self.frame.height / 2.0))
-        self.autoresizingMask = [NSView.AutoresizingMask.width, NSView.AutoresizingMask.height]
+        frame.origin = origin(p, view: self)
+        autoresizingMask = [.width, .height]
     }
     
-    func disableInteraction() { self.interaction(false) }
+    fileprivate func getFrame(_ bounds: CGRect, inset i: CGFloat) -> NSRect {
+        let i2 = 2.0 * i
+        return NSRect(x: i,
+                      y: i,
+                      width: bounds.size.width - i2,
+                      height: bounds.size.height - i2)
+    }
     
-    func enableInteraction() { self.interaction(true) }
+    fileprivate func origin(_ p: NSView, view: NSView) -> NSPoint {
+        return NSMakePoint((p.bounds.width / 2.0) - (view.frame.width / 2.0),
+                           (p.bounds.height / 2.0) - (view.frame.height / 2.0))
+    }
     
+    /// turns interaction on or off for all subviews in the view
     fileprivate func interaction(_ enabled: Bool) {
         for view in self.subviews {
             if let control = view as? NSControl { control.isEnabled = enabled }
@@ -51,6 +99,7 @@ extension NSView {
         }
     }
     
+    /// sets background to an HGColor
     func backgroundColor(_ color: HGColor) {
         let layer = CALayer()
         layer.backgroundColor = color.cgColor()
@@ -58,44 +107,7 @@ extension NSView {
         self.layer = layer
     }
 
-// Blur function was causing a memory leak
     
-//    func blur() {
-//        let blurFilter = CIFilter(name: "CIGaussianBlur")!
-//        let blurredLayer = CALayer()
-//        blurFilter.setDefaults()
-//        blurFilter.setValue(1.0, forKey: kCIInputRadiusKey)
-//        blurredLayer.backgroundFilters = [blurFilter]
-//        blurredLayer.name = "NSViewBlurredLayer1725349360"
-//        self.wantsLayer = true
-//        self.layerUsesCoreImageFilters = true
-//        self.layer?.addSublayer(blurredLayer)
-//        self.disableInteraction()
-//    }
-//    
-//    func unblur() {
-//        if let layers = self.layer?.sublayers {
-//            for layer in layers {
-//                if layer.name == "NSViewBlurredLayer1725349360" {
-//                    layer.removeFromSuperlayer()
-//                }
-//            }
-//            self.wantsLayer = false
-//            self.layerUsesCoreImageFilters = false
-//            self.enableInteraction()
-//        }
-//    }
-    
-    func dropshadow() {
-        let shadow = NSShadow()
-        shadow.shadowColor = NSColor.black
-        shadow.shadowOffset = NSMakeSize(0, -10.0)
-        shadow.shadowBlurRadius = 10.0
-        
-        self.wantsLayer = true
-        self.shadow = shadow
-    }
-
     var imageRep: NSImage {
         
         isHidden = false

@@ -337,9 +337,14 @@ class NavController: NSViewController {
         if let ld = loadData { push(ld) }
     }
     
+    
     override func viewWillAppear() {
         super.viewWillAppear()
+        
         currentVC?.view.resize(inParent: container)
+        
+        // add background panel
+        view.addPanel(insets: 10)
     }
     
     override func viewWillDisappear() {
