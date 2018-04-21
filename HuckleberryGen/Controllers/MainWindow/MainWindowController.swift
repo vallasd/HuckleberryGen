@@ -21,7 +21,8 @@ class MainWindowController: NSWindowController {
         window?.backgroundColor = HGColor.white.color()
         window?.title = appDelegate.store.project.name
         appDelegate.mainWindowController = self
-        //self.window?.setFrame(windowFrame(), display: true)
+        window?.setFrame(windowFrame(), display: true)
+        window?.minSize = NSSize(width: 240.0, height: 600.0)
         boardHandler = BoardHandler(withWindowController: self)
         showWelcome()
     }

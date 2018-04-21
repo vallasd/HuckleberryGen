@@ -144,8 +144,6 @@ extension FolderBoard: BoardRetrievable {
     }
 }
 
-
-
 extension FolderBoard: NavControllerProgessable {
     
     func navcontrollerProgressionType(_ nav: NavController) -> ProgressionType {
