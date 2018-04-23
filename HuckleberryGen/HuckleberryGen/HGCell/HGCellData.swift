@@ -38,22 +38,21 @@ struct HGCellData {
     let fields: [HGFieldData]
     let images: [HGImageData]
     let checks: [HGCheckData]
-    let imagesOnly: Bool
-    let dummyImages: Int
+    let numImages: Int // If > 0, HGCell will format an image only cell with appropraite spacing.  If numImages > images.count, the excess images will be blank and not selectable.
     
     /// returns an empty HGCellData object
     static var empty: HGCellData {
-        return HGCellData(fields: [], images: [], checks: [], imagesOnly: false, dummyImages: 0)
+        return HGCellData(fields: [], images: [], checks: [], numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a fieldCell1 nib
     static func fieldCell1(field0: HGFieldData) -> HGCellData {
-        return HGCellData(fields: [field0], images: [],  checks: [], imagesOnly: false, dummyImages: 0)
+        return HGCellData(fields: [field0], images: [],  checks: [], numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a fieldCell2 nib
     static func fieldCell2(field0: HGFieldData, field1: HGFieldData) -> HGCellData {
-        return HGCellData(fields: [field0, field1], images: [], checks: [], imagesOnly: false, dummyImages: 0)
+        return HGCellData(fields: [field0, field1], images: [], checks: [], numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a fieldCell3 nib
@@ -61,8 +60,7 @@ struct HGCellData {
         return HGCellData(fields: [field0, field1, field2, field3, field4],
                           images: [],
                           checks: [],
-                          imagesOnly: false,
-                          dummyImages: 0)
+                          numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a defaultCell nib
@@ -70,8 +68,7 @@ struct HGCellData {
         return HGCellData(fields: [field0, field1],
                           images: [image0],
                           checks: [],
-                          imagesOnly: false,
-                          dummyImages: 0)
+                          numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a mixedCell1 nib
@@ -79,8 +76,7 @@ struct HGCellData {
         return HGCellData(fields: [field0, field1, field2, field3, field4],
                           images: [image0],
                           checks: [],
-                          imagesOnly: false,
-                          dummyImages: 0)
+                          numImages: 0)
     }
     
     /// returns a HGCellData object that can populate a check4Cell nib
@@ -88,8 +84,7 @@ struct HGCellData {
         return HGCellData(fields: [field0, field1],
                           images: [image0],
                           checks: [check0, check1, check2, check3],
-                          imagesOnly: false,
-                          dummyImages: 0)
+                          numImages: 0)
     }
     
     /// returns a HGCellData object that only contains HGImageData
@@ -97,7 +92,6 @@ struct HGCellData {
         return HGCellData(fields: [],
                           images: images,
                           checks: [],
-                          imagesOnly: false,
-                          dummyImages: max(0,rowCount-images.count))
+                          numImages: max(0,rowCount))
     }
 }

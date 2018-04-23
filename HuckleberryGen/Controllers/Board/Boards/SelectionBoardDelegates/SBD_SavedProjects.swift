@@ -33,7 +33,7 @@ extension SBD_SavedProjects: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeightForTable(selectionBoard?.tableview)
+        return celltype.rowHeight
     }
     
     func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {

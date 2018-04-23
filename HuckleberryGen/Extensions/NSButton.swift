@@ -10,14 +10,23 @@ import Cocoa
 
 extension NSButton {
     
-    var copy: NSButton {
+    static var imageButton: NSButton {
         let button = NSButton()
+        button.bezelStyle = .regularSquare
         button.setButtonType(.momentaryPushIn)
-        button.bezelStyle = bezelStyle
-        button.isBordered = isBordered
-        button.imagePosition = imagePosition
+        button.isBordered = false
+        button.isTransparent = false
+        button.state = .off
+        button.allowsMixedState = false
+        button.isSpringLoaded = false
+        button.alignment = .center
+        if #available(OSX 10.12, *) {
+            button.imageHugsTitle = false
+        }
+        button.imagePosition = .imageOnly
+        button.isEnabled = true
+        button.imageScaling = .scaleProportionallyUpOrDown
         button.makeConstrainable()
-        button.backgroundColor(.blue)
         return button
     }
     

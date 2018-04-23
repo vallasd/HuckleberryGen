@@ -56,7 +56,7 @@ class SBD_Entities: SelectionBoardDelegate {
     }
     
     func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
-        let index = celltype.index(forlocation: locations[0])
+        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let entity = entities[index]
         switch type {
         case 0: updateRelationship(forEntity: entity)
@@ -82,13 +82,12 @@ class SBD_Entities: SelectionBoardDelegate {
 extension SBD_Entities: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        let numImages = entities.count
-        let numRows = celltype.rows(forImagesWithCount: numImages)
+        let numRows = celltype.numRows(numImages: entities.count, inTable: table)
         return numRows
     }
     
     func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeightForTable(selectionBoard?.tableview)
+        return celltype.rowHeight
     }
     
     func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
@@ -96,9 +95,10 @@ extension SBD_Entities: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: entities.count)
-        let imagedatas = cellImageDatas(forEntityIndexes: imageIndexes)
-        return HGCellData.onlyImages(imagedatas, rowCount: celltype.imagesPerRow)
+        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: entities.count, inTable: table)
+        let images = cellImageDatas(forEntityIndexes: imageIndexes)
+        let ipr = celltype.imagesPerRow(table: table)
+        return HGCellData.onlyImages(images, rowCount: ipr)
     }
 }
 

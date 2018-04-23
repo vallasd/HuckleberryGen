@@ -37,17 +37,16 @@ class SelectionBoard: NSViewController, NavControllerReferable {
 //    }
     
     /// reference to the HGTable
-    fileprivate var hgtable: HGTable!
+    var hgtable: HGTable!
     
-    /// This object is the context that whandle delegation of the Selection Board and HGTable
+    /// This object is the context that handle delegation of the Selection Board and HGTable
     fileprivate var context: SelectionBoardDelegate? { didSet { loadSelectionBoardIfReady() } }
     
     /// the default progression is to finish.  If we want to implement a Next progression, we would need a boardData for the next controller (need to implement this logic later if needed *** nextData for selectionBoard, handled by delegate.
     fileprivate var progressionType: ProgressionType = .finished
     
-    @IBOutlet weak var boardtitle: NSTextField!
-    
-    @IBOutlet weak var tableview: HGTableView?
+    @IBOutlet fileprivate weak var boardtitle: NSTextField!
+    @IBOutlet fileprivate weak var tableview: HGTableView?
     
     /// NavControllerReferable
     weak var nav: NavController?

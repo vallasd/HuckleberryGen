@@ -60,7 +60,7 @@ class SBD_Import: SelectionBoardDelegate {
     
     /// SelectionBoardDelegate function
     func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
-        let index = celltype.index(forlocation: locations[0])
+        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let importFile = importFolder.importFiles[index]
         parse(importFile)
         selectionBoard?.update()
@@ -89,7 +89,7 @@ extension SBD_Import: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeightForTable(selectionBoard?.tableview)
+        return celltype.rowHeight
     }
     
     func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {

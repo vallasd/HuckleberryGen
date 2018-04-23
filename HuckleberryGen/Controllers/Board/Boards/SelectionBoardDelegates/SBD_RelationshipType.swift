@@ -46,7 +46,7 @@ class SBD_RelationshipType: SelectionBoardDelegate {
     }
     
     func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
-        let index = celltype.index(forlocation: locations[0])
+        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let relationshiptype = RelationshipType.create(int: index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].relType = relationshiptype
         appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
@@ -57,13 +57,12 @@ class SBD_RelationshipType: SelectionBoardDelegate {
 extension SBD_RelationshipType: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
-        let numImages = relationshipTypes.count
-        let numRows = celltype.rows(forImagesWithCount: numImages)
+        let numRows = celltype.numRows(numImages: relationshipTypes.count, inTable: table)
         return numRows
     }
     
     func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeightForTable(selectionBoard?.tableview)
+        return celltype.rowHeight
     }
     
     func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
@@ -71,9 +70,11 @@ extension SBD_RelationshipType: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: relationshipTypes.count)
-        let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
-        return HGCellData.onlyImages(imagedatas, rowCount: celltype.imagesPerRow)
+        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: relationshipTypes.count, inTable: table)
+        let images = cellImageDatas(forAttributeIndexes: imageIndexes)
+        let imagesPerRow = celltype.imagesPerRow(table: table)
+        let cellData = HGCellData.onlyImages(images, rowCount: imagesPerRow)
+        return cellData
     }
 }
 

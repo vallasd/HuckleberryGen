@@ -107,8 +107,6 @@ extension NSView {
     /// returns an NSView that can be used as a spacer
     static var spacer: NSView {
         let spacer = NSView()
-        spacer.backgroundColor(.cyan)
-        spacer.frame.size = CGSize(width: 5, height: 5)
         spacer.makeConstrainable()
         return spacer
     }
@@ -116,7 +114,7 @@ extension NSView {
     /// remove all auto resizing and masks for
     func makeConstrainable() {
         translatesAutoresizingMaskIntoConstraints = false
-        autoresizingMask = [.height, .width, .minXMargin, .maxXMargin, .minYMargin, .maxYMargin]
+        autoresizingMask = [.height, .width]
         for subview in self.subviews {
             subview.makeConstrainable()
         }

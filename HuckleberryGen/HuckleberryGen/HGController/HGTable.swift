@@ -90,6 +90,8 @@ class HGTable: NSObject {
         addProjectChangedObserver()
     }
     
+    var rowWidth: CGFloat { return tableview.frame.width - 3.0 }
+    
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
         displayDelegate = delegate
         if let d = delegate as? HGTableObservable { observeDelegate = d }

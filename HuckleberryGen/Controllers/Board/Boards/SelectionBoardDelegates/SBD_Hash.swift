@@ -42,7 +42,7 @@ class SBD_Hash: SelectionBoardDelegate {
             appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         } else {
             // add selected hash
-            let hashIndex = celltype.index(forlocation: locations[0])
+            let hashIndex = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
             var entity = appDelegate.store.getEntity(index: index)
             let hash = hashes[hashIndex]
             if hash.isEntity { entity.entityHashes.append(hash) }
@@ -57,14 +57,12 @@ class SBD_Hash: SelectionBoardDelegate {
 extension SBD_Hash: HGTableDisplayable {
     
     func numberOfRows(fortable table: HGTable) -> Int {
-    
-        let numImages = hashes.count
-        let numRows = celltype.rows(forImagesWithCount: numImages)
+        let numRows = celltype.numRows(numImages: hashes.count, inTable: table)
         return numRows
     }
     
     func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeightForTable(selectionBoard?.tableview)
+        return celltype.rowHeight
     }
     
     func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
@@ -82,9 +80,11 @@ extension SBD_Hash: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: hashes.count)
-        let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
-        return HGCellData.onlyImages(imagedatas, rowCount: celltype.imagesPerRow)
+        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: hashes.count, inTable: table)
+        let images = cellImageDatas(forAttributeIndexes: imageIndexes)
+        let rowCount = celltype.imagesPerRow(table: table)
+        let cellData = HGCellData.onlyImages(images, rowCount: rowCount)
+        return cellData
     }
 }
 

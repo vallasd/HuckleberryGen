@@ -22,7 +22,7 @@ extension NSLayoutConstraint {
         return w
     }
     
-    static func width(view1: Any, toView: Any, multipler: CGFloat) -> NSLayoutConstraint {
+    static func width(view: Any, toView: Any, multipler: CGFloat) -> NSLayoutConstraint {
         let w = NSLayoutConstraint(item: view,
                                    attribute: .width,
                                    relatedBy: .equal,
@@ -34,8 +34,8 @@ extension NSLayoutConstraint {
         return w
     }
     
-    static func size(view1: Any, toView: Any, multipler: CGFloat) -> [NSLayoutConstraint] {
-        let w = width(view1: view1, toView: toView, multipler: multipler)
+    static func size(view: Any, toView: Any, multipler: CGFloat) -> [NSLayoutConstraint] {
+        let w = width(view: view, toView: toView, multipler: multipler)
         let h = NSLayoutConstraint(item: view,
                                    attribute: .height,
                                    relatedBy: .equal,
@@ -48,7 +48,7 @@ extension NSLayoutConstraint {
         return [w, h]
     }
     
-    static func centerVertically(view1: Any, toView: Any) -> NSLayoutConstraint {
+    static func centerVertically(view: Any, toView: Any) -> NSLayoutConstraint {
         let cv = NSLayoutConstraint(item: view,
                                     attribute: .centerY,
                                     relatedBy: .equal,
