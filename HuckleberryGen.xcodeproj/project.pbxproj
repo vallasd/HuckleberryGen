@@ -15,7 +15,6 @@
 		030963091C5BD00F00DEE9C4 /* HGInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030963081C5BD00F00DEE9C4 /* HGInt.swift */; };
 		0309630B1C5BD01E00DEE9C4 /* HGString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0309630A1C5BD01E00DEE9C4 /* HGString.swift */; };
 		0309630D1C5BD0DE00DEE9C4 /* HGNoun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0309630C1C5BD0DE00DEE9C4 /* HGNoun.swift */; };
-		0312EF0A1CCBEBF300E334B6 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0312EF091CCBEBF300E334B6 /* ImageCell.xib */; };
 		031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A1A531B8F81F50077FD56 /* HGParser.swift */; };
 		0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3A1B586F6500CB132B /* HGColor.swift */; };
 		0322FA3E1B59038100CB132B /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0322FA3D1B59038100CB132B /* NSView.swift */; };
@@ -129,6 +128,7 @@
 		03FFD8C3208C1E3600CE2CB8 /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8C2208C1E3600CE2CB8 /* NSButton.swift */; };
 		03FFD8C5208C5CFC00CE2CB8 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */; };
 		03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8CC208D58C000CE2CB8 /* NSRect.swift */; };
+		03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,7 +157,6 @@
 		030963081C5BD00F00DEE9C4 /* HGInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGInt.swift; path = ../HGInt.swift; sourceTree = "<group>"; };
 		0309630A1C5BD01E00DEE9C4 /* HGString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGString.swift; sourceTree = "<group>"; };
 		0309630C1C5BD0DE00DEE9C4 /* HGNoun.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGNoun.swift; sourceTree = "<group>"; };
-		0312EF091CCBEBF300E334B6 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		031A1A531B8F81F50077FD56 /* HGParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGParser.swift; path = HGParser/HGParser.swift; sourceTree = "<group>"; };
 		0322FA3A1B586F6500CB132B /* HGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGColor.swift; sourceTree = "<group>"; };
 		0322FA3D1B59038100CB132B /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
@@ -277,6 +276,7 @@
 		03FFD8C2208C1E3600CE2CB8 /* NSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSButton.swift; sourceTree = "<group>"; };
 		03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		03FFD8CC208D58C000CE2CB8 /* NSRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRect.swift; sourceTree = "<group>"; };
+		03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -696,7 +696,7 @@
 				03673A671BEA4C8900CF8F21 /* FieldCell3.xib */,
 				036E329F1BB2DED00024AA4E /* DefaultCell.xib */,
 				036E32A11BB2DEE00024AA4E /* Check4Cell.xib */,
-				0312EF091CCBEBF300E334B6 /* ImageCell.xib */,
+				03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */,
 				036455BF1BA264930096B255 /* HGCellData.swift */,
 				036455C11BA264E40096B255 /* HGCellType.swift */,
 			);
@@ -833,6 +833,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */,
 				036C7C0D1B5143A0004EC724 /* Assets.xcassets in Resources */,
 				03673A681BEA4C8900CF8F21 /* FieldCell3.xib in Resources */,
 				036E32A21BB2DEE00024AA4E /* Check4Cell.xib in Resources */,
@@ -843,7 +844,6 @@
 				036C7C101B5143A0004EC724 /* Main.storyboard in Resources */,
 				035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */,
 				035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */,
-				0312EF0A1CCBEBF300E334B6 /* ImageCell.xib in Resources */,
 				036E32A01BB2DED00024AA4E /* DefaultCell.xib in Resources */,
 				03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */,
 				035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */,
