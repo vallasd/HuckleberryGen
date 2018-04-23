@@ -24,7 +24,7 @@ struct HGReportHandler {
         case .assert:  if hgReportHandlerInfo == false { return }
         }
         
-        let report = "[\(type.string)]" + msg
+        let report = "[\(type.string)] " + msg
         print(report)
     }
 }

@@ -16,13 +16,13 @@ class SBD_RelationshipType: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// index of Entity to be updated
-    let entityIndex: Int!
+    let entityIndex: Int
     
     /// index of Relationship to be updated
-    let relationshipIndex: Int!
+    let relationshipIndex: Int
     
     /// reference to the cell type used
-    let celltype = CellType.image3Cell
+    let celltype = CellType.imageCell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let relationshipTypes: [RelationshipType] = RelationshipType.set

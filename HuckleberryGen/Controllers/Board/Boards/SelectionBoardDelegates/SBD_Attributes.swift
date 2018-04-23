@@ -18,11 +18,11 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// index of entity to be edited
     let entityIndex: Int
     
-    /// inndex of attribute to be changed
+    /// index of attribute to be changed
     let attributeIndex: Int
     
     /// reference to the cell type used 
-    let celltype = CellType.image3Cell
+    let celltype = CellType.imageCell
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?

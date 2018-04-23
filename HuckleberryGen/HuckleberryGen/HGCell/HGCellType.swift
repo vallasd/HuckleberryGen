@@ -10,17 +10,15 @@
 import Cocoa
 
 enum CellType {
-    
+
     case defaultCell
     case mixedCell1
     case check4Cell
-    case image3Cell
-    case image4Cell
-    case image5Cell
-    case image6Cell
+    case imageCell
     case fieldCell1
     case fieldCell2
     case fieldCell3
+    
     
     /// The nib identifier
     var identifier: String {
@@ -28,10 +26,7 @@ enum CellType {
         case .defaultCell: return "DefaultCell"
         case .mixedCell1: return "MixedCell1"
         case .check4Cell: return "CheckCell"
-        case .image3Cell: return "Image3Cell"
-        case .image4Cell: return "Image4Cell"
-        case .image5Cell: return "Image5Cell"
-        case .image6Cell: return "Image6Cell"
+        case .imageCell: return "ImageCell"
         case .fieldCell1: return "FieldCell1"
         case .fieldCell2: return "FieldCell2"
         case .fieldCell3: return "FieldCell3"
@@ -44,10 +39,7 @@ enum CellType {
         case .defaultCell: return 1
         case .mixedCell1: return 1
         case .check4Cell: return 1
-        case .image3Cell: return 4
-        case .image4Cell: return 4
-        case .image5Cell: return 5
-        case .image6Cell: return 6
+        case .imageCell: return 4
         case .fieldCell1: return 0
         case .fieldCell2: return 0
         case .fieldCell3: return 0
@@ -63,10 +55,7 @@ enum CellType {
         case .defaultCell: requiredHeight = 40
         case .mixedCell1: requiredHeight = 40
         case .check4Cell: requiredHeight = 40
-        case .image3Cell: requiredHeight = (table.frame.size.width - 20) / 3
-        case .image4Cell: requiredHeight = (table.frame.size.width - 24) / 4
-        case .image5Cell: requiredHeight = (table.frame.size.width - 28) / 5
-        case .image6Cell: requiredHeight = (table.frame.size.width - 32) / 6
+        case .imageCell: requiredHeight = (table.frame.size.width - 20) / 3
         case .fieldCell1: requiredHeight = 40
         case .fieldCell2: requiredHeight = 40
         case .fieldCell3: requiredHeight = 55

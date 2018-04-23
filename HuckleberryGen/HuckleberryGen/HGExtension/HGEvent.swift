@@ -15,6 +15,7 @@ let HGLeftArrowCharacter = 63234
 let HGRightArrowCharacter = 63235
 let HGACharacter = 97
 let HGDCharacter = 100
+let HGPCharacter = 112
 
 /// List of Available Commands For Huckleberry Gen App generated through Keyboard Interaction.
 enum HGCocoaCommand {
@@ -25,7 +26,7 @@ enum HGCocoaCommand {
     case previousRow
     case tabLeft
     case tabRight
-
+    case printRowInformation // for debugging only
 }
 
 // List of Available Command Options For Huckleberry Gen App generated through Keyboard Interaction.
@@ -73,6 +74,7 @@ extension NSEvent {
             case HGACharacter: return .addRow
             case HGLeftArrowCharacter: return .tabLeft
             case HGRightArrowCharacter: return .tabRight
+            case HGPCharacter: return .printRowInformation
             default: return .none
             }
         }

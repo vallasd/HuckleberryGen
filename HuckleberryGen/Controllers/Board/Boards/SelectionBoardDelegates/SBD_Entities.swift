@@ -25,7 +25,7 @@ class SBD_Entities: SelectionBoardDelegate {
     let type: Int
 
     /// reference to the cell type used
-    let celltype = CellType.image3Cell
+    let celltype = CellType.imageCell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let entities: [Entity] = appDelegate.store.project.entities

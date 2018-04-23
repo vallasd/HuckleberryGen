@@ -86,6 +86,42 @@ extension NSView {
         }
     }
     
+    /// removes constraints in view and subviews
+    func removeAllConstraints() {
+        
+        print("A: constraints for view: \(constraints.count) subviews: \(subviews.map { $0.constraints.count })")
+        
+        for constraint in self.constraints {
+            self.removeConstraint(constraint)
+        }
+        
+        for subview in self.subviews {
+            for constraint in subview.constraints {
+                subview.removeConstraint(constraint)
+            }
+        }
+        
+        print("B: constraints for view: \(constraints.count) subviews: \(subviews.map { $0.constraints.count })")
+    }
+    
+    /// returns an NSView that can be used as a spacer
+    static var spacer: NSView {
+        let spacer = NSView()
+        spacer.backgroundColor(.cyan)
+        spacer.frame.size = CGSize(width: 5, height: 5)
+        spacer.makeConstrainable()
+        return spacer
+    }
+    
+    /// remove all auto resizing and masks for
+    func makeConstrainable() {
+        translatesAutoresizingMaskIntoConstraints = false
+        autoresizingMask = [.height, .width, .minXMargin, .maxXMargin, .minYMargin, .maxYMargin]
+        for subview in self.subviews {
+            subview.makeConstrainable()
+        }
+    }
+    
     /// sets background to an HGColor
     func backgroundColor(_ color: HGColor) {
         let layer = CALayer()
@@ -102,4 +138,6 @@ extension NSView {
         img.addRepresentation(rep)
         return img
     }
+    
+    
 }

@@ -94,13 +94,6 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     // MARK: @IBOutlets
     
     @IBOutlet weak var image0: NSButton?
-    @IBOutlet weak var image1: NSButton?
-    @IBOutlet weak var image2: NSButton?
-    @IBOutlet weak var image3: NSButton?
-    @IBOutlet weak var image4: NSButton?
-    @IBOutlet weak var image5: NSButton?
-    @IBOutlet weak var image6: NSButton?
-    @IBOutlet weak var image7: NSButton?
     
     @IBOutlet weak var field0: NSTextField?
     @IBOutlet weak var field1: NSTextField?
@@ -121,18 +114,30 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     fileprivate(set) var row: Int = 0
     fileprivate(set) var selectedImages: [Int] = []
     
+    /// use to determine number of images in an imageCell
+    fileprivate var imageCellCount: Int?
+    fileprivate var shouldUpdateConstraintsForImageCells = false
+    fileprivate var spacers: [NSView] = []
+    
     /// ordered array of images for HGCell
     lazy var images: [NSButton?] = {
-        let _images = [self.image0, self.image1, self.image2, self.image3, self.image4, self.image5, self.image6, self.image7]
-        for index in 0...7 {
-            self.set(imagebutton: _images[index], withTag: index)
+        
+        self.backgroundColor(HGColor.orange)
+        
+        let _images = imageCellCount != nil ? createImages() : [image0]
+        
+        var index = 0
+        for image in _images {
+            self.set(imagebutton: image, withTag: index)
+            index += 1
         }
+        
         return _images
     }()
     
     /// ordered array of fields for HGCell
     lazy var fields: [NSTextField?] = {
-        let _fields = [self.field0, self.field1, self.field2, self.field3, self.field4, self.field5, self.field6, self.field7]
+        let _fields = [field0, field1, field2, field3, field4, field5, field6, field7]
         for index in 0...7 {
             self.set(field: _fields[index], withTag: index)
         }
@@ -141,7 +146,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// ordered array of checks for HGCell
     lazy var checks: [NSButton?] = {
-        let _checks = [self.check0, self.check1, self.check2, self.check3]
+        let _checks = [check0, check1, check2, check3]
         for index in 0...3 {
             self.set(checkbutton: _checks[index], withTag: index)
         }
@@ -192,12 +197,9 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// unselects and unhighlights all image in HGCell
     func unselectImages() {
         
-        for index in 0...7 {
-            if let image = images[index] {
-                image.backgroundColor(HGColor.clear)
-            }
+        for image in images {
+            image?.backgroundColor(HGColor.clear)
         }
-        
         selectedImages = []
     }
     
@@ -258,8 +260,13 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// Updates images with HGImageData (assumes [HGImageData] is correctly ordered)
     fileprivate func update(withData data: [HGImageData]) {
-        let maxCount = min(data.count, images.count)
-        for index in 0 ..< maxCount {
+        
+        // if we are provide more than one HGImageData, we assume this is an ImageCell
+        if data.count > 1 {
+            imageCellCount = data.count
+        }
+        
+        for index in 0 ..< data.count {
             update(image: images[index], withData: data[index])
         }
     }
@@ -373,11 +380,180 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         check.isHidden = true
     }
     
-    // MARK: Errors Reporting
+    // MARK: Create image buttons for ImageCell
     
-    /// Reports an error if there is more data than cell objects available
-    fileprivate func reportExtraDataErrorIfApplicable(cellCount: Int, dataCount: Int, typeOfObject: String) {
-        //
+    /// creates image buttons based on imageCount that was set
+    fileprivate func createImages() -> [NSButton?] {
+        
+        // this is may be a recycled cell, just return buttons if so
+        let buttons = subviews.filter { $0 is NSButton } as! [NSButton]
+        if buttons.count == imageCellCount {
+            return buttons
+        }
+        
+        // check errors
+        if errorInImageProcessing() {
+            return []
+        }
+        
+        // set image and count
+        let image = image0!
+        let count = imageCellCount!
+        
+        // remove all subviews, cleaning up cell
+        let _ = self.subviews.map { if $0 !== image { $0.removeFromSuperview() } }
+        
+        // create copies of images from initial image
+        var images: [NSButton] = []
+        
+        var i = 0
+        while i < count {
+            let copy = image.copy
+            images.append(copy)
+            self.addSubview(copy)
+            i += 1
+        }
+        
+        // create spacers
+        spacers = []
+        for _ in 0..<images.count - 1 {
+            let spacer = NSView.spacer
+            self.addSubview(spacer)
+            spacers.append(spacer)
+        }
+        
+        // replace image0 with copy
+        image0?.removeFromSuperview()
+        image0 = images[0]
+        shouldUpdateConstraintsForImageCells = true
+        
+        return images
+    }
+    
+    override func updateConstraints() {
+
+        // we don't need to update any constraints
+        if shouldUpdateConstraintsForImageCells == false || self.images.count == 0 {
+            super.updateConstraints()
+            return
+        }
+        
+        // set check to false since we are updating constraints
+        shouldUpdateConstraintsForImageCells = false
+        
+        // get image buttons
+        let images = self.images as! [NSButton]
+
+        // remove existing constraints
+        for constraint in self.constraints {
+            print("C: \(constraint)")
+        }
+        
+        // set border spacing
+        let bp: CGFloat = 4.0
+        
+        // add top, bottom, aspect ratio to image buttons
+        var index = 0
+        for image in images {
+            self.addConstraints([NSLayoutConstraint.bottom(view: image, superView: self, spacing: bp),
+                                 NSLayoutConstraint.top(view: image, superView: self, spacing: bp)
+                ])
+            image.addConstraint(NSLayoutConstraint.aspectRatio(view: image, ratio: 1.0))
+            index += 1
+        }
+        
+        // add leading constraint
+        let first = images.first!
+        self.addConstraint(NSLayoutConstraint.leading(view: first, superView: self, spacing: bp))
+        
+        // if we only had one image we are done
+        if images.count == 1 {
+            super.updateConstraints()
+            return
+        }
+        
+        // add trailing constraint
+        let last = images.last!
+        self.addConstraint(NSLayoutConstraint.trailing(view: last, superView: self, spacing: bp))
+        
+        // update spacers
+        index = 0
+        for spacer in spacers {
+            let left = images[index]
+            let right = images[index + 1]
+            self.addConstraints([NSLayoutConstraint.horizontal(left: left, right: spacer, spacing: bp),
+                                 NSLayoutConstraint.horizontal(left: spacer, right: right, spacing: bp),
+                                 NSLayoutConstraint.bottom(view: spacer, superView: self, spacing: bp),
+                                 NSLayoutConstraint.top(view: spacer, superView: self, spacing: bp)
+                ])
+            
+//            if index > 0 {
+//                let left = spacers[index - 1]
+//                let c = NSLayoutConstraint.width(view1: spacer, toView: left, multipler: 1)
+//                c.priority = c.priority + 1
+//                self.addConstraint(c)
+//            }
+            
+            index += 1
+        }
+        
+        super.updateConstraints()
+    }
+    
+//    /// adds all constraints for the image buttons and returns the spacers between the image buttons
+//    fileprivate func addImageConstraints(images: [NSButton]) {
+//
+//        //
+//
+//        // remove existing constraints
+//        self.removeAllConstraints()
+//
+//        // add constraints for left most image
+//        let left = images.first!
+//        self.addConstraints([NSLayoutConstraint.bottom(view: left, superView: self, spacing: 0),
+//                             NSLayoutConstraint.top(view: left, superView: self, spacing: 0),
+//                             NSLayoutConstraint.leading(view: left, superView: self, spacing: 0)])
+//
+//        // if we only had one image we are done
+//        if images.count == 1 { return }
+//
+//        // create spacers
+////        var spacers: [NSView] = []
+////        for _ in 0..<images.count - 1 {
+////            let spacer = NSView(frame: left.frame)
+////            spacer.backgroundColor(.cyan)
+////            self.addSubview(spacer)
+////            spacers.append(spacer)
+////        }
+//
+//        // add constraints for right most image
+//        let right = images.last!
+//        self.addConstraints([NSLayoutConstraint.bottom(view: right, superView: self, spacing: 0),
+//                             NSLayoutConstraint.top(view: right, superView: self, spacing: 0),
+//                             NSLayoutConstraint.trailing(view: right, superView: self, spacing: 0)])
+//
+//
+//    }
+    
+    
+    /// checks if there are any errors encountered before creating new image buttons
+    fileprivate func errorInImageProcessing() -> Bool {
+        
+        // is image0 valid
+        guard let _ = image0 else {
+            let msg = "unable to retrieve |image0| in |HGCell|"
+            HGReportHandler.shared.report(msg, type: .error)
+            return true
+        }
+        
+        // is imageCellCount set and valid
+        guard let imageCount = imageCellCount, imageCount > 0 else {
+            let msg = "imageCellCount is |\(String(describing: imageCellCount))| in |HGCell|"
+            HGReportHandler.shared.report(msg, type: .error)
+            return true
+        }
+        
+        return false
     }
     
     // MARK: Field Select Button

@@ -96,8 +96,51 @@ class HGTableView: NSTableView {
         case .deleteRow: deleteSelectedRowsIfDelegateSaysOK()
         case .nextRow: selectNext()
         case .previousRow: selectPrev()
+        var WARNING__🛠🛠🛠: AnyObject
+        case .printRowInformation: printRowInformation()
         default: break // Do Nothing
         }
+    }
+    
+    fileprivate func printRowInformation() {
+        
+        let indent = "   "
+        HGReportHandler.shared.report("HGTable:", type: .info)
+        for row in 0..<numberOfRows {
+            HGReportHandler.shared.report("\(indent)row: \(row)", type: .info)
+            let v = view(atColumn: 0, row: row, makeIfNecessary: false)
+            reportDetails(view: v, indent: indent)
+            HGReportHandler.shared.report("\(indent)subviews:", type: .info)
+            HGReportHandler.shared.report("", type: .info)
+            for s in v?.subviews ?? [] {
+                let indent = indent + indent
+                reportDetails(view: s, indent: indent)
+                HGReportHandler.shared.report("", type: .info)
+            }
+        }
+    }
+    
+    fileprivate func reportDetails(view: NSView?, indent: String) {
+        
+        guard let v = view else {
+            HGReportHandler.shared.report("\(indent)error: no view info provide", type: .info)
+            return
+        }
+        
+        if let b = v as? NSButton {
+            HGReportHandler.shared.report("\(indent)type: button", type: .info)
+            HGReportHandler.shared.report("\(indent)title: \(b.title)", type: .info)
+        }
+        else if let t = v as? NSTextField {
+            HGReportHandler.shared.report("\(indent)type: textfield", type: .info)
+            HGReportHandler.shared.report("\(indent)text: \(t.stringValue)", type: .info)
+        }
+        else {
+            HGReportHandler.shared.report("\(indent)type: nsview", type: .info)
+        }
+        
+        HGReportHandler.shared.report("\(indent)bounds: \(v.bounds.info)", type: .info)
+        HGReportHandler.shared.report("\(indent)frame: \(v.frame.info)", type: .info)
     }
     
     /// custom HGTableView function that handles changed flag events such as command button held down
@@ -266,14 +309,4 @@ class HGTableView: NSTableView {
         print("Sub Views are \(view.subviews)")
         return false
     }
-    
 }
-
-
-
-//        let parentWindow = self.window
-//        if let subviews = parentWindow?.contentViewController?.view.subviews {
-//            for subview in subviews {
-//
-//            }
-//        }

@@ -16,7 +16,7 @@ class SBD_Hash: SelectionBoardDelegate {
     var hashes: [HashObject]
     
     /// reference to the cell type used
-    let celltype = CellType.image3Cell
+    let celltype = CellType.imageCell
     
     init(entityIndex ei: Int, hashes h: [HashObject]) {
         index = ei

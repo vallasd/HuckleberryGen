@@ -70,10 +70,9 @@ protocol HGTableRowAppendable: HGTableDisplayable {
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int])
 }
 
-/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView . This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  To Properly use this class, set the delegates then the HGTableView
+/// HGTable is a custom class that is the NSTableViewDataSource and NSTableViewDelegate delegate for an NSTableView.  This class works with HGCell to provide generic cell templates to NSTableView. This class provides a custom interface for NSTableView so that: HGCell fields can be edited, User warnings / feedback Pop-ups display, Option Selection Pop-ups display, KeyBoard commands accepted.  The user can fine tune the HGTable by determining which of the many protocols in the class that they choose to implement.  To Properly use this class, set the delegates then the HGTableView
 class HGTable: NSObject {
     
-   
     /// initialize with a NSTableView
     init(tableview: NSTableView, delegate: HGTableDisplayable) {
         super.init()
@@ -239,7 +238,7 @@ extension HGTable: NSTableViewDelegate {
         let cellType = displayDelegate?.hgtable(self, cellForRow: row) ?? .defaultCell
         register(cellType, forTableView: tableView)
         let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellType.identifier), owner: self) as! HGCell
-        if cell.delegate == nil { cell.delegate = self }
+        cell.delegate = self
         let data = displayDelegate?.hgtable(self, dataForRow: row) ?? HGCellData.empty
         cell.update(withRow: row, cellData: data)
         return cell

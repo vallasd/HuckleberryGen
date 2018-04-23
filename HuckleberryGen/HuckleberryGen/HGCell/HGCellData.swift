@@ -22,8 +22,9 @@ struct HGImageData: HGCellItemData {
     let title: String
     let image: NSImage?
     
-    static func withImage(_ image: NSImage?) -> HGImageData { return HGImageData(title: "", image: image) }
-
+    static func withImage(_ image: NSImage?) -> HGImageData {
+        return HGImageData(title: "", image: image)
+    }
 }
 
 struct HGCheckData: HGCellItemData {
@@ -71,21 +72,6 @@ struct HGCellData {
     /// returns a HGCellData object that can populate a check4Cell nib
     static func check4Cell(field0: HGFieldData, field1: HGFieldData, image0: HGImageData, check0: HGCheckData, check1: HGCheckData, check2: HGCheckData, check3: HGCheckData) -> HGCellData {
         return HGCellData(fields: [field0, field1], images: [image0], checks: [check0, check1, check2, check3])
-    }
-    
-    /// returns a HGCellData object that can populate a image4Cell nib
-    static func image4Cell(image0: HGImageData, image1: HGImageData, image2: HGImageData, image3: HGImageData) -> HGCellData {
-        return HGCellData(fields: [], images: [image0, image1, image2, image3], checks: [])
-    }
-    
-    /// returns a HGCellData object that can populate a image5Cell nib
-    static func image5Cell(image0: HGImageData, image1: HGImageData, image2: HGImageData, image3: HGImageData, image4: HGImageData) -> HGCellData {
-        return HGCellData(fields: [], images: [image0, image1, image2, image3, image4], checks: [])
-    }
-    
-    /// returns a HGCellData object that can populate a image6Cell nib
-    static func image6Cell(image0: HGImageData, image1: HGImageData, image2: HGImageData, image3: HGImageData, image4: HGImageData, image5: HGImageData) -> HGCellData {
-        return HGCellData(fields: [], images: [image0, image1, image2, image3, image4, image5], checks: [])
     }
     
     /// returns a HGCellData object that only contains HGImageData
