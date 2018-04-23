@@ -73,7 +73,7 @@ extension SBD_RelationshipType: HGTableDisplayable {
     func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
         let imageIndexes = celltype.imageIndexes(forRow: row, imageCount: relationshipTypes.count)
         let imagedatas = cellImageDatas(forAttributeIndexes: imageIndexes)
-        return HGCellData.onlyImages(imagedatas)
+        return HGCellData.onlyImages(imagedatas, rowCount: celltype.imagesPerRow)
     }
 }
 

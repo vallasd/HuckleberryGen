@@ -82,7 +82,7 @@ enum CellType {
     
     /// returns the image indexes required for a row.
     func imageIndexes(forRow row: Int, imageCount: Int) -> [Int] {
-        let ipr = self.imagesPerRow
+        let ipr = imagesPerRow
         let firstIndex = row * ipr
         var indexes: [Int] = []
         for count in 0...ipr-1 {
