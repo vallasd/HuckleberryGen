@@ -46,8 +46,7 @@ enum CellType {
             let sidePadding = 2 * HGCellImageBorder
             let totalSpaceNeeded = (CGFloat(numImages) * imageWidth) + sidePadding
             let images = totalSpaceNeeded <= rowWidth ? numImages : numImages - 1
-            print("images per row: \(images)")
-            return 3
+            return images
         case .fieldCell1: return 0
         case .fieldCell2: return 0
         case .fieldCell3: return 0

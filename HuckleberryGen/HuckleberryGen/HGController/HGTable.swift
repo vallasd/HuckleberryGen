@@ -90,7 +90,11 @@ class HGTable: NSObject {
         addProjectChangedObserver()
     }
     
-    var rowWidth: CGFloat { return tableview.frame.width - 3.0 }
+    var rowWidth: CGFloat {
+        let w = tableview.superview?.bounds.width
+        let width = w != nil ? w! - 3.0 : 235.0
+        return width
+    }
     
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
         displayDelegate = delegate
@@ -226,7 +230,6 @@ extension HGTable: NSTableViewDataSource {
         let rows = displayDelegate?.numberOfRows(fortable: self) ?? 0
         return rows
     }
-    
 }
 
 // MARK: NSTableViewDelegate

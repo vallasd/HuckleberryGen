@@ -51,8 +51,9 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     /// NavControllerReferable
     weak var nav: NavController?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        // HGTable is dependent on Tableview size when loading, we want to make sure that the tableview is layed out initially before setting HGTable
         loadSelectionBoardIfReady()
         updateProgression()
     }
