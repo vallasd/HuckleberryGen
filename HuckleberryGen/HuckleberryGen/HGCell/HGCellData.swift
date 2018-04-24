@@ -101,4 +101,13 @@ struct HGCellData {
                           checks: [],
                           numImages: max(0,rowCount))
     }
+    
+    /// returns a HGCellData object that only contains HGImageData
+    static func combined(_ images: [HGCellData], rowCount: Int) -> HGCellData {
+        let allImages = images.flatMap { $0.images }
+        return HGCellData(fields: [],
+                          images: allImages,
+                          checks: [],
+                          numImages: max(0,rowCount))
+    }
 }

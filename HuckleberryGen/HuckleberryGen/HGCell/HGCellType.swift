@@ -34,13 +34,12 @@ enum CellType {
     }
     
     /// number of image buttons per row for given cell type
-    func imagesPerRow(table: HGTable) -> Int {
+    func imagesPerRow(rowWidth: CGFloat) -> Int {
         switch self {
         case .defaultCell: return 1
         case .mixedCell1: return 1
         case .check4Cell: return 1
         case .imageCell:
-            let rowWidth = table.rowWidth
             let imageWidth = rowHeight - HGCellImageBorder
             let numImages = Int(rowWidth / imageWidth)
             let sidePadding = 2 * HGCellImageBorder
@@ -54,18 +53,21 @@ enum CellType {
     /// returns an suggested row height for HGCell given a Table
     var rowHeight: CGFloat {
         switch (self) {
-        case .imageCell: return 55
+        case .imageCell: return 60
         case .fieldCell3: return 55
         case .mixedCell1: return 65
         default: return 40
         }
     }
     
-    func numRows(inTable table: HGTable, items: Int) -> Int {
+    func numRows(rowWidth: CGFloat, items: Int) -> Int {
         if items == 0 { return 0 }
         switch (self) {
         case .imageCell:
-            let ipr = imagesPerRow(table: table)
+            let ipr = imagesPerRow(rowWidth: rowWidth)
+            if items % ipr == 0 {
+                return items / ipr
+            }
             return (items / ipr) + 1
         default: return items
         }

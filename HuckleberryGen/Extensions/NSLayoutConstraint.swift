@@ -18,7 +18,7 @@ extension NSLayoutConstraint {
                                    attribute: .height,
                                    multiplier: ratio,
                                    constant: 0.0)
-        w.priority = .required
+        w.priority = .defaultHigh
         return w
     }
     
@@ -30,7 +30,7 @@ extension NSLayoutConstraint {
                                    attribute: .width,
                                    multiplier: multipler,
                                    constant: 0.0)
-        w.priority = .required
+        w.priority = .defaultLow
         return w
     }
     

@@ -78,11 +78,6 @@ class HGTable: NSObject {
         addProjectChangedObserver()
     }
     
-    var rowWidth: CGFloat {
-        let width = tableview.superview?.bounds.width
-        return width != nil ? width! - 3.0 : 250.0
-    }
-    
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
         displayDelegate = delegate
         if let d = delegate as? HGTableObservable { observeDelegate = d }
@@ -104,9 +99,15 @@ class HGTable: NSObject {
         }
     }
     
+    fileprivate(set) var parentRow: Int = notSelected
+    
+    fileprivate var rowWidth: CGFloat {
+        let sWidth = tableview.superview?.bounds.width
+        let width = sWidth != nil ? sWidth! - 3.0 : 250.0
+        return width
+    }
     fileprivate var didSetWidthObserver = false
     fileprivate var imagesPerRow = 0
-    fileprivate(set) var parentRow: Int = notSelected
     fileprivate(set) var celltype: CellType! {
         didSet {
             if celltype == .imageCell && !didSetWidthObserver {
@@ -209,19 +210,42 @@ class HGTable: NSObject {
             })
     }
     
+    fileprivate func celldata(forRow row: Int) -> HGCellData {
+        
+        // image cell data request, we pull more than one index at a time
+        if celltype == .imageCell {
+            var datas: [HGCellData] = []
+            let startIndex = indexFrom(row: row, tag: 0)
+            let endIndex = min(startIndex+imagesPerRow, items-1)
+            for index in startIndex...endIndex {
+                let data = displayDelegate?.hgtable(self, dataForIndex: index) ?? HGCellData.empty
+                datas.append(data)
+            }
+            return HGCellData.combined(datas, rowCount: imagesPerRow)
+        }
+        
+        // non imageCell data request
+        return displayDelegate?.hgtable(self, dataForIndex: row) ?? HGCellData.empty
+    }
+    
+    fileprivate func calculateImagesPerRow() -> Int {
+        let ipr = celltype.imagesPerRow(rowWidth: rowWidth)
+        return ipr
+    }
+    
     fileprivate func indexFrom(row: Int, tag: Int) -> Int {
         if celltype == .imageCell {
-            let ipr = celltype.imagesPerRow(table: self)
-            return row * ipr + tag
+            return row * imagesPerRow + tag
         }
         return row
     }
     
+    // we are observing width for imageCells, if imagesPerRow changes, we reload tableview.  
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "width" {
-            let ipr = celltype.imagesPerRow(table: self)
+            let ipr = calculateImagesPerRow()
             if ipr != imagesPerRow {
-                print("ipr: \(ipr) imagesPerRow: \(imagesPerRow)")
+                imagesPerRow = ipr
                 tableview.reloadData()
             }
         }
@@ -230,7 +254,7 @@ class HGTable: NSObject {
     // MARK: Deinit
     deinit {
         HGNotif.removeObserver(self)
-        tableview.tableColumns.first?.removeObserver(self, forKeyPath: "width")
+        tableview?.tableColumns.first?.removeObserver(self, forKeyPath: "width")
     }
 }
 
@@ -240,9 +264,9 @@ extension HGTable: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
         celltype = displayDelegate?.cellType(fortable: self) ?? .defaultCell
         items = displayDelegate?.numberOfItems(fortable: self) ?? 0
-        imagesPerRow = celltype.imagesPerRow(table: self)
+        imagesPerRow = calculateImagesPerRow()
         register(celltype, forTableView: tableView)
-        let rows = celltype.numRows(inTable: self, items: items)
+        let rows = celltype.numRows(rowWidth: rowWidth, items: items)
         return rows
     }
 }
@@ -257,7 +281,7 @@ extension HGTable: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: celltype.identifier), owner: self) as! HGCell
         cell.delegate = self
-        let data = displayDelegate?.hgtable(self, dataForIndex: row) ?? HGCellData.empty
+        let data = celldata(forRow: row)
         cell.update(withRow: row, cellData: data)
         return cell
     }

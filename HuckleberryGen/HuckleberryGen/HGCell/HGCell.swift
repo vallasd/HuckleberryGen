@@ -371,6 +371,8 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         // set HGCell variable images
         self.images = images
+        
+        updateConstraints()
     }
     
     override func updateConstraints() {
