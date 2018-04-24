@@ -124,6 +124,8 @@ extension NSView {
     func backgroundColor(_ color: HGColor) {
         let layer = CALayer()
         layer.backgroundColor = color.cgColor()
+        layer.masksToBounds = true
+        layer.cornerRadius = 8.0
         self.wantsLayer = true
         self.layer = layer
     }

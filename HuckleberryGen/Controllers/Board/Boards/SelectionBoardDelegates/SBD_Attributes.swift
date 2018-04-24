@@ -20,9 +20,6 @@ class SBD_Attributes: SelectionBoardDelegate {
     
     /// index of attribute to be changed
     let attributeIndex: Int
-    
-    /// reference to the cell type used 
-    let celltype = CellType.imageCell
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
@@ -84,7 +81,7 @@ extension SBD_Attributes: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.imageCell
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
@@ -100,7 +97,12 @@ extension SBD_Attributes: HGTableDisplayable {
 extension SBD_Attributes: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        return true
+        
+        if loc.type == .image {
+            return true
+        }
+        
+        return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {

@@ -85,7 +85,12 @@ extension SBD_Hash: HGTableDisplayable {
 extension SBD_Hash: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        return true
+        
+        if loc.type == .image {
+            return true
+        }
+        
+        return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
