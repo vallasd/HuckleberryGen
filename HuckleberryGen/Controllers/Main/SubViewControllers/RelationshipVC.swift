@@ -66,12 +66,12 @@ extension RelationshipVC: HGTableLocationSelectable {
         }
         
         /// Select Relationship's Entity or Deletion Rule
-        if loc.type == .field && ( loc.tag == 1 || loc.tag == 4 ) {
+        if loc.type == .field && ( loc.typeIndex == 1 || loc.typeIndex == 4 ) {
             return true
         }
         
         // Select Relationship's Type (Too Many or Too One)
-        if loc.type == .image && loc.tag == 0 {
+        if loc.type == .image && loc.typeIndex == 0 {
             return true
         }
         
@@ -81,21 +81,21 @@ extension RelationshipVC: HGTableLocationSelectable {
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
         
         /// Set Relationship's Type
-        if loc.type == .image && loc.tag == 0 {
+        if loc.type == .image && loc.typeIndex == 0 {
             let context = SBD_RelationshipType(entityIndex: table.parentRow, relationshipIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
         
         // Set Relationship's Entity
-        if loc.type == .field && loc.tag == 2 {
+        if loc.type == .field && loc.typeIndex == 2 {
             let context = SBD_Entities(entityIndex: hgtable.parentRow, relationshipIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
             
             // Set Relationship's Deletion Rule
-        else if loc.type == .field && loc.tag == 4 {
+        else if loc.type == .field && loc.typeIndex == 4 {
             let context = SBD_DeletionRules(entityIndex: hgtable.parentRow, relationshipIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)

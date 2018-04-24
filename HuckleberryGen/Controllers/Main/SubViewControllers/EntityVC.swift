@@ -70,14 +70,14 @@ extension EntityVC: HGTableLocationSelectable {
         
         // if a row or hash field, return true
         if loc.type == .row { return true }
-        if loc.type == .field && loc.tag == 1 { return true }
+        if loc.type == .field && loc.typeIndex == 1 { return true }
         return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
         
         // if hash field, display selection board of hashes
-        if loc.type == .field && loc.tag == 1 {
+        if loc.type == .field && loc.typeIndex == 1 {
             let entity = appDelegate.store.getEntity(index: loc.index)
             let hashes = appDelegate.store.project.hashables(forEntity: entity)
             let context = SBD_Hash(entityIndex: loc.index, hashes: hashes)

@@ -25,7 +25,7 @@ enum HGLocationType: Int16 {
 struct HGTableLocation {
     let index: Int
     let type: HGLocationType
-    let tag: Int
+    let typeIndex: Int
 }
 
 extension HGTableLocation: Equatable {
@@ -33,13 +33,13 @@ extension HGTableLocation: Equatable {
         return
             lhs.index == rhs.index &&
             lhs.type == rhs.type &&
-            lhs.tag == rhs.tag
+            lhs.typeIndex == rhs.typeIndex
     }
 }
 
 protocol HGCellDelegate: AnyObject {
-    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: HGLocationType) -> Bool
-    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: HGLocationType)
+    func hgcell(_ cell: HGCell, shouldSelectTypeIndex index: Int, type: HGLocationType) -> Bool
+    func hgcell(_ cell: HGCell, didSelectTypeIndex index: Int, type: HGLocationType)
     func hgcell(_ cell: HGCell, shouldEditField field: Int) -> Bool
     func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String)
 }
@@ -69,7 +69,6 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     weak var delegate: HGCellDelegate?
     
     fileprivate(set) var row: Int = 0
-    fileprivate(set) var selectedImages: [Int] = []
     
     /// special variable used when HGCellData is images only
     fileprivate var imagesCellHas: Int = 0
@@ -139,43 +138,35 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// function called when user selects an image
     @objc func didSelectImage(_ sender: NSButton!) {
         // We can not select an image in HGCell
-        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: sender.tag, type: .image) ?? false
+        let shouldSelect = delegate?.hgcell(self, shouldSelectTypeIndex: sender.tag, type: .image) ?? false
         if shouldSelect == true {
-            delegate?.hgcell(self, didSelectTag: sender.tag, type: .image)
+            delegate?.hgcell(self, didSelectTypeIndex: sender.tag, type: .image)
         }
     }
     
     /// function called when a user selects a field (if field is selectable)
     @objc func didSelectField(_ sender: NSTextField!) {
-        delegate?.hgcell(self, didSelectTag: sender.tag, type: .field)
+        delegate?.hgcell(self, didSelectTypeIndex: sender.tag, type: .field)
     }
     
-    /// unselects and unhighlights all image in HGCell
-    func unselectImages() {
-        
+    /// unhighlights all images in cell
+    func unhighlightImages() {
         for image in images {
             image?.backgroundColor(HGColor.clear)
         }
-        selectedImages = []
     }
     
-    /// unselects and unhighlights image
-    func unselect(imagetag tag: Int) {
-        
-        if let image = images[tag] {
+    /// unhighlights image at index, 0 being left most for imageCell
+    func unhighlight(imageIndex index: Int) {
+        if let image = images[index] {
             image.backgroundColor(HGColor.clear)
-            selectedImages = selectedImages.filter() { $0 != tag }
         }
     }
     
-    /// selects and highlights image if image is not already selected
-    func select(imagetag tag: Int) {
-        
-        if selectedImages.contains(tag) { return }
-        
-        if let image = images[tag] {
+    /// highlights image at index, 0 being left most for imageCell
+    func highlight(imageIndex index: Int) {
+        if let image = images[index] {
             image.backgroundColor(HGColor.blueBright)
-            selectedImages.append(tag)
         }
     }
     
@@ -338,6 +329,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         
         // if the numImages are the same, we will just reuse the cell
         if numImages == imagesCellHas {
+            unhighlightImages()
             return
         }
         
@@ -441,7 +433,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     /// Sets up appropriate field selection button, edit ability, and field text color for a field by polling delegate
     fileprivate func selectionSetup(field: NSTextField) {
         
-        let shouldSelect = delegate?.hgcell(self, shouldSelectTag: field.tag, type: .field) ?? false
+        let shouldSelect = delegate?.hgcell(self, shouldSelectTypeIndex: field.tag, type: .field) ?? false
         
         // Selectable Field
         if shouldSelect {

@@ -98,7 +98,7 @@ extension AttributeVC: HGTableLocationSelectable {
         }
         
         // present a selection board to update current Attribute
-        if loc.type == .image && loc.tag == 0 {
+        if loc.type == .image && loc.typeIndex == 0 {
             let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)

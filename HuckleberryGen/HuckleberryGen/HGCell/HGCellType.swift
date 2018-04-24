@@ -74,38 +74,3 @@ enum CellType {
     }
 }
 
-/// returns the image indexes required for a row.
-//    func imageIndexes(inTable table: HGTable, forRow row: Int, maxCount: Int) -> [Int] {
-//        let ipr = imagesPerRow(table: table)
-//        let firstIndex = row * ipr
-//        var indexes: [Int] = []
-//        for count in 0...ipr - 1 {
-//            let nextIndex = firstIndex + count
-//            if nextIndex == maxCount { break }
-//            indexes.append(nextIndex)
-//        }
-//        return indexes
-//    }
-//
-//    /// returns the cooresponding indexes of HGCellLocation.
-//    func indexes(forlocations locations: [HGCellLocation], inTable table: HGTable) -> [Int] {
-//        var indexes: [Int] = []
-//        for location in locations {
-//            let _index = index(forlocation: location, inTable: table)
-//            indexes.append(_index)
-//        }
-//        return indexes
-//    }
-//
-//
-//    /// returns the cooresponding index, if HGCellLocation is for an image, assumes the index is for an array of images
-//    func index(forlocation location: HGCellLocation, inTable table: HGTable) -> Int {
-//        if let identifier = location.identifier {
-//            if identifier.type == .image {
-//                let ipr = imagesPerRow(table: table)
-//                return location.row * ipr + identifier.tag
-//            }
-//        }
-//        return location.row
-//    }
-

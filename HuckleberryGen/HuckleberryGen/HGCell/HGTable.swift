@@ -106,8 +106,9 @@ class HGTable: NSObject {
         let width = sWidth != nil ? sWidth! - 3.0 : 250.0
         return width
     }
-    fileprivate var didSetWidthObserver = false
+    fileprivate var rows = 0
     fileprivate var imagesPerRow = 0
+    fileprivate var didSetWidthObserver = false
     fileprivate(set) var celltype: CellType! {
         didSet {
             if celltype == .imageCell && !didSetWidthObserver {
@@ -210,12 +211,24 @@ class HGTable: NSObject {
             })
     }
     
+    fileprivate func calculateImagesPerRow() -> Int {
+        let ipr = celltype.imagesPerRow(rowWidth: rowWidth)
+        return ipr
+    }
+    
+    fileprivate func locationIndexFrom(row: Int, typeIndex: Int) -> Int {
+        if celltype == .imageCell {
+            return row * imagesPerRow + typeIndex
+        }
+        return row
+    }
+    
     fileprivate func celldata(forRow row: Int) -> HGCellData {
         
         // image cell data request, we pull more than one index at a time
         if celltype == .imageCell {
             var datas: [HGCellData] = []
-            let startIndex = indexFrom(row: row, tag: 0)
+            let startIndex = locationIndexFrom(row: row, typeIndex: 0)
             let endIndex = min(startIndex+imagesPerRow, items-1)
             for index in startIndex...endIndex {
                 let data = displayDelegate?.hgtable(self, dataForIndex: index) ?? HGCellData.empty
@@ -228,19 +241,22 @@ class HGTable: NSObject {
         return displayDelegate?.hgtable(self, dataForIndex: row) ?? HGCellData.empty
     }
     
-    fileprivate func calculateImagesPerRow() -> Int {
-        let ipr = celltype.imagesPerRow(rowWidth: rowWidth)
-        return ipr
-    }
-    
-    fileprivate func indexFrom(row: Int, tag: Int) -> Int {
-        if celltype == .imageCell {
-            return row * imagesPerRow + tag
+    /// will highlight an image in cell if by using selectedLocation to determine what new cooresponding cell should be highlighted.  Use when width changes update the cells width.
+    fileprivate func highlightImage(incell cell: HGCell) {
+        if let s = selectedLocation, celltype == .imageCell {
+            let row = cell.row
+            for typeIndex in 0..<imagesPerRow {
+                let currentIndex = row * imagesPerRow + typeIndex
+                if currentIndex == s.index {
+                    selectedLocation = HGTableLocation(index: s.index, type: s.type, typeIndex: typeIndex)
+                    cell.highlight(imageIndex: typeIndex)
+                    break
+                }
+            }
         }
-        return row
     }
     
-    // we are observing width for imageCells, if imagesPerRow changes, we reload tableview.  
+    /// we are observing width for imageCells, if imagesPerRow changes, we reload tableview.
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "width" {
             let ipr = calculateImagesPerRow()
@@ -266,7 +282,7 @@ extension HGTable: NSTableViewDataSource {
         items = displayDelegate?.numberOfItems(fortable: self) ?? 0
         imagesPerRow = calculateImagesPerRow()
         register(celltype, forTableView: tableView)
-        let rows = celltype.numRows(rowWidth: rowWidth, items: items)
+        rows = celltype.numRows(rowWidth: rowWidth, items: items)
         return rows
     }
 }
@@ -283,6 +299,7 @@ extension HGTable: NSTableViewDelegate {
         cell.delegate = self
         let data = celldata(forRow: row)
         cell.update(withRow: row, cellData: data)
+        highlightImage(incell: cell)
         return cell
     }
 }
@@ -291,7 +308,7 @@ extension HGTable: NSTableViewDelegate {
 extension HGTable: HGTableViewDelegate {
     
     func hgtableview(_ hgtableview: HGTableView, shouldSelectRow row: Int) -> Bool {
-        let loc = HGTableLocation(index: row, type: .row, tag: 0)
+        let loc = HGTableLocation(index: row, type: .row, typeIndex: 0)
         return locationSelectDelegate?.hgtable(self, shouldSelectLocation: loc) ?? false
     }
     
@@ -316,7 +333,7 @@ extension HGTable: HGTableViewDelegate {
     }
     
     func hgtableview(_ hgtableview: HGTableView, didSelectRow row: Int) {
-        let loc = HGTableLocation(index: row, type: .row, tag: 0)
+        let loc = HGTableLocation(index: row, type: .row, typeIndex: 0)
         if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
     }
     
@@ -337,31 +354,31 @@ extension HGTable: HGTableViewDelegate {
 
 extension HGTable: HGCellDelegate {
     
-    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: HGLocationType) -> Bool {
-        let index = indexFrom(row: cell.row, tag: tag)
-        let loc = HGTableLocation(index: index, type: type, tag: tag)
+    func hgcell(_ cell: HGCell, shouldSelectTypeIndex index: Int, type: HGLocationType) -> Bool {
+        let locIndex = locationIndexFrom(row: cell.row, typeIndex: index)
+        let loc = HGTableLocation(index: locIndex, type: type, typeIndex: index)
         return locationSelectDelegate?.hgtable(self, shouldSelectLocation: loc) ?? false
     }
     
-    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: HGLocationType) {
+    func hgcell(_ cell: HGCell, didSelectTypeIndex index: Int, type: HGLocationType) {
         
-        let index = indexFrom(row: cell.row, tag: tag)
-        let newloc = HGTableLocation(index: index, type: type, tag: tag)
-        var unselected = false
+        let locationIndex = locationIndexFrom(row: cell.row, typeIndex: index)
+        let newloc = HGTableLocation(index: locationIndex, type: type, typeIndex: index)
+        var unhighlighted = false
         
         if type == .image {
             // We already have selected the location before.  Need to unselect.
             if selectedLocation == newloc {
-                cell.unselect(imagetag: tag)
-                unselected = true
+                cell.unhighlight(imageIndex: index)
+                unhighlighted = true
             } else {
-                lastSelectedCellWithTag?.unselectImages()
-                cell.select(imagetag: tag)
+                lastSelectedCellWithTag?.unhighlightImages()
+                cell.highlight(imageIndex: index)
             }
         }
         
         // handle last selected cell and selected location
-        if unselected {
+        if unhighlighted {
             lastSelectedCellWithTag = nil
             selectedLocation = nil
         } else {
