@@ -32,23 +32,12 @@ class SBD_Hash: SelectionBoardDelegate {
     
     /// SelectionBoardDelegate function
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
-        
         // add selected hash
         var entity = appDelegate.store.getEntity(index: index)
         let hash = hashes[loc.index]
         if hash.isEntity { entity.entityHashes.append(hash) }
         else { entity.attributeHash = hash }
         appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
-        
-        // no locations selected, remove all hashes
-//        if loc.count == 0 {
-//            // remove hashes
-//            var entity = appDelegate.store.getEntity(index: index)
-//            entity.attributeHash = nil
-//            entity.entityHashes = []
-//            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
-//        }
-        
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
     
@@ -63,6 +52,18 @@ class SBD_Hash: SelectionBoardDelegate {
     }
 }
 
+extension SBD_Hash: SelectionBoardNoSelectionDelegate {
+    
+    func selectionBoardDidNotChooseLocation(_ sb: SelectionBoard) {
+        // remove all hashes from entity
+        var entity = appDelegate.store.getEntity(index: index)
+        entity.attributeHash = nil
+        entity.entityHashes = []
+        appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+        appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
+    }
+}
+
 extension SBD_Hash: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
@@ -74,11 +75,10 @@ extension SBD_Hash: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let casE = appDelegate.store.project.enums[table.parentRow].cases[index]
-        return HGCellData.fieldCell2(
-            field0: HGFieldData(title: casE.string),
-            field1: HGFieldData(title: String(index))
-        )
+        let hash = hashes[index]
+        let imagedata = HGImageData(title: hash.typeRep, image: hash.image)
+        let celldata = HGCellData.imageCell(image: imagedata)
+        return celldata
     }
 }
 

@@ -14,6 +14,10 @@ protocol SelectionBoardDelegate: HGTableDisplayable {
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation)
 }
 
+protocol SelectionBoardNoSelectionDelegate: HGTableDisplayable {
+    func selectionBoardDidNotChooseLocation(_ sb: SelectionBoard)
+}
+
 /// Board that allows class to select
 class SelectionBoard: NSViewController, NavControllerReferable {
     
@@ -34,6 +38,9 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     
     /// This object is the context that handle delegation of the Selection Board and HGTable
     fileprivate var context: SelectionBoardDelegate? { didSet { loadSelectionBoardIfReady() } }
+    
+    /// This object lets delegate know if nothing was selected
+    fileprivate var noSelectionDelegate: SelectionBoardNoSelectionDelegate?
     
     /// the default progression is to finish.  If we want to implement a Next progression, we would need a boardData for the next controller (need to implement this logic later if needed *** nextData for selectionBoard, handled by delegate.
     fileprivate var progressionType: ProgressionType = .finished
@@ -86,12 +93,19 @@ extension SelectionBoard: BoardRetrievable {
     
     
     func set(context: AnyObject) {
+        
+        // optional delegate for selection board
+        if let delegate = context as? SelectionBoardNoSelectionDelegate {
+            self.noSelectionDelegate = delegate
+        }
+        
         // assign context if it is of type SelectionBoardDelegate
         if let context = context as? SelectionBoardDelegate {
             self.context = context;
             return
         }
-        HGReportHandler.shared.report("SelectionBoard Context \(context) not valid", type: .error)
+        
+        HGReportHandler.shared.report("selection board context |\(context)| not valid", type: .error)
     }
 }
 
@@ -102,7 +116,11 @@ extension SelectionBoard: NavControllerProgessable {
     }
     
     func navcontroller(_ nav: NavController, hitProgressWithType: ProgressionType) {
-        context?.selectionboard(self, didChooseLocation: hgtable.selectedLocation!)
+        if let loc = hgtable.selectedLocation {
+            context?.selectionboard(self, didChooseLocation: loc)
+        } else {
+            noSelectionDelegate?.selectionBoardDidNotChooseLocation(self)
+        }
     }
 }
 
