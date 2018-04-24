@@ -33,9 +33,8 @@ class SBD_DeletionRules: SelectionBoardDelegate {
         self.relationshipIndex = relationshipIndex
     }
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
-        let deletionrule = DeletionRule.create(int: index)
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let deletionrule = DeletionRule.create(int: loc.index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].deletionRule = deletionrule
         appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
     }
@@ -59,10 +58,13 @@ extension SBD_DeletionRules: HGTableDisplayable {
     }
 }
 
-extension SBD_DeletionRules: HGTableRowSelectable {
+extension SBD_DeletionRules: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
     
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
+    }
 }

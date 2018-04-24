@@ -33,10 +33,9 @@ class SBD_Attributes: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
         let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
-        let newAttribute = attribute(fromIndex: index, oldAttribute: o)
+        let newAttribute = attribute(fromIndex: loc.index, oldAttribute: o)
         appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute
         appDelegate.store.post(forNotifType: .attributeUpdated) // post notification so other classes are in the know
     }
@@ -98,14 +97,14 @@ extension SBD_Attributes: HGTableDisplayable {
 }
 
 // MARK: HGTableItemSelectable
-extension SBD_Attributes: HGTableItemSelectable {
+extension SBD_Attributes: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 

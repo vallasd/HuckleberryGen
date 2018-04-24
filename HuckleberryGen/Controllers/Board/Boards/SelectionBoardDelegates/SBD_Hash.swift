@@ -31,24 +31,23 @@ class SBD_Hash: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        
+        // add selected hash
+        var entity = appDelegate.store.getEntity(index: index)
+        let hash = hashes[loc.index]
+        if hash.isEntity { entity.entityHashes.append(hash) }
+        else { entity.attributeHash = hash }
+        appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
         
         // no locations selected, remove all hashes
-        if locations.count == 0 {
-            // remove hashes
-            var entity = appDelegate.store.getEntity(index: index)
-            entity.attributeHash = nil
-            entity.entityHashes = []
-            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
-        } else {
-            // add selected hash
-            let hashIndex = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
-            var entity = appDelegate.store.getEntity(index: index)
-            let hash = hashes[hashIndex]
-            if hash.isEntity { entity.entityHashes.append(hash) }
-            else { entity.attributeHash = hash }
-            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
-        }
+//        if loc.count == 0 {
+//            // remove hashes
+//            var entity = appDelegate.store.getEntity(index: index)
+//            entity.attributeHash = nil
+//            entity.entityHashes = []
+//            appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+//        }
         
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
@@ -83,14 +82,14 @@ extension SBD_Hash: HGTableDisplayable {
     }
 }
 
-extension SBD_Hash: HGTableItemSelectable {
+extension SBD_Hash: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 

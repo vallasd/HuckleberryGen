@@ -59,9 +59,8 @@ class SBD_Import: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
-        let importFile = importFolder.importFiles[index]
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let importFile = importFolder.importFiles[loc.index]
         parse(importFile)
         selectionBoard?.update()
     }
@@ -103,9 +102,14 @@ extension SBD_Import: HGTableDisplayable {
 }
 
 // MARK: HGTableRowSelectable
-extension SBD_Import: HGTableRowSelectable {
+extension SBD_Import: HGTableLocationSelectable {
 
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
+    
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
+    }
+    
 }

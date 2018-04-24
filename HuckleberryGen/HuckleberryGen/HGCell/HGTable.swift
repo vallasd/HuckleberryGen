@@ -35,7 +35,7 @@ protocol HGTableObservable: HGTableDisplayable {
 /// protocol that allows user to select types of the HGTableLocation in an HGTable
 protocol HGTableLocationSelectable: HGTableDisplayable {
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool
-    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) -> Bool
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation)
 }
 
 /// protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
@@ -87,8 +87,7 @@ class HGTable: NSObject {
         displayDelegate = delegate
         if let d = delegate as? HGTableObservable { observeDelegate = d }
         if let d = delegate as? HGTablePostable { selectDelegate = d }
-        if let d = delegate as? HGTableRowSelectable { rowSelectDelegate = d }
-        if let d = delegate as? HGTableItemSelectable { itemSelectDelegate = d }
+        if let d = delegate as? HGTableLocationSelectable { locationSelectDelegate = d }
         if let d = delegate as? HGTableFieldEditable { fieldEditDelegate = d }
         if let d = delegate as? HGTableRowAppendable { rowAppenedDelegate = d }
     }
@@ -156,8 +155,8 @@ class HGTable: NSObject {
     /// set of locations that are currently selected on the Table (can be rows or items)
     fileprivate(set) var selectedLocation: HGTableLocation? {
         didSet {
-            if location != nil {
-                stDelegate?.hgtable(self, selectedLocationChangedTo: location!)
+            if selectedLocation != nil {
+                stDelegate?.hgtable(self, selectedLocationChangedTo: selectedLocation!)
             } else {
                 stDelegate?.hgtableLocationDeselected(self)
             }
@@ -204,6 +203,14 @@ class HGTable: NSObject {
             })
     }
     
+    fileprivate func indexFrom(row: Int, tag: Int) -> Int {
+        if celltype == .imageCell {
+            let ipr = celltype.imagesPerRow(table: self)
+            return row * ipr + tag
+        }
+        return row
+    }
+    
     // MARK: Deinit
     deinit {
         HGNotif.removeObserver(self)
@@ -242,7 +249,8 @@ extension HGTable: NSTableViewDelegate {
 extension HGTable: HGTableViewDelegate {
     
     func hgtableview(_ hgtableview: HGTableView, shouldSelectRow row: Int) -> Bool {
-        return rowSelectDelegate?.hgtable(self, shouldSelectRow: row) ?? false
+        let loc = HGTableLocation(index: row, type: .row, tag: 0)
+        return locationSelectDelegate?.hgtable(self, shouldSelectLocation: loc) ?? false
     }
     
     func hgtableview(shouldAddRowToTable hgtableview: HGTableView) -> Bool {
@@ -266,7 +274,7 @@ extension HGTable: HGTableViewDelegate {
     }
     
     func hgtableview(_ hgtableview: HGTableView, didSelectRow row: Int) {
-        selectedLocations = HGCellLocation.locations(fromRows: hgtableview.selectedRows)
+        let loc = HGTableLocation(index: row, type: .row, tag: 0)
         if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
     }
     
@@ -288,43 +296,39 @@ extension HGTable: HGTableViewDelegate {
 // MARK: HGCellDelegate
 extension HGTable: HGCellDelegate {
     
-    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool {
-        return itemSelectDelegate?.hgtable(self, shouldSelect: cell.row, tag: tag, type: type) ?? false
+    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: HGLocationType) -> Bool {
+        let index = indexFrom(row: cell.row, tag: tag)
+        let loc = HGTableLocation(index: index, type: type, tag: tag)
+        return locationSelectDelegate?.hgtable(self, shouldSelectLocation: loc) ?? false
     }
     
-    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: CellItemType) {
+    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: HGLocationType) {
         
-        let identifier = HGCellItemIdentifier(tag: tag, type: type)
-        let newLocation = HGCellLocation(row: cell.row, identifier: identifier)
+        let index = indexFrom(row: cell.row, tag: tag)
+        let newloc = HGTableLocation(index: index, type: type, tag: tag)
         var unselected = false
         
         if type == .image {
-            
-            let locationAlreadySelected = selectedLocations.contains(newLocation) ? true : false
-            
             // We already have selected the location before.  Need to unselect.
-            if locationAlreadySelected == true {
+            if selectedLocation == newloc {
                 cell.unselect(imagetag: tag)
                 unselected = true
-            }
-                
-                // Another image was selected.  We need to unselect the last cell's images and select the new field.
-            else  {
+            } else {
                 lastSelectedCellWithTag?.unselectImages()
                 cell.select(imagetag: tag)
             }
         }
         
-        // Either remove lastSelectedCell and selectedLocations if unselected, else add the new locations
+        // handle last selected cell and selected location
         if unselected {
             lastSelectedCellWithTag = nil
-            selectedLocations = []
+            selectedLocation = nil
         } else {
             lastSelectedCellWithTag = cell
-            selectedLocations = [newLocation]
+            selectedLocation = newloc
         }
         
-        itemSelectDelegate?.hgtable(self, didSelectRow: cell.row, tag: tag, type: type)
+        locationSelectDelegate?.hgtable(self, didSelectLocation: newloc)
     }
     
     func hgcell(_ cell: HGCell, shouldEditField field: Int) -> Bool {

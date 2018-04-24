@@ -11,7 +11,7 @@ import Cocoa
 
 protocol SelectionBoardDelegate: HGTableDisplayable {
     var selectionBoard: SelectionBoard? { get set }
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation)
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation)
 }
 
 /// Board that allows class to select

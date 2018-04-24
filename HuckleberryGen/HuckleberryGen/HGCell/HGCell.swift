@@ -24,8 +24,17 @@ enum HGLocationType: Int16 {
 
 struct HGTableLocation {
     let index: Int
-    let locationtype: HGLocationType
+    let type: HGLocationType
     let tag: Int
+}
+
+extension HGTableLocation: Equatable {
+    static func == (lhs: HGTableLocation, rhs: HGTableLocation) -> Bool {
+        return
+            lhs.index == rhs.index &&
+            lhs.type == rhs.type &&
+            lhs.tag == rhs.tag
+    }
 }
 
 protocol HGCellDelegate: AnyObject {

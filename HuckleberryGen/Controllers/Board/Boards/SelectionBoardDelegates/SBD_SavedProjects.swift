@@ -15,13 +15,11 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = locations[0].row
-        let _ = appDelegate.store.openProject(atIndex: index)
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let _ = appDelegate.store.openProject(atIndex: loc.index)
     }
 }
 
-// MARK: HGTableDisplayable
 extension SBD_SavedProjects: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
@@ -39,15 +37,17 @@ extension SBD_SavedProjects: HGTableDisplayable {
     }
 }
 
-// MARK: HGTableRowSelectable
-extension SBD_SavedProjects: HGTableRowSelectable {
+extension SBD_SavedProjects: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
+    }
+    
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 
-// MARK: HGTableRowAppendable
 extension SBD_SavedProjects: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool {

@@ -49,7 +49,6 @@ extension EnumVC: HGTableDisplayable {
     }
 }
 
-// MARK: HGTableObservable
 extension EnumVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
@@ -57,7 +56,6 @@ extension EnumVC: HGTableObservable {
     }
 }
 
-// MARK: HGTablePostable
 extension EnumVC: HGTablePostable {
     
     func selectNotification(fortable table: HGTable) -> String {
@@ -65,15 +63,17 @@ extension EnumVC: HGTablePostable {
     }
 }
 
-// MARK: HGTableRowSelectable
-extension EnumVC: HGTableRowSelectable {
+extension EnumVC: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
+    }
+    
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 
-// MARK: HGTableFieldEditable
 extension EnumVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
@@ -92,7 +92,6 @@ extension EnumVC: HGTableFieldEditable {
     
 }
 
-// MARK: HGTableRowAppendable
 extension EnumVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {

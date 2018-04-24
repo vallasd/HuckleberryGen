@@ -7,6 +7,7 @@
 //
 //  All Rights Reserved.//
 //
+
 import Cocoa
 
 class AttributeVC: NSViewController {
@@ -26,7 +27,6 @@ class AttributeVC: NSViewController {
     }
 }
 
-// MARK: HGTableDisplayable
 extension AttributeVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
@@ -61,7 +61,6 @@ extension AttributeVC: HGTableDisplayable {
     }
 }
 
-// MARK: HGTableObservable
 extension AttributeVC: HGTableObservable {
     
     func observeNotifications(fortable table: HGTable) -> [String] {
@@ -69,15 +68,6 @@ extension AttributeVC: HGTableObservable {
     }
 }
 
-// MARK: HGTableRowSelectable
-extension AttributeVC: HGTableRowSelectable {
-    
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
-        return true
-    }
-}
-
-// MARK: HGTableRowAppendable
 extension AttributeVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
@@ -99,20 +89,25 @@ extension AttributeVC: HGTableRowAppendable {
     }
 }
 
-extension AttributeVC: HGTableItemSelectable {
+extension AttributeVC: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
-        if type == .image && tag == 0 {
-            // present a selection board to update current Attribute
-            let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: row)
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
+        
+        if loc.type == .row {
+            return true
+        }
+        
+        // present a selection board to update current Attribute
+        if loc.type == .image && loc.tag == 0 {
+            let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
         return false
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 

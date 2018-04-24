@@ -52,10 +52,14 @@ extension EnumCasesVC: HGTableObservable {
 }
 
 // MARK: HGTableRowSelectable
-extension EnumCasesVC: HGTableRowSelectable {
+extension EnumCasesVC: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
+    }
+    
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 

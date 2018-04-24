@@ -51,35 +51,29 @@ extension IndexVC: HGTableObservable {
     }
 }
 
-
-// MARK: HGTableRowSelectable
-extension IndexVC: HGTableRowSelectable {
+extension IndexVC: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
-        return true
-    }
-}
-
-// MARK: HGItemSelectable
-extension IndexVC: HGTableItemSelectable {
-    
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
-        if type == .image && tag == 0 {
-            // present a selection board to update current Attribute
-            let context = SBD_Entities(indexIndex: row)
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
+        
+        if loc.type == .row {
+            return true
+        }
+        
+        // present a selection board to update current Attribute
+        if loc.type == .image && loc.tag == 0 {
+            let context = SBD_Entities(indexIndex: loc.index)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
+        
         return false
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 
-
-// MARK: HGTableFieldEditable
 extension IndexVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {

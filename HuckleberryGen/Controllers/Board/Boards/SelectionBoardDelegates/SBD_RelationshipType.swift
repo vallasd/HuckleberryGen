@@ -45,9 +45,8 @@ class SBD_RelationshipType: SelectionBoardDelegate {
         return imagedatas
     }
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
-        let relationshiptype = RelationshipType.create(int: index)
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let relationshiptype = RelationshipType.create(int: loc.index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].relType = relationshiptype
         appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
     }
@@ -73,13 +72,13 @@ extension SBD_RelationshipType: HGTableDisplayable {
     }
 }
 
-extension SBD_RelationshipType: HGTableItemSelectable {
+extension SBD_RelationshipType: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }

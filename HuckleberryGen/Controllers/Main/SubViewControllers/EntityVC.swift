@@ -63,11 +63,27 @@ extension EntityVC: HGTablePostable {
     }
 }
 
-// MARK: HGTableRowSelectable
-extension EntityVC: HGTableRowSelectable {
+// MARK: HGTableLocationSelectable
+extension EntityVC: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool {
-        return true
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
+        
+        // if a row or hash field, return true
+        if loc.type == .row { return true }
+        if loc.type == .field && loc.tag == 1 { return true }
+        return false
+    }
+    
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        
+        // if hash field, display selection board of hashes
+        if loc.type == .field && loc.tag == 1 {
+            let entity = appDelegate.store.getEntity(index: loc.index)
+            let hashes = appDelegate.store.project.hashables(forEntity: entity)
+            let context = SBD_Hash(entityIndex: loc.index, hashes: hashes)
+            let boarddata = SelectionBoard.boardData(withContext: context)
+            appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
+        }
     }
 }
 
@@ -92,31 +108,6 @@ extension EntityVC: HGTableFieldEditable {
     }
     
 }
-
-// MARK: HGTableItemSelectable
-extension EntityVC: HGTableItemSelectable {
-    
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
-        
-        /// select hash field
-        if tag == 1 {
-            return true
-        }
-        
-        return false
-    }
-    
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        
-        /// set hash
-        let entity = appDelegate.store.getEntity(index: row)
-        let hashes = appDelegate.store.project.hashables(forEntity: entity)
-        let context = SBD_Hash(entityIndex: row, hashes: hashes)
-        let boarddata = SelectionBoard.boardData(withContext: context)
-        appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
-    }
-}
-
 
 // MARK: HGTableRowAppendable
 extension EntityVC: HGTableRowAppendable {

@@ -55,9 +55,8 @@ class SBD_Entities: SelectionBoardDelegate {
         return imagedatas
     }
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
-        let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
-        let entity = entities[index]
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let entity = entities[loc.index]
         switch type {
         case 0: updateRelationship(forEntity: entity)
         case 1: updateIndex(forEntity: entity)
@@ -98,14 +97,14 @@ extension SBD_Entities: HGTableDisplayable {
     }
 }
 
-extension SBD_Entities: HGTableItemSelectable {
+extension SBD_Entities: HGTableLocationSelectable {
     
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
     
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType) {
-        // Do Nothing
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
+        // do nothing
     }
 }
 
