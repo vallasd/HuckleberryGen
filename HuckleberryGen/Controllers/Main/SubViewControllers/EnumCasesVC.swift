@@ -57,7 +57,6 @@ extension EnumCasesVC: HGTableLocationSelectable {
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
         return true
     }
-    
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
         // do nothing
     }

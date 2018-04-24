@@ -104,10 +104,18 @@ class HGTable: NSObject {
         }
     }
     
+    fileprivate var didSetWidthObserver = false
+    fileprivate var imagesPerRow = 0
     fileprivate(set) var parentRow: Int = notSelected
-    
-    fileprivate(set) var celltype: CellType!
-    fileprivate(set) var items: Int!
+    fileprivate(set) var celltype: CellType! {
+        didSet {
+            if celltype == .imageCell && !didSetWidthObserver {
+                tableview.tableColumns.first?.addObserver(self, forKeyPath: "width", options: [.new], context: nil)
+                didSetWidthObserver = true
+            }
+        }
+    }
+    fileprivate(set) var items: Int = 0
     
     // MARK: HGTable Delegates
     
@@ -163,8 +171,6 @@ class HGTable: NSObject {
         }
     }
     
-    // MARK: Public Methods
-    
     /// reloads tableView
     func update() {
         tableview.reloadData()
@@ -211,9 +217,20 @@ class HGTable: NSObject {
         return row
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "width" {
+            let ipr = celltype.imagesPerRow(table: self)
+            if ipr != imagesPerRow {
+                print("ipr: \(ipr) imagesPerRow: \(imagesPerRow)")
+                tableview.reloadData()
+            }
+        }
+    }
+    
     // MARK: Deinit
     deinit {
         HGNotif.removeObserver(self)
+        tableview.tableColumns.first?.removeObserver(self, forKeyPath: "width")
     }
 }
 
@@ -223,6 +240,7 @@ extension HGTable: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
         celltype = displayDelegate?.cellType(fortable: self) ?? .defaultCell
         items = displayDelegate?.numberOfItems(fortable: self) ?? 0
+        imagesPerRow = celltype.imagesPerRow(table: self)
         register(celltype, forTableView: tableView)
         let rows = celltype.numRows(inTable: self, items: items)
         return rows
@@ -293,7 +311,6 @@ extension HGTable: HGTableViewDelegate {
     
 }
 
-// MARK: HGCellDelegate
 extension HGTable: HGCellDelegate {
     
     func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: HGLocationType) -> Bool {
@@ -338,5 +355,4 @@ extension HGTable: HGCellDelegate {
     func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String) {
         fieldEditDelegate?.hgtable(self, didEditRow: cell.row, field: field, withString: string)
     }
-    
 }
