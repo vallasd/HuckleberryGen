@@ -21,8 +21,6 @@ class EnumVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
-    let cellType = CellType.defaultCell
-    
     var hgtable: HGTable!
     
     override func viewDidLoad() {
@@ -33,24 +31,16 @@ class EnumVC: NSViewController {
 // MARK: HGTableDisplayable
 extension EnumVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return appDelegate.store.project.enums.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 50.0
+    func cellType(fortable table: HGTable) -> CellType {
+        return CellType.defaultCell
     }
     
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return cellType
-    }
-    
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let enuM = appDelegate.store.project.enums[row]
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let enuM = appDelegate.store.project.enums[index]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
             field1: HGFieldData(title: ""),

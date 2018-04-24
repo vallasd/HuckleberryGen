@@ -33,7 +33,7 @@ class SBD_Attributes: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
         let newAttribute = attribute(fromIndex: index, oldAttribute: o)
@@ -80,24 +80,19 @@ class SBD_Attributes: SelectionBoardDelegate {
 // MARK: HGTableDisplayable
 extension SBD_Attributes: HGTableDisplayable {
     
-    func numberOfRows(fortable table: HGTable) -> Int {
-        let numRows = celltype.numRows(numImages: types.count, inTable: table)
-        return numRows
+    func numberOfItems(fortable table: HGTable) -> Int {
+        return types.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: types.count, inTable: table)
-        let images = cellImageDatas(forAttributeIndexes: imageIndexes)
-        let rowCount = celltype.imagesPerRow(table: table)
-        let cellData = HGCellData.onlyImages(images, rowCount: rowCount)
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let name = types[index]
+        let image = index < firstEnumIndex ? Primitive.create(string: name).image : Enum.image(withName: name)
+        let imagedata = HGImageData(title: name, image: image)
+        let cellData = HGCellData.imageCell(image: imagedata)
         return cellData
     }
 }

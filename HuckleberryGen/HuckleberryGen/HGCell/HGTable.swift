@@ -10,20 +10,20 @@
 import Cocoa
 import Foundation
 
-/// protocol that allows user to track when selected locations change.  This is designed to be used by a secondary delegate to track changes made to the table.
+/// protocol that allows user to track a selected location.  This is designed to be used by a secondary delegate to track changes made to the table.
 protocol HGTableSelectionTrackable: AnyObject {
-    func hgtableSelectedLocationsChanged(_ table: HGTable)
+    func hgtable(_ table: HGTable, selectedLocationChangedTo: HGTableLocation)
+    func hgtableLocationDeselected(_ table: HGTable)
 }
 
 /// protocol that allows HGTable to display data in rows.
 protocol HGTableDisplayable: AnyObject {
-    func numberOfRows(fortable table: HGTable) -> Int
-    /// Pass the height of a specific row in the HGTableView.
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat
+    /// Pass the number of items in your model
+    func numberOfItems(fortable table: HGTable) -> Int
     /// Pass the CellType for a specific row in the HGTable
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType
-    /// Pass the HGCellData for a specific row in the HGTable.  The data will be used to populate the cell appropriately.
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData
+    func cellType(fortable table: HGTable) -> CellType
+    /// Pass the HGCellData for a specific index in your model to HGTable.  The data will be used to populate the cell appropriately. (use HGCellData builder)
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData
 }
 
 /// protocol that allows HGTable to observe notification and reload Table when a notification is sent.
@@ -32,28 +32,16 @@ protocol HGTableObservable: HGTableDisplayable {
     func observeNotifications(fortable table: HGTable) -> [String]
 }
 
-/// protocol that allows user to select and highlight individual rows on HGTable.
-protocol HGTableRowSelectable: HGTableDisplayable {
-    // Pass Boolean value to inform HGTable whether row should be selectable
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool
-}
-
-/// protocol that allows user to select and highlight individual rows on HGTable.
-protocol HGTableRowTouchable: HGTableDisplayable {
-    // Pass Boolean value to inform HGTable whether row should be selectable
-    func hgtable(_ table: HGTable, shouldSelectRow row: Int) -> Bool
+/// protocol that allows user to select types of the HGTableLocation in an HGTable
+protocol HGTableLocationSelectable: HGTableDisplayable {
+    func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool
+    func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) -> Bool
 }
 
 /// protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
-protocol HGTablePostable: HGTableRowSelectable {
+protocol HGTablePostable: HGTableLocationSelectable {
     /// Pass the notification name that the HGTable should POST when a new row is selected.
     func selectNotification(fortable table: HGTable) -> String
-}
-
-/// protocol that allows user to select types of the HGCell in an HGTable
-protocol HGTableItemSelectable: HGTableDisplayable {
-    func hgtable(_ table: HGTable, shouldSelect row: Int, tag: Int, type: CellItemType) -> Bool
-    func hgtable(_ table: HGTable, didSelectRow row: Int, tag: Int, type: CellItemType)
 }
 
 /// protocol that allows user to edit fields of the HGCell in an HGTable
@@ -82,18 +70,17 @@ class HGTable: NSObject {
     }
     
     /// initialize with a NSTableView
-    init(tableview: NSTableView, delegate: HGTableDisplayable, selectionDelegate: HGTableSelectionTrackable) {
+    init(tableview: NSTableView, delegate: HGTableDisplayable, selectionTrackingDelegate: HGTableSelectionTrackable) {
         super.init()
         updateSubDelegates(withSuperDelegate: delegate)
         updateTableView(withTableView: tableview)
-        self.selectionDelegate = selectionDelegate
+        stDelegate = selectionTrackingDelegate
         addProjectChangedObserver()
     }
     
     var rowWidth: CGFloat {
-        let w = tableview.superview?.bounds.width
-        let width = w != nil ? w! - 3.0 : 235.0
-        return width
+        let width = tableview.superview?.bounds.width
+        return width != nil ? width! - 3.0 : 250.0
     }
     
     func updateSubDelegates(withSuperDelegate delegate: HGTableDisplayable) {
@@ -120,10 +107,13 @@ class HGTable: NSObject {
     
     fileprivate(set) var parentRow: Int = notSelected
     
+    fileprivate(set) var celltype: CellType!
+    fileprivate(set) var items: Int!
+    
     // MARK: HGTable Delegates
     
     /// Delegate for AnyObject which conforms to protocol HGTableTrackable
-    fileprivate weak var selectionDelegate: HGTableSelectionTrackable?
+    fileprivate weak var stDelegate: HGTableSelectionTrackable?
     
     /// weak reference to the NSTableView
     fileprivate weak var tableview: NSTableView!
@@ -149,10 +139,8 @@ class HGTable: NSObject {
     
     /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
     fileprivate weak var displayDelegate: HGTableDisplayable?
-    /// Delegate for AnyObject which conforms to protocol HGTableRowSelectable
-    fileprivate weak var rowSelectDelegate: HGTableRowSelectable?
-    /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
-    fileprivate weak var itemSelectDelegate: HGTableItemSelectable?
+    /// Delegate for AnyObject which conforms to protocol HGTableLocationSelectable
+    fileprivate weak var locationSelectDelegate: HGTableLocationSelectable?
     /// Delegate for AnyObject which conforms to protocol HGTableItemEditable
     fileprivate weak var fieldEditDelegate: HGTableFieldEditable?
     /// Delegate for AnyObject which conforms to protocol HGTableRowAppendable
@@ -166,7 +154,15 @@ class HGTable: NSObject {
     fileprivate(set) weak var lastSelectedCellWithTag: HGCell?
     
     /// set of locations that are currently selected on the Table (can be rows or items)
-    fileprivate(set) var selectedLocations: [HGCellLocation] = [] { didSet { selectionDelegate?.hgtableSelectedLocationsChanged(self) } }
+    fileprivate(set) var selectedLocation: HGTableLocation? {
+        didSet {
+            if location != nil {
+                stDelegate?.hgtable(self, selectedLocationChangedTo: location!)
+            } else {
+                stDelegate?.hgtableLocationDeselected(self)
+            }
+        }
+    }
     
     // MARK: Public Methods
     
@@ -174,14 +170,6 @@ class HGTable: NSObject {
     func update() {
         tableview.reloadData()
     }
-    
-    /// reloads specific row Of tableView
-    fileprivate func update(row: Int) {
-
-        // TODO: Implement - Need to get cell and then call delegate to get HGCellData then update cell with data
-    }
-
-    // MARK: Cell Nib Loading
     
     /// Registers HGCell's Nib with TableView one time
     fileprivate func register(_ cellType: CellType, forTableView tableView: NSTableView) {
@@ -194,7 +182,6 @@ class HGTable: NSObject {
     
     // MARK: Observers
     fileprivate func addObservers(withNotifNames names: [String]) {
-        
         for name in names {
             HGNotif.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
                 if let row = notif.object as? Int {
@@ -227,7 +214,10 @@ class HGTable: NSObject {
 extension HGTable: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        let rows = displayDelegate?.numberOfRows(fortable: self) ?? 0
+        celltype = displayDelegate?.cellType(fortable: self) ?? .defaultCell
+        items = displayDelegate?.numberOfItems(fortable: self) ?? 0
+        register(celltype, forTableView: tableView)
+        let rows = celltype.numRows(inTable: self, items: items)
         return rows
     }
 }
@@ -236,15 +226,13 @@ extension HGTable: NSTableViewDataSource {
 extension HGTable: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return displayDelegate?.hgtable(self, heightForRow: row) ?? 50.0
+        return celltype.rowHeight
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cellType = displayDelegate?.hgtable(self, cellForRow: row) ?? .defaultCell
-        register(cellType, forTableView: tableView)
-        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellType.identifier), owner: self) as! HGCell
+        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: celltype.identifier), owner: self) as! HGCell
         cell.delegate = self
-        let data = displayDelegate?.hgtable(self, dataForRow: row) ?? HGCellData.empty
+        let data = displayDelegate?.hgtable(self, dataForIndex: row) ?? HGCellData.empty
         cell.update(withRow: row, cellData: data)
         return cell
     }

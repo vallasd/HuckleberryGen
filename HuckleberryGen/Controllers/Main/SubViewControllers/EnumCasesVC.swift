@@ -13,13 +13,9 @@ class EnumCasesVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let celltype = CellType.fieldCell2
-    
     var hgtable: HGTable!
     
-    // MARK: HGTableDisplayable
-    
-    fileprivate var editingLocation: HGCellLocation?
+    fileprivate var editingLocation: HGTableLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,28 +26,19 @@ class EnumCasesVC: NSViewController {
 // MARK: HGTableDisplayable
 extension EnumCasesVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 50.0
+    func cellType(fortable table: HGTable) -> CellType {
+        return CellType.fieldCell2
     }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return celltype
-    }
-    
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        
-        let casE = appDelegate.store.project.enums[table.parentRow].cases[row]
+   
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let casE = appDelegate.store.project.enums[table.parentRow].cases[index]
         return HGCellData.fieldCell2(
             field0: HGFieldData(title: casE.string),
-            field1: HGFieldData(title: String(row))
+            field1: HGFieldData(title: String(index))
         )
     }
 }

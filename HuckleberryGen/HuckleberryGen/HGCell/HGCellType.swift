@@ -33,7 +33,7 @@ enum CellType {
         }
     }
     
-    /// Number of image buttons per row for given cell type
+    /// number of image buttons per row for given cell type
     func imagesPerRow(table: HGTable) -> Int {
         switch self {
         case .defaultCell: return 1
@@ -47,67 +47,63 @@ enum CellType {
             let totalSpaceNeeded = (CGFloat(numImages) * imageWidth) + sidePadding
             let images = totalSpaceNeeded <= rowWidth ? numImages : numImages - 1
             return images
-        case .fieldCell1: return 0
-        case .fieldCell2: return 0
-        case .fieldCell3: return 0
+        default: return 0
         }
     }
     
-    /// Returns an suggested row height for HGCell given a Table
+    /// returns an suggested row height for HGCell given a Table
     var rowHeight: CGFloat {
         switch (self) {
-        case .defaultCell: return 40
-        case .mixedCell1: return 40
-        case .check4Cell: return 40
         case .imageCell: return 55
-        case .fieldCell1: return 40
-        case .fieldCell2: return 40
         case .fieldCell3: return 55
+        case .mixedCell1: return 65
+        default: return 40
         }
     }
     
-    /// returns number of rows required for a specific cell type assuming that this cell type would be used for every row, that an image would be used on each available image button in cell, and imageCount is total images required.
-    func numRows(numImages: Int, inTable table: HGTable) -> Int {
-        let ipr = imagesPerRow(table: table)
-        if ipr == 0 { return 0 }
-        if numImages == 0 { return 0 }
-        return (numImages / ipr) + 1
-    }
-    
-    /// returns the image indexes required for a row.
-    func imageIndexes(forRow row: Int, maxCount: Int, inTable table: HGTable) -> [Int] {
-        let ipr = imagesPerRow(table: table)
-        let firstIndex = row * ipr
-        var indexes: [Int] = []
-        for count in 0...ipr - 1 {
-            let nextIndex = firstIndex + count
-            if nextIndex == maxCount { break }
-            indexes.append(nextIndex)
+    func numRows(inTable table: HGTable, items: Int) -> Int {
+        if items == 0 { return 0 }
+        switch (self) {
+        case .imageCell:
+            let ipr = imagesPerRow(table: table)
+            return (items / ipr) + 1
+        default: return items
         }
-        return indexes
-    }
-    
-    /// returns the cooresponding indexes of HGCellLocation.
-    func indexes(forlocations locations: [HGCellLocation], inTable table: HGTable) -> [Int] {
-        var indexes: [Int] = []
-        for location in locations {
-            let _index = index(forlocation: location, inTable: table)
-            indexes.append(_index)
-        }
-        return indexes
-    }
-    
-    
-    /// returns the cooresponding index, if HGCellLocation is for an image, assumes the index is for an array of images
-    func index(forlocation location: HGCellLocation, inTable table: HGTable) -> Int {
-        
-        if let identifier = location.identifier {
-            if identifier.type == .image {
-                let ipr = imagesPerRow(table: table)
-                return location.row * ipr + identifier.tag
-            }
-        }
-        
-        return location.row
     }
 }
+
+/// returns the image indexes required for a row.
+//    func imageIndexes(inTable table: HGTable, forRow row: Int, maxCount: Int) -> [Int] {
+//        let ipr = imagesPerRow(table: table)
+//        let firstIndex = row * ipr
+//        var indexes: [Int] = []
+//        for count in 0...ipr - 1 {
+//            let nextIndex = firstIndex + count
+//            if nextIndex == maxCount { break }
+//            indexes.append(nextIndex)
+//        }
+//        return indexes
+//    }
+//
+//    /// returns the cooresponding indexes of HGCellLocation.
+//    func indexes(forlocations locations: [HGCellLocation], inTable table: HGTable) -> [Int] {
+//        var indexes: [Int] = []
+//        for location in locations {
+//            let _index = index(forlocation: location, inTable: table)
+//            indexes.append(_index)
+//        }
+//        return indexes
+//    }
+//
+//
+//    /// returns the cooresponding index, if HGCellLocation is for an image, assumes the index is for an array of images
+//    func index(forlocation location: HGCellLocation, inTable table: HGTable) -> Int {
+//        if let identifier = location.identifier {
+//            if identifier.type == .image {
+//                let ipr = imagesPerRow(table: table)
+//                return location.row * ipr + identifier.tag
+//            }
+//        }
+//        return location.row
+//    }
+

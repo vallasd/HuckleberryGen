@@ -11,7 +11,7 @@ import Cocoa
 
 protocol SelectionBoardDelegate: HGTableDisplayable {
     var selectionBoard: SelectionBoard? { get set }
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation])
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation)
 }
 
 /// Board that allows class to select
@@ -28,13 +28,6 @@ class SelectionBoard: NSViewController, NavControllerReferable {
             updateProgression()
         }
     }
-    
-//    /// function currently broken
-//    var allowMultipleSelect = false {
-//        didSet {
-//            tableview?.allowsMultipleRowSelection = allowMultipleSelect
-//        }
-//    }
     
     /// reference to the HGTable
     var hgtable: HGTable!
@@ -60,7 +53,7 @@ class SelectionBoard: NSViewController, NavControllerReferable {
     
     fileprivate func updateProgression() {
         if automaticNext { nav?.enableProgression() }
-        else if hgtable.selectedLocations.count > 0 { nav?.enableProgression() }
+        else if hgtable.selectedLocation != nil { nav?.enableProgression() }
         else { nav?.disableProgression() }
     }
     
@@ -73,7 +66,7 @@ class SelectionBoard: NSViewController, NavControllerReferable {
         
         // load context and init hgtable
         context!.selectionBoard = self
-        hgtable = HGTable(tableview: tableview!, delegate: context!, selectionDelegate: self)
+        hgtable = HGTable(tableview: tableview!, delegate: context!, selectionTrackingDelegate: self)
     }
     
 }
@@ -109,13 +102,17 @@ extension SelectionBoard: NavControllerProgessable {
     }
     
     func navcontroller(_ nav: NavController, hitProgressWithType: ProgressionType) {
-        context?.selectionboard(self, didChooseLocations: hgtable.selectedLocations)
+        context?.selectionboard(self, didChooseLocation: hgtable.selectedLocation!)
     }
 }
 
 extension SelectionBoard: HGTableSelectionTrackable {
     
-    func hgtableSelectedLocationsChanged(_ table: HGTable) {
+    func hgtable(_ table: HGTable, selectedLocationChangedTo: HGTableLocation) {
+        updateProgression()
+    }
+    
+    func hgtableLocationDeselected(_ table: HGTable) {
         updateProgression()
     }
 }

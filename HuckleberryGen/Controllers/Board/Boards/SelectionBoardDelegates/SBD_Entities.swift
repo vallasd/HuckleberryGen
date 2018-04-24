@@ -55,7 +55,7 @@ class SBD_Entities: SelectionBoardDelegate {
         return imagedatas
     }
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let entity = entities[index]
         switch type {
@@ -81,24 +81,20 @@ class SBD_Entities: SelectionBoardDelegate {
 // MARK: HGTableDisplayable
 extension SBD_Entities: HGTableDisplayable {
     
-    func numberOfRows(fortable table: HGTable) -> Int {
-        let numRows = celltype.numRows(numImages: entities.count, inTable: table)
-        return numRows
+    func numberOfItems(fortable table: HGTable) -> Int {
+        return entities.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: entities.count, inTable: table)
-        let images = cellImageDatas(forEntityIndexes: imageIndexes)
-        let ipr = celltype.imagesPerRow(table: table)
-        return HGCellData.onlyImages(images, rowCount: ipr)
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let name = entities[index].typeRep
+        let image = Entity.image(withName: name)
+        let imagedata = HGImageData(title: name, image: image)
+        let celldata = HGCellData.imageCell(image: imagedata)
+        return celldata
     }
 }
 

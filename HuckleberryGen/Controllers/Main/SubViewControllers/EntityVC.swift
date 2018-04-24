@@ -15,8 +15,6 @@ class EntityVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let cellType = CellType.defaultCell
-    
     var hgtable: HGTable!
     
     // MARK: View Lifecycle
@@ -31,24 +29,16 @@ class EntityVC: NSViewController {
 // MARK: HGTableDisplayable
 extension EntityVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return appDelegate.store.project.entities.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 50.0
+    func cellType(fortable table: HGTable) -> CellType {
+        return CellType.defaultCell
     }
     
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return cellType
-    }
-    
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let entity = appDelegate.store.project.entities[row]
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let entity = appDelegate.store.project.entities[index]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.typeRep),
             field1: HGFieldData(title: entity.hashRep),

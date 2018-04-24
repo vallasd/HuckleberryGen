@@ -16,8 +16,6 @@ class IndexVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
-    let cellType = CellType.defaultCell
-    
     var hgtable: HGTable!
     
     override func viewDidLoad() {
@@ -27,24 +25,16 @@ class IndexVC: NSViewController {
 
 extension IndexVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return appDelegate.store.project.indexes.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 50.0
+    func cellType(fortable table: HGTable) -> CellType {
+        return CellType.defaultCell
     }
     
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return cellType
-    }
-    
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let index = appDelegate.store.getIndex(index: row)
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let index = appDelegate.store.getIndex(index: index)
         return HGCellData.defaultCell(
             field0: HGFieldData(title: index.varRep),
             field1: HGFieldData(title: ""),

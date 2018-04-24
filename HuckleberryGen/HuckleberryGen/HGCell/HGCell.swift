@@ -15,74 +15,22 @@ enum Option {
     case askUser // Will Display a Prompt
 }
 
-enum CellItemType: Int16 {
+enum HGLocationType: Int16 {
     case field
     case image
     case check
+    case row
 }
 
-/// Defines HGCell locations, row determines which HGCell was selected in the table.  HGCellIdentifier determines the actual item in the cell that was selected.  If this is nil, the entire row was selected.
-struct HGCellLocation: Hashable {
-    let row: Int
-    let identifier: HGCellItemIdentifier?
-    
-    var hashValue: Int {
-        let idhash = identifier == nil ? 0 : identifier!.hashValue
-        return row.hashValue + idhash
-    }
-    
-    /// creates an array of HGCellLocations from an NSIndexSet of rows
-    static func locations(fromIndexSet set: IndexSet) -> [HGCellLocation] {
-        var locations: [HGCellLocation] = []
-        for index in set {
-            locations.append(HGCellLocation(row: index, identifier: nil) )
-        }
-        return locations
-    }
-    
-    /// creates an array of HGCellLocations from an array of rows represented as [Int]
-    static func locations(fromRows rows: [Int]) -> [HGCellLocation] {
-        var locations: [HGCellLocation] = []
-        for row in rows {
-            locations.append(HGCellLocation(row: row, identifier: nil) )
-        }
-        return locations
-    }
-}
-
-extension HGCellLocation: Equatable {}
-func ==(lhs: HGCellLocation, rhs: HGCellLocation) -> Bool {
-    return lhs.row == rhs.row && lhs.identifier == rhs.identifier
-}
-
-/// Defines Item in HGCell, tag = 0, type = Field, would define IBOutlet weak var field0: NSTextField? in HGCell
-struct HGCellItemIdentifier: Hashable {
+struct HGTableLocation {
+    let index: Int
+    let locationtype: HGLocationType
     let tag: Int
-    let type: CellItemType
-    
-    var hashValue: Int {
-        return tag.hashValue + type.hashValue
-    }
-}
-
-extension HGCellItemIdentifier: Equatable {}
-func ==(lhs: HGCellItemIdentifier, rhs: HGCellItemIdentifier) -> Bool {
-    return lhs.tag == rhs.tag && lhs.type == rhs.type
-}
-
-struct HGImageCellItemIdentifier {
-    weak var cell: HGCell?
-    var tag: Int
-}
-
-extension HGImageCellItemIdentifier: Equatable {}
-func ==(lhs: HGImageCellItemIdentifier, rhs: HGImageCellItemIdentifier) -> Bool {
-    return lhs.tag == rhs.tag && lhs.cell == rhs.cell
 }
 
 protocol HGCellDelegate: AnyObject {
-    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: CellItemType) -> Bool
-    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: CellItemType)
+    func hgcell(_ cell: HGCell, shouldSelectTag tag: Int, type: HGLocationType) -> Bool
+    func hgcell(_ cell: HGCell, didSelectTag tag: Int, type: HGLocationType)
     func hgcell(_ cell: HGCell, shouldEditField field: Int) -> Bool
     func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String)
 }

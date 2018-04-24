@@ -17,7 +17,7 @@ class AttributeVC: NSViewController {
     
     var hgtable: HGTable!
 
-    fileprivate var editingLocation: HGCellLocation?
+    fileprivate var editingLocation: HGTableLocation?
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -29,25 +29,17 @@ class AttributeVC: NSViewController {
 // MARK: HGTableDisplayable
 extension AttributeVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].attributes.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 50.0
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         
-        let attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
+        let attribute = appDelegate.store.project.entities[table.parentRow].attributes[index]
         
         // define images and text going into attribute
         let varRep = attribute.varRep

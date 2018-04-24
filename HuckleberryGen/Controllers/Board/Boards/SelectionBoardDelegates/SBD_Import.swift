@@ -59,7 +59,7 @@ class SBD_Import: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let importFile = importFolder.importFiles[index]
         parse(importFile)
@@ -83,21 +83,16 @@ extension SBD_Import: HGImportParserDelegate {
 // MARK: HGTableDisplayable
 extension SBD_Import: HGTableDisplayable {
     
-    func numberOfRows(fortable table: HGTable) -> Int {
-        let num = importFolder != nil ? importFolder.importFiles.count : 0
-        return num
+    func numberOfItems(fortable table: HGTable) -> Int {
+        return importFolder != nil ? importFolder.importFiles.count : 0
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let file = importFolder!.importFiles[row]
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let file = importFolder!.importFiles[index]
         return HGCellData.fieldCell3(
             field0: HGFieldData(title: file.name),
             field1: HGFieldData(title: "Path:"),

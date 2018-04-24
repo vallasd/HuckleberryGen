@@ -31,7 +31,7 @@ class SBD_Hash: SelectionBoardDelegate {
     }
     
     /// SelectionBoardDelegate function
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         
         // no locations selected, remove all hashes
         if locations.count == 0 {
@@ -52,22 +52,6 @@ class SBD_Hash: SelectionBoardDelegate {
         
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
-}
-
-extension SBD_Hash: HGTableDisplayable {
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
-        let numRows = celltype.numRows(numImages: hashes.count, inTable: table)
-        return numRows
-    }
-    
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return celltype
-    }
     
     func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
         var imagedatas: [HGImageData] = []
@@ -78,13 +62,24 @@ extension SBD_Hash: HGTableDisplayable {
         }
         return imagedatas
     }
+}
+
+extension SBD_Hash: HGTableDisplayable {
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let imageIndexes = celltype.imageIndexes(forRow: row, maxCount: hashes.count, inTable: table)
-        let images = cellImageDatas(forAttributeIndexes: imageIndexes)
-        let rowCount = celltype.imagesPerRow(table: table)
-        let cellData = HGCellData.onlyImages(images, rowCount: rowCount)
-        return cellData
+    func numberOfItems(fortable table: HGTable) -> Int {
+        return hashes.count
+    }
+    
+    func cellType(fortable table: HGTable) -> CellType {
+        return celltype
+    }
+    
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let casE = appDelegate.store.project.enums[table.parentRow].cases[index]
+        return HGCellData.fieldCell2(
+            field0: HGFieldData(title: casE.string),
+            field1: HGFieldData(title: String(index))
+        )
     }
 }
 

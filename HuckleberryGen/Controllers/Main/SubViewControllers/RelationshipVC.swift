@@ -27,25 +27,17 @@ class RelationshipVC: NSViewController {
 // MARK: HGTableDisplayable
 extension RelationshipVC: HGTableDisplayable {
     
-    func tableview(fortable table: HGTable) -> HGTableView! {
-        return tableview
-    }
-    
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].relationships.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return 65.0
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         
-        let relationship = appDelegate.store.project.entities[table.parentRow].relationships[row]
+        let relationship = appDelegate.store.project.entities[table.parentRow].relationships[index]
         
         return HGCellData.mixedCell1(
             field0: HGFieldData(title: relationship.varRep),

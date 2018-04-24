@@ -87,6 +87,13 @@ struct HGCellData {
                           numImages: 0)
     }
     
+    static func imageCell(image: HGImageData) -> HGCellData {
+        return HGCellData(fields: [],
+                          images: [image],
+                          checks: [],
+                          numImages: 0)
+    }
+    
     /// returns a HGCellData object that only contains HGImageData
     static func onlyImages(_ images: [HGImageData], rowCount: Int) -> HGCellData {
         return HGCellData(fields: [],

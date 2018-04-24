@@ -15,10 +15,7 @@ class SBD_SavedProjects: SelectionBoardDelegate {
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
-    /// reference to the cell type used
-    let celltype = CellType.fieldCell2
-    
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         let index = locations[0].row
         let _ = appDelegate.store.openProject(atIndex: index)
     }
@@ -27,21 +24,16 @@ class SBD_SavedProjects: SelectionBoardDelegate {
 // MARK: HGTableDisplayable
 extension SBD_SavedProjects: HGTableDisplayable {
     
-    func numberOfRows(fortable table: HGTable) -> Int {
-        let count = appDelegate.store.savedProjects.count
-        return count
+    func numberOfItems(fortable table: HGTable) -> Int {
+        return appDelegate.store.savedProjects.count
+    }
+
+    func cellType(fortable table: HGTable) -> CellType {
+        return CellType.fieldCell2
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
-        return celltype
-    }
-    
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let savedProjectName = appDelegate.store.savedProjects[row]
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let savedProjectName = appDelegate.store.savedProjects[index]
         let fieldData = HGFieldData(title: savedProjectName)
         return HGCellData.fieldCell2(field0: fieldData, field1: HGFieldData(title: ""))
     }

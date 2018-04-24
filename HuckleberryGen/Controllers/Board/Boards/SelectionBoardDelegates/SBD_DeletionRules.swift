@@ -33,7 +33,7 @@ class SBD_DeletionRules: SelectionBoardDelegate {
         self.relationshipIndex = relationshipIndex
     }
     
-    func selectionboard(_ sb: SelectionBoard, didChooseLocations locations: [HGCellLocation]) {
+    func selectionboard(_ sb: SelectionBoard, didChooseLocation location: HGTableLocation) {
         let index = celltype.index(forlocation: locations[0], inTable: sb.hgtable)
         let deletionrule = DeletionRule.create(int: index)
         appDelegate.store.project.entities[entityIndex].relationships[relationshipIndex].deletionRule = deletionrule
@@ -44,20 +44,16 @@ class SBD_DeletionRules: SelectionBoardDelegate {
 // MARK: HGTableDisplayable
 extension SBD_DeletionRules: HGTableDisplayable {
     
-    func numberOfRows(fortable table: HGTable) -> Int {
+    func numberOfItems(fortable table: HGTable) -> Int {
         return deletionRules.count
     }
     
-    func hgtable(_ table: HGTable, heightForRow row: Int) -> CGFloat {
-        return celltype.rowHeight
-    }
-    
-    func hgtable(_ table: HGTable, cellForRow row: Int) -> CellType {
+    func cellType(fortable table: HGTable) -> CellType {
         return celltype
     }
     
-    func hgtable(_ table: HGTable, dataForRow row: Int) -> HGCellData {
-        let rule = deletionRules[row]
+    func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
+        let rule = deletionRules[index]
         let fieldData = HGFieldData(title: rule.string)
         return HGCellData.fieldCell1(field0: fieldData)
     }

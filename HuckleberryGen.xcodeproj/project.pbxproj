@@ -689,6 +689,7 @@
 		03F25EE11B9C16EA0048B0A0 /* HGCell */ = {
 			isa = PBXGroup;
 			children = (
+				03F25EE71B9C16EA0048B0A0 /* HGTable.swift */,
 				03F25EE21B9C16EA0048B0A0 /* HGCell.swift */,
 				036E329D1BB2CCA40024AA4E /* MixedCell1.xib */,
 				036E32A91BB2EC650024AA4E /* FieldCell1.xib */,
@@ -709,7 +710,6 @@
 				03F25EE61B9C16EA0048B0A0 /* HGSplit.swift */,
 				03F25EEF1B9C17B40048B0A0 /* HGSplitVC.swift */,
 				036D23BE1BACA12D002824E9 /* HGTableCellIdentifier.swift */,
-				03F25EE71B9C16EA0048B0A0 /* HGTable.swift */,
 				033F3DE91BB99DBD0089AEC2 /* HGTableView.swift */,
 				033F3DEB1BBAC4920089AEC2 /* HGTabView.swift */,
 				033F3DED1BBACE770089AEC2 /* HGTabVC.swift */,
