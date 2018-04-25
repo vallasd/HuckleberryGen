@@ -462,9 +462,10 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// update specials data for special types
     func updateSpecialType(forField field: NSTextField) {
-        guard let stype = SpecialAttribute.specialTypeFrom(varRep: field.stringValue) else { return }
-        field.textColor = stype.color
-        image0?.image  = stype.image
+        // FIXME: need to fix, current not handling special types
+        // guard let stype = SpecialAttribute.specialTypeFrom(varRep: field.stringValue) else { return }
+        // field.textColor = stype.color
+        // image0?.image  = stype.image
     }
     
     /// Returns the appropriate field selection button for a field if it exists

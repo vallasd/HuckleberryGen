@@ -51,14 +51,6 @@ struct Entity: HashRepresentable {
     
     var isEntity: Bool { return true }
     
-    var specialAttributeTypes: [SpecialAttribute] {
-        var specialAttributes: [SpecialAttribute] = []
-        for attribute in attributes {
-            if let st = SpecialAttribute.specialTypeFrom(varRep: attribute.varRep) { specialAttributes.append(st) }
-        }
-        return specialAttributes
-    }
-    
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "entityIcon", title: name)
     }

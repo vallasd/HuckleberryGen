@@ -126,6 +126,7 @@
 		03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8CC208D58C000CE2CB8 /* NSRect.swift */; };
 		03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */; };
 		109CAC322090E64300369EF5 /* DeletionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC312090E64300369EF5 /* DeletionRule.swift */; };
+		109CAC3420910D9700369EF5 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC3320910D9700369EF5 /* Primitive.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -271,6 +272,7 @@
 		03FFD8CC208D58C000CE2CB8 /* NSRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRect.swift; sourceTree = "<group>"; };
 		03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		109CAC312090E64300369EF5 /* DeletionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionRule.swift; sourceTree = "<group>"; };
+		109CAC3320910D9700369EF5 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -722,6 +724,7 @@
 			isa = PBXGroup;
 			children = (
 				109CAC312090E64300369EF5 /* DeletionRule.swift */,
+				109CAC3320910D9700369EF5 /* Primitive.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -898,6 +901,7 @@
 				035E4A9E1C58DA2E0005E28A /* HGIndent.swift in Sources */,
 				03A20B491B99E4C900149AF5 /* NavController.swift in Sources */,
 				03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */,
+				109CAC3420910D9700369EF5 /* Primitive.swift in Sources */,
 				036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */,
 				0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */,
 				03BDDA461C5A757A00F0DCEA /* XP_Utility.swift in Sources */,

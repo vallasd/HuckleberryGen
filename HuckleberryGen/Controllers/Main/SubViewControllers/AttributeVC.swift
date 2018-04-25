@@ -45,11 +45,8 @@ extension AttributeVC: HGTableDisplayable {
         var image: NSImage
         
         // set appropriate images if they are special types, else get image for type
-        if let stype = SpecialAttribute.specialTypeFrom(varRep: varRep) {
-            image = stype.image
-        } else {
-            image = attribute.typeImage
-        }
+        // FIXME: need to fix this line to change between different types of attributes
+        image = attribute.typeImage
         
         return HGCellData.defaultCell(
             field0: HGFieldData(title: varRep),

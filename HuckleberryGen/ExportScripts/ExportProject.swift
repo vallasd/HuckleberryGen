@@ -33,8 +33,6 @@ class ExportProject {
     
     func export() {
         
-        store.project.createEntityInfo()
-         
         // create folder structure for export
         createBaseFolders()
         
