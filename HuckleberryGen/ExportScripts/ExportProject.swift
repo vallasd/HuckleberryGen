@@ -23,7 +23,7 @@ class ExportProject {
         self.store = store
         let license = store.licenseInfo
         let projectName = store.project.name
-        path = store.exportPath + "/\(store.project.name)"
+        path = store.exportPath + "/HG_\(store.project.name)"
         exportEntity = ExportEntity(baseDir: path, licenseInfo: license)
         exportEnum = ExportEnum(baseDir: path, licenseInfo: license)
         exportExtensions = ExportExtensions(baseDir: path, store: store)
