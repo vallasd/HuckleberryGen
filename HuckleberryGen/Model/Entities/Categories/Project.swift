@@ -133,7 +133,7 @@ extension Project {
                     switch specialAttribute {
                     case .timeRange:
                         let typeRep = entity.typeRep + "DateIndex"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
@@ -142,7 +142,7 @@ extension Project {
                         newInfos.append(newInfo)
                     case .firstLetter:
                         let typeRep = entity.typeRep + "FirstLetterIndex"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
@@ -151,7 +151,7 @@ extension Project {
                         newInfos.append(newInfo)
                     case .enumAttribute:
                         let typeRep = entity.typeRep + attribute.varRep.capitalized + "Index"
-                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity, relType: .tooMany)
+                        let newEntity = Entity.newEntity(withTypeRep: typeRep, fromEntity: entity)
                         let newHash = newEntity.decodeHash
                         entity.entityHashes.append(newHash)
                         info.entity = entity
@@ -186,46 +186,8 @@ extension Project {
         let pMap = ProjectMap(entityInfos: infos)
         
         addEntitiesFromSpecialAttributes(pMap)
-        updateInfo(pMap)
         
         
         pMap.printMap()
     }
-    
-    func updateInfo(_ pMap: ProjectMap) {
-        
-        for info in pMap.entityInfos {
-            info.hashPath = goDownHashPath(forEntity: info.entity, count: 0, pathString: "")
-            info.isEndPoint = info.entity.isEndPoint
-            info.isCrossPoint = info.entity.isCrossPoint
-            info.isSinglePoint = info.entity.isSinglePoint
-        }
-    }
-    
-    func goDownHashPath(forEntity e: Entity, count: Int, pathString: String) -> String {
-        
-        // bail out if we are too deep, we are most likely in a recursive loop
-        if count > ( entities.count * 2 ) {
-            return "recursiveLoop"
-        }
-        
-        // add self to string
-        var newPathString = pathString + e.typeRep
-        
-        // 
-        if let entity = self.hasEntity(forHashes: e.hashes) {
-            newPathString += "->"
-            newPathString = goDownHashPath(forEntity: entity, count: count+1, pathString: newPathString)
-        }
-        
-        return newPathString
-    }
-    
-//    func specialAttributes(forEntityInfos infos: [EntityInfo]) -> EntityInfo {
-//
-//        
-//        
-//    }
-    
-    
 }

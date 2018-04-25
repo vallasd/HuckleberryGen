@@ -63,7 +63,7 @@ class FolderBoard: NSViewController, NavControllerReferable {
     
     fileprivate func updateFolderBoard(withPath path: String) {
         
-        if path.isEmpty {
+        if path.isEmpty || path == "/" {
             folderButton.title = "Choose Folder"
             nav?.disableProgression()
         } else {
@@ -117,11 +117,9 @@ class FolderBoard: NSViewController, NavControllerReferable {
             appDelegate.store.exportProject()
         }
     }
-    
 }
 
 extension FolderBoard: BoardInstantiable {
-    
     static var storyboard: String { return "Board" }
     static var nib: String { return "FolderBoard" }
 }

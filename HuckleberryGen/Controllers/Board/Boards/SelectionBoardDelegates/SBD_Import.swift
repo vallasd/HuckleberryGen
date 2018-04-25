@@ -37,12 +37,11 @@ class SBD_Import: SelectionBoardDelegate {
                 self?.importFolder = newfolder
                 self?.selectionBoard?.update()
             })
-            })
+        })
     }
     
     /// parses the selected Import File (delegate will handle the project when it is returned)
     func parse(_ importFile: ImportFile) {
-        
         // reset, create, and execute parser
         parser?.resetParse()
         parser = HGParse.importParser(forImportFile: importFile)

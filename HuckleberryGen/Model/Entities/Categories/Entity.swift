@@ -16,10 +16,23 @@ struct Entity: HashRepresentable {
     
     var typeRep: String
     var attributes: [Attribute]
-    var relationships: [Relationship]
     
     var attributeHash: HashObject?
     var entityHashes: [HashObject]
+    
+    init(typeRep t: String) {
+        typeRep = t
+        attributes = []
+        attributeHash = nil
+        entityHashes = []
+    }
+    
+    init(typeRep t: String, attributes a: [Attribute], attributeHash at: HashObject?, entityHashes e: [HashObject]) {
+        typeRep = t
+        attributes = a
+        attributeHash = at
+        entityHashes = e
+    }
     
     var hashes: [HashObject] {
         return attributeHash == nil ? entityHashes : entityHashes + [attributeHash!]
@@ -46,47 +59,6 @@ struct Entity: HashRepresentable {
         return specialAttributes
     }
     
-    var isEndPoint: Bool {
-        if typeRep.suffix(5) == "Index" { return true }
-        let sa = specialAttributeTypes
-        if sa.contains(.isSpecial) || sa.contains(.timeRange) || sa.contains(.firstLetter) { return false }
-        return entityHashes.count == 1 ? true : false
-    }
-    
-    var isSinglePoint: Bool {
-        return entityHashes.count == 0 ? true : false
-    }
-    
-    var isCrossPoint: Bool {
-        return entityHashes.count > 1 ? true : false
-    }
-
-    var manyRelationships: [Relationship] {
-        let tooMany = RelationshipType.tooMany
-        return relationships.filter { $0.relType == tooMany }
-    }
-    
-    var singleRelationships: [Relationship] {
-        let tooOne = RelationshipType.tooOne
-        return relationships.filter { $0.relType == tooOne }
-    }
-    
-    init(typeRep t: String) {
-        typeRep = t
-        attributes = []
-        relationships = []
-        attributeHash = nil
-        entityHashes = []
-    }
-    
-    init(typeRep t: String, attributes a: [Attribute], relationships r: [Relationship], attributeHash at: HashObject?, entityHashes e: [HashObject]) {
-        typeRep = t
-        attributes = a
-        relationships = r
-        attributeHash = at
-        entityHashes = e
-    }
-    
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "entityIcon", title: name)
     }
@@ -97,14 +69,13 @@ struct Entity: HashRepresentable {
 extension Entity: HGEncodable {
     
     static var new: Entity {
-        return Entity(typeRep: "NewEntity", attributes: [], relationships: [], attributeHash: nil, entityHashes: [])
+        return Entity(typeRep: "NewEntity", attributes: [], attributeHash: nil, entityHashes: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
         dict["typeRep"] = typeRep as AnyObject?
         dict["attributes"] = attributes.encode as AnyObject
-        dict["relationships"] = relationships.encode as AnyObject
         dict["hashes"] = hashes.encode as AnyObject
         return dict as AnyObject
     }
@@ -113,12 +84,11 @@ extension Entity: HGEncodable {
         let dict = hgdict(fromObject: object, decoderName: "Entity")
         let t = dict["typeRep"].string
         let a = dict["attributes"].attributes
-        let r = dict["relationships"].relationships
         let h = dict["hashes"].hashes
         let aHashes = h.filter { $0.isEntity == false }
         let attributeHash: HashObject? = aHashes.count > 0 ? aHashes[0] : nil
         let entityHashes = h.filter { $0.isEntity == true }
-        return Entity(typeRep: t, attributes: a, relationships: r, attributeHash: attributeHash, entityHashes: entityHashes)
+        return Entity(typeRep: t, attributes: a, attributeHash: attributeHash, entityHashes: entityHashes)
     }
 }
 
@@ -138,58 +108,10 @@ func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
 
 extension Entity {
     
-    static func newEntity(withTypeRep t: String, fromEntity e: Entity, relType r: RelationshipType) -> Entity {
+    static func newEntity(withTypeRep t: String, fromEntity e: Entity) -> Entity {
         var newEntity = Entity.new
         newEntity.typeRep = t.typeRepresentable
-        
-        var relationship = Relationship.new
-        relationship.entity = e
-        relationship.relType = r
-        
-        newEntity.relationships.append(relationship)
         return newEntity
-    }
-    
-    mutating func createRelationship() -> Relationship  {
-        
-        // create new relationship
-        var relationship = Relationship.new
-        
-        // assign self to relationship
-        relationship.entity = self
-        
-        // make iterated version of Enum if necessary
-        //if let itr = relationship.iteratedTypeRep(forArray: relationships) { relationship.typeRep = itr }
-        
-        // add relationship to relationships
-        relationships.append(relationship)
-        
-        return relationship
-    }
-    
-    mutating func deleteRelationship(forEntity e: Entity) {
-        
-        relationships = relationships.filter { $0.entity != e }
-    }
-    
-    mutating func deleteRelationship(atIndex i: Int) {
-        
-        // check if index is in bounds
-        let maxIndex = relationships.count - 1
-        if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
-            return
-        }
-        
-        // remove index
-        relationships.remove(at: i)
-    }
-    
-    mutating func updateRelationship(withRelationship r: Relationship) {
-        
-        deleteRelationship(forEntity: self)
-        
-        relationships.append(r)
     }
     
     mutating func createAttribute() -> Attribute  {

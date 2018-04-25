@@ -126,7 +126,7 @@ extension EntityVC: HGTableRowAppendable {
         
         for row in rows {
             let entity = appDelegate.store.project.entities[row]
-            if entity.attributes.count > 0 || entity.relationships.count > 0 {
+            if entity.attributes.count > 0 {
                 return .askUser
             }
         }

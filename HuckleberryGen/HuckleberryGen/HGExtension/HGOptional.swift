@@ -67,18 +67,6 @@ extension Optional {
         return []
     }
     
-    var relationship: Relationship {
-        if let dict = self as? HGDICT { return Relationship.decode(object: dict as AnyObject) }
-        HGReportHandler.shared.report("optional: |\(String(describing: self))| is not Relationship mapable, returning new Relationship", type: .error)
-        return Relationship.new
-    }
-    
-    var relationships: [Relationship] {
-        if let array = self as? HGARRAY { return Relationship.decodeArray(objects: array as [AnyObject]) }
-        HGReportHandler.shared.report("optional: |\(String(describing: self))| is not [Relationship] mapable, returning []", type: .error)
-        return []
-    }
-    
     var hashes: [HashObject] {
         if let array = self as? HGARRAY { return HashObject.decodeArray(objects: array as [AnyObject]) }
         HGReportHandler.shared.report("optional: |\(String(describing: self))| is not [HashObject] mapable, returning []", type: .error)
@@ -121,24 +109,10 @@ extension Optional {
         return []
     }
     
-    var deletionRule: DeletionRule {
-        if let int = self as? Int { return DeletionRule.create(int: int) }
-        if let string = self as? String { return DeletionRule.create(string: string) }
-        HGReportHandler.shared.report("optional: |\(String(describing: self))| is not DeletionRule mapable, using .Nullify", type: .error)
-        return .nullify
-    }
-    
     var licenseType: LicenseType {
         if let int = self as? Int { return LicenseType.create(int: int) }
         HGReportHandler.shared.report("optional: |\(String(describing: self))| is not LicenseType mapable, using .MIT", type: .error)
         return .mit
-    }
-    
-    var relationshipType: RelationshipType {
-        if let int = self as? Int { return RelationshipType.create(int: int) }
-        if let string = self as? String { return RelationshipType.create(string: string) }
-        HGReportHandler.shared.report("optional: |\(String(describing: self))| is not RelationshipType mapable, using .TooOne", type: .error)
-        return .tooOne
     }
     
     var primitive: Primitive {

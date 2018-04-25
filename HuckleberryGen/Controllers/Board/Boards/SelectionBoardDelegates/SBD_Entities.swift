@@ -18,26 +18,11 @@ class SBD_Entities: SelectionBoardDelegate {
     /// index of Entity to be updated
     let index: Int
     
-    /// index of Relationship to be updated
-    let index2: Int!
-    
-    // selection Object, hack to check selections, this should be clearer 0 handles a Relationship, 1 will hande an Index
-    let type: Int
-    
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let entities: [Entity] = appDelegate.store.project.entities
     
-    /// initializes object with relationship and entity indexes
-    init(entityIndex i1: Int, relationshipIndex i2: Int) {
-        index = i1
-        index2 = i2
-        type = 0
-    }
-    
-    init(indexIndex i1: Int) {
-        index = i1
-        index2 = -99
-        type = 1
+    init(indexIndex i: Int) {
+        index = i
     }
     
     /// creates an array of HGImageData for an array indexes in attribute
@@ -54,16 +39,7 @@ class SBD_Entities: SelectionBoardDelegate {
     
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
         let entity = entities[loc.index]
-        switch type {
-        case 0: updateRelationship(forEntity: entity)
-        case 1: updateIndex(forEntity: entity)
-        default: HGReportHandler.shared.report("SBD_Entities: Did Not Update", type: .error)
-        }
-    }
-    
-    func updateRelationship(forEntity e: Entity) {
-        appDelegate.store.project.entities[index].relationships[index2].entity = e
-        appDelegate.store.post(forNotifType: .relationshipUpdated) // post notification so other classes are in the know
+        updateIndex(forEntity: entity)
     }
     
     func updateIndex(forEntity e: Entity) {

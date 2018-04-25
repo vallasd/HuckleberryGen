@@ -57,8 +57,6 @@
 		036C7C0D1B5143A0004EC724 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036C7C0C1B5143A0004EC724 /* Assets.xcassets */; };
 		036C7C101B5143A0004EC724 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 036C7C0E1B5143A0004EC724 /* Main.storyboard */; };
 		036C7C1B1B5143A0004EC724 /* HuckleberryGenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C1A1B5143A0004EC724 /* HuckleberryGenTests.swift */; };
-		036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C601B514AF8004EC724 /* CoreDataModel.swift */; };
-		036C7C661B514AF8004EC724 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C641B514AF8004EC724 /* Relationship.swift */; };
 		036C7C6A1B514AF9004EC724 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C681B514AF9004EC724 /* Attribute.swift */; };
 		036C7C6E1B514AF9004EC724 /* ImportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C6C1B514AF9004EC724 /* ImportFile.swift */; };
 		036C7C721B514AF9004EC724 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C701B514AF9004EC724 /* Folder.swift */; };
@@ -85,8 +83,7 @@
 		039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731E31C443A44003DA4F4 /* SBD_Attributes.swift */; };
 		039731E61C4565C5003DA4F4 /* SBD_Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731E51C4565C5003DA4F4 /* SBD_Entities.swift */; };
 		039731EC1C45AE27003DA4F4 /* SBD_SavedProjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */; };
-		039731F01C45AE68003DA4F4 /* SBD_RelationshipType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */; };
-		039731F21C45AE74003DA4F4 /* SBD_DeletionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */; };
+		039731F21C45AE74003DA4F4 /* SBD_Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F11C45AE74003DA4F4 /* SBD_Command.swift */; };
 		039731F51C46A263003DA4F4 /* DBD_DeleteRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F41C46A263003DA4F4 /* DBD_DeleteRows.swift */; };
 		039731F71C470CE4003DA4F4 /* DBD_SaveProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039731F61C470CE4003DA4F4 /* DBD_SaveProject.swift */; };
 		03A20B481B99E4C900149AF5 /* BoardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A20B371B99E4C900149AF5 /* BoardHandler.swift */; };
@@ -116,7 +113,6 @@
 		03F25EDA1B9BFEE90048B0A0 /* AttributeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */; };
 		03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */; };
 		03F25EDE1B9BFEE90048B0A0 /* EnumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED71B9BFEE90048B0A0 /* EnumVC.swift */; };
-		03F25EDF1B9BFEE90048B0A0 /* RelationshipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */; };
 		03F25EE81B9C16EA0048B0A0 /* HGCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25EE21B9C16EA0048B0A0 /* HGCell.swift */; };
 		03F25EEB1B9C16EA0048B0A0 /* HGSplit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25EE61B9C16EA0048B0A0 /* HGSplit.swift */; };
 		03F25EEC1B9C16EA0048B0A0 /* HGTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25EE71B9C16EA0048B0A0 /* HGTable.swift */; };
@@ -129,6 +125,7 @@
 		03FFD8C5208C5CFC00CE2CB8 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */; };
 		03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8CC208D58C000CE2CB8 /* NSRect.swift */; };
 		03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */; };
+		109CAC322090E64300369EF5 /* DeletionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC312090E64300369EF5 /* DeletionRule.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,8 +202,6 @@
 		036C7C1C1B5143A0004EC724 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		036C7C211B5143A0004EC724 /* HuckleberryGenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HuckleberryGenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		036C7C271B5143A0004EC724 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		036C7C601B514AF8004EC724 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataModel.swift; path = Categories/CoreDataModel.swift; sourceTree = "<group>"; };
-		036C7C641B514AF8004EC724 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Relationship.swift; path = Categories/Relationship.swift; sourceTree = "<group>"; };
 		036C7C681B514AF9004EC724 /* Attribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attribute.swift; path = Categories/Attribute.swift; sourceTree = "<group>"; };
 		036C7C6C1B514AF9004EC724 /* ImportFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImportFile.swift; path = Categories/ImportFile.swift; sourceTree = "<group>"; };
 		036C7C701B514AF9004EC724 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Folder.swift; path = Categories/Folder.swift; sourceTree = "<group>"; };
@@ -233,8 +228,7 @@
 		039731E31C443A44003DA4F4 /* SBD_Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Attributes.swift; path = SelectionBoardDelegates/SBD_Attributes.swift; sourceTree = "<group>"; };
 		039731E51C4565C5003DA4F4 /* SBD_Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Entities.swift; path = SelectionBoardDelegates/SBD_Entities.swift; sourceTree = "<group>"; };
 		039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_SavedProjects.swift; path = SelectionBoardDelegates/SBD_SavedProjects.swift; sourceTree = "<group>"; };
-		039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_RelationshipType.swift; path = SelectionBoardDelegates/SBD_RelationshipType.swift; sourceTree = "<group>"; };
-		039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_DeletionRules.swift; path = SelectionBoardDelegates/SBD_DeletionRules.swift; sourceTree = "<group>"; };
+		039731F11C45AE74003DA4F4 /* SBD_Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SBD_Command.swift; path = SelectionBoardDelegates/SBD_Command.swift; sourceTree = "<group>"; };
 		039731F41C46A263003DA4F4 /* DBD_DeleteRows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBD_DeleteRows.swift; path = DecisionBoardDelegates/DBD_DeleteRows.swift; sourceTree = "<group>"; };
 		039731F61C470CE4003DA4F4 /* DBD_SaveProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DBD_SaveProject.swift; path = DecisionBoardDelegates/DBD_SaveProject.swift; sourceTree = "<group>"; };
 		03A20B371B99E4C900149AF5 /* BoardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardHandler.swift; sourceTree = "<group>"; };
@@ -264,7 +258,6 @@
 		03F25ED31B9BFEE90048B0A0 /* AttributeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttributeVC.swift; path = ../../Main/SubViewControllers/AttributeVC.swift; sourceTree = "<group>"; };
 		03F25ED61B9BFEE90048B0A0 /* EntityVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntityVC.swift; path = ../../Main/SubViewControllers/EntityVC.swift; sourceTree = "<group>"; };
 		03F25ED71B9BFEE90048B0A0 /* EnumVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnumVC.swift; path = ../../Main/SubViewControllers/EnumVC.swift; sourceTree = "<group>"; };
-		03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelationshipVC.swift; path = ../../Main/SubViewControllers/RelationshipVC.swift; sourceTree = "<group>"; };
 		03F25EE21B9C16EA0048B0A0 /* HGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCell.swift; sourceTree = "<group>"; };
 		03F25EE61B9C16EA0048B0A0 /* HGSplit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGSplit.swift; sourceTree = "<group>"; };
 		03F25EE71B9C16EA0048B0A0 /* HGTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTable.swift; sourceTree = "<group>"; };
@@ -277,6 +270,7 @@
 		03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		03FFD8CC208D58C000CE2CB8 /* NSRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRect.swift; sourceTree = "<group>"; };
 		03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
+		109CAC312090E64300369EF5 /* DeletionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionRule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,6 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				036C7C091B5143A0004EC724 /* HuckleberryGen.xcdatamodeld */,
+				109CAC302090E59300369EF5 /* Enums */,
 				036C7C351B514A0D004EC724 /* Entities */,
 			);
 			path = Model;
@@ -451,14 +446,12 @@
 			isa = PBXGroup;
 			children = (
 				036C7C681B514AF9004EC724 /* Attribute.swift */,
-				036C7C601B514AF8004EC724 /* CoreDataModel.swift */,
 				038C79DF1B6297560008D29C /* Entity.swift */,
 				037EDFA81B84B4C6002527EE /* Enum.swift */,
 				036E329B1BB1A0880024AA4E /* EnumCase.swift */,
 				036C7C701B514AF9004EC724 /* Folder.swift */,
 				036C7CC71B52A17F004EC724 /* LicenseInfo.swift */,
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
-				036C7C641B514AF8004EC724 /* Relationship.swift */,
 				0339BC631BFE22E40071F8AD /* Project.swift */,
 				03BDDA521C5AA0F900F0DCEA /* Protocol.swift */,
 				03E9AFD41C5E449300013925 /* Index.swift */,
@@ -572,8 +565,7 @@
 				034ECDA71C5E8B78005DB9E2 /* SBD_Hash.swift */,
 				039731E31C443A44003DA4F4 /* SBD_Attributes.swift */,
 				039731E51C4565C5003DA4F4 /* SBD_Entities.swift */,
-				039731EF1C45AE68003DA4F4 /* SBD_RelationshipType.swift */,
-				039731F11C45AE74003DA4F4 /* SBD_DeletionRules.swift */,
+				039731F11C45AE74003DA4F4 /* SBD_Command.swift */,
 				039731EB1C45AE27003DA4F4 /* SBD_SavedProjects.swift */,
 			);
 			name = SelectionBoardDelegates;
@@ -632,7 +624,6 @@
 				03F25ED71B9BFEE90048B0A0 /* EnumVC.swift */,
 				03E9AFD21C5E408C00013925 /* IndexVC.swift */,
 				03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */,
-				03F25ED81B9BFEE90048B0A0 /* RelationshipVC.swift */,
 			);
 			name = Tables;
 			path = Board/TableBoard;
@@ -725,6 +716,14 @@
 				03F25EF61B9C292E0048B0A0 /* HGTableHeader.xib */,
 			);
 			path = HGTableHeader;
+			sourceTree = "<group>";
+		};
+		109CAC302090E59300369EF5 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				109CAC312090E64300369EF5 /* DeletionRule.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -900,7 +899,6 @@
 				03A20B491B99E4C900149AF5 /* NavController.swift in Sources */,
 				03F25EDD1B9BFEE90048B0A0 /* EntityVC.swift in Sources */,
 				036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */,
-				036C7C661B514AF8004EC724 /* Relationship.swift in Sources */,
 				0346140A1BDF81E40002F0AA /* DecisionBoard.swift in Sources */,
 				03BDDA461C5A757A00F0DCEA /* XP_Utility.swift in Sources */,
 				034ECDA81C5E8B78005DB9E2 /* SBD_Hash.swift in Sources */,
@@ -918,7 +916,6 @@
 				030963071C5BCE8C00DEE9C4 /* HGErrorType.swift in Sources */,
 				033F3DEA1BB99DBD0089AEC2 /* HGTableView.swift in Sources */,
 				036C7CC01B529A84004EC724 /* HGGen.swift in Sources */,
-				03F25EDF1B9BFEE90048B0A0 /* RelationshipVC.swift in Sources */,
 				035428E91BA1A1C500BED618 /* HGNotif.swift in Sources */,
 				03A20B4D1B99E4C900149AF5 /* WelcomeBoard.swift in Sources */,
 				03D3FF6C1B848FCD001B9F48 /* HGEvent.swift in Sources */,
@@ -937,7 +934,7 @@
 				03A278FD1C52498F00DA353C /* ExportOptional.swift in Sources */,
 				03E9AFD31C5E408C00013925 /* IndexVC.swift in Sources */,
 				03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */,
-				039731F21C45AE74003DA4F4 /* SBD_DeletionRules.swift in Sources */,
+				039731F21C45AE74003DA4F4 /* SBD_Command.swift in Sources */,
 				03A278FB1C52447800DA353C /* ExportExtensions.swift in Sources */,
 				0309630B1C5BD01E00DEE9C4 /* HGString.swift in Sources */,
 				0322FA421B59633E00CB132B /* HGArray.swift in Sources */,
@@ -948,14 +945,13 @@
 				039731F51C46A263003DA4F4 /* DBD_DeleteRows.swift in Sources */,
 				035E493D1C57D6220005E28A /* ExportProtocols.swift in Sources */,
 				033F3DEE1BBACE770089AEC2 /* HGTabVC.swift in Sources */,
-				039731F01C45AE68003DA4F4 /* SBD_RelationshipType.swift in Sources */,
 				036C7C721B514AF9004EC724 /* Folder.swift in Sources */,
 				03A20B541B99E4C900149AF5 /* MainWindowController.swift in Sources */,
 				031A1A541B8F81F50077FD56 /* HGParser.swift in Sources */,
 				03FFD8C3208C1E3600CE2CB8 /* NSButton.swift in Sources */,
 				03F25EE81B9C16EA0048B0A0 /* HGCell.swift in Sources */,
 				036C7CC11B529A84004EC724 /* HGJSON.swift in Sources */,
-				036C7C621B514AF8004EC724 /* CoreDataModel.swift in Sources */,
+				109CAC322090E64300369EF5 /* DeletionRule.swift in Sources */,
 				039731EC1C45AE27003DA4F4 /* SBD_SavedProjects.swift in Sources */,
 				035E75561B9595890036AE0B /* HGFileQuery.swift in Sources */,
 				03A278F71C51315100DA353C /* ExportType.swift in Sources */,

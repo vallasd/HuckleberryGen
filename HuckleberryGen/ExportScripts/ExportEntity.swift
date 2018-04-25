@@ -34,7 +34,7 @@ class ExportEntity {
     func exportFile(forEntity entity: Entity) -> Bool {
         
         // return immediately if enum attributes and relationships are both 0
-        if entity.attributes.count == 0 && entity.relationships.count == 0 {
+        if entity.attributes.count == 0 {
             HGReportHandler.shared.report("ExportEntity |\(entity.typeRep)| failed, no attributes and relationships for entity", type: .error)
             return false
         }
@@ -84,11 +84,6 @@ class ExportEntity {
             string += "\(ind)let \(attribute.varRep): \(attribute.typeRep)\n"
         }
         
-        // add relationships to entity stanza
-        for relationship in entity.relationships {
-            string += "\(ind)var \(relationship.varRep): \(relationship.typeRep)\n"
-        }
-        
         string += "\n"
         
         // begin init
@@ -103,13 +98,6 @@ class ExportEntity {
             let attAssign = "\(ind)\(ind)self.\(attribute.varRep) = \(attribute.varRep)\n"
             assigns.append(attAssign)
             
-        }
-        
-        // new variable relationships
-        for relationship in entity.relationships {
-            string += "\(relationship.varRep): \(relationship.typeRep), "
-            let relAssign = "\(ind)\(ind)self.\(relationship.varRep) = \(relationship.varRep)\n"
-            assigns.append(relAssign)
         }
         
         // remove last , from init statement
@@ -159,11 +147,6 @@ class ExportEntity {
             else { string += "\(attribute.varRep): \(attribute.typeRep).new, " }
         }
         
-        // new variable relationships
-        for relationship in entity.relationships {
-            string += "\(relationship.varRep): \(relationship.defaultRep), "
-        }
-        
         // remove last , from new var
         string = String(string.dropLast())
         string = String(string.dropLast())
@@ -185,13 +168,6 @@ class ExportEntity {
             }
         }
         
-        // encode variable relationships
-        for relationship in entity.relationships {
-            let name = relationship.varRep
-            let equals = relationship.relType == .tooOne ? "=?" : "="
-            string += "\(ind)\(ind)dict[\"\(name)\"] \(equals) \(name).encode\n"
-        }
-        
         // end encode variable
         string += "\(ind)\(ind)return dict\n"
         string += "\(ind)}\n\n"
@@ -206,12 +182,6 @@ class ExportEntity {
             string += "\(ind)\(ind)let \(attribute.varRep) = dict[\"\(attribute.varRep)\"].\(attribute.decodeRep)\n"
         }
         
-        // decode function relationships
-        for relationship in entity.relationships {
-            let name = relationship.varRep
-            string += "\(ind)\(ind)let \(name) = dict[\"\(name)\"].\(relationship.decodeRep)\n"
-        }
-        
         // decode function return statement
         string += "\(ind)\(ind)HGReportHandler.shared.untrack()\n"
         string += "\(ind)\(ind)return \(entity.typeRep)("
@@ -219,11 +189,6 @@ class ExportEntity {
         // decode function return statement attributes
         for attribute in entity.attributes {
             string += "\(attribute.varRep): \(attribute.varRep), "
-        }
-        
-        // decode function return statement relationships
-        for relationship in entity.relationships {
-            string += "\(relationship.varRep): \(relationship.varRep), "
         }
         
         // decode function return statement cleanup , from last object
