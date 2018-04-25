@@ -11,7 +11,7 @@ import CoreData
 import AppKit
 import Cocoa
 
-struct Attribute: HashRepresentable {
+struct Attribute {
     
     var varRep: String
     let typeRep: String

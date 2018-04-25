@@ -10,7 +10,7 @@
 
 import Cocoa
 
-struct Enum: TypeRepresentable {
+struct Enum {
     
     var name: String { didSet { typeRep = name.typeRepresentable } }
     var typeRep: String
@@ -54,13 +54,7 @@ extension Enum: HGEncodable {
 }
 
 extension Enum: VarRepresentable {
-    
     var varRep: String { return name.varRepresentable }
-}
-
-extension Enum: DefaultRepresentable {
-    
-    var defaultRep: String { return cases.count > 0 ? cases.first!.typeRep : "Missing Cases!!!" }
 }
 
 extension Enum {

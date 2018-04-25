@@ -67,12 +67,6 @@ extension Optional {
         return []
     }
     
-    var hashes: [HashObject] {
-        if let array = self as? HGARRAY { return HashObject.decodeArray(objects: array as [AnyObject]) }
-        HGReportHandler.shared.report("optional: |\(String(describing: self))| is not [HashObject] mapable, returning []", type: .error)
-        return []
-    }
-    
     var index: Index {
         if let dict = self as? HGDICT { return Index.decode(object: dict as AnyObject) }
         HGReportHandler.shared.report("optional: |\(String(describing: self))| is not Index mapable, returning new Enum", type: .error)

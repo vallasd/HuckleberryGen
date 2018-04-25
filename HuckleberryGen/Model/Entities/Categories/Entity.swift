@@ -12,30 +12,23 @@ import Cocoa
 // MARK: Struct Definition
 
 /// a struct that represents a model entity
-struct Entity: HashRepresentable {
+struct Entity: TypeRepresentable {
     
-    var typeRep: String
+    var type: String
     var attributes: [Attribute]
     
-    var attributeHash: HashObject?
-    var entityHashes: [HashObject]
+    var hashes: [String]
     
-    init(typeRep t: String) {
-        typeRep = t
+    init(type t: String) {
+        type = t
         attributes = []
-        attributeHash = nil
-        entityHashes = []
+        hashes = []
     }
     
-    init(typeRep t: String, attributes a: [Attribute], attributeHash at: HashObject?, entityHashes e: [HashObject]) {
-        typeRep = t
+    init(type t: String, attributes a: [Attribute], hashes h: [String]) {
+        type = t
         attributes = a
-        attributeHash = at
-        entityHashes = e
-    }
-    
-    var hashes: [HashObject] {
-        return attributeHash == nil ? entityHashes : entityHashes + [attributeHash!]
+        hashes = h
     }
     
     var hashRep: String {
@@ -44,13 +37,9 @@ struct Entity: HashRepresentable {
             return "define #Hash"
         }
         
-        let aString = attributeHash == nil ? "" : "\(attributeHash!.varRep) "
-        let eString = entityHashes.map { "#" + $0.varRep }.joined(separator: " ")
-        return aString + eString
+        return hashes.map { "#" + $0 }.joined(separator: " ")
     }
-    
-    var isEntity: Bool { return true }
-    
+
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "entityIcon", title: name)
     }
@@ -61,12 +50,12 @@ struct Entity: HashRepresentable {
 extension Entity: HGEncodable {
     
     static var new: Entity {
-        return Entity(typeRep: "NewEntity", attributes: [], attributeHash: nil, entityHashes: [])
+        return Entity(type: "NewEntity", attributes: [], entityHashes: [])
     }
     
     var encode: AnyObject {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep as AnyObject?
+        dict["typeRep"] = type as AnyObject?
         dict["attributes"] = attributes.encode as AnyObject
         dict["hashes"] = hashes.encode as AnyObject
         return dict as AnyObject
@@ -85,16 +74,14 @@ extension Entity: HGEncodable {
 }
 
 extension Entity: VarRepresentable {
-    
     var varRep: String { return typeRep.lowerFirstLetter }
-    
 }
 
 // MARK: Hashing
 
-extension Entity: Hashable { var hashValue: Int { return typeRep.hashValue } }
+extension Entity: Hashable { var hashValue: Int { return type.hashValue } }
 extension Entity: Equatable {};
-func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.typeRep == rhs.typeRep }
+func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.type == rhs.type }
 
 // MARK: Storing
 
@@ -102,7 +89,7 @@ extension Entity {
     
     static func newEntity(withTypeRep t: String, fromEntity e: Entity) -> Entity {
         var newEntity = Entity.new
-        newEntity.typeRep = t.typeRepresentable
+        newEntity.type = t.typeRepresentable
         return newEntity
     }
     

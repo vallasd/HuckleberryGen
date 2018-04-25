@@ -13,27 +13,34 @@ import Cocoa
 
 /// A string representation of the objects Type. Example: RecordingState
 protocol TypeRepresentable {
-    
-    var typeRep: String { get }
-}
-
-extension TypeRepresentable where Self: Hashable {
- 
-    /// returns the typeRep variable, iterated if another object in array already had value
-    func iteratedTypeRep(forArray array: [Self]) -> String? {
-        if array.contains(self) {
-            let iterationNum = array.count + 1
-            return self.typeRep + "\(iterationNum)"
-        }
-        return nil
-    }
+    var type: String { get }
 }
 
 /// A string representation of the objects variable.  Example: recordingState || recordingStateSet
 protocol VarRepresentable {
-    
-    var varRep: String { get }
+    var VAR: String { get }
 }
+
+extension Array where Element == String {
+    
+    func type(string: String) -> String {
+        let string = string.typeRepresentable
+        if self.contains(string) {
+            let iterationNum = self.count + 1
+            return string + "\(iterationNum)"
+        }
+    }
+    
+    func varRep(string: String) -> String {
+        let string = string.varRepresentable
+        if self.contains(string) {
+            let iterationNum = self.count + 1
+            return string + "\(iterationNum)"
+        }
+    }
+}
+
+
 
 extension VarRepresentable where Self: Hashable {
     
@@ -45,124 +52,4 @@ extension VarRepresentable where Self: Hashable {
         }
         return nil
     }
-}
-
-/// A string representation of the objects default return value.  Example: Float, "0.0".  Entity, Entity.new
-protocol DefaultRepresentable {
-    
-    var defaultRep: String { get }
-}
-
-/// A string representation of the objects default return value.  Example: Thing is Float, defaultRep -> "0.0".  Thing is enum HGErrorType, defaultRep -> "Warn"
-protocol DecodeRepresentable {
-    
-    var decodeRep: String { get }
-}
-
-/// whether object has
-protocol HashRepresentable: Hashable {
-    var typeRep: String { get }
-    var varRep: String { get }
-    var isEntity: Bool { get }
-}
-
-struct HashObject: HashRepresentable {
-    let typeRep: String
-    let varRep: String
-    let isEntity: Bool
-    
-    init(typeRep t: String, varRep v: String, isEntity e: Bool) {
-        typeRep = t
-        varRep = v
-        isEntity = e
-    }
-    
-    var hashTitle: String {
-        return isEntity ? "#\(varRep)" : varRep
-    }
-    
-    var image: NSImage {
-        return NSImage.image(named: "hashIcon", title: hashTitle)
-    }
-}
-
-extension HashObject: Hashable { var hashValue: Int { return typeRep.hashValue } }
-extension HashObject: Equatable {}; func ==(lhs: HashObject, rhs: HashObject) -> Bool { return lhs.typeRep == rhs.typeRep }
-
-extension HashObject: HGEncodable {
-    
-    var encode: AnyObject {
-        var dict = HGDICT()
-        dict["typeRep"] = typeRep as AnyObject?
-        dict["varRep"] = varRep as AnyObject?
-        dict["isEntity"] = isEntity as AnyObject?
-        return dict as AnyObject
-    }
-    
-    static func decode(object: AnyObject) -> HashObject {
-        let dict = hgdict(fromObject: object, decoderName: "HashObject")
-        let typeRep = dict["typeRep"].string
-        let varRep = dict["varRep"].string
-        let isEntity = dict["isEntity"].bool
-        return HashObject(typeRep: typeRep, varRep: varRep, isEntity: isEntity)
-    }
-    
-}
-
-extension HashRepresentable  {
-    
-    var encodeHash: HGDICT {
-        var dict = HGDICT()
-        dict["typeRep"] = typeRep as AnyObject?
-        dict["varRep"] = varRep as AnyObject?
-        dict["isEntity"] = isEntity as AnyObject?
-        return dict
-    }
-    
-    var decodeHash: HashObject {
-        return HashObject(typeRep: typeRep, varRep: varRep, isEntity: isEntity)
-    }
-}
-
-extension HashRepresentable where Self: Hashable {
-    
-    
-    /// returns the typeRep variable, iterated if another object in array already had value
-    func iteratedTypeRep(forArray array: [Self]) -> String? {
-        if array.contains(self) {
-            let iterationNum = array.count + 1
-            return self.typeRep + "\(iterationNum)"
-        }
-        return nil
-    }
-    
-    /// returns the varRep variable, iterated if another object in array already had value
-    func iteratedVarRep(forArray array: [Self]) -> String? {
-        if array.contains(self) {
-            let iterationNum = array.count + 1
-            return self.varRep + "\(iterationNum)"
-        }
-        return nil
-    }
-    
-}
-
-
-extension Sequence where Iterator.Element: HashRepresentable {
-    
-    var encodeHash: [HGDICT] {
-        return self.map { $0.encodeHash }
-    }
-    
-    var decodeHashes: [HashObject] {
-        return self.map { $0.decodeHash }
-    }
-}
-
-
-
-/// whether object is let vs var object when typed
-protocol Mutable {
-    
-    var mutable: Bool { get }
 }

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-enum Primitive: TypeRepresentable, VarRepresentable, DefaultRepresentable {
+enum Primitive: TypeRepresentable, VarRepresentable {
     
     case _int
     case _int16
