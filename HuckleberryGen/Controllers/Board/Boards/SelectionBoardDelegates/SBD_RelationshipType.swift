@@ -21,9 +21,6 @@ class SBD_RelationshipType: SelectionBoardDelegate {
     /// index of Relationship to be updated
     let relationshipIndex: Int
     
-    /// reference to the cell type used
-    let celltype = CellType.imageCell
-    
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let relationshipTypes: [RelationshipType] = RelationshipType.set
     
@@ -60,7 +57,8 @@ extension SBD_RelationshipType: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.imageCell
+        
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {

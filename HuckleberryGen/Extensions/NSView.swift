@@ -114,7 +114,7 @@ extension NSView {
     /// remove all auto resizing and masks for
     func makeConstrainable() {
         translatesAutoresizingMaskIntoConstraints = false
-        autoresizingMask = [.height, .width]
+        autoresizingMask = [.height, .width, .maxXMargin, .maxYMargin, .minXMargin, .minYMargin]
         for subview in self.subviews {
             subview.makeConstrainable()
         }

@@ -55,7 +55,7 @@ enum CellType {
         switch (self) {
         case .imageCell: return 60
         case .fieldCell3: return 55
-        case .mixedCell1: return 65
+        case .mixedCell1: return 20
         default: return 50
         }
     }

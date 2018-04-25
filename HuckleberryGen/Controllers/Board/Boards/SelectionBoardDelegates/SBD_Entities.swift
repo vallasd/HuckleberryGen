@@ -23,9 +23,6 @@ class SBD_Entities: SelectionBoardDelegate {
     
     // selection Object, hack to check selections, this should be clearer 0 handles a Relationship, 1 will hande an Index
     let type: Int
-
-    /// reference to the cell type used
-    let celltype = CellType.imageCell
     
     /// a list of strings of all attributes that can be assigned (AttributeTypes and Enums)
     let entities: [Entity] = appDelegate.store.project.entities
@@ -85,7 +82,7 @@ extension SBD_Entities: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.imageCell
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {

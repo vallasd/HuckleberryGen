@@ -14,8 +14,6 @@ class AttributeVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    let celltype = CellType.defaultCell
-    
     var hgtable: HGTable!
 
     fileprivate var editingLocation: HGTableLocation?
@@ -34,7 +32,7 @@ extension AttributeVC: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.defaultCell
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {

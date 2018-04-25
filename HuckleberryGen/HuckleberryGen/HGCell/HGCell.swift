@@ -44,7 +44,7 @@ protocol HGCellDelegate: AnyObject {
     func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String)
 }
 
-let HGCellImageBorder: CGFloat = 4.0
+let HGCellImageBorder: CGFloat = 2.0
 
 class HGCell: NSTableCellView, NSTextFieldDelegate {
     

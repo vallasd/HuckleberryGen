@@ -15,8 +15,6 @@ class RelationshipVC: NSViewController {
     
     var  hgtable: HGTable!
     
-    let celltype = CellType.mixedCell1
-    
      // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +30,7 @@ extension RelationshipVC: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.mixedCell1
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {

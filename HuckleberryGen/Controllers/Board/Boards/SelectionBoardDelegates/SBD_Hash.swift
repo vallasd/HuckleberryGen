@@ -15,9 +15,6 @@ class SBD_Hash: SelectionBoardDelegate {
     var index: Int
     var hashes: [HashObject]
     
-    /// reference to the cell type used
-    let celltype = CellType.imageCell
-    
     init(entityIndex ei: Int, hashes h: [HashObject]) {
         index = ei
         hashes = h
@@ -71,7 +68,7 @@ extension SBD_Hash: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return celltype
+        return CellType.imageCell
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
