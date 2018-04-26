@@ -16,7 +16,7 @@ struct Entity {
     
     let name: String
     var attributes: [Attribute]
-    var hashes: [Int]
+    let hashes: [Int]
     
     init(name n: String) {
         name = n
@@ -71,7 +71,7 @@ extension Entity: HGEncodable {
 
 // MARK: Hashing
 
-extension Entity: Hashable { var hashValue: Int { return name } }
+extension Entity: Hashable { var hashValue: Int { return name.hashValue } }
 extension Entity: Equatable {};
 func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.name == rhs.name }
 
@@ -93,7 +93,7 @@ extension Entity {
         attributes.append(attribute)
         
         // return enum
-        return attributes
+        return attribute
     }
     
     mutating func deleteAttribute(atIndex i: Int) {

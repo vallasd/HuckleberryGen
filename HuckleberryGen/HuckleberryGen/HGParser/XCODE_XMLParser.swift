@@ -65,9 +65,9 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
         
         if elementName == ParseType.Entity.rawValue {
             
-            let typeRep = attributeDict["name"]!
+            let name = attributeDict["name"]!
             if lastEntity != nil { entities.insert(lastEntity!) }
-            lastEntity = Entity(typeRep: typeRep)
+            lastEntity = Entity(name: name)
             return
         }
         
@@ -75,8 +75,9 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
             
             if lastEntity != nil {
                 let primitive = attributeDict["attributeType"].primitive
-                let varRep = attributeDict["name"].string
-                let attribute = Attribute(varRep: varRep, primitive: primitive)
+                let name = attributeDict["name"].string
+                let type = AttributeType(primitive: primitive)
+                let attribute = Attribute(name: name, type: type)
                 lastEntity!.attributes.append(attribute)
                 return
             }
@@ -96,9 +97,10 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
                 if type == nil {
                     
                     // get destination entity
-                    let typeRep = attributeDict["destinationEntity"].string
-                    let hash = AttributeType (typeRep: typeRep.typeRepresentable, varRep: typeRep.varRepresentable, isEntity: true)
-                    lastEntity!.entityHashes.append(hash)
+                    // let typeRep = attributeDict["destinationEntity"].string
+                    // FIXME: // FIX THIS
+//                    let hash = AttributeType(typeRep: typeRep.typeRepresentable, varRep: typeRep.varRepresentable, isEntity: true)
+//                    lastEntity!.entityHashes.append(hash)
                 }
                 
                 return

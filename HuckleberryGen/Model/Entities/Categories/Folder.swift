@@ -29,15 +29,19 @@ extension Folder: HGEncodable {
         return Folder(name: "New Folder", path: "/", importFiles: [] )
     }
     
-    var encode: AnyObject {
+    static var encodeError: Folder {
+        return Folder(name: "New Folder", path: "/", importFiles: [] )
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
-        dict["name"] = name as AnyObject?
-        dict["path"] = path as AnyObject?
-        dict["importFiles"] = importFiles.encode as AnyObject
+        dict["name"] = name
+        dict["path"] = path
+        dict["importFiles"] = importFiles.encode
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> Folder {
+    static func decode(object: Any) -> Folder {
         let dict = HG.decode(hgdict: object, decoderName: "Folder")
         let name = dict["name"].string
         let path = dict["path"].string

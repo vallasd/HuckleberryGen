@@ -43,7 +43,7 @@ extension AttributeVC: HGTableDisplayable {
         let image = attribute.type.image
         
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: name),
+            field0: HGFieldData(title: attribute.name),
             field1: HGFieldData(title: ""),
             image0: HGImageData(image: image)
         )
@@ -64,9 +64,7 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        var attribute = Attribute.new
-        if let itr = attribute.iteratedVarRep(forArray: appDelegate.store.project.entities[table.parentRow].attributes) { attribute.varRep = itr }
-        appDelegate.store.project.entities[table.parentRow].attributes.append(Attribute.new)
+        let _ = appDelegate.store.project.entities[table.parentRow].createAttribute()
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {

@@ -13,8 +13,13 @@ import Cocoa
 
 struct Attribute {
     
-    let name: String
-    let type: AttributeType
+    var name: String
+    var type: AttributeType
+    
+    init(name n: String) {
+        name = n
+        type = AttributeType.new
+    }
     
     init(name n: String, type t: AttributeType) {
         name = n
@@ -48,7 +53,7 @@ extension Attribute: HGEncodable {
     
     static var encodeError: Attribute {
         let type = AttributeType.encodeError
-        return AttributeType(name: "Error", type: type)
+        return Attribute(name: "Error", type: type)
     }
     
     var encode: Any {

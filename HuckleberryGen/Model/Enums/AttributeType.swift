@@ -23,7 +23,7 @@ struct AttributeType: HGEncodable  {
         type = .primitive
     }
     
-    init(enun e: Enum) {
+    init(enum e: Enum) {
         name = e.name
         type = .enuM
     }
@@ -62,6 +62,6 @@ struct AttributeType: HGEncodable  {
         let dict = HG.decode(hgdict: object, decoderName: "Attribute")
         let name = dict["name"].string
         let type = dict["type"].hGtype
-        return Attribute(name: name, type: type)
+        return AttributeType(name: name, type: type)
     }
 }

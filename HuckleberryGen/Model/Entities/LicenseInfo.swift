@@ -30,7 +30,6 @@ struct LicenseInfo {
             return false
         }
     }
-    
 }
 
 extension LicenseInfo: HGEncodable {
@@ -39,7 +38,11 @@ extension LicenseInfo: HGEncodable {
         return LicenseInfo(name: "", company: "", contact1: "", contact2: "", type: .allRightsReserved)
     }
     
-    var encode: AnyObject {
+    static var encodeError: LicenseInfo {
+        return LicenseInfo(name: "", company: "", contact1: "", contact2: "", type: .allRightsReserved)
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
         dict["company"] = company as AnyObject?
         dict["contact1"] = contact1 as AnyObject?
@@ -49,7 +52,7 @@ extension LicenseInfo: HGEncodable {
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> LicenseInfo {
+    static func decode(object: Any) -> LicenseInfo {
         let dict = HG.decode(hgdict: object, decoderName: "LicenseInfo")
         let name = dict["name"].string
         let company = dict["company"].string

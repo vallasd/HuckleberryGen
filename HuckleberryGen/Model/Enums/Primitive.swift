@@ -54,7 +54,7 @@ enum Primitive: Int {
     }
     
     var image: NSImage {
-        return NSImage.image(named: "typeIcon", title: varRep)
+        return NSImage.image(named: "typeIcon", title: name.varRepresentable)
     }
     
     static var array: [Primitive] = [_int, _int16, _int32, _double, _float, _string, _bool, _date, _lastUpdate, _imageURL]

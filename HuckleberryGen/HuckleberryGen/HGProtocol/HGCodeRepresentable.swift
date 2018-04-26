@@ -14,20 +14,20 @@ import Cocoa
 extension Array where Element == String {
     
     func typeRep(string: String) -> String {
-        let string = string.typeRepresentable
-        if self.contains(string) {
-            let iterationNum = self.count + 1
-            return string + "\(iterationNum)"
+        let name = string.typeRepresentable
+        if self.contains(name) {
+            let largestNum = self.largestNum(string: name)
+            return name + "\(largestNum + 1)"
         }
-        return string
+        return name
     }
     
     func varRep(string: String) -> String {
-        let string = string.varRepresentable
-        if self.contains(string) {
-            let iterationNum = self.count + 1
-            return string + "\(iterationNum)"
+        let name = string.varRepresentable
+        if self.contains(name) {
+            let largestNum = self.largestNum(string: name)
+            return name + "\(largestNum + 1)"
         }
-        return string
+        return name
     }
 }

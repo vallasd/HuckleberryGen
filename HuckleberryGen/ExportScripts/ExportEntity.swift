@@ -35,12 +35,12 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 {
-            HGReportHandler.shared.report("ExportEntity |\(entity.typeRep)| failed, no attributes and relationships for entity", type: .error)
+            HGReportHandler.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .error)
             return false
         }
         
         // set default variables
-        let name = entity.typeRep
+        let name = entity.name
         let filePath = path + "/\(name).swift"
         let store = appDelegate.store
         let header = licenseInfo.string(store.project.name, fileName: name)
@@ -75,13 +75,13 @@ class ExportEntity {
         let ind = HGIndent.indent
         
         // begin entity stanza
-        var string: String = "final class \(entity.typeRep) {\n"
+        var string: String = "final class \(entity.name) {\n"
         
         string += "\n"
         
         // add attributes to entity stanza
         for attribute in entity.attributes {
-            string += "\(ind)let \(attribute.varRep): \(attribute.typeRep)\n"
+            string += "\(ind)let \(attribute.name): \(attribute.type.name)\n"
         }
         
         string += "\n"
@@ -94,8 +94,8 @@ class ExportEntity {
         
         // new variable attributes
         for attribute in entity.attributes {
-            string += "\(attribute.varRep): \(attribute.typeRep), "
-            let attAssign = "\(ind)\(ind)self.\(attribute.varRep) = \(attribute.varRep)\n"
+            string += "\(attribute.name): \(attribute.type.name), "
+            let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
             assigns.append(attAssign)
             
         }
@@ -128,23 +128,23 @@ class ExportEntity {
         let ind = HGIndent.indent
         
         // get Primitives
-        let primitives = Primitive.array.map { $0.typeRep }
+        let primitives = Primitive.array.map { $0.name }
         let primitivesDefault = Primitive.array.map { $0.defaultRep }
         
         // begin hgencodable stanza
-        var string = "extension \(entity.typeRep): HGEncodable {\n"
+        var string = "extension \(entity.name): HGEncodable {\n"
         string += "\n"
         
         // new variable
-        string += "\(ind)static var new: \(entity.typeRep) {\n"
-        string += "\(ind)\(ind)return \(entity.typeRep)("
+        string += "\(ind)static var new: \(entity.name) {\n"
+        string += "\(ind)\(ind)return \(entity.name)("
         
         // new variable attributes
         for attribute in entity.attributes {
-            let type = attribute.typeRep
+            let type = attribute.type.name
             let index = primitives.index(of: type)
-            if let index = index { string += "\(attribute.varRep): \(primitivesDefault[index]), " }
-            else { string += "\(attribute.varRep): \(attribute.typeRep).new, " }
+            if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
+            else { string += "\(attribute.name): \(attribute.name).new, " }
         }
         
         // remove last , from new var
@@ -161,10 +161,10 @@ class ExportEntity {
         
         // encode variable attributes
         for attribute in entity.attributes {
-            if attribute.isPrimitive {
-                string += "\(ind)\(ind)dict[\"\(attribute.varRep)\"] = \(attribute.varRep)\n"
+            if attribute.type.type == .primitive {
+                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
             } else {
-                string += "\(ind)\(ind)dict[\"\(attribute.varRep)\"] = \(attribute.varRep).encode\n"
+                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name).encode\n"
             }
         }
         
@@ -173,22 +173,22 @@ class ExportEntity {
         string += "\(ind)}\n\n"
         
         // begin decode function
-        string += "\(ind)static func decode(object object: AnyObject) -> \(entity.typeRep) {\n"
-        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.typeRep)\", object: object)\n"
-        string += "\(ind)\(ind)let dict = HG.decode(hgdict: object, decoderName: \"\(entity.typeRep)\")\n"
+        string += "\(ind)static func decode(object object: AnyObject) -> \(entity.name) {\n"
+        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.name)\", object: object)\n"
+        string += "\(ind)\(ind)let dict = HG.decode(hgdict: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
         for attribute in entity.attributes {
-            string += "\(ind)\(ind)let \(attribute.varRep) = dict[\"\(attribute.varRep)\"].\(attribute.decodeRep)\n"
+            string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name)\n"
         }
         
         // decode function return statement
         string += "\(ind)\(ind)HGReportHandler.shared.untrack()\n"
-        string += "\(ind)\(ind)return \(entity.typeRep)("
+        string += "\(ind)\(ind)return \(entity.name)("
         
         // decode function return statement attributes
         for attribute in entity.attributes {
-            string += "\(attribute.varRep): \(attribute.varRep), "
+            string += "\(attribute.name): \(attribute.name), "
         }
         
         // decode function return statement cleanup , from last object

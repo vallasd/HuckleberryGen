@@ -25,7 +25,7 @@ class SBD_Attributes: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.array.map { $0.varRep } + appDelegate.store.project.enums.map { $0.name.typeRepresentable }
+    let types: [String] = Primitive.array.map { $0.name } + appDelegate.store.project.enums.map { $0.name.typeRepresentable }
     
     /// last index of Attribute Type in the attributes array
     let firstEnumIndex = Primitive.array.count
