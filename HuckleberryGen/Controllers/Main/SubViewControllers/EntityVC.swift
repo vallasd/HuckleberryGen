@@ -40,7 +40,7 @@ extension EntityVC: HGTableDisplayable {
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         let entity = appDelegate.store.project.entities[index]
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: entity.typeRep),
+            field0: HGFieldData(title: entity.name),
             field1: HGFieldData(title: entity.hashRep),
             image0: HGImageData(title: "", image: #imageLiteral(resourceName: "entityIcon"))
         )
@@ -96,15 +96,7 @@ extension EntityVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        
-        var entity = appDelegate.store.project.entities[row]
-        
-        entity.typeRep = string.changeToTypeRep ?? string
-        
-        appDelegate.store.project.entities[row] = entity
-    
-        // in case string was changed
-        if entity.typeRep != string { table.update() }
+        appDelegate.store.updateEntity(name: string, atIndex: row)
     }
     
 }
@@ -117,9 +109,7 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        var entity = Entity.new
-        if let itr = entity.iteratedTypeRep(forArray: appDelegate.store.project.entities) { entity.typeRep = itr }
-        appDelegate.store.project.entities.append(entity)
+        let _ = appDelegate.store.createEntity()
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {

@@ -50,7 +50,7 @@ extension LicenseInfo: HGEncodable {
     }
     
     static func decode(object: AnyObject) -> LicenseInfo {
-        let dict = hgdict(fromObject: object, decoderName: "LicenseInfo")
+        let dict = HG.decode(hgdict: object, decoderName: "LicenseInfo")
         let name = dict["name"].string
         let company = dict["company"].string
         let contact1 = dict["contact1"].string

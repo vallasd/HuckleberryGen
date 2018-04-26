@@ -8,18 +8,18 @@
 
 import Cocoa
 
-enum Primitive: TypeRepresentable, VarRepresentable {
+enum Primitive: Int {
     
-    case _int
-    case _int16
-    case _int32
-    case _double
-    case _float
-    case _string
-    case _bool
-    case _date
-    case _lastUpdate
-    case _imageURL
+    case _int = 0
+    case _int16 = 1
+    case _int32 = 2
+    case _double = 3
+    case _float = 4
+    case _string = 5
+    case _bool = 6
+    case _date = 7
+    case _lastUpdate = 8
+    case _imageURL = 9
     
     static var count = 10
     
@@ -38,7 +38,7 @@ enum Primitive: TypeRepresentable, VarRepresentable {
         }
     }
     
-    var typeRep: String {
+    var name: String {
         switch self {
         case ._int: return "Int"
         case ._int16: return "Int16"
@@ -50,36 +50,6 @@ enum Primitive: TypeRepresentable, VarRepresentable {
         case ._date: return "Date"
         case ._lastUpdate: return "Date"
         case ._imageURL: return "String"
-        }
-    }
-    
-    var varRep: String {
-        switch self {
-        case ._int: return "int"
-        case ._int16: return "int16"
-        case ._int32: return "int32"
-        case ._double: return "double"
-        case ._float: return "float"
-        case ._string: return "string"
-        case ._bool: return "bool"
-        case ._date: return "date"
-        case ._lastUpdate: return "Date"
-        case ._imageURL: return "String"
-        }
-    }
-    
-    var int: Int {
-        switch self {
-        case ._int: return 0
-        case ._int16: return 1
-        case ._int32: return 2
-        case ._double: return 3
-        case ._float: return 4
-        case ._string: return 5
-        case ._bool: return 6
-        case ._date: return 7
-        case ._lastUpdate: return 8
-        case ._imageURL: return 9
         }
     }
     
@@ -119,8 +89,8 @@ enum Primitive: TypeRepresentable, VarRepresentable {
         // return Int16 || Int32
         if self == Primitive._int16 || self == Primitive._int32 {
             string += "\(iInd)if let int = self as? Int {\n"
-            string += "\(iInd)\(ind)if abs(int) <= Int(\(typeRep).max) {\n"
-            string += "\(iInd)\(ind)\(ind)return \(typeRep)(int)\n"
+            string += "\(iInd)\(ind)if abs(int) <= Int(\(name).max) {\n"
+            string += "\(iInd)\(ind)\(ind)return \(name)(int)\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)}\n"
             return string
@@ -154,15 +124,15 @@ enum Primitive: TypeRepresentable, VarRepresentable {
         if self == Primitive._int16 || self == Primitive._int32 {
             
             string += "\(iInd)if let intArray = self as? [Int] {\n"
-            string += "\(iInd)\(ind)var arrayContainsAll\(typeRep) = true\n"
+            string += "\(iInd)\(ind)var arrayContainsAll\(name) = true\n"
             string += "\(iInd)\(ind)for int in intArray {\n"
-            string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(typeRep).max) {\n"
-            string += "\(iInd)\(ind)\(ind)\(ind)arrayContainsAll\(typeRep) = false\n"
+            string += "\(iInd)\(ind)\(ind)if abs(int) > Int(\(name).max) {\n"
+            string += "\(iInd)\(ind)\(ind)\(ind)arrayContainsAll\(name) = false\n"
             string += "\(iInd)\(ind)\(ind)\(ind)break\n"
             string += "\(iInd)\(ind)\(ind)}\n"
             string += "\(iInd)\(ind)}\n"
-            string += "\(iInd)\(ind)if arrayContainsAll\(typeRep) == true {\n"
-            string += "\(iInd)\(ind)\(ind)return intArray.map { \(typeRep)($0) }\n"
+            string += "\(iInd)\(ind)if arrayContainsAll\(name) == true {\n"
+            string += "\(iInd)\(ind)\(ind)return intArray.map { \(name)($0) }\n"
             string += "\(iInd)\(ind)}\n"
             string += "\(iInd)}\n"
             return string
@@ -179,7 +149,7 @@ enum Primitive: TypeRepresentable, VarRepresentable {
     
     static func optionalPrimitive(string: String) -> Primitive? {
         let pArray = Primitive.array
-        let pVarReps = Primitive.array.map { $0.varRep }
+        let pVarReps = Primitive.array.map { $0.name.varRepresentable }
         if let index = pVarReps.index(of: string) {
             return pArray[index]
         }
@@ -193,11 +163,15 @@ extension Primitive: HGEncodable {
         return ._int
     }
     
-    var encode: AnyObject {
-        return int as AnyObject
+    static var encodeError: Primitive {
+        return ._int
     }
     
-    static func decode(object: AnyObject) -> Primitive {
+    var encode: Any {
+        return self.rawValue
+    }
+    
+    static func decode(object: Any) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
         HGReportHandler.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .error)

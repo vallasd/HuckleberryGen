@@ -14,43 +14,50 @@ extension HuckleberryGen {
     
     func createEnum() -> Enum  {
         
-        // create new Enum
-        var enuM = Enum.new
+        // create iterated name of Enum
+        let name = usedNames.typeRep(string: "New Enum")
         
-        // make iterated version of Enum if necessary
-        if let itr = enuM.iteratedTypeRep(forArray: project.enums) { enuM.typeRep = itr }
+        // create new Enum
+        let enuM = Enum(name: name)
         
         // add Enum to store
         project.enums.append(enuM)
         
         // return enum
         return enuM
-        
     }
     
-    func replaceEnum(atIndex i: Int, withEnum e2: Enum) {
+    func getEnum(index i: Int) -> Enum {
         
+        // check if index is in bounds
+        if i < 0 || i >= project.enums.count {
+            HGReportHandler.shared.report("Enum GET index: |\(i)| is out of bounds", type: .error)
+            assert(true)
+            return Enum(name: "Error")
+        }
+        
+        return project.enums[i]
+    }
+    
+    func replaceEnum(atIndex i: Int, withEnum e: Enum) {
+
         // check if index is in bounds
         if i < 0 || i >= project.enums.count {
             HGReportHandler.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .error)
             return
         }
         
-        // get Enum
-        let e1 = getEnum(index: i)
+        // update attributes
+        
+        
+        // update Entities has
+        
         
         // make iterated version of Enum if necessary, |If types are not already the same|
-        if e1.typeRep != e2.typeRep {
-            if let itr = e2.iteratedTypeRep(forArray: project.enums) {
-                var e3 = e2
-                e3.typeRep = itr
-                project.enums[i] = e3
-                return
-            }
-        }
+
         
         // add Enum to store
-        project.enums[i] = e2
+        project.enums[i] = e
     }
     
     func deleteEnums(atIndexes a: [Int]) -> Bool {
@@ -66,35 +73,36 @@ extension HuckleberryGen {
         project.enums.removeIndexes(a)
         return true
     }
-    
-    func getEnum(index i: Int) -> Enum {
-        
-        // check if index is in bounds
-        if i < 0 || i >= project.enums.count {
-            HGReportHandler.shared.report("Enum GET index: |\(i)| is out of bounds", type: .error)
-            assert(true)
-            return Enum.new
-        }
-        
-        return project.enums[i]
-    }
-    
+
+
     func createEntity() -> Entity  {
         
-        // create new Entity
-        var entity = Entity.new
+        // create iterated name of Entity
+        let name = usedNames.typeRep(string: "New Entity")
         
-        // make iterated version of Entity if necessary
-        if let itr = entity.iteratedTypeRep(forArray: project.entities) { entity.typeRep = itr }
+        // create new Entity
+        let entity = Entity(name: name)
         
         // add Entity to store
         project.entities.append(entity)
         
-        // return entity
+        // return Entity
         return entity
     }
     
-    func replaceEntity(atIndex i: Int, withEntity e2: Entity) {
+    func getEntity(index i: Int) -> Entity {
+        
+        // check if index is in bounds
+        if i < 0 || i >= project.entities.count {
+            HGReportHandler.shared.report("Entity GET index: |\(i)| is out of bounds", type: .error)
+            if i == 0 { return createEntity() }
+            assert(true)
+        }
+        
+        return project.entities[i]
+    }
+    
+    func replaceEntity(atIndex i: Int, withEntity e: Entity) {
         
         // check if index is in bounds
         if i < 0 || i >= project.entities.count {
@@ -104,19 +112,39 @@ extension HuckleberryGen {
         
         // get Entity
         let e1 = getEntity(index: i)
+
+        // make additional updates
         
-        // make iterated version of Entity if necessary, |If types are not already the same|
-        if e1.typeRep != e2.typeRep {
-            if let itr = e2.iteratedTypeRep(forArray: project.entities) {
-                var e3 = e2
-                e3.typeRep = itr
-                project.entities[i] = e3
-                return
-            }
-        }
         
         // add Enum to store
-        project.entities[i] = e2
+        project.entities[i] = e
+    }
+    
+    func removeHashes(atEntityIndex i: Int) {
+        let e = project.entities[i]
+        let newEntity = Entity(name: e.name, attributes: e.attributes, hashes: [])
+        project.entities[i] = newEntity
+    }
+    
+    func add(hash: Attribute, atEntityIndex i: Int) {
+        let e = project.entities[i]
+        let index = e.attributes.index(of: hash)!
+        var hashes = e.hashes
+        hashes.append(index)
+        let newEntity = Entity(name: e.name, attributes: e.attributes, hashes: hashes)
+        project.entities[i] = newEntity
+    }
+    
+    func updateEntity(name: String, atIndex i: Int) {
+        
+        // create iterated name of Entity
+        let name = usedNames.typeRep(string: name)
+        
+        // FIXME: update relationships that have are this entity
+        let e = project.entities[i]
+    
+        // update Entity at index
+        project.entities[i] = Entity(name: name, attributes: e.attributes, hashes: e.hashes)
     }
     
     
@@ -132,21 +160,8 @@ extension HuckleberryGen {
         
         project.entities.removeIndexes(a)
         return true
-        
     }
-    
-    func getEntity(index i: Int) -> Entity {
-        
-        // check if index is in bounds
-        if i < 0 || i >= project.entities.count {
-            HGReportHandler.shared.report("Entity GET index: |\(i)| is out of bounds", type: .error)
-            if i == 0 { return createEntity() }
-            assert(true)
-        }
-        
-        return project.entities[i]
-    }
-    
+
     func getEntities(indexes a: [Int]) -> [Entity] {
         
         // check if index is in bounds
@@ -165,72 +180,34 @@ extension HuckleberryGen {
         return entities
     }
     
-    func createIndex() -> Index  {
+    func createEnumCase(atEnumIndex i: Int) -> String {
         
-        // create new Enum
-        var index = Index.new
+        // create iterated name of EnumCase
+        let usedNames = project.enums[i].cases
+        let name = usedNames.varRep(string: "New Enum Case")
         
-        // make iterated version of Enum if necessary
-        if let itr = index.iteratedVarRep(forArray: project.indexes) { index.varRep = itr }
+        // add enumCase to cases
+        project.enums[i].cases.append(name)
         
-        // add Enum to store
-        project.indexes.append(index)
-        
-        // return enum
-        return index
-        
+        // return name
+        return name
     }
     
-    func deleteIndexes(atIndexes a: [Int]) -> Bool {
+    func updateEnumCase(name: String, atIndex i: Int, enumIndex ei: Int) -> String {
         
-        // check if index is in bounds
-        let maxIndex = project.indexes.count - 1
-        let boundErrors = a.filter { $0 > maxIndex || $0 < 0 }.count
-        if  boundErrors > 0 {
-            HGReportHandler.shared.report("Index DELETE indexes: |\(a)| is out of bounds", type: .error)
-            return false
-        }
+        // create iterated name of EnumCase
+        let usedNames = project.enums[i].cases
+        let name = usedNames.varRep(string: name)
         
-        project.enums.removeIndexes(a)
-        return true
+        // update enumCase
+        project.enums[ei].cases[i].append(name)
+        
+        // return name
+        return name
     }
     
-    func replaceIndex(atIndex i: Int, withIndex i2: Index) {
-        
-        // check if index is in bounds
-        if i < 0 || i >= project.indexes.count {
-            HGReportHandler.shared.report("Index REPLACE index: |\(i)| is out of bounds", type: .error)
-            return
-        }
-        
-        // get Entity
-        let i1 = getEntity(index: i)
-        
-        // make iterated version of EnIndextity if necessary, |If types are not already the same|
-        if i1.varRep != i2.varRep {
-            if let vtr = i2.iteratedVarRep(forArray: project.indexes) {
-                var i3 = i2
-                i3.varRep = vtr
-                project.indexes[i] = i3
-                return
-            }
-        }
-        
-        // add Enum to store
-        project.indexes[i] = i2
-    }
-    
-    
-    func getIndex(index i: Int) -> Index {
-        
-        // check if index is in bounds
-        if i < 0 || i >= project.indexes.count {
-            HGReportHandler.shared.report("Index GET index: |\(i)| is out of bounds", type: .error)
-            assert(true)
-            return Index.new
-        }
-        
-        return project.indexes[i]
+    var usedNames: [String] {
+        return project.entities.map { $0.name } + project.enums.map { $0.name } + Primitive.array.map { $0.name }
     }
     
 }

@@ -42,29 +42,21 @@ extension Protocol: HGEncodable {
         return Protocol(name: "New Protocol")
     }
     
-    var encode: AnyObject {
+    static var encodeError: Protocol {
+        return Protocol(name: "Error Protocol")
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
         dict["name"] = name as AnyObject?
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> Protocol {
-        let dict = hgdict(fromObject: object, decoderName: "Enum")
+    static func decode(object: Any) -> Protocol {
+        let dict = HG.decode(hgdict: object, decoderName: "Enum")
         let name = dict["name"].string
         return Protocol(name: name)
     }
-}
-
-
-extension Protocol: TypeRepresentable {
-    
-    var typeRep: String { return name.typeRepresentable }
-    
-}
-
-extension Protocol: VarRepresentable {
-    
-    var varRep: String { return name.varRepresentable }
 }
 
 

@@ -40,18 +40,12 @@ extension AttributeVC: HGTableDisplayable {
         let attribute = appDelegate.store.project.entities[table.parentRow].attributes[index]
         
         // define images and text going into attribute
-        let varRep = attribute.varRep
-        let typeRep = attribute.typeRep.lowerFirstLetter
-        var image: NSImage
-        
-        // set appropriate images if they are special types, else get image for type
-        // FIXME: need to fix this line to change between different types of attributes
-        image = attribute.typeImage
+        let image = attribute.type.image
         
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: varRep),
+            field0: HGFieldData(title: name),
             field1: HGFieldData(title: ""),
-            image0: HGImageData(title: typeRep, image: image)
+            image0: HGImageData(image: image)
         )
     }
 }
@@ -117,7 +111,7 @@ extension AttributeVC: HGTableFieldEditable {
         
         var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         
-        attribute.varRep = string.changeToVarRep ?? string
+        attribute.name = string.changeToVarRep ?? string
         
         appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         

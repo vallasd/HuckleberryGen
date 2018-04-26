@@ -240,7 +240,12 @@ extension HuckleberryGen: HGEncodable {
         return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importPath: "/", exportPath: "/", project: Project.new, savedProjects: [])
     }
     
-    var encode: AnyObject {
+    static var encodeError: HuckleberryGen {
+        let uuid = UUID().uuidString
+        return HuckleberryGen(uniqIdentifier: uuid, licenseInfo: LicenseInfo.new, importPath: "/", exportPath: "/", project: Project.new, savedProjects: [])
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
         dict["uniqIdentifier"] = uniqIdentifier as AnyObject?
         dict["licenseInfo"] = licenseInfo.encode
@@ -251,8 +256,8 @@ extension HuckleberryGen: HGEncodable {
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> HuckleberryGen {
-        let dict = hgdict(fromObject: object, decoderName: "HuckleberryGen")
+    static func decode(object: Any) -> HuckleberryGen {
+        let dict = HG.decode(hgdict: object, decoderName: "HuckleberryGen")
         let uniqIdentifier = dict["uniqIdentifier"].string
         let licenseInfo = dict["licenseInfo"].licenseInfo
         let importPath = dict["importPath"].string

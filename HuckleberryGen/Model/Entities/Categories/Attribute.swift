@@ -13,85 +13,55 @@ import Cocoa
 
 struct Attribute {
     
-    var varRep: String
-    let typeRep: String
-    let decodeRep: String
-    let isPrimitive: Bool
-    var optional: Bool
+    let name: String
+    let type: AttributeType
     
-    var isEntity: Bool { return false }
-    
-    init(varRep v: String, primitive p: Primitive) {
-        varRep = v
-        typeRep = p.typeRep
-        decodeRep = p.varRep
-        isPrimitive = true
-        optional = false
+    init(name n: String, type t: AttributeType) {
+        name = n
+        type = t
     }
     
-    init(primitive p: Primitive, oldAttribute o: Attribute) {
-        varRep = o.varRep
-        typeRep = p.typeRep
-        decodeRep = p.varRep
-        isPrimitive = true
-        optional = o.optional
+    init(primitive p: Primitive, attribute a: Attribute) {
+        name = a.name
+        type = AttributeType(primitive: p)
     }
     
-    init(enuM e: Enum, oldAttribute o: Attribute) {
-        varRep = o.varRep
-        typeRep = e.typeRep
-        decodeRep = e.varRep
-        isPrimitive = false
-        optional = o.optional
-    }
-    
-    init(typeRep t: String, varRep v: String, decodeRep d: String, isPrimitive ip: Bool, optional o: Bool) {
-        typeRep = t
-        varRep = v
-        decodeRep = d
-        isPrimitive = ip
-        optional = o
+    init(enum e: Enum, attribute a: Attribute) {
+        name = a.name
+        type = AttributeType(enum: e)
     }
     
     var image: NSImage {
-        return NSImage.image(named: "attributeIcon", title: varRep)
-    }
-    
-    var typeImage: NSImage {
-        if isPrimitive {
-            let prim = Primitive.create(string: typeRep)
-            return prim.image
-        }
-        return NSImage.image(named: "enumIcon", title: typeRep)
+        return NSImage.image(named: "attributeIcon", title: name)
     }
 }
 
-extension Attribute: Hashable { var hashValue: Int { return varRep.hashValue } }
-extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.varRep == rhs.varRep }
+extension Attribute: Hashable { var hashValue: Int { return name.hashValue } }
+extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.name == rhs.name }
 
 extension Attribute: HGEncodable {
     
     static var new: Attribute {
-        return Attribute(varRep: "newAttribute", primitive: ._int)
+        let type = AttributeType.new
+        return Attribute(name: "New Attribute", type: type)
     }
     
-    var encode: AnyObject {
+    static var encodeError: Attribute {
+        let type = AttributeType.encodeError
+        return AttributeType(name: "Error", type: type)
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
-        dict["typeRep"] = typeRep as AnyObject?
-        dict["varRep"] = varRep as AnyObject?
-        dict["decodeRep"] = decodeRep as AnyObject?
-        dict["isPrimitive"] = isPrimitive as AnyObject?
-        dict["optional"] = optional as AnyObject?
-        return dict as AnyObject
+        dict["name"] = name
+        dict["type"] = type.name
+        return dict
     }
     
-    static func decode(object: AnyObject) -> Attribute {
-        let dict = hgdict(fromObject: object, decoderName: "Attribute")
-        let typeRep = dict["typeRep"].string
-        let varRep = dict["varRep"].string
-        let decodeRep = dict["decodeRep"].string
-        let isPrimitive = dict["isPrimitive"].bool
-        let optional = dict["optional"].bool
-        return Attribute(typeRep: typeRep, varRep: varRep, decodeRep: decodeRep, isPrimitive: isPrimitive, optional: optional)
+    static func decode(object: Any) -> Attribute {
+        let dict = HG.decode(hgdict: object, decoderName: "Attribute")
+        let name = dict["name"].string
+        let type = dict["type"].attributeType
+        return Attribute(name: name, type: type)
     }
 }

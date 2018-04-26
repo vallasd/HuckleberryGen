@@ -13,13 +13,11 @@ import Foundation
 
 final class Project {
     var name: String
-    var indexes: [Index]
     var enums: [Enum]
     var entities: [Entity]
     
-    init(name: String, indexes: [Index], enums:[Enum], entities: [Entity]) {
+    init(name: String, enums:[Enum], entities: [Entity]) {
         self.name = name
-        self.indexes = indexes
         self.enums = enums
         self.entities = entities
     }
@@ -42,25 +40,27 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, indexes: [], enums: Enum.genericEnums(), entities: [])
+        return Project(name: Project.newName, enums: [], entities: [])
     }
     
-    var encode: AnyObject {
+    static var encodeError: Project {
+        return Project(name: Project.newName, enums: [], entities: [])
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
-        dict["name"] = name as AnyObject?
-        dict["indexes"] = indexes.encode as AnyObject
-        dict["enums"] = enums.encode as AnyObject
-        dict["entities"] = entities.encode as AnyObject
+        dict["name"] = name
+        dict["enums"] = enums.encode
+        dict["entities"] = entities.encode
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> Project {
-        let dict = hgdict(fromObject: object, decoderName: "Project")
+    static func decode(object: Any) -> Project {
+        let dict = HG.decode(hgdict: object, decoderName: "Project")
         let name = dict["name"].string
-        let indexes = dict["indexes"].indexes
         let enums = dict["enums"].enums
         let entities = dict["entities"].entities
-        let project = Project(name: name, indexes: indexes, enums: enums, entities: entities)
+        let project = Project(name: name, enums: enums, entities: entities)
         return project
     }
 }
@@ -70,15 +70,19 @@ extension Project: HGEncodable {
 
 extension Project {
     
-    var hashableEntities: [HashObject] {
-        return entities.filter { $0.attributeHash != nil }.map { $0.decodeHash }
-    }
-    
     // returns a list of objects that can be selected as a hash for the specific entity
-    func hashables(forEntity e: Entity) -> [HashObject] {
-        let duplicateHashes = [e.decodeHash] + e.entityHashes
-        let okHashes = e.attributeHash == nil ? hashableEntities + e.attributes.decodeHashes : hashableEntities
-        let hashables = okHashes.filter { !duplicateHashes.contains($0) }
+    func hashables(forEntity e: Entity) -> [Attribute] {
+        var hashables: [Attribute] = []
+        let usedIndexes = e.hashes
+        for index in 0..<e.attributes.count {
+            if usedIndexes.contains(index) {
+                let attribute = e.attributes[index]
+                let type = attribute.type.type
+                if type == .primitive || type == .enuM {
+                    hashables.append(attribute)
+                }
+            }
+        }
         return hashables
     }
 }

@@ -10,8 +10,9 @@
 import Foundation
 
 protocol HGEncodable {
-    var encode: AnyObject { get }
-    static func decode(object: AnyObject) -> Self
+    static var encodeError: Self { get }
+    var encode: Any { get }
+    static func decode(object: Any) -> Self
 }
 
 protocol NewCreatable {
@@ -25,7 +26,7 @@ extension HGEncodable {
     }
     
     /// decodes an array of objects into an array of [HGEncodable]
-    static func decodeArray(objects: [AnyObject]) -> [Self] {
+    static func decodeArray(objects: [Any]) -> [Self] {
         var array: [Self] = []
         for object in objects {
             let decodedObject: Self = decode(object: object)
@@ -80,7 +81,7 @@ extension HGEncodable {
 
 extension Sequence where Iterator.Element: HGEncodable {
     
-    var encode: [AnyObject] {
+    var encode: [Any] {
         return self.map { $0.encode }
     }
 

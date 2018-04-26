@@ -12,21 +12,20 @@ import Cocoa
 // MARK: Struct Definition
 
 /// a struct that represents a model entity
-struct Entity: TypeRepresentable {
+struct Entity {
     
-    var type: String
+    let name: String
     var attributes: [Attribute]
+    var hashes: [Int]
     
-    var hashes: [String]
-    
-    init(type t: String) {
-        type = t
+    init(name n: String) {
+        name = n
         attributes = []
         hashes = []
     }
     
-    init(type t: String, attributes a: [Attribute], hashes h: [String]) {
-        type = t
+    init(name n: String, attributes a: [Attribute], hashes h: [Int]) {
+        name = n
         attributes = a
         hashes = h
     }
@@ -37,7 +36,7 @@ struct Entity: TypeRepresentable {
             return "define #Hash"
         }
         
-        return hashes.map { "#" + $0 }.joined(separator: " ")
+        return hashes.map { "#" + attributes[$0].name }.joined(separator: " ")
     }
 
     static func image(withName name: String) -> NSImage {
@@ -49,63 +48,52 @@ struct Entity: TypeRepresentable {
 
 extension Entity: HGEncodable {
     
-    static var new: Entity {
-        return Entity(type: "NewEntity", attributes: [], entityHashes: [])
+    static var encodeError: Entity {
+        return Entity(name: "Error")
     }
     
-    var encode: AnyObject {
+    var encode: Any {
         var dict = HGDICT()
-        dict["typeRep"] = type as AnyObject?
-        dict["attributes"] = attributes.encode as AnyObject
-        dict["hashes"] = hashes.encode as AnyObject
+        dict["name"] = name
+        dict["attributes"] = attributes.encode
+        dict["hashes"] = hashes
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> Entity {
-        let dict = hgdict(fromObject: object, decoderName: "Entity")
-        let t = dict["typeRep"].string
+    static func decode(object: Any) -> Entity {
+        let dict = HG.decode(hgdict: object, decoderName: "Entity")
+        let n = dict["name"].string
         let a = dict["attributes"].attributes
-        let h = dict["hashes"].hashes
-        let aHashes = h.filter { $0.isEntity == false }
-        let attributeHash: HashObject? = aHashes.count > 0 ? aHashes[0] : nil
-        let entityHashes = h.filter { $0.isEntity == true }
-        return Entity(typeRep: t, attributes: a, attributeHash: attributeHash, entityHashes: entityHashes)
+        let h = dict["hashes"].intArray
+        return Entity(name: n, attributes: a, hashes: h)
     }
-}
-
-extension Entity: VarRepresentable {
-    var varRep: String { return typeRep.lowerFirstLetter }
 }
 
 // MARK: Hashing
 
-extension Entity: Hashable { var hashValue: Int { return type.hashValue } }
+extension Entity: Hashable { var hashValue: Int { return name } }
 extension Entity: Equatable {};
-func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.type == rhs.type }
+func ==(lhs: Entity, rhs: Entity) -> Bool { return lhs.name == rhs.name }
 
 // MARK: Storing
 
 extension Entity {
     
-    static func newEntity(withTypeRep t: String, fromEntity e: Entity) -> Entity {
-        var newEntity = Entity.new
-        newEntity.type = t.typeRepresentable
-        return newEntity
-    }
     
     mutating func createAttribute() -> Attribute  {
         
+        // create iterated name of Attribute
+        let attributeNames = attributes.map { $0.name }
+        let newName = attributeNames.varRep(string: "New Attribute")
+        
         // create new Attribute
-        var att = Attribute.new
+        let attribute = Attribute(name: newName)
         
-        // make iterated version of Enum if necessary
-        if let itr = att.iteratedVarRep(forArray: self.attributes) { att.varRep = itr }
-        
-        // add Enum to store
-        attributes.append(att)
+        // add Attribute to self
+        attributes.append(attribute)
         
         // return enum
-        return att
+        return attributes
     }
     
     mutating func deleteAttribute(atIndex i: Int) {

@@ -24,6 +24,12 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
+    /// a list of strings of all attributes types that can be assigned
+    let types: [String] = Primitive.array.map { $0.varRep } + appDelegate.store.project.enums.map { $0.name.typeRepresentable }
+    
+    /// last index of Attribute Type in the attributes array
+    let firstEnumIndex = Primitive.array.count
+    
     init(entityIndex: Int, attributeIndex: Int) {
         self.entityIndex = entityIndex
         self.attributeIndex = attributeIndex
@@ -45,20 +51,14 @@ class SBD_Attributes: SelectionBoardDelegate {
         // return attribute from primitive
         if isPrimitive {
             let primitive = Primitive.create(int: i)
-            return Attribute(primitive: primitive, oldAttribute: o)
+            return Attribute(primitive: primitive, attribute: o)
         }
         
         // return attribute from enum
         let index = i - firstEnumIndex
         let enuM = appDelegate.store.getEnum(index: index)
-        return Attribute(enuM: enuM, oldAttribute: o)
+        return Attribute(enum: enuM, attribute: o)
     }
-    
-    /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.array.map { $0.varRep } + appDelegate.store.project.enums.map { $0.typeRep }
-    
-    /// last index of Attribute Type in the attributes array
-    let firstEnumIndex = Primitive.array.count
     
     /// creates an array of HGImageData for an array indexes in attribute
     func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {

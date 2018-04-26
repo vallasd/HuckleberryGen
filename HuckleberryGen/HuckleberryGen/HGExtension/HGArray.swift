@@ -42,7 +42,6 @@ extension Array {
         }
     }
     
-    
     /// checks if object is within the index, if so, returns object, else creates error and returns nil
     func objects(atIndexes a: [Int]) -> [Element] {
         
@@ -66,7 +65,7 @@ extension Array {
     /// checks if object is within the index, if so, returns object, else creates error and returns nil
     func object(atIndex index: Int) -> Element? {
     
-        if self.indices.contains(index) {
+        if indices.contains(index) {
             return self[index]
         }
         

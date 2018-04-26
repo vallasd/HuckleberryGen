@@ -35,9 +35,9 @@ extension EnumCasesVC: HGTableDisplayable {
     }
    
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let casE = appDelegate.store.project.enums[table.parentRow].cases[index]
+        let enumcase = appDelegate.store.project.enums[table.parentRow].cases[index]
         return HGCellData.fieldCell2(
-            field0: HGFieldData(title: casE.string),
+            field0: HGFieldData(title: enumcase),
             field1: HGFieldData(title: String(index))
         )
     }
@@ -71,16 +71,15 @@ extension EnumCasesVC: HGTableRowAppendable {
             return false
         }
         
-        return appDelegate.store.project.enums[table.parentRow].editable
+        return true
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        appDelegate.store.project.enums[table.parentRow].cases.append(EnumCase.new)
+        let _ = appDelegate.store.createEnumCase(atEnumIndex: table.parentRow)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        
-        return appDelegate.store.project.enums[table.parentRow].editable == true ? .yes : .no
+        return appDelegate.store.project.enums[table.parentRow].cases.count > 0 ? .askUser : .yes
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
@@ -92,16 +91,11 @@ extension EnumCasesVC: HGTableRowAppendable {
 extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        if field == 0 {
-            return appDelegate.store.project.enums[table.parentRow].editable
-        }
-        return false
+        return true
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        var enumcase = appDelegate.store.project.enums[table.parentRow].cases[row]
-        enumcase.string = string
-        appDelegate.store.project.enums[table.parentRow].cases[row] = enumcase
+        let _ = appDelegate.store.updateEnumCase(name: string, atIndex: row, enumIndex: table.parentRow)
     }
     
 }

@@ -13,9 +13,9 @@ import Foundation
 class SBD_Hash: SelectionBoardDelegate {
     
     var index: Int
-    var hashes: [HashObject]
+    var hashes: [Attribute]
     
-    init(entityIndex ei: Int, hashes h: [HashObject]) {
+    init(entityIndex ei: Int, hashes h: [Attribute]) {
         index = ei
         hashes = h
     }
@@ -30,11 +30,8 @@ class SBD_Hash: SelectionBoardDelegate {
     /// SelectionBoardDelegate function
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
         // add selected hash
-        var entity = appDelegate.store.getEntity(index: index)
         let hash = hashes[loc.index]
-        if hash.isEntity { entity.entityHashes.append(hash) }
-        else { entity.attributeHash = hash }
-        appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+        appDelegate.store.add(hash: hash, atEntityIndex: index)
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
     
@@ -42,7 +39,7 @@ class SBD_Hash: SelectionBoardDelegate {
         var imagedatas: [HGImageData] = []
         for index in indexes {
             let hash = hashes[index]
-            let imagedata = HGImageData(title: hash.typeRep, image: hash.image)
+            let imagedata = HGImageData(title: hash.name, image: hash.image)
             imagedatas.append(imagedata)
         }
         return imagedatas
@@ -53,10 +50,7 @@ extension SBD_Hash: SelectionBoardNoSelectionDelegate {
     
     func selectionBoardDidNotChooseLocation(_ sb: SelectionBoard) {
         // remove all hashes from entity
-        var entity = appDelegate.store.getEntity(index: index)
-        entity.attributeHash = nil
-        entity.entityHashes = []
-        appDelegate.store.replaceEntity(atIndex: index, withEntity: entity)
+        appDelegate.store.removeHashes(atEntityIndex: index)
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
 }
@@ -73,7 +67,7 @@ extension SBD_Hash: HGTableDisplayable {
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         let hash = hashes[index]
-        let imagedata = HGImageData(title: hash.typeRep, image: hash.image)
+        let imagedata = HGImageData(title: hash.name, image: hash.image)
         let celldata = HGCellData.imageCell(image: imagedata)
         return celldata
     }

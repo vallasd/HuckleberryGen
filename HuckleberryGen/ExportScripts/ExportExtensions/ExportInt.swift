@@ -57,10 +57,16 @@ class ExportInt {
         
         for enuM in enums {
             
+            // check if enums have cases, if not log error and break
+            if enuM.cases.count == 0 {
+                HGReportHandler.shared.report("enum: |\(enuM.name)| has no cases, skipping", type: .error)
+                break
+            }
+            
             // get enum name and defaultValue
-            let enumtype = enuM.typeRep
-            let enumvar = enuM.varRep
-            let defaultValue = enuM.defaultRep
+            let enumtype = enuM.name
+            let enumvar = enuM.name.varRepresentable
+            let defaultValue = enuM.cases.first!
             
             // create var that attempts to unwrap the string as the Enum
             string += "\(ind)/// returns \(enumtype)s.  Logs error and returns \(defaultValue) if not a valid Int.\n"
@@ -68,7 +74,7 @@ class ExportInt {
             string += " \(ind)\(ind)switch self {\n"
             var count = 0
             for enumcase in enuM.cases {
-                string += "\(ind)\(ind)case \(count): return .\(enumcase.typeRep) \n"
+                string += "\(ind)\(ind)case \(count): return .\(enumcase) \n"
                 count += 1
             }
             string += "\(ind)\(ind)default:\n"

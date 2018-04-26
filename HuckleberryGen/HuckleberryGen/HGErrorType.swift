@@ -9,23 +9,13 @@
 
 import Foundation
 
-enum HGErrorType {
+enum HGErrorType: Int {
 
-	case info
-	case warn
-	case error
-	case alert
-	case assert
-
-	var int: Int {
-		switch self {
-		case .info: return 0
-		case .warn: return 1
-		case .error: return 2
-		case .alert: return 3
-		case .assert: return 4
-		}
-	}
+	case info = 0
+	case warn = 1
+	case error = 2
+	case alert = 3
+	case assert = 4
 
 	var string: String {
 		switch self {
@@ -39,19 +29,19 @@ enum HGErrorType {
 }
 
 extension HGErrorType: HGEncodable {
+    
+    static var encodeError: HGErrorType {
+        return .info
+    }
 
-	static var new: HGErrorType {
-		return HGErrorType.info
+	var encode: Any {
+		return self.rawValue
 	}
 
-	var encode: AnyObject {
-		return self.int as AnyObject
-	}
-
-	static func decode(object: AnyObject) -> HGErrorType {
+	static func decode(object: Any) -> HGErrorType {
 		if let int = object as? Int { return int.hGErrorType }
 		if let string = object as? String { return string.hGErrorType }
 		HGReportHandler.shared.report("object \(object) is not |HGErrorType| decodable, returning Info", type: .error)
-		return HGErrorType.new
+		return .info
 	}
 }

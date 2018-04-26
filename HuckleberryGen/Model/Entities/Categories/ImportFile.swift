@@ -65,19 +65,24 @@ extension ImportFile: HGEncodable {
         return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .xcode_XML)
     }
     
-    var encode: AnyObject {
+    static var encodeError: ImportFile {
+        let date = Date()
+        return ImportFile(name: "", lastUpdate: date, modificationDate: date, creationDate: date, path: "", type: .xcode_XML)
+    }
+    
+    var encode: Any {
         var dict = HGDICT()
-        dict["name"] = name as AnyObject?
-        dict["lastUpdate"] = lastUpdate.timeIntervalSince1970 as AnyObject?
-        dict["modificationDate"] = modificationDate.timeIntervalSince1970 as AnyObject?
-        dict["creationDate"] = creationDate.timeIntervalSince1970 as AnyObject?
-        dict["path"] = path as AnyObject?
-        dict["type"] = type.int as AnyObject?
+        dict["name"] = name
+        dict["lastUpdate"] = lastUpdate.timeIntervalSince1970
+        dict["modificationDate"] = modificationDate.timeIntervalSince1970
+        dict["creationDate"] = creationDate.timeIntervalSince1970
+        dict["path"] = path
+        dict["type"] = type.int
         return dict as AnyObject
     }
     
-    static func decode(object: AnyObject) -> ImportFile {
-        let dict = hgdict(fromObject: object, decoderName: "ImportFile")
+    static func decode(object: Any) -> ImportFile {
+        let dict = HG.decode(hgdict: object, decoderName: "ImportFile")
         let name = dict["name"] as! String
         let lastUpdate = dict["lastUpdate"].interval.date()
         let modificationDate = dict["modificationDate"].interval.date()

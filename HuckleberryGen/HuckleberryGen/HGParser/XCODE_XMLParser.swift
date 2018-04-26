@@ -97,7 +97,7 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
                     
                     // get destination entity
                     let typeRep = attributeDict["destinationEntity"].string
-                    let hash = HashObject(typeRep: typeRep.typeRepresentable, varRep: typeRep.varRepresentable, isEntity: true)
+                    let hash = AttributeType (typeRep: typeRep.typeRepresentable, varRep: typeRep.varRepresentable, isEntity: true)
                     lastEntity!.entityHashes.append(hash)
                 }
                 

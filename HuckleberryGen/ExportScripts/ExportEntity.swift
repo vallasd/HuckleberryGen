@@ -175,7 +175,7 @@ class ExportEntity {
         // begin decode function
         string += "\(ind)static func decode(object object: AnyObject) -> \(entity.typeRep) {\n"
         string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.typeRep)\", object: object)\n"
-        string += "\(ind)\(ind)let dict = hgdict(fromObject: object, decoderName: \"\(entity.typeRep)\")\n"
+        string += "\(ind)\(ind)let dict = HG.decode(hgdict: object, decoderName: \"\(entity.typeRep)\")\n"
         
         // decode function attributes
         for attribute in entity.attributes {

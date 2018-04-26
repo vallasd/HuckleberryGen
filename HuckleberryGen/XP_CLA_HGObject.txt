@@ -12,7 +12,7 @@ typealias HGDICT = Dictionary<String, AnyObject>
 typealias HGARRAY = [HGDICT]
 
 /// returns hgdict from AnyObject, used for HGEncodable
-func hgdict(fromObject object: AnyObject, decoderName: String) -> HGDICT {
+func hgdict(object object: AnyObject, decoderName: String) -> HGDICT {
     if let dict = object as? HGDICT {
         return dict
     }

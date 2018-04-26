@@ -1,13 +1,39 @@
 import Foundation
 
-typealias HGDICT = Dictionary<String, AnyObject>
+typealias HGDICT = Dictionary<String, Any>
 typealias HGARRAY = [HGDICT]
 
-
-/// Returns a HGDICT from the object.  If object is not a HGDICT, returns an empty HGDICT.  Will report Error Message if decoderName is not nil and the object is nil or not an HGDICT
-func hgdict(fromObject object: AnyObject, decoderName: String?) -> HGDICT {
-    let check = object as? HGDICT
-    if decoderName != nil && check == nil { HGReportHandler.shared.report("object: |\(object)| is not \(decoderName!) mapable", type: .error) }
-    let dict: HGDICT = check ?? HGDICT()
-    return dict
+class HG {
+    
+    static func decode(hgarray: Any, decoderName n: String?) -> HGARRAY {
+        let c = hgarray as? HGARRAY
+        if n != nil && c == nil {
+            HGReportHandler.shared.report("object: |\(hgarray)| is not \(n!) mapable", type: .error)
+        }
+        return c ?? HGARRAY()
+    }
+    
+    static func decode(hgdict: Any, decoderName n: String?) -> HGDICT {
+        let c = hgdict as? HGDICT
+        if n != nil && c == nil {
+            HGReportHandler.shared.report("object: |\(hgdict)| is not \(n!) mapable", type: .error)
+        }
+        return c ?? HGDICT()
+    }
+    
+    static func decode(int: Any, decoderName n: String?) -> Int {
+        let c = int as? Int
+        if n != nil && c == nil {
+            HGReportHandler.shared.report("object: |\(int)| is not \(n!) mapable", type: .error)
+        }
+        return c ?? 0
+    }
+    
+    static func decode(string: Any, decoderName n: String?) -> String {
+        let c = string as? String
+        if n != nil && c == nil {
+            HGReportHandler.shared.report("object: |\(string)| is not \(n!) mapable", type: .error)
+        }
+        return c ?? ""
+    }
 }

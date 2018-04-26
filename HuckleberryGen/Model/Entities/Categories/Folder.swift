@@ -38,7 +38,7 @@ extension Folder: HGEncodable {
     }
     
     static func decode(object: AnyObject) -> Folder {
-        let dict = hgdict(fromObject: object, decoderName: "Folder")
+        let dict = HG.decode(hgdict: object, decoderName: "Folder")
         let name = dict["name"].string
         let path = dict["path"].string
         let importFiles = dict["importFiles"].importFiles

@@ -79,7 +79,7 @@ class ExportEnum {
         
         // add attributes to enum stanza
         for enumcase in enuM.cases {
-            string += "\(ind)case \(enumcase.typeRep)\n"
+            string += "\(ind)case \(enumcase.typeRepresentable)\n"
         }
         
         string += "\n"
@@ -90,7 +90,7 @@ class ExportEnum {
         
         var index = 0
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.typeRep): return \(index)\n"
+            string += "\(ind)\(ind)case \(enumcase.typeRepresentable): return \(index)\n"
             index += 1
         }
         
@@ -105,7 +105,7 @@ class ExportEnum {
         string += "\(ind)\(ind)switch self {\n"
         
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.typeRep): return \"\(enumcase.string)\"\n"
+            string += "\(ind)\(ind)case \(enumcase.typeRepresentable): return \"\(enumcase.varRepresentable)\"\n"
         }
         
         // end string for enum stanza
@@ -125,7 +125,7 @@ class ExportEnum {
         let ind = HGIndent.indent
         
         // create default case type report, if cases were not loaded, will create string that will cause an error in Export file to draw attention
-        let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.typeRep : "Missing Enum Cases!!!"
+        let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.typeRepresentable : "Missing Enum Cases!!!"
         
         // begin hgencodable stanza
         var string = "extension \(enuM.name): HGEncodable {\n"
@@ -147,9 +147,9 @@ class ExportEnum {
         
         // begin decode function
         string += "\(ind)static func decode(object object: AnyObject) -> \(enuM.name) {\n"
-        string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.lowerFirstLetter) }\n"
-        string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.lowerFirstLetter) }\n"
-        string += "\(ind)\(ind)HGReportHandler.shared.report(\"object \\(object) is not |\(enuM.typeRep)| decodable, returning \(defaultCaseType)\", type: .Error)\n"
+        string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.varRepresentable) }\n"
+        string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.varRepresentable) }\n"
+        string += "\(ind)\(ind)HGReportHandler.shared.report(\"object \\(object) is not |\(enuM.name.typeRepresentable)| decodable, returning \(defaultCaseType)\", type: .Error)\n"
         string += "\(ind)\(ind)return \(enuM.name).new\n"
         
         // end decode function

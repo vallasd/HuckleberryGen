@@ -220,8 +220,8 @@ class ExportOptional {
         for prim in primitives {
             
             // string representation of primitive
-            let type = prim.typeRep
-            let varRep = prim.varRep
+            let type = prim.name
+            let varRep = prim.name.varRepresentable
             
             // string representation of primitive's default value
             let pDefault = prim.defaultRep

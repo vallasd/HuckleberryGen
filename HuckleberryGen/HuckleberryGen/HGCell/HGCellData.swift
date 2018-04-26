@@ -22,8 +22,14 @@ struct HGImageData: HGCellItemData {
     let title: String
     let image: NSImage?
     
-    static func withImage(_ image: NSImage?) -> HGImageData {
-        return HGImageData(title: "", image: image)
+    init(image i: NSImage) {
+        title = ""
+        image = i
+    }
+    
+    init(title t: String, image i: NSImage?) {
+        title = t
+        image = i
     }
 }
 
