@@ -71,7 +71,7 @@ class ExportOptional {
         var string = ""
         string += "\(iInd)if self == nil {\n"
         string += "\(iInd)\(ind)if logErrorForNil {\n"
-        string += "\(iInd)\(ind)\(ind)HGReportHandler.shared.report(\"optional: \(name) returned nil value, using \\(\(variable))\", type: .Error)\n"
+        string += "\(iInd)\(ind)\(ind)HGReport.shared.report(\"optional: \(name) returned nil value, using \\(\(variable))\", type: .Error)\n"
         string += "\(iInd)\(ind)}\n"
         string += "\(iInd)\(ind)return \(variable)\n"
         string += "\(iInd)}\n"
@@ -83,7 +83,7 @@ class ExportOptional {
         
         // return string
         var string = ""
-        string += "\(iInd)HGReportHandler.shared.report(\"optional: |\\(self)| is not \(name) mapable, using \\(\(variable))\", type: .Error)\n"
+        string += "\(iInd)HGReport.shared.report(\"optional: |\\(self)| is not \(name) mapable, using \\(\(variable))\", type: .Error)\n"
         string += "\(iInd)return \(variable)\n"
         return string
     }
@@ -94,7 +94,7 @@ class ExportOptional {
         // return string
         let literalString = stringValue.removeQuotes
         var string = ""
-        string += "\(iInd)HGReportHandler.shared.report(\"optional: |\\(self)| is not \(name) mapable, using \(literalString)\", type: .Error)\n"
+        string += "\(iInd)HGReport.shared.report(\"optional: |\\(self)| is not \(name) mapable, using \(literalString)\", type: .Error)\n"
         string += "\(iInd)return \(stringValue)\n"
         return string
     }
@@ -104,7 +104,7 @@ class ExportOptional {
         
         // return string
         var string = ""
-        string += "\(iInd)HGReportHandler.shared.report(\"optional is not [\(name)] mapable, using [] - optional: |\\(self)|\", type: .Error)\n"
+        string += "\(iInd)HGReport.shared.report(\"optional is not [\(name)] mapable, using [] - optional: |\\(self)|\", type: .Error)\n"
         string += "\(iInd)return []\n"
         return string
     }

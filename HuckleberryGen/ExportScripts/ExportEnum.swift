@@ -33,7 +33,7 @@ class ExportEnum {
         
         // return immediately if enum cases count is 0
         if enuM.cases.count == 0 {
-            HGReportHandler.shared.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .error)
+            HGReport.shared.report("Export Enum |\(enuM.name)| failed, no cases for enum", type: .error)
             return false
         }
         
@@ -149,7 +149,7 @@ class ExportEnum {
         string += "\(ind)static func decode(object object: AnyObject) -> \(enuM.name) {\n"
         string += "\(ind)\(ind)if let int = object as? Int { return int.\(enuM.name.varRepresentable) }\n"
         string += "\(ind)\(ind)if let string = object as? String { return string.\(enuM.name.varRepresentable) }\n"
-        string += "\(ind)\(ind)HGReportHandler.shared.report(\"object \\(object) is not |\(enuM.name.typeRepresentable)| decodable, returning \(defaultCaseType)\", type: .Error)\n"
+        string += "\(ind)\(ind)HGReport.shared.report(\"object \\(object) is not |\(enuM.name.typeRepresentable)| decodable, returning \(defaultCaseType)\", type: .Error)\n"
         string += "\(ind)\(ind)return \(enuM.name).new\n"
         
         // end decode function

@@ -101,7 +101,7 @@ extension Entity {
         // check if index is in bounds
         let maxIndex = attributes.count - 1
         if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
+            HGReport.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
             return
         }
         
@@ -115,7 +115,7 @@ extension Entity {
         // check if index is in bounds
         let maxIndex = attributes.count - 1
         if  i > maxIndex || i < 0 {
-            HGReportHandler.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
+            HGReport.shared.report("Attribute DELETE index: |\(i)| for Entity |\(self)| is out of bounds", type: .error)
             return
         }
         

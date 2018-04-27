@@ -94,6 +94,11 @@
 		03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278F81C513DA600DA353C /* ExportEnum.swift */; };
 		03A278FB1C52447800DA353C /* ExportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278FA1C52447800DA353C /* ExportExtensions.swift */; };
 		03A278FD1C52498F00DA353C /* ExportOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A278FC1C52498F00DA353C /* ExportOptional.swift */; };
+		03B0AF18209245C100180EB0 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0AF17209245C100180EB0 /* Relationship.swift */; };
+		03B0AF1A20924DA000180EB0 /* Attribute2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0AF1920924DA000180EB0 /* Attribute2.swift */; };
+		03B0AF1C2092575500180EB0 /* UsedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0AF1B2092575500180EB0 /* UsedName.swift */; };
+		03B0AF1F209263F600180EB0 /* HGPluralize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0AF1E209263F600180EB0 /* HGPluralize.swift */; };
+		03B0AF22209299ED00180EB0 /* HGValidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0AF21209299ED00180EB0 /* HGValidate.swift */; };
 		03BDDA461C5A757A00F0DCEA /* XP_Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA451C5A757A00F0DCEA /* XP_Utility.swift */; };
 		03BDDA491C5A924E00F0DCEA /* HGOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA481C5A924E00F0DCEA /* HGOperators.swift */; };
 		03BDDA4B1C5A934100F0DCEA /* HGEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDDA4A1C5A934100F0DCEA /* HGEncodable.swift */; };
@@ -238,6 +243,11 @@
 		03A278F81C513DA600DA353C /* ExportEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportEnum.swift; path = ExportScripts/ExportEnum.swift; sourceTree = "<group>"; };
 		03A278FA1C52447800DA353C /* ExportExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportExtensions.swift; path = ExportScripts/ExportExtensions.swift; sourceTree = "<group>"; };
 		03A278FC1C52498F00DA353C /* ExportOptional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExportOptional.swift; path = ExportScripts/ExportExtensions/ExportOptional.swift; sourceTree = "<group>"; };
+		03B0AF17209245C100180EB0 /* Relationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Relationship.swift; path = Categories/Relationship.swift; sourceTree = "<group>"; };
+		03B0AF1920924DA000180EB0 /* Attribute2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Attribute2.swift; path = Categories/Attribute2.swift; sourceTree = "<group>"; };
+		03B0AF1B2092575500180EB0 /* UsedName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsedName.swift; sourceTree = "<group>"; };
+		03B0AF1E209263F600180EB0 /* HGPluralize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HGPluralize.swift; sourceTree = "<group>"; };
+		03B0AF21209299ED00180EB0 /* HGValidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HGValidate.swift; sourceTree = "<group>"; };
 		03BDDA451C5A757A00F0DCEA /* XP_Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XP_Utility.swift; path = ExportScripts/XP_Utility.swift; sourceTree = "<group>"; };
 		03BDDA481C5A924E00F0DCEA /* HGOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGOperators.swift; path = HGOperators/HGOperators.swift; sourceTree = "<group>"; };
 		03BDDA4A1C5A934100F0DCEA /* HGEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGEncodable.swift; sourceTree = "<group>"; };
@@ -442,6 +452,9 @@
 			isa = PBXGroup;
 			children = (
 				036C7C681B514AF9004EC724 /* Attribute.swift */,
+				03B0AF17209245C100180EB0 /* Relationship.swift */,
+				03B0AF1920924DA000180EB0 /* Attribute2.swift */,
+				03B0AF1B2092575500180EB0 /* UsedName.swift */,
 				038C79DF1B6297560008D29C /* Entity.swift */,
 				037EDFA81B84B4C6002527EE /* Enum.swift */,
 				036C7C701B514AF9004EC724 /* Folder.swift */,
@@ -456,6 +469,7 @@
 		036C7CAA1B529A84004EC724 /* HuckleberryGen */ = {
 			isa = PBXGroup;
 			children = (
+				03B0AF20209299B300180EB0 /* HGHelpers */,
 				034ECDAB1C5F1CAA005DB9E2 /* HGUtil */,
 				030963011C5BCE6700DEE9C4 /* HGEnums */,
 				03BDDA471C5A922500F0DCEA /* HGOperators */,
@@ -640,6 +654,15 @@
 				034985081C56D5220048F44C /* ExportInt.swift */,
 			);
 			name = ExportExtensions;
+			sourceTree = "<group>";
+		};
+		03B0AF20209299B300180EB0 /* HGHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				03B0AF1E209263F600180EB0 /* HGPluralize.swift */,
+				03B0AF21209299ED00180EB0 /* HGValidate.swift */,
+			);
+			path = HGHelpers;
 			sourceTree = "<group>";
 		};
 		03BDDA471C5A922500F0DCEA /* HGOperators */ = {
@@ -875,6 +898,7 @@
 				0306574A1C287ED200ED8722 /* HGBlockView.swift in Sources */,
 				036455C01BA264930096B255 /* HGCellData.swift in Sources */,
 				03A20B4C1B99E4C900149AF5 /* LicenseInfoBoard.swift in Sources */,
+				03B0AF1A20924DA000180EB0 /* Attribute2.swift in Sources */,
 				035E4D1E1C5A46710005E28A /* HGCodeRepresentable.swift in Sources */,
 				03BDDA491C5A924E00F0DCEA /* HGOperators.swift in Sources */,
 				0339BC601BFD598B0071F8AD /* ErrorBoard.swift in Sources */,
@@ -885,11 +909,15 @@
 				03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */,
 				036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */,
 				03E9AFD11C5D4CAF00013925 /* HuckleberryGen_EXT.swift in Sources */,
+				03B0AF18209245C100180EB0 /* Relationship.swift in Sources */,
 				03660AE11BBE444C00DE41D5 /* EnumCasesVC.swift in Sources */,
 				039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */,
+				03B0AF1F209263F600180EB0 /* HGPluralize.swift in Sources */,
 				03F25EF71B9C292E0048B0A0 /* HGTableHeader.swift in Sources */,
 				039731E21C42833E003DA4F4 /* SBD_Import.swift in Sources */,
+				03B0AF22209299ED00180EB0 /* HGValidate.swift in Sources */,
 				036C7CBF1B529A84004EC724 /* HGOptional.swift in Sources */,
+				03B0AF1C2092575500180EB0 /* UsedName.swift in Sources */,
 				037EDFA91B84B4C6002527EE /* Enum.swift in Sources */,
 				035E4A9E1C58DA2E0005E28A /* HGIndent.swift in Sources */,
 				03A20B491B99E4C900149AF5 /* NavController.swift in Sources */,

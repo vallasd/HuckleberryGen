@@ -57,7 +57,7 @@ import Foundation
 //        case "Relationship": return .Relationship
 //        case "User": return .User
 //        default:
-//            HGReportHandler.shared.report("string: |\(self)| is not an HGEntity mapable", type: .Error)
+//            HGReport.shared.report("string: |\(self)| is not an HGEntity mapable", type: .Error)
 //            return .NotDefined
 //        }
 //    }
@@ -76,7 +76,7 @@ import Foundation
 //        case 6: return .User
 //        case -99: return .NotDefined
 //        default:
-//            HGReportHandler.shared.report("int16: |\(self)| is not an HGEntity mapable", type: .Error)
+//            HGReport.shared.report("int16: |\(self)| is not an HGEntity mapable", type: .Error)
 //            return .NotDefined
 //        }
 //    }

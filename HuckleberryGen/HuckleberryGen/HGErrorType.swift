@@ -41,7 +41,7 @@ extension HGErrorType: HGEncodable {
 	static func decode(object: Any) -> HGErrorType {
 		if let int = object as? Int { return int.hGErrorType }
 		if let string = object as? String { return string.hGErrorType }
-		HGReportHandler.shared.report("object \(object) is not |HGErrorType| decodable, returning Info", type: .error)
+		HGReport.shared.report("object \(object) is not |HGErrorType| decodable, returning Info", type: .error)
 		return .info
 	}
 }

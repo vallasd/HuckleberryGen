@@ -35,7 +35,7 @@ class ExportEntity {
         
         // return immediately if enum attributes and relationships are both 0
         if entity.attributes.count == 0 {
-            HGReportHandler.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .error)
+            HGReport.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .error)
             return false
         }
         
@@ -174,7 +174,7 @@ class ExportEntity {
         
         // begin decode function
         string += "\(ind)static func decode(object object: AnyObject) -> \(entity.name) {\n"
-        string += "\(ind)\(ind)HGReportHandler.shared.track(name: \"\(entity.name)\", object: object)\n"
+        string += "\(ind)\(ind)HGReport.shared.track(name: \"\(entity.name)\", object: object)\n"
         string += "\(ind)\(ind)let dict = HG.decode(hgdict: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
@@ -183,7 +183,7 @@ class ExportEntity {
         }
         
         // decode function return statement
-        string += "\(ind)\(ind)HGReportHandler.shared.untrack()\n"
+        string += "\(ind)\(ind)HGReport.shared.untrack()\n"
         string += "\(ind)\(ind)return \(entity.name)("
         
         // decode function return statement attributes

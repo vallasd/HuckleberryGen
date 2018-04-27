@@ -40,7 +40,7 @@ enum ProgressionType {
         case 900: self = .next
         case 901: self = .finished
         default:
-            HGReportHandler.shared.report("Int: |\(int)| is not ProgressionType mapable, returning .Next", type: .error)
+            HGReport.shared.report("Int: |\(int)| is not ProgressionType mapable, returning .Next", type: .error)
             self = .next
         }
     }
@@ -78,7 +78,7 @@ enum RegressionType {
         case 801: self = .back
         case 802: self = .home
         default:
-            HGReportHandler.shared.report("Int: |\(int)| is not RegressionType mapable, returning .Cancel", type: .error)
+            HGReport.shared.report("Int: |\(int)| is not RegressionType mapable, returning .Cancel", type: .error)
             self = .cancel
         }
     }
@@ -273,7 +273,7 @@ class NavController: NSViewController {
         
         // check success of VC instantiation from nib
         if currentVC == nil {
-            HGReportHandler.shared.report("Nav Controller, currentVC was not properly instantiated from BoardData", type: .error)
+            HGReport.shared.report("Nav Controller, currentVC was not properly instantiated from BoardData", type: .error)
             return
         }
         
@@ -282,7 +282,7 @@ class NavController: NSViewController {
             if let saveableVC = currentVC as? BoardRetrievable {
                 saveableVC.set(context: context)
             } else {
-                HGReportHandler.shared.report("Nav Controller, attempting to set context for NSViewController that is not BoardRetrievable", type: .error)
+                HGReport.shared.report("Nav Controller, attempting to set context for NSViewController that is not BoardRetrievable", type: .error)
             }
         }
         
@@ -426,7 +426,7 @@ extension NavController {
             return RegressionType(int: tag).string
         }
         
-        HGReportHandler.shared.report("\(tag) is Not A Regression or Progression Type Tag", type: .error)
+        HGReport.shared.report("\(tag) is Not A Regression or Progression Type Tag", type: .error)
         return ""
     }
 

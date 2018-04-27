@@ -21,7 +21,7 @@ extension String {
 		case "Alert": return .alert 
 		case "Assert": return .assert 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .error)
+			HGReport.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .error)
 		}
 		return .info
 	}

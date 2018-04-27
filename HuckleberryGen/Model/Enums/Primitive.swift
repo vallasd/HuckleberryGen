@@ -72,7 +72,7 @@ enum Primitive: Int {
         case 8: return ._lastUpdate
         case 9: return ._imageURL
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .error)
+            HGReport.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .error)
             return ._int
         }
     }
@@ -143,7 +143,7 @@ enum Primitive: Int {
     
     static func create(string: String) -> Primitive {
         if let primitive = optionalPrimitive(string: string) { return primitive }
-        HGReportHandler.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .error)
+        HGReport.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .error)
         return ._int
     }
     
@@ -174,7 +174,7 @@ extension Primitive: HGEncodable {
     static func decode(object: Any) -> Primitive {
         if let int = object as? Int { return create(int: int) }
         if let string = object as? String { return create(string: string) }
-        HGReportHandler.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .error)
+        HGReport.shared.report("object: |\(object)| is not AttributeType mapable, using ._Int", type: .error)
         return ._int
     }
 }

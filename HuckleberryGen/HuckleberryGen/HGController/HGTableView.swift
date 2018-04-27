@@ -105,17 +105,17 @@ class HGTableView: NSTableView {
     fileprivate func printRowInformation() {
         
         let indent = "   "
-        HGReportHandler.shared.report("HGTable:", type: .info)
+        HGReport.shared.report("HGTable:", type: .info)
         for row in 0..<numberOfRows {
-            HGReportHandler.shared.report("\(indent)row: \(row)", type: .info)
+            HGReport.shared.report("\(indent)row: \(row)", type: .info)
             let v = view(atColumn: 0, row: row, makeIfNecessary: false)
             reportDetails(view: v, indent: indent)
-            HGReportHandler.shared.report("\(indent)subviews:", type: .info)
-            HGReportHandler.shared.report("", type: .info)
+            HGReport.shared.report("\(indent)subviews:", type: .info)
+            HGReport.shared.report("", type: .info)
             for s in v?.subviews ?? [] {
                 let indent = indent + indent
                 reportDetails(view: s, indent: indent)
-                HGReportHandler.shared.report("", type: .info)
+                HGReport.shared.report("", type: .info)
             }
         }
     }
@@ -123,24 +123,24 @@ class HGTableView: NSTableView {
     fileprivate func reportDetails(view: NSView?, indent: String) {
         
         guard let v = view else {
-            HGReportHandler.shared.report("\(indent)error: no view info provide", type: .info)
+            HGReport.shared.report("\(indent)error: no view info provide", type: .info)
             return
         }
         
         if let b = v as? NSButton {
-            HGReportHandler.shared.report("\(indent)type: button", type: .info)
-            HGReportHandler.shared.report("\(indent)title: \(b.title)", type: .info)
+            HGReport.shared.report("\(indent)type: button", type: .info)
+            HGReport.shared.report("\(indent)title: \(b.title)", type: .info)
         }
         else if let t = v as? NSTextField {
-            HGReportHandler.shared.report("\(indent)type: textfield", type: .info)
-            HGReportHandler.shared.report("\(indent)text: \(t.stringValue)", type: .info)
+            HGReport.shared.report("\(indent)type: textfield", type: .info)
+            HGReport.shared.report("\(indent)text: \(t.stringValue)", type: .info)
         }
         else {
-            HGReportHandler.shared.report("\(indent)type: nsview", type: .info)
+            HGReport.shared.report("\(indent)type: nsview", type: .info)
         }
         
-        HGReportHandler.shared.report("\(indent)bounds: \(v.bounds.info)", type: .info)
-        HGReportHandler.shared.report("\(indent)frame: \(v.frame.info)", type: .info)
+        HGReport.shared.report("\(indent)bounds: \(v.bounds.info)", type: .info)
+        HGReport.shared.report("\(indent)frame: \(v.frame.info)", type: .info)
     }
     
     /// custom HGTableView function that handles changed flag events such as command button held down

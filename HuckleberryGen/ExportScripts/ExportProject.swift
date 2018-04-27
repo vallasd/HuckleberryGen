@@ -66,7 +66,7 @@ class ExportProject {
             let content = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
             return content
         } catch {
-            HGReportHandler.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .error)
+            HGReport.shared.report("ExportProject: can not unpackage \(file) from path \(path)", type: .error)
         }
         
         return ""
@@ -79,7 +79,7 @@ class ExportProject {
             try file.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
             return true
         } catch {
-            HGReportHandler.shared.report("ExportProject: can not package \(file) to path \(path)", type: .error)
+            HGReport.shared.report("ExportProject: can not package \(file) to path \(path)", type: .error)
         }
         
         return false

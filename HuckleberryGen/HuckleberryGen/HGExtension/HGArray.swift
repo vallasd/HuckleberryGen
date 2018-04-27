@@ -49,7 +49,7 @@ extension Array {
         
         if goodIndexes.count < a.count {
             let difference = goodIndexes.count - a.count
-            HGReportHandler.shared.report("objects: |\(difference)| indexe(s) out of bounds", type: .error)
+            HGReport.shared.report("objects: |\(difference)| indexe(s) out of bounds", type: .error)
         }
         
         // get objects from good indexes
@@ -69,7 +69,7 @@ extension Array {
             return self[index]
         }
         
-        HGReportHandler.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .error)
+        HGReport.shared.report("Array: |\(self)| attempting to return index that is out of bounds, returning nil", type: .error)
         return nil
     }
 }

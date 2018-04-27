@@ -72,7 +72,7 @@ class ExportString {
                 count += 1
             }
             string += "\(ind)\(ind)default:\n"
-            string += "\(ind)\(ind)\(ind)HGReportHandler.shared.report(\"int: |\\(self)| is not enum |\(enumtype)| mapable, using \(defaultValue)\", type: .Error)\n"
+            string += "\(ind)\(ind)\(ind)HGReport.shared.report(\"int: |\\(self)| is not enum |\(enumtype)| mapable, using \(defaultValue)\", type: .Error)\n"
             string += "\(ind)\(ind)}\n"
             string += "\(ind)\(ind)return \(defaultValue)\n"
             string += "\(ind)}\n"

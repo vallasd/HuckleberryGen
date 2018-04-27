@@ -21,7 +21,7 @@ enum ImportFileType: Int16 {
         switch int {
         case 0: return .xcode_XML
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not an ImportFileType mapable, using .XCODE_XML", type: .error)
+            HGReport.shared.report("int: |\(int)| is not an ImportFileType mapable, using .XCODE_XML", type: .error)
             return .xcode_XML
         }
     }

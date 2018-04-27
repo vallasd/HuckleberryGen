@@ -74,7 +74,7 @@ enum LicenseType: Int16 {
         case 1: return .allRightsReserved
         case 2: return .gnu
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not an LicenseType mapable, returning .MIT", type: .error)
+            HGReport.shared.report("int: |\(int)| is not an LicenseType mapable, returning .MIT", type: .error)
             return .mit
         }
     }

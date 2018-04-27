@@ -37,7 +37,7 @@ enum DeletionRule: Int16 {
         case 2: return .cascade
         case 3: return .deny
         default:
-            HGReportHandler.shared.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .error)
+            HGReport.shared.report("int: |\(int)| is not DeletionRule mapable, using .NoAction", type: .error)
             return .noAction
         }
     }
@@ -49,7 +49,7 @@ enum DeletionRule: Int16 {
         case "Cascade": return .cascade
         case "Deny": return .deny
         default:
-            HGReportHandler.shared.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .error)
+            HGReport.shared.report("string: |\(string)| is not DeletionRule mapable, using .NoAction", type: .error)
             return .noAction
         }
     }

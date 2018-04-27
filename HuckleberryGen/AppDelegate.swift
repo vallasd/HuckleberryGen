@@ -28,6 +28,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // clear store
         // store.clear()
+        
+        // let store
+        var testStore: Set<Attribute2>  = []
+        let _ = testStore.create(entityName: "Entity1")
+        let _ = testStore.create(entityName: "Entity1")
+        let _ = testStore.create(entityName: "Entity2")
+        print(testStore)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

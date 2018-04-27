@@ -16,6 +16,6 @@ func hgdict(object object: AnyObject, decoderName: String) -> HGDICT {
     if let dict = object as? HGDICT {
         return dict
     }
-    HGReportHandler.shared.report("object: |\(object)| is not \(decoderName) mapable", type: .Error)
+    HGReport.shared.report("object: |\(object)| is not \(decoderName) mapable", type: .Error)
     return HGDICT()
 }

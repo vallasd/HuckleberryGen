@@ -50,7 +50,7 @@ class SBD_Import: SelectionBoardDelegate {
         
         // report error if parser was not successfully created
         if parser == nil {
-            HGReportHandler.shared.report("Project Importer was unable to create parser from importFile \(importFile)", type: .error)
+            HGReport.shared.report("Project Importer was unable to create parser from importFile \(importFile)", type: .error)
         }
     }
     
@@ -70,7 +70,7 @@ extension SBD_Import: HGImportParserDelegate {
         if success {
             appDelegate.store.project = project
         } else {
-            HGReportHandler.shared.report("Import Error: could not parse import file: \(importFile.name)" , type: .error)
+            HGReport.shared.report("Import Error: could not parse import file: \(importFile.name)" , type: .error)
         }
     }
 }

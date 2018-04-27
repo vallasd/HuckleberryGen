@@ -127,7 +127,7 @@ final class HuckleberryGen {
     
         // index out of bounds
         if savedProjects.indices.contains(index) == false {
-            HGReportHandler.shared.report("savedProjects attempting to delete index that is out of bound", type: .error)
+            HGReport.shared.report("savedProjects attempting to delete index that is out of bound", type: .error)
             return false
         }
         
@@ -148,7 +148,7 @@ final class HuckleberryGen {
         
         // index out of bounds
         if savedProjects.indices.contains(index) == false {
-            HGReportHandler.shared.report("savedProjects attempting to open index that is out of bound", type: .error)
+            HGReport.shared.report("savedProjects attempting to open index that is out of bound", type: .error)
             return false
         }
         

@@ -105,7 +105,7 @@ extension SelectionBoard: BoardRetrievable {
             return
         }
         
-        HGReportHandler.shared.report("selection board context |\(context)| not valid", type: .error)
+        HGReport.shared.report("selection board context |\(context)| not valid", type: .error)
     }
 }
 

@@ -20,7 +20,7 @@ extension Int {
 		case 3: return .alert 
 		case 4: return .assert 
 		default:
-			HGReportHandler.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .error)
+			HGReport.shared.report("int: |\(self)| is not enum |HGErrorType| mapable, using Info", type: .error)
 		}
 		return .info
 	}
@@ -32,7 +32,7 @@ extension Int {
         case 1: return .enuM
         case 2: return .entity
         default:
-            HGReportHandler.shared.report("int: |\(self)| is not enum |HGType| mapable, using Info", type: .error)
+            HGReport.shared.report("int: |\(self)| is not enum |HGType| mapable, using Info", type: .error)
         }
         return .primitive
     }

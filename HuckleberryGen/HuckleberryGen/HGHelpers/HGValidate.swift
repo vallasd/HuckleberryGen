@@ -1,0 +1,28 @@
+//
+//  HGValidate.swift
+//  HuckleberryGen
+//
+//  Created by David Vallas on 4/26/18.
+//  Copyright © 2018 Phoenix Labs. All rights reserved.
+//
+
+import Foundation
+
+struct HGValidate {
+    
+    static func validate<T,U>(value: Any, key: Any, decoder: U) -> T? {
+        if let v = value as? T { return v }
+        HGReport.shared.validateFailed(decoder: U.self, value: value, key: key, expectedType: T.self)
+        return nil
+    }
+    
+    static func validateFloat<T>(value: Any, key: Any, decoder: T) -> Float? {
+        if let f = value as? Float { return f }
+        if let d = value as? Double { return Float(d) }
+        if let i = value as? Int { return Float(i) }
+        HGReport.shared.validateFailed(decoder: T.self, value: value, key: key, expectedType: T.self)
+        return nil
+    }
+    
+    
+}
