@@ -64,9 +64,15 @@ extension Optional {
         return Attribute.encodeError
     }
     
-    var attributes: [Attribute] {
+    var attributeArray: [Attribute] {
         if let array = self as? HGARRAY { return Attribute.decodeArray(objects: array as [AnyObject]) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var attributeSet: Set<Attribute2> {
+        if let array = self as? HGARRAY { return Attribute2.decodeSet(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute2] mapable, returning []", type: .error)
         return []
     }
     
@@ -80,6 +86,10 @@ extension Optional {
         if let array = self as? HGARRAY { return Enum.decodeArray(objects: array as [AnyObject]) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Enum] mapable, returning []", type: .error)
         return []
+    }
+    
+    var deletionRule: DeletionRule {
+        return DeletionRule.decode(object: self as Any)
     }
     
     var licenseType: LicenseType {

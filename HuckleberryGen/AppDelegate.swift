@@ -11,6 +11,7 @@ import Cocoa
 
 /// global reference to the app Delegate.
 let appDelegate = NSApplication.shared.delegate as! AppDelegate
+var project: Project { return appDelegate.store.project }
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -30,15 +31,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // store.clear()
         
         // let store
-        var testStore: Set<Attribute2>  = []
-        let _ = testStore.create(entityName: "Entity1")
-        let _ = testStore.create(entityName: "Entity1")
-        let _ = testStore.create(entityName: "Entity2")
-        let _ = testStore.delete(name: "newAttribute1", entityName: "Entity1")
-        let keys: [Attribute2KeyPath] = [.name, .entityName]
-        let values = ["hello", "Entity1"]
-        testStore.update(keys: keys, withValues: values, name: "newAttribute", entityName: "Entity2")
-        print(testStore)
+//        var testStore: Set<Attribute2>  = []
+//        let _ = testStore.create(entityName: "Entity1")
+//        let _ = testStore.create(entityName: "Entity1")
+//        let _ = testStore.create(entityName: "Entity2")
+//        let _ = testStore.delete(name: "newAttribute1", entityName: "Entity1")
+//        let keys: [Attribute2KeyPath] = [.name, .entityName]
+//        let values = ["hello", "Entity1"]
+//        testStore.update(keys: keys, withValues: values, name: "newAttribute", entityName: "Entity2")
+//        print(testStore)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

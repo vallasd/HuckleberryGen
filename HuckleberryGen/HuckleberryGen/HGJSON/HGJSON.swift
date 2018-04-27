@@ -29,6 +29,13 @@ class HG {
         return c ?? 0
     }
     
+    static func decode<T>(int8: Any, decoder: T) -> Int8 {
+        if let i = int8 as? Int, i < 255 { return Int8(i) }
+        if let c = int8 as? Int8 { return c }
+        HGReport.shared.report("object: |\(int8)| is not |\(decoder)| mapable, returning 0", type: .error)
+        return 0
+    }
+    
     static func decode(string: Any, decoderName n: String?) -> String {
         let c = string as? String
         if n != nil && c == nil {

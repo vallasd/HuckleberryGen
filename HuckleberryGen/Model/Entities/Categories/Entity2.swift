@@ -15,9 +15,11 @@ import Cocoa
 struct Entity2: HGEncodable {
     
     let name: String
+    let attributes: Set<Attribute2>
     
-    init(name n: String) {
+    init(name n: String, attributes a: Set<Attribute2>) {
         name = n
+        attributes = a
     }
     
     static func image(withName name: String) -> NSImage {
@@ -27,26 +29,28 @@ struct Entity2: HGEncodable {
     // MARK: HGEcodable
     
     static var encodeError: Entity2 {
-        return Entity2(name: "Error")
+        return Entity2(name: "Error", attributes: [])
     }
     
     var encode: Any {
         var dict = HGDICT()
         dict["name"] = name
+        dict["attributes"] = attributes.encode
         return dict as AnyObject
     }
     
     static func decode(object: Any) -> Entity2 {
         let dict = HG.decode(hgdict: object, decoderName: "Entity")
         let n = dict["name"].string
-        return Entity2(name: n)
+        let a = dict["attributes"].attributeSet
+        return Entity2(name: n, attributes: a)
     }
 }
 
 extension Set where Element == Entity2 {
     
     mutating func create(name n: String) -> String? {
-        let entity = Entity2(name: n)
+        let entity = Entity2(name: n, attributes: [])
         if !insert(entity).inserted {
             HGReport.shared.insertFailed(set: Entity2.self, object: entity)
             return nil
@@ -55,7 +59,7 @@ extension Set where Element == Entity2 {
     }
     
     mutating func delete(name n: String) -> Bool {
-        let entity = Entity2(name: n)
+        let entity = Entity2(name: n, attributes: [])
         let o = remove(entity)
         if o == nil {
             HGReport.shared.deleteFailed(set: Entity2.self, object: entity)

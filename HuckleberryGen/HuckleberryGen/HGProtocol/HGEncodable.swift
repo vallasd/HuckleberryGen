@@ -66,8 +66,8 @@ extension HGEncodable {
 }
 
 extension HGEncodable where Self: Hashable {
-    
-    /// decodes an array of objects into an array of [HGEncodable]
+
+    /// decodes an array of objects into an set of [HGEncodable]
     static func decodeSet(objects: [Any]) -> Set<Self> {
         var set: Set<Self> = []
         for object in objects {
@@ -79,8 +79,16 @@ extension HGEncodable where Self: Hashable {
         }
         return set
     }
-    
+
 }
+
+extension Set where Iterator.Element: HGEncodable {
+
+    var encode: [Any] {
+        return self.map { $0.encode }
+    }
+}
+
 
 extension Array where Iterator.Element: HGEncodable {
     

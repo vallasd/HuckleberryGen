@@ -63,7 +63,7 @@ extension Entity: HGEncodable {
     static func decode(object: Any) -> Entity {
         let dict = HG.decode(hgdict: object, decoderName: "Entity")
         let n = dict["name"].string
-        let a = dict["attributes"].attributes
+        let a = dict["attributes"].attributeArray
         let h = dict["hashes"].intArray
         return Entity(name: n, attributes: a, hashes: h)
     }
