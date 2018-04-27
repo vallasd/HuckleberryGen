@@ -19,7 +19,7 @@ struct UsedName: HGEncodable, Hashable, Equatable {
     static var initialNames: Set<UsedName> {
         var set: Set<UsedName> = Set()
         let primitives = ["Int", "Int16", "Int32", "Double", "Float", "String", "Bool", "Date", "Date", "String"]
-        let HGGen = ["HGError"]
+        let HGGen = ["HGError", "HGReport"]
         let allNames = primitives + HGGen
         for name in allNames {
             let usedname = UsedName(name: name)
@@ -54,7 +54,7 @@ struct UsedName: HGEncodable, Hashable, Equatable {
 extension Set where Element == UsedName {
     
     /// inserts name into used names, if name is not typeRepresentable or is already in usedNames, updates text and iterates.  Returns correct iterated value that was inserted into the set.
-    mutating func insert(name n: String) -> String {
+    mutating func createIterated(name n: String) -> String {
         var name = n.typeRepresentable
         let t = UsedName(name: name)
         if self.contains(t) {
@@ -62,9 +62,27 @@ extension Set where Element == UsedName {
             let largestNum = names.largestNum(string: name)
             name = name + "\(largestNum + 1)"
         }
-        let usedname = UsedName(name: name)
-        self.insert(usedname)
+        let newname = UsedName(name: name)
+        if !insert(newname).inserted {
+            // we should never see this error
+            HGReport.shared.insertFailed(set: UsedName.self, object: newname)
+        }
         return n
+    }
+    
+    mutating func delete(name n: String) -> Bool {
+        let n = UsedName(name: n)
+        let o = remove(n)
+        if o == nil {
+            HGReport.shared.deleteFailed(set: UsedName.self, object: n)
+            return false
+        }
+        return true
+    }
+    
+    mutating func update(name: String, oldName: String) -> String {
+        let _ = delete(name: oldName)
+        return createIterated(name: name)
     }
 }
 

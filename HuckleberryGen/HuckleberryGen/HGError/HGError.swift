@@ -27,43 +27,43 @@ struct HGReport {
     }
     
     func decode<T>(_ object: Any, type: T) {
-        HGReport.shared.report("Decoding: |\(object)| is not |\(type)| mapable, using error", type: .error)
+        HGReport.shared.report("|\(type)| |DECODING FAILED| not  mapable object: |\(object)|", type: .error)
     }
     
     func setDecode<T>(_ object: Any, type: T) {
-        HGReport.shared.report("Decoding: |\(object)| not inserted in set |\(type)|", type: .error)
+        HGReport.shared.report("|\(type)| |DECODING FAILED| not inserted object: |\(object)|", type: .error)
     }
     
     func notMatch(_ object: Any, object2: Any) {
-        HGReport.shared.report("Type: |\(object)| is does not match |\(object2)|", type: .error)
+        HGReport.shared.report("|\(object)| is does not match |\(object2)|", type: .error)
     }
     
-    func insertFailed<T>(type: T, object: Any) {
-        HGReport.shared.report("Type: |\(type)| failed INSERT object: \(object)", type: .error)
+    func insertFailed<T>(set: T, object: Any) {
+        HGReport.shared.report("|\(set)| |INSERT FAILED| object: \(object)", type: .error)
     }
     
-    func deleteFailed<T>(type: T, object: Any) {
-        HGReport.shared.report("Type: |\(type)| failed DELETE object: \(object)", type: .error)
+    func deleteFailed<T>(set: T, object: Any) {
+        HGReport.shared.report("|\(set)| |DELETE FAILED| object: \(object)", type: .error)
     }
     
-    func getFailed<T>(type: T, keys: [Any], values: [Any]) {
-        HGReport.shared.report("|\(type)| failed GET for keys: |\(keys)| values: |\(values)|", type: .error)
+    func getFailed<T>(set: T, keys: [Any], values: [Any]) {
+        HGReport.shared.report("|\(set)| |GET FAILED| for keys: |\(keys)| values: |\(values)|", type: .error)
     }
     
-    func updateFailed<T>(type: T, key: Any, value: Any) {
-        HGReport.shared.report("|\(type)| failed UPDATE for key: |\(key)| not valid value: |\(value)|", type: .error)
+    func updateFailed<T>(set: T, key: Any, value: Any) {
+        HGReport.shared.report("|\(set)| |UPDATE FAILED| for key: |\(key)| not valid value: |\(value)|", type: .error)
     }
     
-    func updateFailedKeyMismatch<T>(type: T) {
-        HGReport.shared.report("Type: |\(type)| failed UPDATE - key.count != values.count", type: .error)
+    func updateFailedKeyMismatch<T>(set: T) {
+        HGReport.shared.report("|\(set)| |UPDATE FAILED| key.count != values.count", type: .error)
     }
     
-    func updateFailedGeneric<T>(type: T) {
-        HGReport.shared.report("Type: |\(type)| failed UPDATE - set returned nil object", type: .error)
+    func updateFailedGeneric<T>(set: T) {
+        HGReport.shared.report("|\(set)| |UPDATE FAILED| nil object returned, possible stale objects", type: .error)
     }
     
     func validateFailed<T,U>(decoder: T, value: Any, key: Any, expectedType: U) {
-        HGReport.shared.report("|\(decoder)| failed VALIDATION for key: |\(key)| value: |\(value)| expected type: |\(expectedType)|", type: .error)
+        HGReport.shared.report("|\(decoder)| |VALIDATION FAILED| for key: |\(key)| value: |\(value)| expected type: |\(expectedType)|", type: .error)
     }
 }
 

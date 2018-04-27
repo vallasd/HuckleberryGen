@@ -17,12 +17,19 @@ struct HGValidate {
     }
     
     static func validateFloat<T>(value: Any, key: Any, decoder: T) -> Float? {
-        if let f = value as? Float { return f }
         if let d = value as? Double { return Float(d) }
         if let i = value as? Int { return Float(i) }
+        if let f = value as? Float { return f }
         HGReport.shared.validateFailed(decoder: T.self, value: value, key: key, expectedType: T.self)
         return nil
     }
     
+    static func validateInt8<T>(value: Any, key: Any, decoder: T) -> Int8? {
+        if let i = value as? Int { return Int8(i) }
+        if let d = value as? Double { return Int8(d) }
+        if let f = value as? Float { return Int8(f) }
+        HGReport.shared.validateFailed(decoder: T.self, value: value, key: key, expectedType: T.self)
+        return nil
+    }
     
 }

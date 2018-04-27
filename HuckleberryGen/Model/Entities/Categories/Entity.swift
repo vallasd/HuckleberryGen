@@ -122,15 +122,6 @@ extension Entity {
         // update index
         attributes[i] = a
     }
-    
-}
-
-// MARK: Exporting
-
-extension Entity {
-    
-    
-    
 }
 
 

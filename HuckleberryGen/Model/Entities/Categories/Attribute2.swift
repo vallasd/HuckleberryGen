@@ -71,20 +71,27 @@ struct Attribute2 {
 
 extension Set where Element == Attribute2 {
     
+    
+    
+    mutating func create(attribute a: Attribute2) -> Attribute2? {
+        if insert(a).inserted == false {
+            HGReport.shared.insertFailed(set: Attribute2.self, object: a)
+            return nil
+        }
+        return a
+    }
+    
     mutating func create(entityName: String) -> Attribute2? {
         let name = iteratedName(name: "New Attribute", entityName: entityName)
         let a = Attribute2(name: name, entityName: entityName)
-        if insert(a).inserted == false {
-            HGReport.shared.insertFailed(type: Attribute2.self, object: a)
-        }
-        return a
+        return create(attribute: a)
     }
     
     mutating func delete(name n: String, entityName en: String) -> Bool {
         let a = Attribute2(name: n, entityName: en)
         let o = remove(a)
         if o == nil {
-            HGReport.shared.deleteFailed(type: Attribute2.self, object: a)
+            HGReport.shared.deleteFailed(set: Attribute2.self, object: a)
             return false
         }
         return true
@@ -94,7 +101,7 @@ extension Set where Element == Attribute2 {
 
         let attributes = self.filter { $0.name == n && $0.entityName == en }
         if attributes.count == 0 {
-            HGReport.shared.getFailed(type: Attribute2.self, keys: ["name", "entityName"], values: [n,en])
+            HGReport.shared.getFailed(set: Attribute2.self, keys: ["name", "entityName"], values: [n,en])
             return nil
         }
         
@@ -105,15 +112,16 @@ extension Set where Element == Attribute2 {
         
         // if keys dont match values, return
         if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(type: Attribute2.self)
+            HGReport.shared.updateFailedKeyMismatch(set: Attribute2.self)
             return nil
         }
         
         // get the entity from the set
-        guard let oe = get(name: n, entityName: en) else {
+        guard let oa = get(name: n, entityName: en) else {
             return nil
         }
         
+        // set key variables to nil
         var name: String?, entityName: String?, typeName: String?, type: HGType?
         
         // validate and assign properties
@@ -129,18 +137,22 @@ extension Set where Element == Attribute2 {
             i += 1
         }
         
-        // make sure name is iterated
+        // make sure name is iterated, we are going to delete old record and add new
         if name != nil || entityName != nil {
-            if name == nil { name = oe.name }
-            if entityName == nil { entityName = oe.name }
+            if name == nil { name = oa.name }
+            if entityName == nil { entityName = oa.entityName }
             name = iteratedName(name: name!, entityName: entityName!)
+            let _ = delete(name: oa.name, entityName: oa.entityName)
+            let newAttribute = oa.update(name: name, entityName: entityName, typeName: typeName, type: type)
+            let new = create(attribute: newAttribute)
+            return new
         }
         
-        let entity = oe.update(name: name, entityName: entityName, typeName: typeName, type: type)
-        let updatedEntity = update(with: entity)
-        
+        // use traditional update
+        let newAttribute = oa.update(name: name, entityName: entityName, typeName: typeName, type: type)
+        let updatedEntity = update(with: newAttribute)
         if updatedEntity == nil {
-            HGReport.shared.updateFailedGeneric(type: Attribute2.self)
+            HGReport.shared.updateFailedGeneric(set: Attribute2.self)
         }
         
         return updatedEntity
@@ -148,7 +160,7 @@ extension Set where Element == Attribute2 {
 
     fileprivate func iteratedName(name n: String, entityName en: String) -> String {
         var name = n.varRepresentable
-        let a = Attribute2(name: n, entityName: en)
+        let a = Attribute2(name: name, entityName: en)
         if self.contains(a) {
             let filtered = self.filter { $0.entityName == en }
             let names = filtered.map { $0.name }

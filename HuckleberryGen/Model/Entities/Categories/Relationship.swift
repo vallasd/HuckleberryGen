@@ -9,9 +9,10 @@
 import Foundation
 
 struct Relationship {
-    let inverseId: Int
     let name: String
     let entityName: String
+    let inverseName: String
+    let inverseEntityName: String
     let array: Bool
     let hashed: Bool
     let deletionRule: DeletionRule
@@ -20,8 +21,4 @@ struct Relationship {
 extension Relationship: Hashable { var hashValue: Int { return (name + entityName).hashValue } }
 extension Relationship: Equatable {}; func ==(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.name == rhs.name && lhs.entityName == rhs.entityName
-}
-
-extension Set where Element == Relationship {
-    
 }

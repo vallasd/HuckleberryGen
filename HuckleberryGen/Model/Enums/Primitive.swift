@@ -18,10 +18,6 @@ enum Primitive: Int {
     case _string = 5
     case _bool = 6
     case _date = 7
-    case _lastUpdate = 8
-    case _imageURL = 9
-    
-    static var count = 10
     
     var defaultRep: String {
         switch self {
@@ -33,8 +29,6 @@ enum Primitive: Int {
         case ._string: return "\"notDefined\""
         case ._bool: return "false"
         case ._date: return "Date()"
-        case ._lastUpdate: return "Date()"
-        case ._imageURL: return "\"notDefined\""
         }
     }
     
@@ -48,8 +42,6 @@ enum Primitive: Int {
         case ._string: return "String"
         case ._bool: return "Bool"
         case ._date: return "Date"
-        case ._lastUpdate: return "Date"
-        case ._imageURL: return "String"
         }
     }
     
@@ -57,7 +49,8 @@ enum Primitive: Int {
         return NSImage.image(named: "typeIcon", title: name.varRepresentable)
     }
     
-    static var array: [Primitive] = [_int, _int16, _int32, _double, _float, _string, _bool, _date, _lastUpdate, _imageURL]
+    static var array: [Primitive] = [_int, _int16, _int32, _double, _float, _string, _bool, _date]
+    static var names: [String] = ["Int", "Int16", "Int32", "Double", "Float", "String", "Bool", "Date"]
     
     static func create(int: Int) -> Primitive {
         switch(int) {
@@ -69,8 +62,6 @@ enum Primitive: Int {
         case 5: return ._string
         case 6: return ._bool
         case 7: return ._date
-        case 8: return ._lastUpdate
-        case 9: return ._imageURL
         default:
             HGReport.shared.report("int: |\(int)| is not Primitive mapable, using ._Int", type: .error)
             return ._int
@@ -142,18 +133,15 @@ enum Primitive: Int {
     }
     
     static func create(string: String) -> Primitive {
-        if let primitive = optionalPrimitive(string: string) { return primitive }
+        if let index = names.index(of: string) {
+            return array[index]
+        }
+        let lowerCased = Primitive.names.map { $0.lowerFirstLetter }
+        if let index = lowerCased.index(of: string) {
+            return array[index]
+        }
         HGReport.shared.report("string: |\(string)| is not Primitive mapable, using ._Int", type: .error)
         return ._int
-    }
-    
-    static func optionalPrimitive(string: String) -> Primitive? {
-        let pArray = Primitive.array
-        let pVarReps = Primitive.array.map { $0.name.varRepresentable }
-        if let index = pVarReps.index(of: string) {
-            return pArray[index]
-        }
-        return nil
     }
 }
 
