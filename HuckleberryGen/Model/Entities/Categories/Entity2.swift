@@ -15,9 +15,9 @@ import Cocoa
 struct Entity2: HGEncodable {
     
     let name: String
-    let attributes: Set<Attribute2>
+    let attributes: Set<Attribute>
     
-    init(name n: String, attributes a: Set<Attribute2>) {
+    init(name n: String, attributes a: Set<Attribute>) {
         name = n
         attributes = a
     }
@@ -58,6 +58,15 @@ extension Set where Element == Entity2 {
         return n
     }
     
+    mutating func create(name n: String) -> String? {
+        let entity = Entity2(name: n, attributes: [])
+        if !insert(entity).inserted {
+            HGReport.shared.insertFailed(set: Entity2.self, object: entity)
+            return nil
+        }
+        return n
+    }
+    
     mutating func delete(name n: String) -> Bool {
         let entity = Entity2(name: n, attributes: [])
         let o = remove(entity)
@@ -71,6 +80,17 @@ extension Set where Element == Entity2 {
     mutating func update(name: String, oldName: String) -> String? {
         let _ = delete(name: oldName)
         return create(name: name)
+    }
+    
+    fileprivate func iteratedName(name n: String) -> String {
+        var name = n.typeRepresentable
+        let names = self.map { $0.name }
+        if names.contains(name) {
+            let names = self.map { $0.name }
+            let largestNum = names.largestNum(string: name)
+            name = name + "\(largestNum + 1)"
+        }
+        return name
     }
 }
 

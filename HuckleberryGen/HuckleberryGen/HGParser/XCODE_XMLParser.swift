@@ -76,8 +76,7 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
             if lastEntity != nil {
                 let primitive = attributeDict["attributeType"].primitive
                 let name = attributeDict["name"].string
-                let type = AttributeType(primitive: primitive)
-                let attribute = Attribute(name: name, type: type)
+                let attribute = Attribute(name: name, typeName: primitive.name, type: .primitive, isHash: false)
                 lastEntity!.attributes.append(attribute)
                 return
             }

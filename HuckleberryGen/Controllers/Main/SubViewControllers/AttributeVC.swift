@@ -40,7 +40,7 @@ extension AttributeVC: HGTableDisplayable {
         let attribute = appDelegate.store.project.entities[table.parentRow].attributes[index]
         
         // define images and text going into attribute
-        let image = attribute.type.image
+        let image = attribute.typeImage
         
         return HGCellData.defaultCell(
             field0: HGFieldData(title: attribute.name),
@@ -109,9 +109,9 @@ extension AttributeVC: HGTableFieldEditable {
         
         var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
         
-        attribute.name = string.changeToVarRep ?? string
-        
-        appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
+        // FIXME: Need to update this
+//        attribute.name = string.changeToVarRep ?? string
+//        appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
         
         table.update()
     }

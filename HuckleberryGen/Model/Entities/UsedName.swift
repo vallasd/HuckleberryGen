@@ -18,9 +18,10 @@ struct UsedName: HGEncodable, Hashable, Equatable {
     
     static var initialNames: Set<UsedName> {
         var set: Set<UsedName> = Set()
-        let primitives = ["Int", "Int16", "Int32", "Double", "Float", "String", "Bool", "Date", "Date", "String"]
+        let primitives = Primitive.names
+        let system = ["in", "let", "func", "class"]
         let HGGen = ["HGError", "HGReport"]
-        let allNames = primitives + HGGen
+        let allNames = primitives + system + HGGen
         for name in allNames {
             let usedname = UsedName(name: name)
             set.insert(usedname)

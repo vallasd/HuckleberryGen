@@ -1,5 +1,5 @@
 //
-//  Attribute2.swift
+//  Attribute.swift
 //  HuckleberryGen
 //
 //  Created by David Vallas on 4/26/18.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-enum Attribute2KeyPath {
+enum AttributeKey {
     case name
     case typeName
     case type
     case isHash
 }
 
-struct Attribute2: HGEncodable {
+struct Attribute: HGEncodable {
     
     let name: String
     let typeName: String
@@ -36,19 +36,19 @@ struct Attribute2: HGEncodable {
         isHash = false
     }
     
-    func update(name n: String?, typeName tn: String?, type t: HGType?, isHash i: Bool?) -> Attribute2 {
+    func update(name n: String?, typeName tn: String?, type t: HGType?, isHash i: Bool?) -> Attribute {
         let name = n == nil ? self.name : n!
         let typeName = tn == nil ? self.typeName : tn!
         let type = t == nil ? self.type : t!
         let isHash = i == nil ? self.isHash : i!
-        return Attribute2(name: name, typeName: typeName, type: type, isHash: isHash)
+        return Attribute(name: name, typeName: typeName, type: type, isHash: isHash)
     }
     
     // MARK: - HGEncodable
     
-    static var encodeError: Attribute2 {
+    static var encodeError: Attribute {
         let e = "Error"
-        return Attribute2(name: e, typeName: e, type: .primitive, isHash: false)
+        return Attribute(name: e, typeName: e, type: .primitive, isHash: false)
     }
     
     var encode: Any {
@@ -60,58 +60,58 @@ struct Attribute2: HGEncodable {
         return dict
     }
     
-    static func decode(object: Any) -> Attribute2 {
-        let dict = HG.decode(hgdict: object, decoderName: "Attribute2")
+    static func decode(object: Any) -> Attribute {
+        let dict = HG.decode(hgdict: object, decoderName: "Attribute")
         let n = dict["name"].string
         let tn = dict["typeName"].string
         let t = dict["type"].hGtype
         let i = dict["isHash"].bool
-        return Attribute2(name: n, typeName: tn, type: t, isHash: i)
+        return Attribute(name: n, typeName: tn, type: t, isHash: i)
     }
 }
 
-extension Set where Element == Attribute2 {
+extension Set where Element == Attribute {
     
-    mutating func create(attribute a: Attribute2) -> Attribute2? {
+    mutating func create(attribute a: Attribute) -> Attribute? {
         if insert(a).inserted == false {
-            HGReport.shared.insertFailed(set: Attribute2.self, object: a)
+            HGReport.shared.insertFailed(set: Attribute.self, object: a)
             return nil
         }
         return a
     }
     
-    mutating func createIterated() -> Attribute2? {
+    mutating func createIterated() -> Attribute? {
         let name = iteratedName(name: "New Attribute")
-        let a = Attribute2(name: name)
+        let a = Attribute(name: name)
         return create(attribute: a)
     }
     
     mutating func delete(name n: String) -> Bool {
-        let a = Attribute2(name: n)
+        let a = Attribute(name: n)
         let o = remove(a)
         if o == nil {
-            HGReport.shared.deleteFailed(set: Attribute2.self, object: a)
+            HGReport.shared.deleteFailed(set: Attribute.self, object: a)
             return false
         }
         return true
     }
     
-    func get(name n: String) -> Attribute2? {
+    func get(name n: String) -> Attribute? {
 
         let attributes = self.filter { $0.name == n }
         if attributes.count == 0 {
-            HGReport.shared.getFailed(set: Attribute2.self, keys: ["name"], values: [n])
+            HGReport.shared.getFailed(set: Attribute.self, keys: ["name"], values: [n])
             return nil
         }
         
         return attributes.first!
     }
     
-    mutating func update(keys: [Attribute2KeyPath], withValues vs: [Any], name n: String) -> Attribute2? {
+    mutating func update(keys: [AttributeKey], withValues vs: [Any], name n: String) -> Attribute? {
         
         // if keys dont match values, return
         if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: Attribute2.self)
+            HGReport.shared.updateFailedKeyMismatch(set: Attribute.self)
             return nil
         }
         
@@ -128,10 +128,10 @@ extension Set where Element == Attribute2 {
         for key in keys {
             let v = vs[i]
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: Attribute2.self)
-            case .typeName: typeName = HGValidate.validate(value: v, key: key, decoder: Attribute2.self)
-            case .type: type = HGValidate.validate(value: v, key: key, decoder: Attribute2.self)
-            case .isHash: isHash = HGValidate.validate(value: v, key: key, decoder: Attribute2.self)
+            case .name: name = HGValidate.validate(value: v, key: key, decoder: Attribute.self)
+            case .typeName: typeName = HGValidate.validate(value: v, key: key, decoder: Attribute.self)
+            case .type: type = HGValidate.validate(value: v, key: key, decoder: Attribute.self)
+            case .isHash: isHash = HGValidate.validate(value: v, key: key, decoder: Attribute.self)
             }
             i += 1
         }
@@ -149,7 +149,7 @@ extension Set where Element == Attribute2 {
         let newAttribute = oldAttribute.update(name: name, typeName: typeName, type: type, isHash: isHash)
         let updated = update(with: newAttribute)
         if updated == nil {
-            HGReport.shared.updateFailedGeneric(set: Attribute2.self)
+            HGReport.shared.updateFailedGeneric(set: Attribute.self)
         }
         
         return updated
@@ -157,7 +157,7 @@ extension Set where Element == Attribute2 {
 
     fileprivate func iteratedName(name n: String) -> String {
         var name = n.varRepresentable
-        let a = Attribute2(name: name)
+        let a = Attribute(name: name)
         if self.contains(a) {
             let names = self.map { $0.name }
             let largestNum = names.largestNum(string: name)
@@ -167,6 +167,6 @@ extension Set where Element == Attribute2 {
     }
 }
 
-extension Attribute2: Hashable { var hashValue: Int { return name.hashValue } }
-extension Attribute2: Equatable {}; func ==(lhs: Attribute2, rhs: Attribute2) -> Bool { return lhs.name == rhs.name }
+extension Attribute: Hashable { var hashValue: Int { return name.hashValue } }
+extension Attribute: Equatable {}; func ==(lhs: Attribute, rhs: Attribute) -> Bool { return lhs.name == rhs.name }
 

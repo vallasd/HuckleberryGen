@@ -44,8 +44,14 @@ extension Optional {
         return Entity(name: "Error", attributes: [], hashes: [])
     }
     
-    var entities: [Entity] {
+    var entityArray: [Entity] {
         if let array = self as? HGARRAY { return Entity.decodeArray(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [Entity] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var entitySet: Set<Entity> {
+        if let array = self as? HGARRAY { return Entity.decodeSet(objects: array as [AnyObject]) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Entity] mapable, returning []", type: .error)
         return []
     }
@@ -70,8 +76,8 @@ extension Optional {
         return []
     }
     
-    var attributeSet: Set<Attribute2> {
-        if let array = self as? HGARRAY { return Attribute2.decodeSet(objects: array as [AnyObject]) }
+    var attributeSet: Set<Attribute> {
+        if let array = self as? HGARRAY { return Attribute.decodeSet(objects: array as [AnyObject]) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute2] mapable, returning []", type: .error)
         return []
     }

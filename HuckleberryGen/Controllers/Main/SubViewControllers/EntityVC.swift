@@ -15,6 +15,8 @@ class EntityVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
+    var entities = project.entities
+    
     var hgtable: HGTable!
     
     // MARK: View Lifecycle
@@ -24,6 +26,9 @@ class EntityVC: NSViewController {
         hgtable = HGTable(tableview: tableview, delegate: self)
     }
     
+    func updateModel() {
+        entities = project.entities
+    }
 }
 
 // MARK: HGTableDisplayable

@@ -13,7 +13,7 @@ import Cocoa
 
 extension Array where Element == String {
     
-    func typeRep(string: String) -> String {
+    func iteratedTypeRepresentable(string: String) -> String {
         let name = string.typeRepresentable
         if self.contains(name) {
             let largestNum = self.largestNum(string: name)
@@ -22,7 +22,7 @@ extension Array where Element == String {
         return name
     }
     
-    func varRep(string: String) -> String {
+    func iteratedVarRepresentable(string: String) -> String {
         let name = string.varRepresentable
         if self.contains(name) {
             let largestNum = self.largestNum(string: name)

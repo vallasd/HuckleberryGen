@@ -81,7 +81,7 @@ class ExportEntity {
         
         // add attributes to entity stanza
         for attribute in entity.attributes {
-            string += "\(ind)let \(attribute.name): \(attribute.type.name)\n"
+            string += "\(ind)let \(attribute.name): \(attribute.typeName)\n"
         }
         
         string += "\n"
@@ -94,7 +94,7 @@ class ExportEntity {
         
         // new variable attributes
         for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.type.name), "
+            string += "\(attribute.name): \(attribute.typeName), "
             let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
             assigns.append(attAssign)
             
@@ -141,7 +141,7 @@ class ExportEntity {
         
         // new variable attributes
         for attribute in entity.attributes {
-            let type = attribute.type.name
+            let type = attribute.typeName
             let index = primitives.index(of: type)
             if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
             else { string += "\(attribute.name): \(attribute.name).new, " }
@@ -161,7 +161,7 @@ class ExportEntity {
         
         // encode variable attributes
         for attribute in entity.attributes {
-            if attribute.type.type == .primitive {
+            if attribute.type == .primitive {
                 string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
             } else {
                 string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name).encode\n"

@@ -50,14 +50,13 @@ class SBD_Attributes: SelectionBoardDelegate {
         
         // return attribute from primitive
         if isPrimitive {
-            let primitive = Primitive.create(int: i)
-            return Attribute(primitive: primitive, attribute: o)
+            return o.update(name: nil, typeName: Primitive.names[i], type: .primitive, isHash: nil)
         }
         
         // return attribute from enum
         let index = i - firstEnumIndex
         let enuM = appDelegate.store.getEnum(index: index)
-        return Attribute(enum: enuM, attribute: o)
+        return o.update(name: nil, typeName: enuM.name, type: .enuM, isHash: nil)
     }
     
     /// creates an array of HGImageData for an array indexes in attribute

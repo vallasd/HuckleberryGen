@@ -12,7 +12,7 @@ import Cocoa
 
 struct Enum {
     
-    var name: String
+    let name: String
     var cases: [String]
     
     init(name: String) {
@@ -27,6 +27,10 @@ struct Enum {
     
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "enumIcon", title: name)
+    }
+    
+    var iteratedCase: String {
+        return cases.iteratedVarRepresentable(string: "New Enum Case")
     }
 }
 

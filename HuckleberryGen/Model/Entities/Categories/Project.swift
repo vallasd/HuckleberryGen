@@ -15,11 +15,11 @@ final class Project {
     
     var name: String
     var enums: [Enum]
-    var entities: [Entity]
-    fileprivate var relationships: Set<Relationship>
-    fileprivate var usedNames: Set<UsedName>
+    fileprivate(set) var entities: Set<Entity>
+    fileprivate(set) var relationships: Set<Relationship>
+    fileprivate(set) var usedNames: Set<UsedName>
     
-    init(name: String, enums:[Enum], entities: [Entity], relationships: Set<Relationship>, usedNames: Set<UsedName>) {
+    init(name: String, enums:[Enum], entities: Set<Entity>, relationships: Set<Relationship>, usedNames: Set<UsedName>) {
         self.name = name
         self.enums = enums
         self.entities = entities
@@ -66,13 +66,33 @@ extension Project: HGEncodable {
         let dict = HG.decode(hgdict: object, decoderName: "Project")
         let name = dict["name"].string
         let enums = dict["enums"].enums
-        let entities = dict["entities"].entities
+        let entities = dict["entities"].entitySet
         let relationships = dict["relationships"].relationshipSet
         let usedNames = dict["usedNames"].usedNameSet
         let project = Project(name: name, enums: enums, entities: entities, relationships: relationships, usedNames: usedNames)
         return project
     }
 }
+
+// MARK: Handle
+
+extension Project {
+    
+    // Entities
+    
+    
+    // MARK: Attributes
+    
+//    func updateAttribute(keys: [AttributeKey], withValues vs: [Any], name n: String, entityName en: String) -> Attribute? {
+//        
+//        
+//        
+//    }
+    
+    
+}
+
+
 
 // MARK: Hashing
 
@@ -86,7 +106,7 @@ extension Project {
         for index in 0..<e.attributes.count {
             if usedIndexes.contains(index) {
                 let attribute = e.attributes[index]
-                let type = attribute.type.type
+                let type = attribute.type
                 if type == .primitive || type == .enuM {
                     hashables.append(attribute)
                 }
