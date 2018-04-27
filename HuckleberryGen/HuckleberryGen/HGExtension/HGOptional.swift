@@ -76,6 +76,42 @@ extension Optional {
         return []
     }
     
+    var relationship: Relationship {
+        if let dict = self as? HGDICT { return Relationship.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Relationship mapable, returning new Attribute", type: .error)
+        return Relationship.encodeError
+    }
+    
+    var relationshipArray: [Relationship] {
+        if let array = self as? HGARRAY { return Relationship.decodeArray(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [Relationship] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var relationshipSet: Set<Relationship> {
+        if let array = self as? HGARRAY { return Relationship.decodeSet(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [Relationship] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var usedName: UsedName {
+        if let dict = self as? HGDICT { return UsedName.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not UsedName mapable, returning new UsedName", type: .error)
+        return UsedName.encodeError
+    }
+    
+    var usedNameArray: [UsedName] {
+        if let array = self as? HGARRAY { return UsedName.decodeArray(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [UsedName] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var usedNameSet: Set<UsedName> {
+        if let array = self as? HGARRAY { return UsedName.decodeSet(objects: array as [AnyObject]) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [UsedName] mapable, returning []", type: .error)
+        return []
+    }
+    
     var enuM: Enum {
         if let dict = self as? HGDICT { return Enum.decode(object: dict as AnyObject) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Enum mapable, returning new Enum", type: .error)

@@ -24,7 +24,7 @@ struct Relationship: HGEncodable {
     let isArray: Bool
     let deletionRule: DeletionRule
     
-    func update(name n: String?, entityName en: String?, inverseName ivn: String?, inverseEntityName ien: String?, isArray a: Bool?, deletionRule dr: DeletionRule?) -> Relationship {
+    fileprivate func update(name n: String?, entityName en: String?, inverseName ivn: String?, inverseEntityName ien: String?, isArray a: Bool?, deletionRule dr: DeletionRule?) -> Relationship {
         let name = n == nil ? self.name : n!
         let entityName = en == nil ? self.entityName : en!
         let inverseName = ivn == nil ? self.inverseName : ivn!
@@ -134,13 +134,11 @@ extension Set where Element == Relationship {
     
     /// gets relationship
     func get(name n: String, entityName en: String) -> Relationship? {
-        
         let entities = self.filter { $0.name == n && $0.entityName == en }
         if entities.count == 0 {
             HGReport.shared.getFailed(set: Relationship.self, keys: ["name"], values: [n])
             return nil
         }
-        
         return entities.first!
     }
     
@@ -198,8 +196,8 @@ extension Set where Element == Relationship {
                                                entityName: nil,
                                                inverseName: name,
                                                inverseEntityName: entityName,
-                                               isArray: isArray,
-                                               deletionRule: deletionRule)
+                                               isArray: nil,
+                                               deletionRule: nil)
         
         // create the new relationships
         let u1 = create(relationship: updatedRelationship)

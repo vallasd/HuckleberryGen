@@ -12,14 +12,19 @@ import Foundation
 // MARK: struct Definition
 
 final class Project {
+    
     var name: String
     var enums: [Enum]
     var entities: [Entity]
+    fileprivate var relationships: Set<Relationship>
+    fileprivate var usedNames: Set<UsedName>
     
-    init(name: String, enums:[Enum], entities: [Entity]) {
+    init(name: String, enums:[Enum], entities: [Entity], relationships: Set<Relationship>, usedNames: Set<UsedName>) {
         self.name = name
         self.enums = enums
         self.entities = entities
+        self.relationships = relationships
+        self.usedNames = usedNames
     }
     
     static var newName = "New Project"
@@ -40,11 +45,11 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: [], entities: [])
+        return Project(name: Project.newName, enums: [], entities: [], relationships: [], usedNames: UsedName.initialNames)
     }
     
     static var encodeError: Project {
-        return Project(name: Project.newName, enums: [], entities: [])
+        return Project(name: Project.newName, enums: [], entities: [], relationships: [], usedNames: [])
     }
     
     var encode: Any {
@@ -52,6 +57,8 @@ extension Project: HGEncodable {
         dict["name"] = name
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
+        dict["relationships"] = relationships.encode
+        dict["usedNames"] = usedNames.encode
         return dict as AnyObject
     }
     
@@ -60,7 +67,9 @@ extension Project: HGEncodable {
         let name = dict["name"].string
         let enums = dict["enums"].enums
         let entities = dict["entities"].entities
-        let project = Project(name: name, enums: enums, entities: entities)
+        let relationships = dict["relationships"].relationshipSet
+        let usedNames = dict["usedNames"].usedNameSet
+        let project = Project(name: name, enums: enums, entities: entities, relationships: relationships, usedNames: usedNames)
         return project
     }
 }

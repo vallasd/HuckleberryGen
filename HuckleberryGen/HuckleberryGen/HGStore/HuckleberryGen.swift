@@ -247,12 +247,12 @@ extension HuckleberryGen: HGEncodable {
     
     var encode: Any {
         var dict = HGDICT()
-        dict["uniqIdentifier"] = uniqIdentifier as AnyObject?
+        dict["uniqIdentifier"] = uniqIdentifier
         dict["licenseInfo"] = licenseInfo.encode
-        dict["importPath"] = importPath as AnyObject?
-        dict["exportPath"] = exportPath as AnyObject?
+        dict["importPath"] = importPath
+        dict["exportPath"] = exportPath
         dict["project"] = project.encode
-        dict["savedProjects"] = savedProjects as AnyObject?
+        dict["savedProjects"] = savedProjects
         return dict as AnyObject
     }
     
