@@ -79,7 +79,7 @@ class ExportEnum {
         
         // add attributes to enum stanza
         for enumcase in enuM.cases {
-            string += "\(ind)case \(enumcase.typeRepresentable)\n"
+            string += "\(ind)case \(enumcase.name)\n"
         }
         
         string += "\n"
@@ -90,7 +90,7 @@ class ExportEnum {
         
         var index = 0
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.typeRepresentable): return \(index)\n"
+            string += "\(ind)\(ind)case \(enumcase.name): return \(index)\n"
             index += 1
         }
         
@@ -105,7 +105,7 @@ class ExportEnum {
         string += "\(ind)\(ind)switch self {\n"
         
         for enumcase in enuM.cases {
-            string += "\(ind)\(ind)case \(enumcase.typeRepresentable): return \"\(enumcase.varRepresentable)\"\n"
+            string += "\(ind)\(ind)case \(enumcase.name): return \"\(enumcase.name)\"\n"
         }
         
         // end string for enum stanza
@@ -125,7 +125,7 @@ class ExportEnum {
         let ind = HGIndent.indent
         
         // create default case type report, if cases were not loaded, will create string that will cause an error in Export file to draw attention
-        let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.typeRepresentable : "Missing Enum Cases!!!"
+        let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.name : "Missing Enum Cases!!!"
         
         // begin hgencodable stanza
         var string = "extension \(enuM.name): HGEncodable {\n"

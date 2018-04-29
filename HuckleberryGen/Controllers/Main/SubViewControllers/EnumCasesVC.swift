@@ -14,6 +14,9 @@ class EnumCasesVC: NSViewController {
     @IBOutlet weak var tableview: HGTableView!
     
     var hgtable: HGTable!
+    var enumName: String = ""
+    
+    var enumCases: [EnumCase]
     
     fileprivate var editingLocation: HGTableLocation?
     
@@ -21,12 +24,17 @@ class EnumCasesVC: NSViewController {
         super.viewDidLoad()
         hgtable = HGTable(tableview: tableview, delegate: self)
     }
+    
+    func update() {
+        
+    }
 }
 
 // MARK: HGTableDisplayable
 extension EnumCasesVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
+        enumName = table.
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
     }
     

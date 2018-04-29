@@ -68,7 +68,7 @@ class ExportString {
             string += " \(ind)\(ind)switch self {\n"
             var count = 0
             for enumcase in enuM.cases {
-                string += "\(ind)\(ind)case \"\(enumcase.varRepresentable)\": return .\(enumcase.typeRepresentable) \n"
+                string += "\(ind)\(ind)case \"\(enumcase.name)\": return .\(enumcase.name) \n"
                 count += 1
             }
             string += "\(ind)\(ind)default:\n"

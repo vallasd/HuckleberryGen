@@ -10,48 +10,164 @@
 
 import Cocoa
 
+enum EnumKey {
+    case name
+    case value1
+    case value1Type
+    case value2
+    case value2Type
+}
+
 struct Enum {
     
     let name: String
-    var cases: [String]
+    let value1Name: String
+    let value1Type: String
+    let value2Name: String
+    let value2Type: String
+    fileprivate(set) var cases: Set<EnumCase>
     
-    init(name: String) {
+    fileprivate init(name: String) {
         self.name = name
+        value1Name = ""
+        value1Type = ""
+        value2Name = ""
+        value2Type = ""
         cases = []
     }
     
-    init(name: String, cases: [String]) {
-        self.name = name
-        self.cases = cases
+    fileprivate func update(name n: String?, value1Name v1n: String?, value1Type v1t: String?, value2Name v2n: String?, value2Type v2t: String?, cases c: Set<EnumCase>?) -> Enum {
+        let name = n == nil ? self.name : n!
+        let value1Name = v1n == nil ? self.value1Name : v1n!
+        let value1Type = v1t == nil ? self.value1Type : v1t!
+        let value2Name = v2n == nil ? self.value2Name : v2n!
+        let value2Type = v2t == nil ? self.value2Type : v2t!
+        let cases = c == nil ? self.cases : c!
+        return Enum(name: name, value1Name: value1Name, value1Type: value1Type, value2Name: value2Name, value2Type: value2Type, cases: cases)
     }
     
     static func image(withName name: String) -> NSImage {
         return NSImage.image(named: "enumIcon", title: name)
     }
     
-    var iteratedCase: String {
-        return cases.iteratedVarRepresentable(string: "New Enum Case")
+    mutating func createIteratedEnumCase() -> EnumCase? {
+        return cases.createIterated()
+    }
+    
+    mutating func deleteEnumCase(name n: String) -> Bool {
+        return cases.delete(name: n)
+    }
+    
+    mutating func updateEnumCase(keys: [EnumCaseKey], withValues vs: [Any], name n: String) -> EnumCase? {
+        return cases.update(keys: keys, withValues: vs, name: n)
     }
 }
 
 extension Enum: HGEncodable {
     
     static var encodeError: Enum {
-        return Enum(name: "Error")
+        return Enum(name: "Error", value1Name: "", value1Type: "", value2Name: "", value2Type: "", cases: [])
     }
     
     var encode: Any {
         var dict = HGDICT()
         dict["name"] = name
-        dict["cases"] = cases
+        dict["value1Name"] = value1Name
+        dict["value1Type"] = value1Type
+        dict["value2Name"] = value2Name
+        dict["value2Type"] = value2Type
+        dict["cases"] = cases.encode
         return dict as AnyObject
     }
     
     static func decode(object: Any) -> Enum {
         let dict = HG.decode(hgdict: object, decoderName: "Enum")
         let name = dict["name"].string
-        let cases = dict["cases"].stringArray
-        return Enum(name: name, cases: cases)
+        let value1Name = dict["value1Name"].string
+        let value1Type = dict["value1Type"].string
+        let value2Name = dict["value2Name"].string
+        let value2Type = dict["value2Type"].string
+        let cases = dict["cases"].stringSet
+        return Enum(name: name, value1Name: value1Name, value1Type: value1Type, value2Name: value2Name, value2Type: value2Type, cases: [])
+    }
+}
+
+extension Set where Element == Enum {
+    
+    mutating func create(Enum e: Enum) -> Enum? {
+        if !insert(e).inserted {
+            HGReport.shared.insertFailed(set: Enum.self, object: e)
+            return nil
+        }
+        return e
+    }
+    
+    mutating func createIterated() -> Enum? {
+        let name = map { $0.name }.iteratedTypeRepresentable(string: "New Enum")
+        let e = Enum(name: name)
+        return create(Enum: e)
+    }
+    
+    mutating func delete(name n: String) -> Bool {
+        let enuM = Enum(name: n)
+        let o = remove(enuM)
+        if o == nil {
+            HGReport.shared.deleteFailed(set: Enum.self, object: enuM)
+            return false
+        }
+        return true
+    }
+    
+    func get(name n: String) -> Enum? {
+        let enums = self.filter { $0.name == n }
+        if enums.count == 0 {
+            HGReport.shared.getFailed(set: Enum.self, keys: ["name"], values: [enums])
+            return nil
+        }
+        return enums.first!
+    }
+    
+    mutating func update(keys: [EnumKey], withValues vs: [Any], name n: String) -> Enum? {
+        
+        // if keys dont match values, return
+        if keys.count != vs.count {
+            HGReport.shared.updateFailedKeyMismatch(set: Enum.self)
+            return nil
+        }
+        
+        // get the Enum from the set
+        guard let oldEnum = get(name: n) else {
+            return nil
+        }
+        
+        // set key variables to nil
+        var name: String?, value1Name: String?, value1Type: String?, value2Name: String?, value2Type: String?
+        
+        // validate and assign properties
+        var i = 0
+        for key in keys {
+            let v = vs[i]
+            switch key {
+            case .name: name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            case .value1Name: value1Name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            case .value1Type: value1Type = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            case .value2Name: value2Name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            case .value2Type: value2Type = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            }
+            i += 1
+        }
+        
+        // make sure name is iterated, we are going to delete old record and add new
+        if name != nil {
+            name = self.map { $0.name }.iteratedTypeRepresentable(string: name!)
+        }
+        
+        // use traditional update
+        let newEnum = oldEnum.update(name: name, cases: cases)
+        let _ = delete(name: oldEnum.name)
+        let updated = create(Enum: newEnum)
+        
+        return updated
     }
 }
 

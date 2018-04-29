@@ -30,7 +30,7 @@ extension Int {
         switch self {
         case 0: return .primitive
         case 1: return .enuM
-        case 2: return .entity
+        case 2: return .relationship
         default:
             HGReport.shared.report("int: |\(self)| is not enum |HGType| mapable, using Info", type: .error)
         }

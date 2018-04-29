@@ -100,6 +100,7 @@ class HGTable: NSObject {
     }
     
     fileprivate(set) var parentRow: Int = notSelected
+    fileprivate(set) var parentName: String = ""
     
     fileprivate var rowWidth: CGFloat {
         let sWidth = tableview.superview?.bounds.width

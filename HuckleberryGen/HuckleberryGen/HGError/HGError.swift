@@ -62,6 +62,10 @@ struct HGReport {
         HGReport.shared.report("|\(set)| |UPDATE FAILED| nil object returned, possible stale objects", type: .error)
     }
     
+    func usedName<T>(name: String, type: T) {
+        HGReport.shared.report("|\(type)| |USED NAME| name: |\(name)| already used", type: .error)
+    }
+    
     func validateFailed<T,U>(decoder: T, value: Any, key: Any, expectedType: U) {
         HGReport.shared.report("|\(decoder)| |VALIDATION FAILED| for key: |\(key)| value: |\(value)| expected type: |\(expectedType)|", type: .error)
     }

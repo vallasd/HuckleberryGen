@@ -41,7 +41,7 @@ extension Optional {
     var entity: Entity {
         if let dict = self as? HGDICT { return Entity.decode(object: dict as AnyObject) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Entity mapable, returning new Entity", type: .error)
-        return Entity(name: "Error", attributes: [], hashes: [])
+        return Entity.encodeError
     }
     
     var entityArray: [Entity] {
@@ -202,6 +202,19 @@ extension Optional {
             return strings
         }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [String] mapable, using Empty [String]", type: .error)
+        return []
+    }
+    
+    var stringSet: Set<String> {
+        if let set = self as? Set<String> { return set }
+        if let array = self as? [String] {
+            var set: Set<String> = []
+            for a in array {
+                set.insert(a)
+            }
+            return set
+        }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<String> mapable, using Empty [String]", type: .error)
         return []
     }
     

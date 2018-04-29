@@ -54,21 +54,13 @@ struct UsedName: HGEncodable, Hashable, Equatable {
 
 extension Set where Element == UsedName {
     
-    /// inserts name into used names, if name is not typeRepresentable or is already in usedNames, updates text and iterates.  Returns correct iterated value that was inserted into the set.
-    mutating func createIterated(name n: String) -> String {
-        var name = n.typeRepresentable
-        let t = UsedName(name: name)
-        if self.contains(t) {
-            let names = self.map { $0.name }
-            let largestNum = names.largestNum(string: name)
-            name = name + "\(largestNum + 1)"
+    mutating func create(name n: String) -> UsedName? {
+        let name = UsedName(name: n)
+        if !insert(name).inserted {
+            HGReport.shared.insertFailed(set: UsedName.self, object: name)
+            return nil
         }
-        let newname = UsedName(name: name)
-        if !insert(newname).inserted {
-            // we should never see this error
-            HGReport.shared.insertFailed(set: UsedName.self, object: newname)
-        }
-        return n
+        return name
     }
     
     mutating func delete(name n: String) -> Bool {
@@ -79,11 +71,6 @@ extension Set where Element == UsedName {
             return false
         }
         return true
-    }
-    
-    mutating func update(name: String, oldName: String) -> String {
-        let _ = delete(name: oldName)
-        return createIterated(name: name)
     }
 }
 

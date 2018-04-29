@@ -15,28 +15,31 @@ import Foundation
 /// context for a Selection Board of unique attributes
 class SBD_Attributes: SelectionBoardDelegate {
     
-    /// index of entity to be edited
-    let entityIndex: Int
+    /// name of entity to be edited
+    let entityName: String
     
-    /// index of attribute to be changed
-    let attributeIndex: Int
+    /// name of attribute or relationship
+    let name: String
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
     /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.array.map { $0.name } + appDelegate.store.project.enums.map { $0.name.typeRepresentable }
+    let types: [String] = Primitive.names + project.enums.map { $0.name } + project.entities.map { $0.name }
     
-    /// last index of Attribute Type in the attributes array
-    let firstEnumIndex = Primitive.array.count
+    let firstEnumIndex = Primitive.names.count
     
-    init(entityIndex: Int, attributeIndex: Int) {
-        self.entityIndex = entityIndex
-        self.attributeIndex = attributeIndex
+    let lastEnumIndex = Primitive.names.count + project.enums.count
+    
+    init(entityName: String, name: String) {
+        self.entityName = entityName
+        self.name = name
     }
+    
     
     /// SelectionBoardDelegate function
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
+        let e = project.getEntity(name: entityName)
         let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
         let newAttribute = attribute(fromIndex: loc.index, oldAttribute: o)
         appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute

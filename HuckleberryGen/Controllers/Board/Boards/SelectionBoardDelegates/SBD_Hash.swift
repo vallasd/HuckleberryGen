@@ -50,7 +50,7 @@ extension SBD_Hash: SelectionBoardNoSelectionDelegate {
     
     func selectionBoardDidNotChooseLocation(_ sb: SelectionBoard) {
         // remove all hashes from entity
-        appDelegate.store.removeHashes(atEntityIndex: index)
+        // appDelegate.store.removeHashes(atEntityIndex: index)
         appDelegate.store.post(forNotifType: .entityUpdated) // post notification so other classes are in the know
     }
 }

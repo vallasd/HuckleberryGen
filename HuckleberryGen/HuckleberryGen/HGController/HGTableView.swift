@@ -96,7 +96,6 @@ class HGTableView: NSTableView {
         case .deleteRow: deleteSelectedRowsIfDelegateSaysOK()
         case .nextRow: selectNext()
         case .previousRow: selectPrev()
-        var WARNING__🛠🛠🛠: AnyObject
         case .printRowInformation: printRowInformation()
         default: break // Do Nothing
         }
