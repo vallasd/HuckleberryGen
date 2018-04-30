@@ -23,7 +23,7 @@ class HGNotif {
     }
     
     /// posts a single notification with an object
-    static func postNotification(_ name: String, withObject object: AnyObject) {
+    static func postNotification(_ name: String, withObject object: Any?) {
         asyncPostOnMainThreadWithName([name], object: object)
     }
     
@@ -37,7 +37,7 @@ class HGNotif {
         asyncPostOnMainThreadWithName(names, object: nil)
     }
     
-    fileprivate static func asyncPostOnMainThreadWithName(_ names: [String], object: AnyObject?) {
+    fileprivate static func asyncPostOnMainThreadWithName(_ names: [String], object: Any?) {
         DispatchQueue.main.async { () -> Void in
             for name in names {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: object)

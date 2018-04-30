@@ -14,8 +14,10 @@ enum EnumAttributeKey {
     case isHash
 }
 
+typealias EnumAttributeKeyDict = Dictionary<EnumAttributeKey, Any>
+
 // this is an Entity Enum Join Record
-struct EnumAttribute {
+struct EnumAttribute: HGEncodable {
     
     let name: String
     let entityName: String
@@ -110,7 +112,7 @@ extension Set where Element == EnumAttribute {
         let enums = self.filter { $0.enumName == en }
         
         for enuM in enums {
-            if remove(entity) != nil {
+            if remove(enuM) != nil {
                 deleted = true
             }
         }
@@ -124,9 +126,9 @@ extension Set where Element == EnumAttribute {
     }
     
     /// deletes EnumAttribute with name and enityName
-    mutating func delete(name n: String, entityName1 en1: String) -> Bool {
+    mutating func delete(name n: String, entityName en: String) -> Bool {
         
-        guard let entityRelationship  = get(name: n, entityName1: en1) else {
+        guard let entityRelationship  = get(name: n, entityName: en) else {
             return false
         }
         
@@ -139,8 +141,8 @@ extension Set where Element == EnumAttribute {
     }
     
     /// gets EnumAttribute
-    func get(name n: String, entityName1 en1: String) -> EnumAttribute? {
-        let entities = self.filter { $0.name == n && $0.entityName1 == en1 }
+    func get(name n: String, entityName en: String) -> EnumAttribute? {
+        let entities = self.filter { $0.name == n && $0.entityName == en }
         if entities.count == 0 {
             HGReport.shared.getFailed(set: EnumAttribute.self, keys: ["name"], values: [n])
             return nil
@@ -157,7 +159,7 @@ extension Set where Element == EnumAttribute {
         }
         
         // get the entity that you want to update
-        guard let oldEnumAttribute = get(name: n, entityName1: en) else {
+        guard let oldEnumAttribute = get(name: n, entityName: en) else {
             return nil
         }
         

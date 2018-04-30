@@ -12,11 +12,13 @@ import Cocoa
 
 enum EnumKey {
     case name
-    case value1
+    case value1Name
     case value1Type
-    case value2
+    case value2Name
     case value2Type
 }
+
+typealias EnumKeyDict = Dictionary<EnumKey, Any>
 
 struct Enum {
     
@@ -26,15 +28,6 @@ struct Enum {
     let value2Name: String
     let value2Type: String
     fileprivate(set) var cases: Set<EnumCase>
-    
-    fileprivate init(name: String) {
-        self.name = name
-        value1Name = ""
-        value1Type = ""
-        value2Name = ""
-        value2Type = ""
-        cases = []
-    }
     
     fileprivate func update(name n: String?, value1Name v1n: String?, value1Type v1t: String?, value2Name v2n: String?, value2Type v2t: String?, cases c: Set<EnumCase>?) -> Enum {
         let name = n == nil ? self.name : n!
@@ -58,8 +51,8 @@ struct Enum {
         return cases.delete(name: n)
     }
     
-    mutating func updateEnumCase(keys: [EnumCaseKey], withValues vs: [Any], name n: String) -> EnumCase? {
-        return cases.update(keys: keys, withValues: vs, name: n)
+    mutating func updateEnumCase(keyDict: EnumCaseKeyDict, name n: String) -> EnumCase? {
+        return cases.update(keyDict: keyDict, name: n)
     }
 }
 
@@ -87,7 +80,7 @@ extension Enum: HGEncodable {
         let value1Type = dict["value1Type"].string
         let value2Name = dict["value2Name"].string
         let value2Type = dict["value2Type"].string
-        let cases = dict["cases"].stringSet
+        let cases = dict["cases"].enumCaseSet
         return Enum(name: name, value1Name: value1Name, value1Type: value1Type, value2Name: value2Name, value2Type: value2Type, cases: [])
     }
 }
@@ -104,15 +97,24 @@ extension Set where Element == Enum {
     
     mutating func createIterated() -> Enum? {
         let name = map { $0.name }.iteratedTypeRepresentable(string: "New Enum")
-        let e = Enum(name: name)
+        let e = Enum(name: name,
+                     value1Name: "",
+                     value1Type: "",
+                     value2Name: "",
+                     value2Type: "",
+                     cases: [])
         return create(Enum: e)
     }
     
     mutating func delete(name n: String) -> Bool {
-        let enuM = Enum(name: n)
-        let o = remove(enuM)
-        if o == nil {
-            HGReport.shared.deleteFailed(set: Enum.self, object: enuM)
+        let e = Enum(name: n,
+                     value1Name: "",
+                     value1Type: "",
+                     value2Name: "",
+                     value2Type: "",
+                     cases: [])
+        if remove(e) == nil {
+            HGReport.shared.deleteFailed(set: Enum.self, object: n)
             return false
         }
         return true
@@ -127,13 +129,7 @@ extension Set where Element == Enum {
         return enums.first!
     }
     
-    mutating func update(keys: [EnumKey], withValues vs: [Any], name n: String) -> Enum? {
-        
-        // if keys dont match values, return
-        if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: Enum.self)
-            return nil
-        }
+    mutating func update(keyDict: EnumKeyDict, name n: String) -> Enum? {
         
         // get the Enum from the set
         guard let oldEnum = get(name: n) else {
@@ -144,17 +140,14 @@ extension Set where Element == Enum {
         var name: String?, value1Name: String?, value1Type: String?, value2Name: String?, value2Type: String?
         
         // validate and assign properties
-        var i = 0
-        for key in keys {
-            let v = vs[i]
+        for key in keyDict.keys {
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
-            case .value1Name: value1Name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
-            case .value1Type: value1Type = HGValidate.validate(value: v, key: key, decoder: Enum.self)
-            case .value2Name: value2Name = HGValidate.validate(value: v, key: key, decoder: Enum.self)
-            case .value2Type: value2Type = HGValidate.validate(value: v, key: key, decoder: Enum.self)
+            case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
+            case .value1Name: value1Name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
+            case .value1Type: value1Type = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
+            case .value2Name: value2Name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
+            case .value2Type: value2Type = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
             }
-            i += 1
         }
         
         // make sure name is iterated, we are going to delete old record and add new
@@ -163,7 +156,12 @@ extension Set where Element == Enum {
         }
         
         // use traditional update
-        let newEnum = oldEnum.update(name: name, cases: cases)
+        let newEnum = oldEnum.update(name: name,
+                                     value1Name: value1Name,
+                                     value1Type: value1Type,
+                                     value2Name: value2Name,
+                                     value2Type: value2Type,
+                                     cases: nil)
         let _ = delete(name: oldEnum.name)
         let updated = create(Enum: newEnum)
         

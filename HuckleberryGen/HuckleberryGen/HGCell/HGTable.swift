@@ -38,10 +38,16 @@ protocol HGTableLocationSelectable: HGTableDisplayable {
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation)
 }
 
-/// protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected
+/// return object for HGTablePostable delegate
+struct HGTablePostableData {
+    let notificationName: String
+    let identifier: String // unique identifier, the receiving HGTable will update parentName with this String
+}
+
+/// protocol that allows HGTable to post a notification every time a new object is selected, will pass the selected row as an Int in the notification's object or notSelected if row was deselected.  Will also pass the tables HGTable rowIdentifier. Set this value to identify the identifier for the Set if you aren't using arrays in your HGTables.
 protocol HGTablePostable: HGTableLocationSelectable {
     /// Pass the notification name that the HGTable should POST when a new row is selected.
-    func selectNotification(fortable table: HGTable) -> String
+    func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData
 }
 
 /// protocol that allows user to edit fields of the HGCell in an HGTable
@@ -99,7 +105,7 @@ class HGTable: NSObject {
         }
     }
     
-    fileprivate(set) var parentRow: Int = notSelected
+    fileprivate(set) var parentIndex: Int = notSelected
     fileprivate(set) var parentName: String = ""
     
     fileprivate var rowWidth: CGFloat {
@@ -141,12 +147,7 @@ class HGTable: NSObject {
     }
     
     /// Delegate for AnyObject which conforms to protocol HGTablePostable
-    fileprivate weak var selectDelegate: HGTablePostable? {
-        didSet {
-            selectNotification = selectDelegate?.selectNotification(fortable: self) ?? nil
-        }
-    }
-    
+    fileprivate weak var selectDelegate: HGTablePostable?
     /// Delegate for AnyObject which conforms to protocol HGTableDisplayable
     fileprivate weak var displayDelegate: HGTableDisplayable?
     /// Delegate for AnyObject which conforms to protocol HGTableLocationSelectable
@@ -157,9 +158,7 @@ class HGTable: NSObject {
     fileprivate weak var rowAppenedDelegate: HGTableRowAppendable?
     
     // MARK: Private Properties
-    
     fileprivate var tableCellIdentifiers: [TableCellIdentifier] = []
-    fileprivate var selectNotification: String?
     
     fileprivate(set) weak var lastSelectedCellWithTag: HGCell?
     
@@ -192,8 +191,9 @@ class HGTable: NSObject {
     fileprivate func addObservers(withNotifNames names: [String]) {
         for name in names {
             HGNotif.addObserverForName(name, usingBlock: { [weak self] (notif) -> Void in
-                if let row = notif.object as? Int {
-                    self?.parentRow = row
+                if let dict = notif.object as? HGDICT {
+                    self?.parentIndex = dict["index"].int
+                    self?.parentName = dict["name"].string
                 }
                 self?.update()
                 })
@@ -207,7 +207,8 @@ class HGTable: NSObject {
         let notifName = notifType.uniqString(forUniqId: uniqueID)
         
         HGNotif.addObserverForName(notifName, usingBlock: { [weak self] (notif) -> Void in
-            self?.parentRow = notSelected
+            self?.parentIndex = notSelected
+            self?.parentName = ""
             self?.update()
             })
     }
@@ -334,8 +335,12 @@ extension HGTable: HGTableViewDelegate {
     }
     
     func hgtableview(_ hgtableview: HGTableView, didSelectRow row: Int) {
-        let loc = HGTableLocation(index: row, type: .row, typeIndex: 0)
-        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
+        if let postData = selectDelegate?.postData(fortable: self, atIndex: row) {
+            let notification = postData.notificationName
+            let name = postData.identifier
+            let postObject: HGDICT = ["index" : row, "name" : name]
+            HGNotif.postNotification(notification, withObject: postObject)
+        }
     }
     
     func hgtableview(willAddRowToTable hgtableview: HGTableView) {
@@ -347,10 +352,14 @@ extension HGTable: HGTableViewDelegate {
     }
     
     func hgtableview(_ hgtableview: HGTableView, didDeleteRows rows: [Int]) {
-        let row = notSelected
-        if let sn = selectNotification { HGNotif.postNotification(sn, withObject: row as AnyObject) }
+        if let postData = selectDelegate?.postData(fortable: self, atIndex: notSelected) {
+            let notification = postData.notificationName
+            let row = notSelected
+            let name = ""
+            let postObject: HGDICT = ["index" : row, "name" : name]
+            HGNotif.postNotification(notification, withObject: postObject)
+        }
     }
-    
 }
 
 extension HGTable: HGCellDelegate {

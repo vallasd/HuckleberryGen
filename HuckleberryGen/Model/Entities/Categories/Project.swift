@@ -20,10 +20,11 @@ final class Project {
     fileprivate(set) var entityAttributes: Set<EntityAttribute> // enity entity join
     fileprivate(set) var usedNames: Set<UsedName>
     
-    init(name: String, enums:[Enum], entities: Set<Entity>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
+    init(name: String, enums:Set<Enum>, entities: Set<Entity>, enumAttributes: Set<EnumAttribute>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
         self.name = name
         self.enums = enums
         self.entities = entities
+        self.enumAttributes = enumAttributes
         self.entityAttributes = entityAttributes
         self.usedNames = usedNames
     }
@@ -46,11 +47,11 @@ final class Project {
 extension Project: HGEncodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: [], entities: [], entityAttributes: [], usedNames: UsedName.initialNames)
+        return Project(name: Project.newName, enums: [], entities: [], enumAttributes: [], entityAttributes: [], usedNames: UsedName.initialNames)
     }
     
     static var encodeError: Project {
-        return Project(name: Project.newName, enums: [], entities: [], entityAttributes: [], usedNames: [])
+        return Project(name: Project.newName, enums: [], entities: [], enumAttributes: [], entityAttributes: [], usedNames: [])
     }
     
     var encode: Any {
@@ -58,6 +59,7 @@ extension Project: HGEncodable {
         dict["name"] = name
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
+        dict["enumAttributs"] = enumAttributes.encode
         dict["entityAttributes"] = entityAttributes.encode
         dict["usedNames"] = usedNames.encode
         return dict as AnyObject
@@ -66,11 +68,17 @@ extension Project: HGEncodable {
     static func decode(object: Any) -> Project {
         let dict = HG.decode(hgdict: object, decoderName: "Project")
         let name = dict["name"].string
-        let enums = dict["enums"].enums
+        let enums = dict["enums"].enumSet
         let entities = dict["entities"].entitySet
-        let entityAttributes = dict["entityAttributes"].relationshipSet
+        let enumAttributes = dict["enumAttributes"].enumAttributeSet
+        let entityAttributes = dict["entityAttributes"].entityAttributeSet
         let usedNames = dict["usedNames"].usedNameSet
-        let project = Project(name: name, enums: enums, entities: entities, entityAttributes: entityAttributes, usedNames: usedNames)
+        let project = Project(name: Project.newName,
+                              enums: enums,
+                              entities: entities,
+                              enumAttributes: enumAttributes,
+                              entityAttributes: entityAttributes,
+                              usedNames: usedNames)
         return project
     }
 }
@@ -95,10 +103,6 @@ extension Project {
         return false
     }
     
-    func getEntity(name n: String) -> Entity? {
-        return entities.get(name: n)
-    }
-    
     func updateEntity(keys: [EntityKey], withValues vs: [Any], name n: String) -> Entity? {
         
         if usedNameIn(values: vs) {
@@ -112,7 +116,7 @@ extension Project {
     
     func createIteratedEnum() -> Enum? {
         if let enuM = enums.createIterated() {
-            let _ = usedNames.create(name: entity.name)
+            let _ = usedNames.create(name: enuM.name)
             return enuM
         }
         return nil
@@ -126,18 +130,41 @@ extension Project {
         return false
     }
     
-    func getEnum(name n: String) -> Enum? {
-        return enums.get(name: n)
-    }
-    
-    func updateEnum(keys: [EntityKey], withValues vs: [Any], name n: String) -> Enum? {
+    func updateEnum(keyDict: EnumKeyDict, name n: String) -> Enum? {
         
-        if usedNameIn(values: vs) {
+        if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
         
-        return enums.update(keys: keys, withValues: vs, name: n)
+        return enums.update(keyDict: keyDict, name: n)
     }
+    
+    // Enum Case
+    
+    func createIteratedEnumCase(enumName: String) -> EnumCase? {
+        if var enuM = enums.get(name: enumName) {
+            return enuM.createIteratedEnumCase()
+        }
+        
+        return nil
+    }
+    
+    func deleteEnumCase(name n: String, enumName: String) -> Bool {
+        if var enuM = enums.get(name: enumName) {
+            return enuM.deleteEnumCase(name: n)
+        }
+        
+        return false
+    }
+    
+    func updateEnum(keysDict: EnumCaseKeyDict, name n: String, enumName: String) -> EnumCase? {
+        if var enuM = enums.get(name: enumName) {
+            return enuM.updateEnumCase(keyDict: keysDict, name: n)
+        }
+        
+        return nil
+    }
+    
     
     // EntityAttributes
     

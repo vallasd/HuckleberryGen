@@ -14,6 +14,8 @@ enum EnumCaseKey {
     case value2
 }
 
+typealias EnumCaseKeyDict = Dictionary<EnumCaseKey, Any>
+
 struct EnumCase: HGEncodable {
     let name: String
     let value1: String
@@ -84,13 +86,7 @@ extension Set where Element == EnumCase {
         return enumCases.first!
     }
     
-    mutating func update(keys: [EnumCaseKey], withValues vs: [Any], name n: String) -> EnumCase? {
-        
-        // if keys dont match values, return
-        if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: EnumCase.self)
-            return nil
-        }
+    mutating func update(keyDict: EnumCaseKeyDict, name n: String) -> EnumCase? {
         
         // get the EnumCase from the set
         guard let oldEnumCase = get(name: n) else {
@@ -101,15 +97,12 @@ extension Set where Element == EnumCase {
         var name: String?, value1: String?, value2: String?
         
         // validate and assign properties
-        var i = 0
-        for key in keys {
-            let v = vs[i]
+        for key in keyDict.keys {
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: EnumCase.self)
-            case .value1: value1 = HGValidate.validate(value: v, key: key, decoder: EnumCase.self)
-            case .value2: value2 = HGValidate.validate(value: v, key: key, decoder: EnumCase.self)
+            case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumCase.self)
+            case .value1: value1 = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumCase.self)
+            case .value2: value2 = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumCase.self)
             }
-            i += 1
         }
         
         // make sure name is iterated, we are going to delete old record and add new
@@ -118,7 +111,9 @@ extension Set where Element == EnumCase {
         }
         
         // use traditional update
-        let newEnumCase = oldEnumCase.update(name: name, value1: value1, value2: value2)
+        let newEnumCase = oldEnumCase.update(name: name,
+                                             value1: value1,
+                                             value2: value2)
         let _ = delete(name: oldEnumCase.name)
         let updated = create(EnumCase: newEnumCase)
         

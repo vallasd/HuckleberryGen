@@ -14,7 +14,6 @@ class EnumCasesVC: NSViewController {
     @IBOutlet weak var tableview: HGTableView!
     
     var hgtable: HGTable!
-    var enumName: String = ""
     
     var enumCases: [EnumCase]
     
@@ -34,7 +33,7 @@ class EnumCasesVC: NSViewController {
 extension EnumCasesVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        enumName = table.
+        enumCases = table.parentName
         return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
     }
     
@@ -75,7 +74,7 @@ extension EnumCasesVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
         
-        if table.parentRow == notSelected {
+        if table.parentName == "" {
             return false
         }
         
