@@ -12,67 +12,67 @@ import Foundation
 
 extension HuckleberryGen {
     
-    func createEnum() -> Enum  {
-        
-        // create iterated name of Enum
-        let name = usedNames.typeRep(string: "New Enum")
-        
-        // create new Enum
-        let enuM = Enum(name: name)
-        
-        // add Enum to store
-        project.enums.append(enuM)
-        
-        // return enum
-        return enuM
-    }
-    
-    func getEnum(index i: Int) -> Enum {
-        
-        // check if index is in bounds
-        if i < 0 || i >= project.enums.count {
-            HGReport.shared.report("Enum GET index: |\(i)| is out of bounds", type: .error)
-            assert(true)
-            return Enum(name: "Error")
-        }
-        
-        return project.enums[i]
-    }
-    
-    func replaceEnum(atIndex i: Int, withEnum e: Enum) {
-
-        // check if index is in bounds
-        if i < 0 || i >= project.enums.count {
-            HGReport.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .error)
-            return
-        }
-        
-        // update attributes
-        
-        
-        // update Entities has
-        
-        
-        // make iterated version of Enum if necessary, |If types are not already the same|
-
-        
-        // add Enum to store
-        project.enums[i] = e
-    }
-    
-    func deleteEnums(atIndexes a: [Int]) -> Bool {
-        
-        // check if index is in bounds
-        let maxIndex = project.enums.count - 1
-        let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
-        if  boundErrors > 0 {
-            HGReport.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .error)
-            return false
-        }
-        
-        project.enums.removeIndexes(a)
-        return true
-    }
+//    func createEnum() -> Enum  {
+//        
+//        // create iterated name of Enum
+//        let name = usedNames.typeRep(string: "New Enum")
+//        
+//        // create new Enum
+//        let enuM = Enum(name: name)
+//        
+//        // add Enum to store
+//        project.enums.append(enuM)
+//        
+//        // return enum
+//        return enuM
+//    }
+//    
+//    func getEnum(index i: Int) -> Enum {
+//        
+//        // check if index is in bounds
+//        if i < 0 || i >= project.enums.count {
+//            HGReport.shared.report("Enum GET index: |\(i)| is out of bounds", type: .error)
+//            assert(true)
+//            return Enum(name: "Error")
+//        }
+//        
+//        return project.enums[i]
+//    }
+//    
+//    func replaceEnum(atIndex i: Int, withEnum e: Enum) {
+//
+//        // check if index is in bounds
+//        if i < 0 || i >= project.enums.count {
+//            HGReport.shared.report("Enum REPLACE index: |\(i)| is out of bounds", type: .error)
+//            return
+//        }
+//        
+//        // update attributes
+//        
+//        
+//        // update Entities has
+//        
+//        
+//        // make iterated version of Enum if necessary, |If types are not already the same|
+//
+//        
+//        // add Enum to store
+//        project.enums[i] = e
+//    }
+//    
+//    func deleteEnums(atIndexes a: [Int]) -> Bool {
+//        
+//        // check if index is in bounds
+//        let maxIndex = project.enums.count - 1
+//        let boundErrors = a.filter { $0 > maxIndex || $0 < 0  }.count
+//        if  boundErrors > 0 {
+//            HGReport.shared.report("Enum DELETE indexes: |\(a)| is out of bounds", type: .error)
+//            return false
+//        }
+//        
+//        project.enums.removeIndexes(a)
+//        return true
+//    }
 
 //    func createEntity() -> Entity  {
 //

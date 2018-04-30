@@ -15,6 +15,8 @@ enum EntityAttributeKey {
     case deletionRule
 }
 
+typealias EntityAttributeKeyDict = Dictionary<EntityAttributeKey, Any>
+
 struct EntityAttribute: HGEncodable {
     
     let name: String
@@ -147,13 +149,7 @@ extension Set where Element == EntityAttribute {
         return entities.first!
     }
     
-    mutating func update(keys: [EntityAttributeKey], withValues vs: [Any], name n: String, entityName1 en1: String) -> EntityAttribute? {
-        
-        // if keys dont match values, return
-        if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: EntityAttribute.self)
-            return nil
-        }
+    mutating func update(keyDict: EntityAttributeKeyDict, name n: String, entityName1 en1: String) -> EntityAttribute? {
         
         // get the entity that you want to update
         guard let oldEntityAttribute = get(name: n, entityName1: en1) else {
@@ -164,16 +160,13 @@ extension Set where Element == EntityAttribute {
         var name: String?, entityName2: String?, isArray: Bool?, deletionRule: DeletionRule?
         
         // validate and assign properties
-        var i = 0
-        for key in keys {
-            let v = vs[i]
+        for key in keyDict.keys {
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: EntityAttribute.self)
-            case .entityName2: entityName2 = HGValidate.validate(value: v, key: key, decoder: EntityAttribute.self)
-            case .isArray: isArray = HGValidate.validate(value: v, key: key, decoder: EntityAttribute.self)
-            case .deletionRule: deletionRule = HGValidate.validate(value: v, key: key, decoder: EntityAttribute.self)
+            case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EntityAttribute.self)
+            case .entityName2: entityName2 = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EntityAttribute.self)
+            case .isArray: isArray = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EntityAttribute.self)
+            case .deletionRule: deletionRule = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EntityAttribute.self)
             }
-            i += 1
         }
         
         // delete old EntityAttributes

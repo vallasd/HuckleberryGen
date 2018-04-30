@@ -14,11 +14,11 @@ extension Attribute {
         return NSImage.image(named: "attributeIcon", title: name)
     }
     
-    var typeImage: NSImage {
-        switch type {
-        case .primitive: return NSImage.image(named: "typeIcon", title: name)
-        case .enuM: return NSImage.image(named: "enumIcon", title: name)
-        case .entity: return NSImage.image(named: "entityIcon", title: name)
-        }
-    }
+//    var typeImage: NSImage {
+//        switch type {
+//        case .primitive: return NSImage.image(named: "typeIcon", title: name)
+//        case .enuM: return NSImage.image(named: "enumIcon", title: name)
+//        case .entity: return NSImage.image(named: "entityIcon", title: name)
+//        }
+//    }
 }

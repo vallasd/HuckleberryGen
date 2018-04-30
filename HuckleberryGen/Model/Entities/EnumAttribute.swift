@@ -150,13 +150,7 @@ extension Set where Element == EnumAttribute {
         return entities.first!
     }
     
-    mutating func update(keys: [EnumAttributeKey], withValues vs: [Any], name n: String, entityName en: String) -> EnumAttribute? {
-        
-        // if keys dont match values, return
-        if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: EnumAttribute.self)
-            return nil
-        }
+    mutating func update(keyDict: EnumAttributeKeyDict, name n: String, entityName en: String) -> EnumAttribute? {
         
         // get the entity that you want to update
         guard let oldEnumAttribute = get(name: n, entityName: en) else {
@@ -167,19 +161,16 @@ extension Set where Element == EnumAttribute {
         var name: String?, enumName: String?, isHash: Bool?
         
         // validate and assign properties
-        var i = 0
-        for key in keys {
-            let v = vs[i]
+        for key in keyDict.keys {
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: EnumAttribute.self)
-            case .enumName: enumName = HGValidate.validate(value: v, key: key, decoder: EnumAttribute.self)
-            case .isHash: isHash = HGValidate.validate(value: v, key: key, decoder: EnumAttribute.self)
+            case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
+            case .enumName: enumName = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
+            case .isHash: isHash = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
             }
-            i += 1
         }
         
         // delete old EnumAttributes
-        let _ = delete(name: oldEnumAttribute.name, entityName1: oldEnumAttribute.entityName)
+        let _ = delete(name: oldEnumAttribute.name, entityName: oldEnumAttribute.entityName)
         
         // make new name iterated
         if name != nil { name = iterated(name: name!, entityName: en) }

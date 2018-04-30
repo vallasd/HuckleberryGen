@@ -129,6 +129,8 @@
 		03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8CC208D58C000CE2CB8 /* NSRect.swift */; };
 		03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */; };
 		104382522093B3B6002BF38A /* Attribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104382512093B3B6002BF38A /* Attribute_EXT.swift */; };
+		10438254209763DD002BF38A /* EnumAttribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10438253209763DD002BF38A /* EnumAttribute_EXT.swift */; };
+		10438256209763ED002BF38A /* EntityAttribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10438255209763ED002BF38A /* EntityAttribute_EXT.swift */; };
 		109CAC322090E64300369EF5 /* DeletionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC312090E64300369EF5 /* DeletionRule.swift */; };
 		109CAC3420910D9700369EF5 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC3320910D9700369EF5 /* Primitive.swift */; };
 /* End PBXBuildFile section */
@@ -279,6 +281,8 @@
 		03FFD8CC208D58C000CE2CB8 /* NSRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRect.swift; sourceTree = "<group>"; };
 		03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		104382512093B3B6002BF38A /* Attribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute_EXT.swift; sourceTree = "<group>"; };
+		10438253209763DD002BF38A /* EnumAttribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumAttribute_EXT.swift; sourceTree = "<group>"; };
+		10438255209763ED002BF38A /* EntityAttribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttribute_EXT.swift; sourceTree = "<group>"; };
 		109CAC312090E64300369EF5 /* DeletionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionRule.swift; sourceTree = "<group>"; };
 		109CAC3320910D9700369EF5 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -454,12 +458,14 @@
 			children = (
 				03B0AF232092D7C700180EB0 /* Entity.swift */,
 				03B0AF1920924DA000180EB0 /* Attribute.swift */,
-				03B0AF272096187D00180EB0 /* EnumAttribute.swift */,
-				037EDFA81B84B4C6002527EE /* Enum.swift */,
-				03B0AF17209245C100180EB0 /* EntityAttribute.swift */,
 				104382512093B3B6002BF38A /* Attribute_EXT.swift */,
-				03B0AF1B2092575500180EB0 /* UsedName.swift */,
+				03B0AF272096187D00180EB0 /* EnumAttribute.swift */,
+				10438253209763DD002BF38A /* EnumAttribute_EXT.swift */,
+				03B0AF17209245C100180EB0 /* EntityAttribute.swift */,
+				10438255209763ED002BF38A /* EntityAttribute_EXT.swift */,
+				037EDFA81B84B4C6002527EE /* Enum.swift */,
 				03B0AF252094B42C00180EB0 /* EnumCase.swift */,
+				03B0AF1B2092575500180EB0 /* UsedName.swift */,
 				036C7C701B514AF9004EC724 /* Folder.swift */,
 				036C7CC71B52A17F004EC724 /* LicenseInfo.swift */,
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
@@ -909,6 +915,7 @@
 				036455C21BA264E40096B255 /* HGCellType.swift in Sources */,
 				0322FA401B591A9100CB132B /* HGTimeInterval.swift in Sources */,
 				03660ADD1BBDED6600DE41D5 /* NSImage.swift in Sources */,
+				10438256209763ED002BF38A /* EntityAttribute_EXT.swift in Sources */,
 				03A278F91C513DA600DA353C /* ExportEnum.swift in Sources */,
 				036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */,
 				03B0AF282096187D00180EB0 /* EnumAttribute.swift in Sources */,
@@ -953,6 +960,7 @@
 				03C2230D209145A200D5E02B /* String.swift in Sources */,
 				0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */,
 				034985091C56D5220048F44C /* ExportInt.swift in Sources */,
+				10438254209763DD002BF38A /* EnumAttribute_EXT.swift in Sources */,
 				033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */,
 				039731E61C4565C5003DA4F4 /* SBD_Entities.swift in Sources */,
 				035A56131C7E1C7D002BFC8F /* InfoBoard.swift in Sources */,

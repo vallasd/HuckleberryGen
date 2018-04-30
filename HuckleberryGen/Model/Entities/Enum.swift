@@ -16,6 +16,7 @@ enum EnumKey {
     case value1Type
     case value2Name
     case value2Type
+    case cases
 }
 
 typealias EnumKeyDict = Dictionary<EnumKey, Any>
@@ -81,7 +82,7 @@ extension Enum: HGEncodable {
         let value2Name = dict["value2Name"].string
         let value2Type = dict["value2Type"].string
         let cases = dict["cases"].enumCaseSet
-        return Enum(name: name, value1Name: value1Name, value1Type: value1Type, value2Name: value2Name, value2Type: value2Type, cases: [])
+        return Enum(name: name, value1Name: value1Name, value1Type: value1Type, value2Name: value2Name, value2Type: value2Type, cases: cases)
     }
 }
 
@@ -137,7 +138,7 @@ extension Set where Element == Enum {
         }
         
         // set key variables to nil
-        var name: String?, value1Name: String?, value1Type: String?, value2Name: String?, value2Type: String?
+        var name: String?, value1Name: String?, value1Type: String?, value2Name: String?, value2Type: String?, cases: Set<EnumCase>?
         
         // validate and assign properties
         for key in keyDict.keys {
@@ -147,6 +148,7 @@ extension Set where Element == Enum {
             case .value1Type: value1Type = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
             case .value2Name: value2Name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
             case .value2Type: value2Type = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
+            case .cases: cases = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Enum.self)
             }
         }
         
@@ -161,7 +163,7 @@ extension Set where Element == Enum {
                                      value1Type: value1Type,
                                      value2Name: value2Name,
                                      value2Type: value2Type,
-                                     cases: nil)
+                                     cases: cases)
         let _ = delete(name: oldEnum.name)
         let updated = create(Enum: newEnum)
         

@@ -15,7 +15,7 @@ class EnumCasesVC: NSViewController {
     
     var hgtable: HGTable!
     
-    var enumCases: [EnumCase]
+    var enumCases: Set<EnumCase> = []
     
     fileprivate var editingLocation: HGTableLocation?
     
@@ -33,8 +33,13 @@ class EnumCasesVC: NSViewController {
 extension EnumCasesVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        enumCases = table.parentName
-        return table.parentRow == notSelected ? 0 : appDelegate.store.project.enums[table.parentRow].cases.count
+        
+        if table.parentName != "" {
+            enumCases = project.enums.get(name: table.parentName)?.cases.sorted(by: <#T##(EnumCase, EnumCase) throws -> Bool#>) ?? []
+            return enumCases.count
+        }
+        
+        return 0
     }
     
     func cellType(fortable table: HGTable) -> CellType {

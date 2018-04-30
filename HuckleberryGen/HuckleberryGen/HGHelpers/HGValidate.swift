@@ -27,6 +27,7 @@ struct HGValidate {
     static func validateInt8<T>(value: Any, key: Any, decoder: T) -> Int8? {
         if let i = value as? Int { return Int8(i) }
         if let d = value as? Double { return Int8(d) }
+        if let i8 = value as? Int8 { return i8 }
         if let f = value as? Float { return Int8(f) }
         HGReport.shared.validateFailed(decoder: T.self, value: value, key: key, expectedType: T.self)
         return nil

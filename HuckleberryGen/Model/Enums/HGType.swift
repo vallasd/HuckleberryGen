@@ -17,7 +17,7 @@ enum HGType: Int, HGEncodable {
     // MARK - HGEncodable
     
     static var encodeError: HGType {
-        return .entity
+        return .primitive
     }
     
     var encode: Any {

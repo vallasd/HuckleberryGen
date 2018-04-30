@@ -11,7 +11,10 @@ import Cocoa
 
 enum EntityKey {
     case name
+    case attributes
 }
+
+typealias EntityKeyDict = Dictionary<EntityKey, Any>
 
 /// a struct that represents a model entity
 struct Entity: HGEncodable {
@@ -58,16 +61,16 @@ struct Entity: HGEncodable {
         return attributes.createIterated()
     }
     
-    mutating func deleteAttribute(name n: String) -> Bool {
-        return attributes.delete(name: n)
+    mutating func deleteAttribute(name: String) -> Bool {
+        return attributes.delete(name: name)
     }
     
-    func getAttribute(name n: String) -> Attribute? {
-        return attributes.get(name: n)
+    func getAttribute(name: String) -> Attribute? {
+        return attributes.get(name: name)
     }
     
-    mutating func updateAttribute(keys: [AttributeKey], withValues vs: [Any], name n: String) -> Attribute? {
-        return attributes.update(keys: keys, withValues: vs, name: n)
+    mutating func updateAttribute(keyDict: AttributeKeyDict, name: String) -> Attribute? {
+        return attributes.update(keyDict: keyDict, name: name)
     }
 }
 
@@ -106,13 +109,7 @@ extension Set where Element == Entity {
         return entities.first!
     }
     
-    mutating func update(keys: [EntityKey], withValues vs: [Any], name n: String) -> Entity? {
-        
-        // if keys dont match values, return
-        if keys.count != vs.count {
-            HGReport.shared.updateFailedKeyMismatch(set: Entity.self)
-            return nil
-        }
+    mutating func update(keyDict: EntityKeyDict, name n: String) -> Entity? {
         
         // get the entity from the set
         guard let oldEntity = get(name: n) else {
@@ -123,19 +120,15 @@ extension Set where Element == Entity {
         var name: String?, attributes: Set<Attribute>?
         
         // validate and assign properties
-        var i = 0
-        for key in keys {
-            let v = vs[i]
+        for key in keyDict.keys {
             switch key {
-            case .name: name = HGValidate.validate(value: v, key: key, decoder: Entity.self)
+            case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Entity.self)
+            case .attributes: attributes = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Entity.self)
             }
-            i += 1
         }
         
         // make sure name is iterated, we are going to delete old record and add new
-        if name != nil {
-            name = self.map { $0.name }.iteratedTypeRepresentable(string: name!)
-        }
+        if name != nil { name = self.map { $0.name }.iteratedTypeRepresentable(string: name!) }
         
         // use traditional update
         let newEntity = oldEntity.update(name: name, attributes: attributes)

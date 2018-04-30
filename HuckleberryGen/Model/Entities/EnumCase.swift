@@ -106,9 +106,7 @@ extension Set where Element == EnumCase {
         }
         
         // make sure name is iterated, we are going to delete old record and add new
-        if name != nil {
-            name = self.map { $0.name }.iteratedVarRepresentable(string: name!)
-        }
+        if name != nil { name = self.map { $0.name }.iteratedVarRepresentable(string: name!) }
         
         // use traditional update
         let newEnumCase = oldEnumCase.update(name: name,

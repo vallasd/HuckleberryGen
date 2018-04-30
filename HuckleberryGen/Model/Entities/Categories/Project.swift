@@ -112,6 +112,56 @@ extension Project {
         return entities.update(keys: keys, withValues: vs, name: n)
     }
     
+    // EntityAttributes
+    
+    func createIteratedEntityAttribute(entityName1 en1: String, entityName2 en2: String) -> EntityAttribute? {
+        return entityAttributes.createIterated(entityName1: en1, entityName1: en2)
+    }
+    
+    func deleteEntityAttribute(entityName en: String) -> Bool {
+        return entityAttributes.delete(entityName: en)
+    }
+    
+    func deleteEntityAttribute(name n: String, entityName1 en1: String) -> Bool {
+        return entityAttributes.delete(name: n, entityName1: en1)
+    }
+    
+    func updateEntityAttribute(keyDict: EntityAttributeKeyDict, name n: String, entityName en: String) -> EntityAttribute? {
+        
+        if usedNameIn(values: keyDict.map { $0.1 }) {
+            return nil
+        }
+        
+        return entityAttributes.update(keyDict: keyDict, name: n, entityName1: en)
+    }
+    
+    // EnumAttributes
+    
+    func createIteratedEnumAttribute(entityName1 en1: String, entityName2 en2: String) -> EnumAttribute? {
+        return enumAttributes.createIterated(entityName: en1, enumName: en2)
+    }
+    
+    func deleteEnumAttribute(entityName en: String) -> Bool {
+        return enumAttributes.delete(entityName: en)
+    }
+    
+    func deleteEnumAttribute(enumName en: String) -> Bool {
+        return enumAttributes.delete(enumName: en)
+    }
+    
+    func deleteEnumAttribute(name n: String, entityName en: String) -> Bool {
+        return enumAttributes.delete(name: n, entityName: en)
+    }
+    
+    func updateEnumAttribute(keyDict: EnumAttributeKeyDict, name n: String, entityName en: String) -> EnumAttribute? {
+        
+        if usedNameIn(values: keyDict.map { $0.1 }) {
+            return nil
+        }
+        
+        return enumAttributes.update(keyDict: keyDict, name: n, entityName1: en)
+    }
+    
     // Enums
     
     func createIteratedEnum() -> Enum? {
@@ -142,52 +192,46 @@ extension Project {
     // Enum Case
     
     func createIteratedEnumCase(enumName: String) -> EnumCase? {
+        
         if var enuM = enums.get(name: enumName) {
-            return enuM.createIteratedEnumCase()
+            let enuMCase = enuM.createIteratedEnumCase()
+            let keyDict: EnumKeyDict = [.cases : enuM.cases]
+            if enums.update(keyDict: keyDict, name: enumName) != nil {
+                return enuMCase
+            }
         }
         
         return nil
     }
     
     func deleteEnumCase(name n: String, enumName: String) -> Bool {
+        
         if var enuM = enums.get(name: enumName) {
-            return enuM.deleteEnumCase(name: n)
+            let deleted = enuM.deleteEnumCase(name: n)
+            let keyDict: EnumKeyDict = [.cases : enuM.cases]
+            if enums.update(keyDict: keyDict, name: enumName) != nil {
+                return deleted
+            }
         }
         
         return false
     }
     
-    func updateEnum(keysDict: EnumCaseKeyDict, name n: String, enumName: String) -> EnumCase? {
+    func updateEnumCase(keysDict: EnumCaseKeyDict, name n: String, enumName: String) -> EnumCase? {
+        
         if var enuM = enums.get(name: enumName) {
-            return enuM.updateEnumCase(keyDict: keysDict, name: n)
+            let updatedEnumCase = enuM.updateEnumCase(keyDict: keysDict, name: n)
+            let keyDict: EnumKeyDict = [.cases : enuM.cases]
+            if enums.update(keyDict: keyDict, name: enumName) != nil {
+                return updatedEnumCase
+            }
         }
         
         return nil
     }
     
     
-    // EntityAttributes
     
-    func createIteratedEntityAttribute(entityName en: String, inverseEntityName ien: String) -> [EntityAttribute] {
-        return entityAttributes.createIterated(entityName: en, inverseEntityName: ien)
-    }
-    
-    func deleteEntityAttribute(name n: String, entityName en: String) -> Bool {
-        return entityAttributes.delete(name: n, entityName: en)
-    }
-    
-    func getEntityAttribute(name n: String, entityName en: String) -> EntityAttribute? {
-        return entityAttributes.get(name: n, entityName: en)
-    }
-    
-    func updateEntityAttribute(keys: [EntityAttributeKey], withValues vs: [Any], name n: String, entityName en: String) -> [EntityAttribute] {
-        
-        if usedNameIn(values: vs) {
-            return []
-        }
-        
-        return entityAttributes.update(keys: keys, withValues: vs, name: n, entityName: en)
-    }
     
     fileprivate func usedNameIn(values: [Any]) -> Bool {
         let used = usedNames.map { $0.name }
