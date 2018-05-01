@@ -34,7 +34,7 @@ class EnumVC: NSViewController {
 extension EnumVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        enums = project.enums.sorted { $0.name > $1.name }
+        enums = project.enums.sorted { $0.name < $1.name }
         return enums.count
     }
     
@@ -62,7 +62,7 @@ extension EnumVC: HGTableObservable {
 extension EnumVC: HGTablePostable {
     
     func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
-        let enumName = enums[atIndex].name
+        let enumName = atIndex == notSelected ? "" : enums[atIndex].name
         let postData = HGTablePostableData(notificationName: .enumSelected, identifier: enumName)
         return postData
     }
@@ -71,7 +71,8 @@ extension EnumVC: HGTablePostable {
 extension EnumVC: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        return true
+        if loc.type == .row { return true }
+        return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
@@ -86,9 +87,10 @@ extension EnumVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        let enuM = enums[row]
+        let enumName = enums[row].name
         let keyDict: EnumKeyDict = [.name: string]
-        let _ = project.updateEnum(keyDict: keyDict, name: enuM.name)
+        let enuM = project.updateEnum(keyDict: keyDict, name: enumName) ?? Enum.encodeError
+        enums[row] = enuM
     }
 }
 
@@ -99,7 +101,8 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = project.createIteratedEnum()
+        let enuM = project.createIteratedEnum() ?? Enum.encodeError
+        enums.append(enuM)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -120,7 +123,10 @@ extension EnumVC: HGTableRowAppendable {
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         for row in rows {
             let enuM = enums[row]
-            let _ = project.deleteEnum(name: enuM.name)
+            let success = project.deleteEnum(name: enuM.name)
+            if success {
+                enums.remove(at: row)
+            }
         }
     }
 }
