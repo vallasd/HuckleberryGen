@@ -9,41 +9,84 @@
 
 import Foundation
 
-
-import Foundation
-
 /// context for a Selection Board of unique attributes
 class SBD_Attributes: SelectionBoardDelegate {
     
     /// name of entity to be edited
     let entityName: String
     
-    /// name of attribute or relationship
+    /// name of attribute name
     let name: String
 
     /// reference to the selection board
     weak var selectionBoard: SelectionBoard?
     
     /// a list of strings of all attributes types that can be assigned
-    let types: [String] = Primitive.names + project.enums.map { $0.name } + project.entities.map { $0.name }
+    let typeNames: [String] = Primitive.names + project.enums.map { $0.name } + project.entities.map { $0.name }
     
     let firstEnumIndex = Primitive.names.count
-    
-    let lastEnumIndex = Primitive.names.count + project.enums.count
+    let firstEntityIndex = Primitive.names.count + project.enums.count
     
     init(entityName: String, name: String) {
         self.entityName = entityName
         self.name = name
     }
     
-    
     /// SelectionBoardDelegate function
     func selectionboard(_ sb: SelectionBoard, didChooseLocation loc: HGTableLocation) {
-        let e = project.getEntity(name: entityName)
-        let o = appDelegate.store.project.entities[entityIndex].attributes[attributeIndex]
-        let newAttribute = attribute(fromIndex: loc.index, oldAttribute: o)
-        appDelegate.store.project.entities[entityIndex].attributes[attributeIndex] = newAttribute
-        appDelegate.store.post(forNotifType: .attributeUpdated) // post notification so other classes are in the know
+        
+        // get the name of the type and entity
+        let typeName = typeNames[loc.index]
+        let entity = project.entities.get(name: entityName)!
+        
+        // create attribute or update attribute
+        if loc.index < firstEnumIndex {
+            
+            // object was an attribute, we just need to update its typeName
+            let isAttribute = entity.attributes.filter { $0.name == name }.count > 0
+            if isAttribute {
+                let keyDict: AttributeKeyDict = [.typeName: typeName]
+                let _ = project.updateAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                return
+            }
+            
+            // delete enumAttribute or entityAttribute if they exist, we dont want to report error because one will not exist
+            HGReport.shared.isOn = false
+            let _ = project.deleteEnumAttribute(name: name, entityName: entityName)
+            let _ = project.deleteEntityAttribute(name: name, entityName1: entityName)
+            HGReport.shared.isOn = true
+            
+            // create
+            let a = Attribute(name: name, typeName: typeName, isHash: false)
+            let _ = project.createAttribute(attribute: a, entityName: entityName)
+            return
+        }
+        
+        // create enumAttribute or update enumAttribute
+        if loc.index < firstEntityIndex {
+            
+            // object was an enumAttribute, we just need to update its enumName
+            let isEnumAttribute = project.enumAttributes.filter { $0.name == name }.count > 0
+            if isEnumAttribute {
+                let keyDict: EnumAttributeKey = [.enumName: typeName]
+                let _ = project.updateEnumAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                return
+            }
+            
+            // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
+            HGReport.shared.isOn = false
+            let _ = project.deleteAttribute(name: name, entityName: entityName)
+            let _ = project.deleteEntityAttribute(name: name, entityName1: entityName)
+            HGReport.shared.isOn = true
+            
+            // create
+            let ea = EnumAttribute(name: name, entityName: entityName, enumName: typeName, isHash: false)
+            let _ = project.createIteratedEnumAttribute(entityName1: <#T##String#>, entityName2: <#T##String#>)
+            return
+        }
+        
+        
+        
     }
     
     func attribute(fromIndex i: Int, oldAttribute o: Attribute) -> Attribute {
@@ -79,7 +122,7 @@ class SBD_Attributes: SelectionBoardDelegate {
 extension SBD_Attributes: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        return types.count
+        return typeNames.count
     }
     
     func cellType(fortable table: HGTable) -> CellType {
@@ -87,7 +130,7 @@ extension SBD_Attributes: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let name = types[index]
+        let name = typeNames[index]
         let image = index < firstEnumIndex ? Primitive.create(string: name).image : Enum.image(withName: name)
         let imagedata = HGImageData(title: name, image: image)
         let cellData = HGCellData.imageCell(image: imagedata)

@@ -21,6 +21,8 @@ class EnumVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView! { didSet { hgtable = HGTable(tableview: tableview, delegate: self) } }
     
+    var enums: [Enum] = []
+    
     var hgtable: HGTable!
     
     override func viewDidLoad() {
@@ -32,7 +34,8 @@ class EnumVC: NSViewController {
 extension EnumVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        return appDelegate.store.project.enums.count
+        enums = project.enums.sorted { $0.name > $1.name }
+        return enums.count
     }
     
     func cellType(fortable table: HGTable) -> CellType {
@@ -40,7 +43,7 @@ extension EnumVC: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let enuM = appDelegate.store.project.enums[index]
+        let enuM = enums[index]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: enuM.name),
             field1: HGFieldData(title: ""),
@@ -58,8 +61,10 @@ extension EnumVC: HGTableObservable {
 
 extension EnumVC: HGTablePostable {
     
-    func selectNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .enumSelected)
+    func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
+        let enumName = enums[atIndex].name
+        let postData = HGTablePostableData(notificationName: .enumSelected, identifier: enumName)
+        return postData
     }
 }
 
@@ -81,11 +86,10 @@ extension EnumVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        var enuM = appDelegate.store.project.enums[row]
-        enuM.name = string
-        appDelegate.store.project.enums[row] = enuM
+        let enuM = enums[row]
+        let keyDict: EnumKeyDict = [.name: string]
+        let _ = project.updateEnum(keyDict: keyDict, name: enuM.name)
     }
-    
 }
 
 extension EnumVC: HGTableRowAppendable {
@@ -95,7 +99,7 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = appDelegate.store.createEnum()
+        let _ = project.createIteratedEnum()
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -103,8 +107,7 @@ extension EnumVC: HGTableRowAppendable {
         var willAskUser = false
         
         for row in rows {
-            let enuM = appDelegate.store.project.enums[row]
-            if enuM.cases.count > 0 {
+            if enums[row].cases.count > 0 {
                 willAskUser = true
             }
         }
@@ -115,6 +118,9 @@ extension EnumVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.project.enums.removeIndexes(rows)
+        for row in rows {
+            let enuM = enums[row]
+            let _ = project.deleteEnum(name: enuM.name)
+        }
     }
 }

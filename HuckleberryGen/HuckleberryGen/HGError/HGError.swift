@@ -6,8 +6,9 @@
 
 struct HGReport {
     
-    static let shared = HGReport()
+    static var shared = HGReport()
     
+    var isOn = true
     let hgReportHandlerInfo = true
     let hgReportHandlerWarn = true
     let hgReportHandlerError = true
@@ -15,6 +16,7 @@ struct HGReport {
     let hgReportHandlerAssert = true
     
     func report(_ msg: String, type: HGErrorType) {
+        if !isOn { return }
         switch (type) {
         case .info:    if hgReportHandlerInfo == false { return }
         case .warn:    if hgReportHandlerInfo == false { return }

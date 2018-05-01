@@ -64,10 +64,9 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         
         if elementName == ParseType.Entity.rawValue {
-            
             let name = attributeDict["name"]!
             if lastEntity != nil { entities.insert(lastEntity!) }
-            lastEntity = Entity(name: name)
+            lastEntity = Entity(name: name, attributes: [])
             return
         }
         
@@ -76,8 +75,9 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
             if lastEntity != nil {
                 let primitive = attributeDict["attributeType"].primitive
                 let name = attributeDict["name"].string
-                let attribute = Attribute(name: name, typeName: primitive.name, type: .primitive, isHash: false)
-                lastEntity!.attributes.append(attribute)
+                let attribute = Attribute(name: name, typeName: primitive.name, isHash: false)
+                // FIXME: this should be an create attribute class
+                lastEntity!.createIteratedAttribute()
                 return
             }
             
@@ -114,7 +114,8 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
     
     fileprivate func callDelegate() {
         let project = Project.new
-        project.entities = project.entities + entities
+        // FIXME: This is not working
+        //project.entities = project.entities + entities
         delegate?.parserDidParse(xml, success: !didError, project: project)
     }
     

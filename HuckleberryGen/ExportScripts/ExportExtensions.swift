@@ -20,12 +20,14 @@ class ExportExtensions {
     init(baseDir: String, store: HuckleberryGen) {
         path = baseDir + "/Extensions"
         let licenseInfo = store.licenseInfo
-        let entityNames = store.project.entities.map { $0.name }
-        let enumNames = store.project.enums.map { $0.name }
+        let entityArray = project.entities.sorted { $0.name > $1.name }
+        let enumArray = project.enums.sorted { $0.name > $1.name }
+        let entityNames = entityArray.map { $0.name }
+        let enumNames = enumArray.map { $0.name }
         
         exportOptional = ExportOptional(baseDir: path, licenseInfo: licenseInfo, entityNames: entityNames, enumNames: enumNames)
-        exportString = ExportString(baseDir: path, licenseInfo: licenseInfo, enums: store.project.enums)
-        exportInt = ExportInt(baseDir: path, licenseInfo: licenseInfo, enums: store.project.enums)
+        exportString = ExportString(baseDir: path, licenseInfo: licenseInfo, enums: enumArray)
+        exportInt = ExportInt(baseDir: path, licenseInfo: licenseInfo, enums: enumArray)
     }
     
     /// creates a base folder

@@ -103,14 +103,16 @@ extension Project {
         return false
     }
     
-    func updateEntity(keys: [EntityKey], withValues vs: [Any], name n: String) -> Entity? {
+    func updateEntity(keyDict: EntityKeyDict, name n: String) -> Entity? {
         
-        if usedNameIn(values: vs) {
+        if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
         
-        return entities.update(keys: keys, withValues: vs, name: n)
+        return entities.update(keyDict: keyDict, name: n)
     }
+    
+    
     
     // EntityAttributes
     
@@ -135,7 +137,76 @@ extension Project {
         return entityAttributes.update(keyDict: keyDict, name: n, entityName1: en)
     }
     
+    // Attribute
+    
+    func createAttribute(attribute a: Attribute, entityName: String) -> Attribute? {
+        
+        let values = [a.name]
+        if usedNameIn(values: values) {
+            return nil
+        }
+        
+        if var entity = entities.get(name: entityName) {
+            let attribute = entity.createAttribute(attribute: a)
+            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
+            if entities.update(keyDict: keyDict, name: entityName) != nil {
+                return attribute
+            }
+        }
+        
+        return nil
+    }
+    
+    func createIteratedAttribute(entityName: String) -> Attribute? {
+        
+        if var entity = entities.get(name: entityName) {
+            let attribute = entity.createIteratedAttribute()
+            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
+            if entities.update(keyDict: keyDict, name: entityName) != nil {
+                return attribute
+            }
+        }
+        
+        return nil
+    }
+    
+    func deleteAttribute(name n: String, entityName: String) -> Bool {
+        
+        if var entity = entities.get(name: entityName) {
+            let deleted = entity.deleteAttribute(name: n)
+            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
+            if entities.update(keyDict: keyDict, name: entityName) != nil {
+                return deleted
+            }
+        }
+        
+        return false
+    }
+    
+    func updateAttribute(keyDict: AttributeKeyDict, name n: String, entityName: String) -> Attribute? {
+        
+        if var entity = entities.get(name: entityName) {
+            let updatedAttribute = entity.updateAttribute(keyDict: keyDict, name: n)
+            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
+            if entities.update(keyDict: keyDict, name: entityName) != nil {
+                return updatedAttribute
+            }
+        }
+        
+        return nil
+    }
+    
     // EnumAttributes
+    
+    func createEnumAttribute(enumAttribute: EnumAttribute) -> EnumAttribute? {
+        
+        let values = [enumAttribute.name]
+        if usedNameIn(values: values) {
+            return nil
+        }
+        
+        return enumAttributes.create(attribute: enumAttribute)
+    }
     
     func createIteratedEnumAttribute(entityName1 en1: String, entityName2 en2: String) -> EnumAttribute? {
         return enumAttributes.createIterated(entityName: en1, enumName: en2)
@@ -229,9 +300,6 @@ extension Project {
         
         return nil
     }
-    
-    
-    
     
     fileprivate func usedNameIn(values: [Any]) -> Bool {
         let used = usedNames.map { $0.name }

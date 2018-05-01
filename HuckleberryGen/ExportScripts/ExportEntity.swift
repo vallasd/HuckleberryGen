@@ -161,11 +161,7 @@ class ExportEntity {
         
         // encode variable attributes
         for attribute in entity.attributes {
-            if attribute.type == .primitive {
-                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
-            } else {
-                string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name).encode\n"
-            }
+            string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
         }
         
         // end encode variable

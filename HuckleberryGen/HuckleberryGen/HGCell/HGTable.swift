@@ -40,7 +40,7 @@ protocol HGTableLocationSelectable: HGTableDisplayable {
 
 /// return object for HGTablePostable delegate
 struct HGTablePostableData {
-    let notificationName: String
+    let notificationName: HGNotifType
     let identifier: String // unique identifier, the receiving HGTable will update parentName with this String
 }
 
@@ -339,7 +339,7 @@ extension HGTable: HGTableViewDelegate {
             let notification = postData.notificationName
             let name = postData.identifier
             let postObject: HGDICT = ["index" : row, "name" : name]
-            HGNotif.postNotification(notification, withObject: postObject)
+            HGNotif.postNotification(notification.string, withObject: postObject)
         }
     }
     
@@ -357,7 +357,7 @@ extension HGTable: HGTableViewDelegate {
             let row = notSelected
             let name = ""
             let postObject: HGDICT = ["index" : row, "name" : name]
-            HGNotif.postNotification(notification, withObject: postObject)
+            HGNotif.postNotification(notification.string, withObject: postObject)
         }
     }
 }

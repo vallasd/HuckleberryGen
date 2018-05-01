@@ -15,7 +15,7 @@ class EntityVC: NSViewController {
     
     @IBOutlet weak var tableview: HGTableView!
     
-    var entities = project.entities
+    var entities: [Entity] = []
     
     var hgtable: HGTable!
     
@@ -25,17 +25,14 @@ class EntityVC: NSViewController {
         super.viewDidLoad()
         hgtable = HGTable(tableview: tableview, delegate: self)
     }
-    
-    func updateModel() {
-        entities = project.entities
-    }
 }
 
 // MARK: HGTableDisplayable
 extension EntityVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        return appDelegate.store.project.entities.count
+        entities = project.entities.sorted { $0.name > $1.name }
+        return entities.count
     }
     
     func cellType(fortable table: HGTable) -> CellType {
@@ -43,10 +40,10 @@ extension EntityVC: HGTableDisplayable {
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let entity = appDelegate.store.project.entities[index]
+        let entity = entities[index]
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entity.name),
-            field1: HGFieldData(title: entity.hashRep),
+            field1: HGFieldData(title: ""),
             image0: HGImageData(title: "", image: #imageLiteral(resourceName: "entityIcon"))
         )
     }
@@ -63,8 +60,9 @@ extension EntityVC: HGTableObservable {
 // MARK: HGTablePostable
 extension EntityVC: HGTablePostable {
     
-    func selectNotification(fortable table: HGTable) -> String {
-        return appDelegate.store.notificationName(forNotifType: .entitySelected)
+    func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
+        let postData = HGTablePostableData(notificationName: .entitySelected, identifier: entities[atIndex].name)
+        return postData
     }
 }
 
@@ -72,23 +70,13 @@ extension EntityVC: HGTablePostable {
 extension EntityVC: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        
         // if a row or hash field, return true
         if loc.type == .row { return true }
-        if loc.type == .field && loc.typeIndex == 1 { return true }
         return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
-        
-        // if hash field, display selection board of hashes
-        if loc.type == .field && loc.typeIndex == 1 {
-            let entity = appDelegate.store.getEntity(index: loc.index)
-            let hashes = appDelegate.store.project.hashables(forEntity: entity)
-            let context = SBD_Hash(entityIndex: loc.index, hashes: hashes)
-            let boarddata = SelectionBoard.boardData(withContext: context)
-            appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
-        }
+        // do nothing
     }
 }
 
@@ -101,9 +89,10 @@ extension EntityVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        appDelegate.store.updateEntity(name: string, atIndex: row)
+        let entityName = entities[row].name
+        let keyDict: EntityKeyDict = [.name: string]
+        let _ = project.updateEntity(keyDict: keyDict, name: entityName)
     }
-    
 }
 
 // MARK: HGTableRowAppendable
@@ -114,13 +103,13 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = appDelegate.store.createEntity()
+        let _ = project.createIteratedEntity()
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         for row in rows {
-            let entity = appDelegate.store.project.entities[row]
+            let entity = entities[row]
             if entity.attributes.count > 0 {
                 return .askUser
             }
@@ -130,7 +119,10 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        let _ = appDelegate.store.deleteEntities(atIndexes: rows)
+        for row in rows {
+            let name = entities[row].name
+            let _ = project.deleteEntity(name: name)
+        }
     }
 }
 

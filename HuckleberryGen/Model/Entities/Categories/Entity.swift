@@ -57,6 +57,10 @@ struct Entity: HGEncodable {
         return Entity(name: n, attributes: a)
     }
     
+    mutating func createAttribute(attribute a: Attribute) -> Attribute? {
+        return attributes.create(attribute: a)
+    }
+    
     mutating func createIteratedAttribute() -> Attribute? {
         return attributes.createIterated()
     }

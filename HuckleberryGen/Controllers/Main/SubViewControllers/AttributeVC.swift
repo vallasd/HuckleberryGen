@@ -15,8 +15,18 @@ class AttributeVC: NSViewController {
     @IBOutlet weak var tableview: HGTableView!
     
     var hgtable: HGTable!
-
-    fileprivate var editingLocation: HGTableLocation?
+    
+    var attributes: [Attribute] = []
+    var enumAttributes: [EnumAttribute] = []
+    var entityAttributes: [EntityAttribute] = []
+    var firstEnumIndex: Int { return attributes.count }
+    var firstEntityIndex: Int { return attributes.count + enumAttributes.count }
+    
+    fileprivate func name(givenIndex index: Int) -> String {
+        if index < firstEnumIndex { return attributes[index].name }
+        if index < firstEntityIndex { return enumAttributes[index - attributes.count].name }
+        return entityAttributes[index - attributes.count - enumAttributes.count].name
+    }
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -28,7 +38,15 @@ class AttributeVC: NSViewController {
 extension AttributeVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        return table.parentRow == notSelected ? 0 : appDelegate.store.project.entities[table.parentRow].attributes.count
+        
+        if table.parentName != "", let entity = project.entities.get(name: table.parentName) {
+            attributes = entity.attributes.sorted { $0.name > $1.name }
+            enumAttributes = project.enumAttributes.filter { $0.entityName == entity.name }.sorted { $0.name > $1.name }
+            entityAttributes = project.entityAttributes.filter { $0.entityName1 == entity.name }.sorted { $0.name > $1.name }
+            return attributes.count + enumAttributes.count + entityAttributes.count
+        }
+        
+        return 0
     }
     
     func cellType(fortable table: HGTable) -> CellType {
@@ -37,13 +55,33 @@ extension AttributeVC: HGTableDisplayable {
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         
-        let attribute = appDelegate.store.project.entities[table.parentRow].attributes[index]
+        // create attribute data cell
+        if index < firstEnumIndex {
+            let attribute = attributes[index]
+            let image = attribute.image
+            return HGCellData.defaultCell(
+                field0: HGFieldData(title: attribute.name),
+                field1: HGFieldData(title: ""),
+                image0: HGImageData(image: image)
+            )
+        }
         
-        // define images and text going into attribute
-        let image = attribute.typeImage
+        // create enumAttribute data cell
+        if index < firstEntityIndex {
+            let enumAttribute = enumAttributes[index - attributes.count]
+            let image = enumAttribute.image
+            return HGCellData.defaultCell(
+                field0: HGFieldData(title: enumAttribute.name),
+                field1: HGFieldData(title: ""),
+                image0: HGImageData(image: image)
+            )
+        }
         
+        // create entityAttribute data cell
+        let entityAttribute = enumAttributes[index - attributes.count - enumAttributes.count]
+        let image = entityAttribute.image
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: attribute.name),
+            field0: HGFieldData(title: entityAttribute.name),
             field1: HGFieldData(title: ""),
             image0: HGImageData(image: image)
         )
@@ -60,11 +98,11 @@ extension AttributeVC: HGTableObservable {
 extension AttributeVC: HGTableRowAppendable {
     
     func hgtable(shouldAddRowToTable table: HGTable) -> Bool  {
-        return table.parentRow != notSelected
+        return table.parentIndex != notSelected
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = appDelegate.store.project.entities[table.parentRow].createAttribute()
+        let _ = project.createIteratedAttribute(entityName: table.parentName)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -72,7 +110,13 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.project.entities[table.parentRow].attributes.removeIndexes(rows)
+        
+        for row in rows {
+            let n = name(givenIndex: row)
+            if row < firstEnumIndex { let _ = project.deleteAttribute(name: n, entityName: table.parentName) }
+            else if row < firstEntityIndex { let _ = project.deleteEnumAttribute(name: n, entityName: table.parentName) }
+            else { let _ = project.deleteEntityAttribute(name: n, entityName1: table.parentName) }
+        }
     }
 }
 
@@ -86,7 +130,8 @@ extension AttributeVC: HGTableLocationSelectable {
         
         // present a selection board to update current Attribute
         if loc.type == .image && loc.typeIndex == 0 {
-            let context = SBD_Attributes(entityIndex: table.parentRow, attributeIndex: loc.index)
+            let n = name(givenIndex: loc.index)
+            let context = SBD_Attributes(entityName: table.parentName, name: n)
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
@@ -107,12 +152,26 @@ extension AttributeVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         
-        var attribute = appDelegate.store.project.entities[table.parentRow].attributes[row]
+        // create attribute data cell
+        if row < firstEnumIndex {
+            let n = name(givenIndex: row)
+            let keyDict: AttributeKeyDict = [.name: string]
+            let _ = project.updateAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            return
+        }
         
-        // FIXME: Need to update this
-//        attribute.name = string.changeToVarRep ?? string
-//        appDelegate.store.project.entities[table.parentRow].attributes[row] = attribute
+        // create enumAttribute data cell
+        if row < firstEntityIndex {
+            let n = name(givenIndex: row)
+            let keyDict: EnumAttributeKeyDict = [.name: string]
+            let _ = project.updateEnumAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            return
+        }
         
-        table.update()
+        // create entityAttribute data cell
+        let n = name(givenIndex: row)
+        let keyDict: EntityAttributeKeyDict = [.name: string]
+        let _ = project.updateEntityAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+        return
     }
 }

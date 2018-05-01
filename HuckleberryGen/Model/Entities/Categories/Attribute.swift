@@ -76,7 +76,7 @@ extension Set where Element == Attribute {
     }
     
     mutating func createIterated() -> Attribute? {
-        let name = iteratedName(name: "New Attribute")
+        let name = self.map { $0.name }.iteratedTypeRepresentable(string: "New Attribute")
         let a = Attribute(name: name)
         return create(attribute: a)
     }

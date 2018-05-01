@@ -15,9 +15,7 @@ class EnumCasesVC: NSViewController {
     
     var hgtable: HGTable!
     
-    var enumCases: Set<EnumCase> = []
-    
-    fileprivate var editingLocation: HGTableLocation?
+    var enumCases: [EnumCase] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +33,7 @@ extension EnumCasesVC: HGTableDisplayable {
     func numberOfItems(fortable table: HGTable) -> Int {
         
         if table.parentName != "" {
-            enumCases = project.enums.get(name: table.parentName)?.cases.sorted(by: <#T##(EnumCase, EnumCase) throws -> Bool#>) ?? []
+            enumCases = project.enums.get(name: table.parentName)?.cases.sorted { $0.name > $1.name } ?? []
             return enumCases.count
         }
         
@@ -47,9 +45,9 @@ extension EnumCasesVC: HGTableDisplayable {
     }
    
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
-        let enumcase = appDelegate.store.project.enums[table.parentRow].cases[index]
+        let enumcase = enumCases[index]
         return HGCellData.fieldCell2(
-            field0: HGFieldData(title: enumcase),
+            field0: HGFieldData(title: enumcase.name),
             field1: HGFieldData(title: String(index))
         )
     }
@@ -87,15 +85,18 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = appDelegate.store.createEnumCase(atEnumIndex: table.parentRow)
+        let _ = project.createIteratedEnumCase(enumName: table.parentName)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        return appDelegate.store.project.enums[table.parentRow].cases.count > 0 ? .askUser : .yes
+        return enumCases.count > 0 ? .askUser : .yes
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
-        appDelegate.store.project.enums[table.parentRow].cases.removeIndexes(rows)
+        for row in rows {
+            let name = enumCases[row].name
+            let _ = project.deleteEnumCase(name: name, enumName: table.parentName)
+        }
     }
 }
 
@@ -107,7 +108,9 @@ extension EnumCasesVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        let _ = appDelegate.store.updateEnumCase(name: string, atIndex: row, enumIndex: table.parentRow)
+        let name = enumCases[row].name
+        let keyDict: EnumCaseKeyDict = [.name: string]
+        let _ = project.updateEnumCase(keysDict: keyDict, name: name, enumName: table.parentName)
     }
     
 }

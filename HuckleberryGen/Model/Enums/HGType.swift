@@ -12,7 +12,7 @@ enum HGType: Int, HGEncodable {
     
     case primitive = 0
     case enuM = 1
-    case relationship = 2
+    case entity = 2
     
     // MARK - HGEncodable
     
