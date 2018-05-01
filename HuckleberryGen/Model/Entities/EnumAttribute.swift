@@ -16,7 +16,6 @@ enum EnumAttributeKey {
 
 typealias EnumAttributeKeyDict = Dictionary<EnumAttributeKey, Any>
 
-// this is an Entity Enum Join Record
 struct EnumAttribute: HGEncodable {
     
     let name: String
@@ -60,8 +59,7 @@ struct EnumAttribute: HGEncodable {
 
 extension Set where Element == EnumAttribute {
     
-    // this function is private because we dont want others just creating one entity, use create iterated
-    fileprivate mutating func create(EnumAttribute r: EnumAttribute) -> EnumAttribute? {
+    mutating func create(enumAttribute r: EnumAttribute) -> EnumAttribute? {
         if insert(r).inserted == false {
             HGReport.shared.insertFailed(set: EnumAttribute.self, object: r)
             return nil
@@ -80,7 +78,7 @@ extension Set where Element == EnumAttribute {
                                             enumName: en2,
                                             isHash: false)
         
-        return create(EnumAttribute: entityAttribute)
+        return create(enumAttribute: entityAttribute)
     }
     
     /// deletes All EnumAttribute with EntityName
@@ -180,7 +178,7 @@ extension Set where Element == EnumAttribute {
                                                            enumName: enumName,
                                                            isHash: isHash)
         
-        return create(EnumAttribute: updatedEnumAttribute)
+        return create(enumAttribute: updatedEnumAttribute)
     }
     
     fileprivate func iterated(name n: String, entityName en: String) -> String {

@@ -27,7 +27,7 @@ struct Entity: HGEncodable {
         attributes = a
     }
     
-    fileprivate func update(name n: String?, attributes a: Set<Attribute>?) -> Entity {
+    func update(name n: String?, attributes a: Set<Attribute>?) -> Entity {
         let name = n == nil ? self.name : n!
         let attributes = a == nil ? self.attributes : a!
         return Entity(name: name, attributes: attributes)

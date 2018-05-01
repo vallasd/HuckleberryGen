@@ -405,5 +405,8 @@ extension HGTable: HGCellDelegate {
     
     func hgcell(_ cell: HGCell, didEditField field: Int, withString string: String) {
         fieldEditDelegate?.hgtable(self, didEditRow: cell.row, field: field, withString: string)
+        let r = IndexSet([cell.row])
+        let c = IndexSet([0])
+        tableview.reloadData(forRowIndexes: r, columnIndexes: c)
     }
 }

@@ -73,12 +73,12 @@ struct EntityAttribute: HGEncodable {
 extension Set where Element == EntityAttribute {
     
     // this function is private because we dont want others just creating one entity, use create iterated
-    fileprivate mutating func create(EntityAttribute r: EntityAttribute) -> EntityAttribute? {
-        if insert(r).inserted == false {
-            HGReport.shared.insertFailed(set: EntityAttribute.self, object: r)
+    mutating func create(entityAttribute: EntityAttribute) -> EntityAttribute? {
+        if insert(entityAttribute).inserted == false {
+            HGReport.shared.insertFailed(set: EntityAttribute.self, object: entityAttribute)
             return nil
         }
-        return r
+        return entityAttribute
     }
     
     // creates EntityAttribute and its inverse iterated if names already exist
@@ -93,7 +93,7 @@ extension Set where Element == EntityAttribute {
                                               isArray: false,
                                               deletionRule: .nullify)
         
-        return create(EntityAttribute: entityAttribute)
+        return create(entityAttribute: entityAttribute)
     }
     
     /// deletes All EntityAttributes with EntityName
@@ -181,7 +181,7 @@ extension Set where Element == EntityAttribute {
                                                          isArray: isArray,
                                                          deletionRule: deletionRule)
         
-        return create(EntityAttribute: updatedEntityAttribute)
+        return create(entityAttribute: updatedEntityAttribute)
     }
     
     fileprivate func iterated(name n: String, entityName1 en1: String) -> String {

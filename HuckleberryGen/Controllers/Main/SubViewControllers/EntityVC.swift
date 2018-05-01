@@ -31,7 +31,7 @@ class EntityVC: NSViewController {
 extension EntityVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        entities = project.entities.sorted { $0.name > $1.name }
+        entities = project.entities.sorted { $0.name < $1.name }
         return entities.count
     }
     
@@ -61,7 +61,8 @@ extension EntityVC: HGTableObservable {
 extension EntityVC: HGTablePostable {
     
     func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
-        let postData = HGTablePostableData(notificationName: .entitySelected, identifier: entities[atIndex].name)
+        let name = atIndex == notSelected ? "" : entities[atIndex].name
+        let postData = HGTablePostableData(notificationName: .entitySelected, identifier: name)
         return postData
     }
 }
@@ -91,7 +92,8 @@ extension EntityVC: HGTableFieldEditable {
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         let entityName = entities[row].name
         let keyDict: EntityKeyDict = [.name: string]
-        let _ = project.updateEntity(keyDict: keyDict, name: entityName)
+        let entity = project.updateEntity(keyDict: keyDict, name: entityName) ?? Entity.encodeError
+        entities[row] = entity
     }
 }
 
@@ -103,7 +105,8 @@ extension EntityVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = project.createIteratedEntity()
+        let entity = project.createIteratedEntity() ?? Entity.encodeError
+        entities.append(entity)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -121,7 +124,10 @@ extension EntityVC: HGTableRowAppendable {
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
         for row in rows {
             let name = entities[row].name
-            let _ = project.deleteEntity(name: name)
+            let success = project.deleteEntity(name: name)
+            if success {
+                entities.remove(at: row)
+            }
         }
     }
 }

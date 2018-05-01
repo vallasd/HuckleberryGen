@@ -502,12 +502,18 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         let string = fieldEditor.string
         
         // update color in a bit
-        delay(0.4) {
-            guard let field = self.fields[control.tag] else { return }
-            self.selectionSetup(field: field)
+        delay(0.2) {
+            [weak self] in
+            guard let field = self?.fields[control.tag] else { return }
+            self?.selectionSetup(field: field)
         }
         
-        delegate?.hgcell(self, didEditField: control.tag, withString: string)
+        // call delegate in a bit
+        delay(0.1) {
+            [weak self] in
+            self?.delegate?.hgcell(self!, didEditField: control.tag, withString: string)
+        }
+        
         return true
     }
     

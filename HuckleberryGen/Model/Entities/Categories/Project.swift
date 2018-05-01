@@ -105,16 +105,35 @@ extension Project {
     
     func updateEntity(keyDict: EntityKeyDict, name n: String) -> Entity? {
         
+        // check if key values contain a usedName
         if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
         
-        return entities.update(keyDict: keyDict, name: n)
+        let entity = entities.update(keyDict: keyDict, name: n)
+        
+        // replace names in usedName if we changed a name
+        if keyDict.keys.contains(.name), let e = entity {
+            let _ = usedNames.delete(name: n)
+            let _ = usedNames.create(name: e.name)
+        }
+        
+        return entity
     }
     
     
     
     // EntityAttributes
+    
+    func createEntityAttribute(entityAttribute: EntityAttribute) -> EntityAttribute? {
+        
+        let values = [entityAttribute.name]
+        if usedNameIn(values: values) {
+            return nil
+        }
+        
+        return entityAttributes.create(entityAttribute: entityAttribute)
+    }
     
     func createIteratedEntityAttribute(entityName1 en1: String, entityName2 en2: String) -> EntityAttribute? {
         return entityAttributes.createIterated(entityName1: en1, entityName1: en2)
@@ -130,6 +149,7 @@ extension Project {
     
     func updateEntityAttribute(keyDict: EntityAttributeKeyDict, name n: String, entityName en: String) -> EntityAttribute? {
         
+        // check if key values contain a usedName
         if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
@@ -140,6 +160,7 @@ extension Project {
     // Attribute
     
     func createAttribute(attribute a: Attribute, entityName: String) -> Attribute? {
+        
         
         let values = [a.name]
         if usedNameIn(values: values) {
@@ -185,6 +206,8 @@ extension Project {
     
     func updateAttribute(keyDict: AttributeKeyDict, name n: String, entityName: String) -> Attribute? {
         
+        //
+        
         if var entity = entities.get(name: entityName) {
             let updatedAttribute = entity.updateAttribute(keyDict: keyDict, name: n)
             let keyDict: EntityKeyDict = [.attributes: entity.attributes]
@@ -205,7 +228,7 @@ extension Project {
             return nil
         }
         
-        return enumAttributes.create(attribute: enumAttribute)
+        return enumAttributes.create(enumAttribute: enumAttribute)
     }
     
     func createIteratedEnumAttribute(entityName1 en1: String, entityName2 en2: String) -> EnumAttribute? {
@@ -230,7 +253,7 @@ extension Project {
             return nil
         }
         
-        return enumAttributes.update(keyDict: keyDict, name: n, entityName1: en)
+        return enumAttributes.update(keyDict: keyDict, name: n, entityName: en)
     }
     
     // Enums
@@ -253,11 +276,20 @@ extension Project {
     
     func updateEnum(keyDict: EnumKeyDict, name n: String) -> Enum? {
         
+        // check if key values contain a usedName
         if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
         
-        return enums.update(keyDict: keyDict, name: n)
+        let enuM = enums.update(keyDict: keyDict, name: n)
+        
+        // replace names in usedName if we changed a name
+        if keyDict.keys.contains(.name), let e = enuM {
+            let _ = usedNames.delete(name: n)
+            let _ = usedNames.create(name: e.name)
+        }
+        
+        return enuM
     }
     
     // Enum Case
