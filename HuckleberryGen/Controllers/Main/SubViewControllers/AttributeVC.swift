@@ -40,9 +40,9 @@ extension AttributeVC: HGTableDisplayable {
     func numberOfItems(fortable table: HGTable) -> Int {
         
         if table.parentName != "", let entity = project.entities.get(name: table.parentName) {
-            attributes = entity.attributes.sorted { $0.name > $1.name }
-            enumAttributes = project.enumAttributes.filter { $0.entityName == entity.name }.sorted { $0.name > $1.name }
-            entityAttributes = project.entityAttributes.filter { $0.entityName1 == entity.name }.sorted { $0.name > $1.name }
+            attributes = entity.attributes.sorted { $0.name < $1.name }
+            enumAttributes = project.enumAttributes.filter { $0.entityName == entity.name }.sorted { $0.name < $1.name }
+            entityAttributes = project.entityAttributes.filter { $0.entityName1 == entity.name }.sorted { $0.name < $1.name }
             return attributes.count + enumAttributes.count + entityAttributes.count
         }
         
@@ -68,7 +68,7 @@ extension AttributeVC: HGTableDisplayable {
         
         // create enumAttribute data cell
         if index < firstEntityIndex {
-            let enumAttribute = enumAttributes[index - attributes.count]
+            let enumAttribute = enumAttributes[index - firstEnumIndex]
             let image = enumAttribute.image
             return HGCellData.defaultCell(
                 field0: HGFieldData(title: enumAttribute.name),
@@ -78,7 +78,7 @@ extension AttributeVC: HGTableDisplayable {
         }
         
         // create entityAttribute data cell
-        let entityAttribute = enumAttributes[index - attributes.count - enumAttributes.count]
+        let entityAttribute = enumAttributes[index - firstEntityIndex]
         let image = entityAttribute.image
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entityAttribute.name),
@@ -102,7 +102,8 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let _ = project.createIteratedAttribute(entityName: table.parentName)
+        let attribute = project.createIteratedAttribute(entityName: table.parentName) ?? Attribute.encodeError
+        attributes.append(attribute)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -113,9 +114,22 @@ extension AttributeVC: HGTableRowAppendable {
         
         for row in rows {
             let n = name(givenIndex: row)
-            if row < firstEnumIndex { let _ = project.deleteAttribute(name: n, entityName: table.parentName) }
-            else if row < firstEntityIndex { let _ = project.deleteEnumAttribute(name: n, entityName: table.parentName) }
-            else { let _ = project.deleteEntityAttribute(name: n, entityName1: table.parentName) }
+            if row < firstEnumIndex {
+                let success = project.deleteAttribute(name: n, entityName: table.parentName)
+                if success {
+                    attributes.remove(at: row)
+                }
+            } else if row < firstEntityIndex {
+                let success = project.deleteEnumAttribute(name: n, entityName: table.parentName)
+                if success {
+                    enumAttributes.remove(at: row - firstEnumIndex)
+                }
+            } else {
+                let success = project.deleteEntityAttribute(name: n, entityName1: table.parentName)
+                if success {
+                    enumAttributes.remove(at: row - firstEntityIndex)
+                }
+            }
         }
     }
 }

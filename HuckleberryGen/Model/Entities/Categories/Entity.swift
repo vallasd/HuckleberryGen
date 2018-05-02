@@ -27,7 +27,7 @@ struct Entity: HGEncodable {
         attributes = a
     }
     
-    func update(name n: String?, attributes a: Set<Attribute>?) -> Entity {
+    fileprivate func update(name n: String?, attributes a: Set<Attribute>?) -> Entity {
         let name = n == nil ? self.name : n!
         let attributes = a == nil ? self.attributes : a!
         return Entity(name: name, attributes: attributes)
@@ -37,7 +37,7 @@ struct Entity: HGEncodable {
         return NSImage.image(named: "entityIcon", title: name)
     }
     
-    // MARK: HGEcodable
+    // MARK: HGEncodable
     
     static var encodeError: Entity {
         return Entity(name: "Error", attributes: [])

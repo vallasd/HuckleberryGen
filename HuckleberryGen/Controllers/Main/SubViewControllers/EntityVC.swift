@@ -62,7 +62,8 @@ extension EntityVC: HGTablePostable {
     
     func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
         let name = atIndex == notSelected ? "" : entities[atIndex].name
-        let postData = HGTablePostableData(notificationName: .entitySelected, identifier: name)
+        let notification = appDelegate.store.notificationNames(forNotifTypes: [.entitySelected]).first!
+        let postData = HGTablePostableData(notificationName: notification, identifier: name)
         return postData
     }
 }
@@ -92,8 +93,10 @@ extension EntityVC: HGTableFieldEditable {
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         let entityName = entities[row].name
         let keyDict: EntityKeyDict = [.name: string]
-        let entity = project.updateEntity(keyDict: keyDict, name: entityName) ?? Entity.encodeError
-        entities[row] = entity
+        let entity = project.updateEntity(keyDict: keyDict, name: entityName)
+        if entity != nil {
+            entities[row] = entity!
+        }
     }
 }
 

@@ -63,7 +63,8 @@ extension EnumVC: HGTablePostable {
     
     func postData(fortable table: HGTable, atIndex: Int) -> HGTablePostableData {
         let enumName = atIndex == notSelected ? "" : enums[atIndex].name
-        let postData = HGTablePostableData(notificationName: .enumSelected, identifier: enumName)
+        let notification = appDelegate.store.notificationNames(forNotifTypes: [.enumSelected]).first!
+        let postData = HGTablePostableData(notificationName: notification, identifier: enumName)
         return postData
     }
 }
@@ -89,8 +90,10 @@ extension EnumVC: HGTableFieldEditable {
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         let enumName = enums[row].name
         let keyDict: EnumKeyDict = [.name: string]
-        let enuM = project.updateEnum(keyDict: keyDict, name: enumName) ?? Enum.encodeError
-        enums[row] = enuM
+        let enuM = project.updateEnum(keyDict: keyDict, name: enumName)
+        if enuM != nil {
+            enums[row] = enuM!
+        }
     }
 }
 

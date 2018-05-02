@@ -9,7 +9,10 @@
 import Cocoa
 
 extension Attribute {
+    
     var image: NSImage {
-        return NSImage.image(named: "attributeIcon", title: name)
+        return NSImage.image(named: "typeIcon", title: typeName)
     }
+    
+    
 }
