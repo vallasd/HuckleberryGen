@@ -9,8 +9,15 @@
 
 import Cocoa
 
+protocol SBD_AttributeDelegate: AnyObject {
+    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType)
+}
+
 /// context for a Selection Board of unique attributes
 class SBD_Attributes: SelectionBoardDelegate {
+    
+    /// delegate for SBD_Attributes
+    weak var delegate: SBD_AttributeDelegate?
     
     /// name of entity to be edited
     let entityName: String
@@ -22,10 +29,9 @@ class SBD_Attributes: SelectionBoardDelegate {
     weak var selectionBoard: SelectionBoard?
     
     /// a list of strings of all attributes types that can be assigned
-    let typeNames: [String] = Primitive.names + project.enums.map { $0.name } + project.entities.map { $0.name }
-    
-    let firstEnumIndex = Primitive.names.count
-    let firstEntityIndex = Primitive.names.count + project.enums.count
+    let typeNames: [String]
+    let firstEnumIndex: Int
+    let firstEntityIndex: Int
     
     func image(forIndex index: Int) -> NSImage {
         let name = typeNames[index]
@@ -37,6 +43,12 @@ class SBD_Attributes: SelectionBoardDelegate {
     init(entityName: String, name: String) {
         self.entityName = entityName
         self.name = name
+        let primitives = Primitive.names.sorted { $0 < $1 }
+        let enums = project.enums.map { $0.name }.sorted { $0 < $1 }
+        let entities = project.entities.map { $0.name }.sorted { $0 < $1 }
+        typeNames = primitives + enums + entities
+        firstEnumIndex = primitives.count
+        firstEntityIndex = primitives.count + enums.count
     }
     
     /// SelectionBoardDelegate function
@@ -54,6 +66,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             if isAttribute {
                 let keyDict: AttributeKeyDict = [.typeName: typeName]
                 let _ = project.updateAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                delegate?.sbd_attribute(self, didUpdateType: .primitive)
                 return
             }
             
@@ -66,6 +79,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             // create attribute
             let a = Attribute(name: name, typeName: typeName, isHash: false)
             let _ = project.createAttribute(attribute: a, entityName: entityName)
+            delegate?.sbd_attribute(self, didUpdateType: .primitive)
             return
         }
         
@@ -77,6 +91,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             if isEnumAttribute {
                 let keyDict: EnumAttributeKeyDict = [.enumName: typeName]
                 let _ = project.updateEnumAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                delegate?.sbd_attribute(self, didUpdateType: .enuM)
                 return
             }
             
@@ -89,6 +104,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             // create enumAttribute
             let ea = EnumAttribute(name: name, entityName: entityName, enumName: typeName, isHash: false)
             let _ = project.createEnumAttribute(enumAttribute: ea)
+            delegate?.sbd_attribute(self, didUpdateType: .enuM)
             return
         }
         
@@ -99,6 +115,7 @@ class SBD_Attributes: SelectionBoardDelegate {
         if isEntityAttribute {
             let keyDict: EntityAttributeKeyDict = [.entityName2: typeName]
             let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, entityName: entityName)
+            delegate?.sbd_attribute(self, didUpdateType: .entity)
             return
         }
         
@@ -111,19 +128,8 @@ class SBD_Attributes: SelectionBoardDelegate {
         // create enumAttribute
         let ea = EntityAttribute(name: name, entityName1: entityName, entityName2: typeName, isArray: false, deletionRule: .nullify)
         let _ = project.createEntityAttribute(entityAttribute: ea)
+        delegate?.sbd_attribute(self, didUpdateType: .entity)
         return
-    }
-    
-    /// creates an array of HGImageData for an array indexes in attribute
-    func cellImageDatas(forAttributeIndexes indexes: [Int]) -> [HGImageData] {
-        var imagedatas: [HGImageData] = []
-        for index in indexes {
-            let name = typeNames[index]
-            let i = image(forIndex: index)
-            let imagedata = HGImageData(title: name, image: i)
-            imagedatas.append(imagedata)
-        }
-        return imagedatas
     }
 }
 
@@ -140,8 +146,8 @@ extension SBD_Attributes: HGTableDisplayable {
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         let name = typeNames[index]
-        let image = index < firstEnumIndex ? Primitive.create(string: name).image : Enum.image(withName: name)
-        let imagedata = HGImageData(title: name, image: image)
+        let i = image(forIndex: index)
+        let imagedata = HGImageData(title: name, image: i)
         let cellData = HGCellData.imageCell(image: imagedata)
         return cellData
     }

@@ -78,7 +78,7 @@ extension AttributeVC: HGTableDisplayable {
         }
         
         // create entityAttribute data cell
-        let entityAttribute = enumAttributes[index - firstEntityIndex]
+        let entityAttribute = entityAttributes[index - firstEntityIndex]
         let image = entityAttribute.image
         return HGCellData.defaultCell(
             field0: HGFieldData(title: entityAttribute.name),
@@ -146,6 +146,7 @@ extension AttributeVC: HGTableLocationSelectable {
         if loc.type == .image && loc.typeIndex == 0 {
             let n = name(givenIndex: loc.index)
             let context = SBD_Attributes(entityName: table.parentName, name: n)
+            context.delegate = self
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
         }
@@ -170,22 +171,39 @@ extension AttributeVC: HGTableFieldEditable {
         if row < firstEnumIndex {
             let n = name(givenIndex: row)
             let keyDict: AttributeKeyDict = [.name: string]
-            let _ = project.updateAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            let attribute = project.updateAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            if attribute != nil {
+                attributes[row] = attribute!
+            }
             return
         }
         
         // create enumAttribute data cell
-        if row < firstEntityIndex {
+        if row < firstEnumIndex {
             let n = name(givenIndex: row)
             let keyDict: EnumAttributeKeyDict = [.name: string]
-            let _ = project.updateEnumAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            let enumAttribute = project.updateEnumAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            if enumAttribute != nil {
+                enumAttributes[row - firstEnumIndex] = enumAttribute!
+            }
             return
         }
         
         // create entityAttribute data cell
         let n = name(givenIndex: row)
         let keyDict: EntityAttributeKeyDict = [.name: string]
-        let _ = project.updateEntityAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+        let entityAttribute = project.updateEntityAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+        if entityAttribute != nil {
+            entityAttributes[row - firstEntityIndex] = entityAttribute!
+        }
         return
     }
+}
+
+extension AttributeVC: SBD_AttributeDelegate {
+    
+    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType) {
+        hgtable.update()
+    }
+    
 }

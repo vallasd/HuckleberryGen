@@ -61,7 +61,10 @@ extension EnumCasesVC: HGTableObservable {
 extension EnumCasesVC: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        return true
+        if loc.type == .row {
+            return true
+        }
+        return false
     }
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
         // do nothing
@@ -86,7 +89,7 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        return enumcases.count > 0 ? .askUser : .yes
+        return .yes
     }
     
     func hgtable(_ table: HGTable, willDeleteRows rows: [Int]) {
@@ -104,7 +107,12 @@ extension EnumCasesVC: HGTableRowAppendable {
 extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
-        return true
+        
+        if field == 0 {
+            return true
+        }
+        
+        return false
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
