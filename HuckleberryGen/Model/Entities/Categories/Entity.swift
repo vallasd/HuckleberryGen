@@ -47,7 +47,7 @@ struct Entity: HGEncodable {
         var dict = HGDICT()
         dict["name"] = name
         dict["attributes"] = attributes.encode
-        return dict as AnyObject
+        return dict
     }
     
     static func decode(object: Any) -> Entity {

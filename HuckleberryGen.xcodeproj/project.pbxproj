@@ -46,7 +46,6 @@
 		036455C21BA264E40096B255 /* HGCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036455C11BA264E40096B255 /* HGCellType.swift */; };
 		03660ADD1BBDED6600DE41D5 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03660ADC1BBDED6600DE41D5 /* NSImage.swift */; };
 		03660AE11BBE444C00DE41D5 /* EnumCasesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */; };
-		03673A681BEA4C8900CF8F21 /* FieldCell3.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03673A671BEA4C8900CF8F21 /* FieldCell3.xib */; };
 		036C7C061B5143A0004EC724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C051B5143A0004EC724 /* AppDelegate.swift */; };
 		036C7C081B5143A0004EC724 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C071B5143A0004EC724 /* ViewController.swift */; };
 		036C7C0B1B5143A0004EC724 /* HuckleberryGen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 036C7C091B5143A0004EC724 /* HuckleberryGen.xcdatamodeld */; };
@@ -64,10 +63,7 @@
 		036C7CC81B52A17F004EC724 /* LicenseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CC71B52A17F004EC724 /* LicenseInfo.swift */; };
 		036C7CCC1B52B89A004EC724 /* HGDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036C7CCB1B52B89A004EC724 /* HGDate.swift */; };
 		036D23BF1BACA12D002824E9 /* HGTableCellIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036D23BE1BACA12D002824E9 /* HGTableCellIdentifier.swift */; };
-		036E329E1BB2CCA40024AA4E /* MixedCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036E329D1BB2CCA40024AA4E /* MixedCell1.xib */; };
 		036E32A01BB2DED00024AA4E /* DefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036E329F1BB2DED00024AA4E /* DefaultCell.xib */; };
-		036E32A21BB2DEE00024AA4E /* Check4Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036E32A11BB2DEE00024AA4E /* Check4Cell.xib */; };
-		036E32AA1BB2EC650024AA4E /* FieldCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036E32A91BB2EC650024AA4E /* FieldCell1.xib */; };
 		0372A6121B8F6EB800317065 /* XCODE_XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372A6111B8F6EB800317065 /* XCODE_XMLParser.swift */; };
 		0378175A1B7D0D110009D67B /* HGEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037817591B7D0D110009D67B /* HGEntity.swift */; };
 		037EDFA91B84B4C6002527EE /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037EDFA81B84B4C6002527EE /* Enum.swift */; };
@@ -124,7 +120,6 @@
 		03F25EF01B9C17B40048B0A0 /* HGSplitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25EEF1B9C17B40048B0A0 /* HGSplitVC.swift */; };
 		03F25EF71B9C292E0048B0A0 /* HGTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F25EF51B9C292E0048B0A0 /* HGTableHeader.swift */; };
 		03F25EF81B9C292E0048B0A0 /* HGTableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F25EF61B9C292E0048B0A0 /* HGTableHeader.xib */; };
-		03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F38F7B1BBE487A00B2739A /* FieldCell2.xib */; };
 		03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F7E33D1BA891A90053BA6B /* Board.storyboard */; };
 		03FFD8C3208C1E3600CE2CB8 /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8C2208C1E3600CE2CB8 /* NSButton.swift */; };
 		03FFD8C5208C5CFC00CE2CB8 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */; };
@@ -192,7 +187,6 @@
 		036455C11BA264E40096B255 /* HGCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCellType.swift; sourceTree = "<group>"; };
 		03660ADC1BBDED6600DE41D5 /* NSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		03660AE01BBE444C00DE41D5 /* EnumCasesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnumCasesVC.swift; path = ../../Main/SubViewControllers/EnumCasesVC.swift; sourceTree = "<group>"; };
-		03673A671BEA4C8900CF8F21 /* FieldCell3.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell3.xib; sourceTree = "<group>"; };
 		036C7C021B5143A0004EC724 /* HuckleberryGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HuckleberryGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036C7C051B5143A0004EC724 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		036C7C071B5143A0004EC724 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -216,10 +210,7 @@
 		036C7CC71B52A17F004EC724 /* LicenseInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicenseInfo.swift; sourceTree = "<group>"; };
 		036C7CCB1B52B89A004EC724 /* HGDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGDate.swift; sourceTree = "<group>"; };
 		036D23BE1BACA12D002824E9 /* HGTableCellIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTableCellIdentifier.swift; sourceTree = "<group>"; };
-		036E329D1BB2CCA40024AA4E /* MixedCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MixedCell1.xib; sourceTree = "<group>"; };
 		036E329F1BB2DED00024AA4E /* DefaultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefaultCell.xib; sourceTree = "<group>"; };
-		036E32A11BB2DEE00024AA4E /* Check4Cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Check4Cell.xib; sourceTree = "<group>"; };
-		036E32A91BB2EC650024AA4E /* FieldCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell1.xib; sourceTree = "<group>"; };
 		0372A6111B8F6EB800317065 /* XCODE_XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XCODE_XMLParser.swift; path = HGParser/XCODE_XMLParser.swift; sourceTree = "<group>"; };
 		037817591B7D0D110009D67B /* HGEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HGEntity.swift; path = HGEntity/HGEntity.swift; sourceTree = "<group>"; };
 		037EDFA81B84B4C6002527EE /* Enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
@@ -276,7 +267,6 @@
 		03F25EEF1B9C17B40048B0A0 /* HGSplitVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGSplitVC.swift; sourceTree = "<group>"; };
 		03F25EF51B9C292E0048B0A0 /* HGTableHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGTableHeader.swift; sourceTree = "<group>"; };
 		03F25EF61B9C292E0048B0A0 /* HGTableHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HGTableHeader.xib; sourceTree = "<group>"; };
-		03F38F7B1BBE487A00B2739A /* FieldCell2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell2.xib; sourceTree = "<group>"; };
 		03F7E33E1BA891A90053BA6B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = HuckleberryGen/Base.lproj/Board.storyboard; sourceTree = "<group>"; };
 		03FFD8C2208C1E3600CE2CB8 /* NSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSButton.swift; sourceTree = "<group>"; };
 		03FFD8C4208C5CFC00CE2CB8 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
@@ -708,12 +698,7 @@
 			children = (
 				03F25EE71B9C16EA0048B0A0 /* HGTable.swift */,
 				03F25EE21B9C16EA0048B0A0 /* HGCell.swift */,
-				036E329D1BB2CCA40024AA4E /* MixedCell1.xib */,
-				036E32A91BB2EC650024AA4E /* FieldCell1.xib */,
-				03F38F7B1BBE487A00B2739A /* FieldCell2.xib */,
-				03673A671BEA4C8900CF8F21 /* FieldCell3.xib */,
 				036E329F1BB2DED00024AA4E /* DefaultCell.xib */,
-				036E32A11BB2DEE00024AA4E /* Check4Cell.xib */,
 				03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */,
 				036455BF1BA264930096B255 /* HGCellData.swift */,
 				036455C11BA264E40096B255 /* HGCellType.swift */,
@@ -863,20 +848,15 @@
 			files = (
 				03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */,
 				036C7C0D1B5143A0004EC724 /* Assets.xcassets in Resources */,
-				03673A681BEA4C8900CF8F21 /* FieldCell3.xib in Resources */,
-				036E32A21BB2DEE00024AA4E /* Check4Cell.xib in Resources */,
 				03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */,
 				035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */,
 				03D56F251C4F41C500A3A8DC /* XP_PRO_HGEncodable.txt in Resources */,
-				036E32AA1BB2EC650024AA4E /* FieldCell1.xib in Resources */,
 				036C7C101B5143A0004EC724 /* Main.storyboard in Resources */,
 				035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */,
 				035E4A0B1C5832C90005E28A /* XP_CLA_HGError.txt in Resources */,
 				036E32A01BB2DED00024AA4E /* DefaultCell.xib in Resources */,
-				03F38F7C1BBE487A00B2739A /* FieldCell2.xib in Resources */,
 				035E49D71C57FABD0005E28A /* XP_CLA_HGErrorReporter.txt in Resources */,
 				03F25EF81B9C292E0048B0A0 /* HGTableHeader.xib in Resources */,
-				036E329E1BB2CCA40024AA4E /* MixedCell1.xib in Resources */,
 				035E4CB21C5922870005E28A /* XP_CLA_HGOperators.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

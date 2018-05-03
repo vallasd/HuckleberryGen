@@ -134,7 +134,7 @@ extension Optional {
     
     var usedNameSet: Set<UsedName> {
         if let array = self as? HGARRAY { return UsedName.decodeSet(objects: array as [AnyObject]) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not [UsedName] mapable, returning []", type: .error)
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<UsedName> mapable, returning []", type: .error)
         return []
     }
     

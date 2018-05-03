@@ -12,24 +12,13 @@ import Cocoa
 enum CellType {
 
     case defaultCell
-    case mixedCell1
-    case check4Cell
     case imageCell
-    case fieldCell1
-    case fieldCell2
-    case fieldCell3
-    
     
     /// The nib identifier
     var identifier: String {
         switch (self) {
         case .defaultCell: return "DefaultCell"
-        case .mixedCell1: return "MixedCell1"
-        case .check4Cell: return "CheckCell"
         case .imageCell: return "ImageCell"
-        case .fieldCell1: return "FieldCell1"
-        case .fieldCell2: return "FieldCell2"
-        case .fieldCell3: return "FieldCell3"
         }
     }
     
@@ -37,8 +26,6 @@ enum CellType {
     func imagesPerRow(rowWidth: CGFloat) -> Int {
         switch self {
         case .defaultCell: return 1
-        case .mixedCell1: return 1
-        case .check4Cell: return 1
         case .imageCell:
             let imageWidth = rowHeight - HGCellImageBorder
             let numImages = Int(rowWidth / imageWidth)
@@ -46,7 +33,6 @@ enum CellType {
             let totalSpaceNeeded = (CGFloat(numImages) * imageWidth) + sidePadding
             let images = totalSpaceNeeded <= rowWidth ? numImages : numImages - 1
             return images
-        default: return 0
         }
     }
     
@@ -54,8 +40,6 @@ enum CellType {
     var rowHeight: CGFloat {
         switch (self) {
         case .imageCell: return 60
-        case .fieldCell3: return 55
-        case .mixedCell1: return 20
         default: return 50
         }
     }

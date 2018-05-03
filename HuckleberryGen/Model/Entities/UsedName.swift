@@ -36,15 +36,15 @@ struct UsedName: HGEncodable, Hashable, Equatable {
     }
     
     var encode: Any {
-        return name
+        var dict = HGDICT()
+        dict["name"] = name
+        return dict
     }
     
     static func decode(object: Any) -> UsedName {
-        guard let name = object as? String else {
-            HGReport.shared.decode(object, type: UsedName.self)
-            return encodeError
-        }
-        return UsedName(name: name)
+        let dict = HG.decode(hgdict: object, decoderName: "UsedName")
+        let n = dict["name"].string
+        return UsedName(name: n)
     }
     
     // MARK: - Hashable
