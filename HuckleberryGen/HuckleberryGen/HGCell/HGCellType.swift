@@ -13,12 +13,18 @@ enum CellType {
 
     case defaultCell
     case imageCell
+    case fieldCell1
+    case fieldCell2
+    case fieldCell3
     
     /// The nib identifier
     var identifier: String {
         switch (self) {
         case .defaultCell: return "DefaultCell"
         case .imageCell: return "ImageCell"
+        case .fieldCell1: return "FieldCell1"
+        case .fieldCell2: return "FieldCell2"
+        case .fieldCell3: return "FieldCell3"
         }
     }
     
@@ -33,6 +39,7 @@ enum CellType {
             let totalSpaceNeeded = (CGFloat(numImages) * imageWidth) + sidePadding
             let images = totalSpaceNeeded <= rowWidth ? numImages : numImages - 1
             return images
+        default: return 0
         }
     }
     

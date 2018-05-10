@@ -128,6 +128,9 @@
 		104382522093B3B6002BF38A /* Attribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104382512093B3B6002BF38A /* Attribute_EXT.swift */; };
 		109CAC322090E64300369EF5 /* DeletionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC312090E64300369EF5 /* DeletionRule.swift */; };
 		109CAC3420910D9700369EF5 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109CAC3320910D9700369EF5 /* Primitive.swift */; };
+		10D37B5420A4DDDF007C1E69 /* FieldCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D37B5120A4DDDF007C1E69 /* FieldCell2.xib */; };
+		10D37B5520A4DDDF007C1E69 /* FieldCell3.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D37B5220A4DDDF007C1E69 /* FieldCell3.xib */; };
+		10D37B5620A4DDDF007C1E69 /* FieldCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D37B5320A4DDDF007C1E69 /* FieldCell1.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,6 +278,9 @@
 		104382512093B3B6002BF38A /* Attribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute_EXT.swift; sourceTree = "<group>"; };
 		109CAC312090E64300369EF5 /* DeletionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionRule.swift; sourceTree = "<group>"; };
 		109CAC3320910D9700369EF5 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
+		10D37B5120A4DDDF007C1E69 /* FieldCell2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell2.xib; sourceTree = "<group>"; };
+		10D37B5220A4DDDF007C1E69 /* FieldCell3.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell3.xib; sourceTree = "<group>"; };
+		10D37B5320A4DDDF007C1E69 /* FieldCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell1.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -699,6 +705,9 @@
 				03F25EE71B9C16EA0048B0A0 /* HGTable.swift */,
 				03F25EE21B9C16EA0048B0A0 /* HGCell.swift */,
 				036E329F1BB2DED00024AA4E /* DefaultCell.xib */,
+				10D37B5320A4DDDF007C1E69 /* FieldCell1.xib */,
+				10D37B5120A4DDDF007C1E69 /* FieldCell2.xib */,
+				10D37B5220A4DDDF007C1E69 /* FieldCell3.xib */,
 				03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */,
 				036455BF1BA264930096B255 /* HGCellData.swift */,
 				036455C11BA264E40096B255 /* HGCellType.swift */,
@@ -848,7 +857,10 @@
 			files = (
 				03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */,
 				036C7C0D1B5143A0004EC724 /* Assets.xcassets in Resources */,
+				10D37B5420A4DDDF007C1E69 /* FieldCell2.xib in Resources */,
+				10D37B5620A4DDDF007C1E69 /* FieldCell1.xib in Resources */,
 				03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */,
+				10D37B5520A4DDDF007C1E69 /* FieldCell3.xib in Resources */,
 				035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */,
 				03D56F251C4F41C500A3A8DC /* XP_PRO_HGEncodable.txt in Resources */,
 				036C7C101B5143A0004EC724 /* Main.storyboard in Resources */,
