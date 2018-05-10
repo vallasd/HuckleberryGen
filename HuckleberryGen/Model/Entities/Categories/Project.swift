@@ -338,7 +338,7 @@ extension Project {
         for value in values {
             if let string = value as? String {
                 if used.contains(string) {
-                    HGReport.shared.usedName(name: name, type: Project.self)
+                    HGReport.shared.usedName(decoder: Project.self, name: name)
                     return true
                 }
             }

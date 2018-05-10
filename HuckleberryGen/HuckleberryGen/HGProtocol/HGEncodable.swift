@@ -74,7 +74,7 @@ extension HGEncodable where Self: Hashable {
             let decodedObject: Self = decode(object: object)
             let inserted = set.insert(decodedObject).inserted
             if !inserted {
-                HGReport.shared.setDecode(decodedObject, type: Self.self)
+                HGReport.shared.setDecodeFailed(Self.self, object: decodedObject)
             }
         }
         return set

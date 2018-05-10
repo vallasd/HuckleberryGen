@@ -37,15 +37,16 @@ extension EnumCasesVC: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return CellType.fieldCell2
+        return CellType.fieldCell3
     }
    
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         let enumcase = enumcases[index]
-        return HGCellData.fieldCell2(
-            field0: HGFieldData(title: enumcase.name),
-            field1: HGFieldData(title: String(index))
-        )
+        return HGCellData.fieldCell3(field0: HGFieldData(title: enumcase.name),
+                                     field1: HGFieldData(title: "value1:"),
+                                     field2: HGFieldData(title: enumcase.value1),
+                                     field3: HGFieldData(title: "value2:"),
+                                     field4: HGFieldData(title: enumcase.value2))
     }
 }
 
@@ -83,7 +84,6 @@ extension EnumCasesVC: HGTableRowAppendable {
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
-        if enumcases.count > 0 { return .askUser }
         return .yes
     }
     
@@ -103,7 +103,7 @@ extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, shouldEditRow row: Int, field: Int) -> Bool {
         
-        if field == 0 {
+        if field == 0 || field == 2 || field == 4 {
             return true
         }
         
@@ -111,12 +111,21 @@ extension EnumCasesVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
-        let name = enumcases[row].name
-        let keyDict: EnumCaseKeyDict = [.name: string]
-        let enumcase = project.updateEnumCase(keysDict: keyDict, name: name, enumName: table.parentName)
-        if enumcase != nil {
-            enumcases[row] = enumcase!
-        }
+        
+//        var keyDict: EnumCaseKeyDict!
+//
+//        switch field {
+//        case 0: keyDict = [.name: string]
+//        case 2: keyDict = [.value1: string]
+//        case 4: keyDict = [.value2: string]
+//        default:
+//            HGReport.shared.deleteFailed(set: <#T##T#>, object: <#T##Any#>)
+//        }
+//
+//        let enumcase = project.updateEnumCase(keysDict: keyDict, name: enumcases[row].name, enumName: table.parentName)
+//        if enumcase != nil {
+//            enumcases[row] = enumcase!
+//        }
     }
     
 }
