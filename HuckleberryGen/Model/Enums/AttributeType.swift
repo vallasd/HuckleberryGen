@@ -8,7 +8,7 @@
 
 import Cocoa
 
-struct AttributeType: HGEncodable  {
+struct AttributeType: HGCodable  {
     
     let name: String
     let type: HGType
@@ -41,7 +41,7 @@ struct AttributeType: HGEncodable  {
         }
     }
     
-    // MARK: - HGEncodable
+    // MARK: - HGCodable
     
     static var new: AttributeType {
         return AttributeType(name: Primitive._int.name, type: .primitive)
@@ -59,7 +59,7 @@ struct AttributeType: HGEncodable  {
     }
     
     static func decode(object: Any) -> AttributeType {
-        let dict = HG.decode(hgdict: object, decoderName: "Attribute")
+        let dict = HG.decode(hgdict: object, decoder: AttributeType.self)
         let name = dict["name"].string
         let type = dict["type"].hGtype
         return AttributeType(name: name, type: type)

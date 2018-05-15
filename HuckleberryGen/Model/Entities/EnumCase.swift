@@ -16,7 +16,7 @@ enum EnumCaseKey {
 
 typealias EnumCaseKeyDict = Dictionary<EnumCaseKey, Any>
 
-struct EnumCase: HGEncodable {
+struct EnumCase: HGCodable {
     let name: String
     let value1: String
     let value2: String
@@ -28,7 +28,7 @@ struct EnumCase: HGEncodable {
         return EnumCase(name: name, value1: value1, value2: value2)
     }
     
-    // HGEncodable
+    // HGCodable
     
     static var encodeError: EnumCase {
         return EnumCase(name: "Error", value1: "", value2: "")
@@ -43,7 +43,7 @@ struct EnumCase: HGEncodable {
     }
     
     static func decode(object: Any) -> EnumCase {
-        let dict = HG.decode(hgdict: object, decoderName: "Enum")
+        let dict = HG.decode(hgdict: object, decoder: EnumCase.self)
         let name = dict["name"].string
         let value1 = dict["value1"].string
         let value2 = dict["value2"].string

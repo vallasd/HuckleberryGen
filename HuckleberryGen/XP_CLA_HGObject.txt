@@ -5,13 +5,13 @@ import UIKit
 /// reference to appDelegate.
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
-/// Dictionary used in HGEncodables
+/// Dictionary used in HGCodables
 typealias HGDICT = Dictionary<String, AnyObject>
 
-/// Array used in HGEncodables
+/// Array used in HGCodables
 typealias HGARRAY = [HGDICT]
 
-/// returns hgdict from AnyObject, used for HGEncodable
+/// returns hgdict from AnyObject, used for HGCodable
 func hgdict(object object: AnyObject, decoderName: String) -> HGDICT {
     if let dict = object as? HGDICT {
         return dict

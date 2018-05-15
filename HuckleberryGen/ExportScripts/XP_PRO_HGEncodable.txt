@@ -1,20 +1,20 @@
 
 /// allows object to encode and decode from AnyObject (NSCoding)
-protocol HGEncodable {
+protocol HGCodable {
     static var new: Self { get }
     var encode: AnyObject { get }
     static func decode(object object: AnyObject) -> Self
 }
 
 
-extension HGEncodable {
+extension HGCodable {
 
     /// encode optional to dictionary
     func encode(inout dict: HGDICT, key: String) {
         dict[key] = self.encode
     }
 
-    /// decodes an array of objects into an array of [HGEncodable]
+    /// decodes an array of objects into an array of [HGCodable]
     static func decodeArray(objects objects: [AnyObject]) -> [Self] {
         var array: [Self] = []
         for object in objects {
@@ -54,9 +54,9 @@ extension HGEncodable {
     }
 }
 
-extension SequenceType where Generator.Element: HGEncodable {
+extension SequenceType where Generator.Element: HGCodable {
 
-    /// encodes an array of HGEncodables
+    /// encodes an array of HGCodables
     var encode: [AnyObject] {
         var jsonArray: [AnyObject] = []
         for encodable in self {

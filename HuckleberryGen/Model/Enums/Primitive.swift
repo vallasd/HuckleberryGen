@@ -145,7 +145,7 @@ enum Primitive: Int {
     }
 }
 
-extension Primitive: HGEncodable {
+extension Primitive: HGCodable {
     
     static var new: Primitive {
         return ._int

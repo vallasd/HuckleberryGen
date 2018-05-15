@@ -36,7 +36,7 @@ extension Protocol {
     }
 }
 
-extension Protocol: HGEncodable {
+extension Protocol: HGCodable {
     
     static var new: Protocol {
         return Protocol(name: "New Protocol")
@@ -53,7 +53,7 @@ extension Protocol: HGEncodable {
     }
     
     static func decode(object: Any) -> Protocol {
-        let dict = HG.decode(hgdict: object, decoderName: "Enum")
+        let dict = HG.decode(hgdict: object, decoder: Protocol.self)
         let name = dict["name"].string
         return Protocol(name: name)
     }
@@ -62,13 +62,13 @@ extension Protocol: HGEncodable {
 
 enum HG_Protocol {
     
-    case hgEncodable
+    case HGCodable
     
-    static var set: [HG_Protocol] = [.hgEncodable]
+    static var set: [HG_Protocol] = [.HGCodable]
     
     var name: String {
         switch self {
-        case .hgEncodable: return "HGEncodable"
+        case .HGCodable: return "HGCodable"
         }
     }
 }

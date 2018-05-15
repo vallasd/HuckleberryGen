@@ -118,7 +118,7 @@ class ExportEnum {
         return string
     }
     
-    /// creates a HGEncodable extensions for the Entity in string format
+    /// creates a HGCodable extensions for the Entity in string format
     fileprivate func encodableExtension(_ enuM: Enum) -> String {
         
         // get indent
@@ -127,8 +127,8 @@ class ExportEnum {
         // create default case type report, if cases were not loaded, will create string that will cause an error in Export file to draw attention
         let defaultCaseType = enuM.cases.count > 0 ? enuM.cases.first!.name : "Missing Enum Cases!!!"
         
-        // begin hgencodable stanza
-        var string = "extension \(enuM.name): HGEncodable {\n"
+        // begin HGCodable stanza
+        var string = "extension \(enuM.name): HGCodable {\n"
         string += "\n"
         
         // new variable
@@ -155,7 +155,7 @@ class ExportEnum {
         // end decode function
         string += "\(ind)}\n"
         
-        // end hgencodable stanza
+        // end HGCodable stanza
         string += "}\n"
         
         return string

@@ -112,20 +112,20 @@ extension EnumCasesVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         
-//        var keyDict: EnumCaseKeyDict!
-//
-//        switch field {
-//        case 0: keyDict = [.name: string]
-//        case 2: keyDict = [.value1: string]
-//        case 4: keyDict = [.value2: string]
-//        default:
-//            HGReport.shared.deleteFailed(set: <#T##T#>, object: <#T##Any#>)
-//        }
-//
-//        let enumcase = project.updateEnumCase(keysDict: keyDict, name: enumcases[row].name, enumName: table.parentName)
-//        if enumcase != nil {
-//            enumcases[row] = enumcase!
-//        }
+        var keyDict: EnumCaseKeyDict!
+
+        switch field {
+        case 0: keyDict = [.name: string]
+        case 2: keyDict = [.value1: string]
+        case 4: keyDict = [.value2: string]
+        default:
+            HGReport.shared.mappingFailed(HGCell.self, object: field, returning: "nothing")
+        }
+
+        let enumcase = project.updateEnumCase(keysDict: keyDict, name: enumcases[row].name, enumName: table.parentName)
+        if enumcase != nil {
+            enumcases[row] = enumcase!
+        }
     }
     
 }

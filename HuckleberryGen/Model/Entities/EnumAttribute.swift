@@ -16,7 +16,7 @@ enum EnumAttributeKey {
 
 typealias EnumAttributeKeyDict = Dictionary<EnumAttributeKey, Any>
 
-struct EnumAttribute: HGEncodable {
+struct EnumAttribute: HGCodable {
     
     let name: String
     let entityName: String
@@ -31,7 +31,7 @@ struct EnumAttribute: HGEncodable {
         return EnumAttribute(name: name, entityName: entityName, enumName: enumName, isHash: isHash)
     }
     
-    // MARK: - HGEncodable
+    // MARK: - HGCodable
     
     static var encodeError: EnumAttribute {
         let e = "Error"
@@ -48,7 +48,7 @@ struct EnumAttribute: HGEncodable {
     }
     
     static func decode(object: Any) -> EnumAttribute {
-        let dict = HG.decode(hgdict: object, decoderName: "Attribute")
+        let dict = HG.decode(hgdict: object, decoder: EnumAttribute.self)
         let name = dict["name"].string
         let entityName = dict["entityName"].string
         let enumName = dict["enumName"].string

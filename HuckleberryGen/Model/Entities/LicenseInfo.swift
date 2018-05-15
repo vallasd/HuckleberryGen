@@ -32,7 +32,7 @@ struct LicenseInfo {
     }
 }
 
-extension LicenseInfo: HGEncodable {
+extension LicenseInfo: HGCodable {
     
     static var new: LicenseInfo {
         return LicenseInfo(name: "", company: "", contact1: "", contact2: "", type: .allRightsReserved)
@@ -53,7 +53,7 @@ extension LicenseInfo: HGEncodable {
     }
     
     static func decode(object: Any) -> LicenseInfo {
-        let dict = HG.decode(hgdict: object, decoderName: "LicenseInfo")
+        let dict = HG.decode(hgdict: object, decoder: LicenseInfo.self)
         let name = dict["name"].string
         let company = dict["company"].string
         let contact1 = dict["contact1"].string

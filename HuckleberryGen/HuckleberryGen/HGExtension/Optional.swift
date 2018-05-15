@@ -9,13 +9,13 @@ import CoreData
 extension Optional {
     
     var importFile: ImportFile {
-        if let dict = self as? HGDICT { return ImportFile.decode(object: dict as AnyObject) }
+        if let dict = self as? HGDICT { return ImportFile.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self ?? nil))| is not Entity mapable, returning new ImportFile", type: .error)
         return ImportFile.new
     }
     
     var importFiles: [ImportFile] {
-        if let array = self as? HGARRAY { return ImportFile.decodeArray(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return ImportFile.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [ImportFile] mapable, returning []", type: .error)
         return []
     }
@@ -45,18 +45,16 @@ extension Optional {
     }
     
     var entityArray: [Entity] {
-        if let array = self as? HGARRAY { return Entity.decodeArray(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return Entity.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Entity] mapable, returning []", type: .error)
         return []
     }
     
     var entitySet: Set<Entity> {
-        if let array = self as? HGARRAY { return Entity.decodeSet(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return Entity.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<Entity> mapable, returning []", type: .error)
         return []
     }
-    
-    
     
     var attributeType: AttributeType {
         return AttributeType.decode(object: self as Any)
@@ -73,13 +71,13 @@ extension Optional {
     }
     
     var attributeArray: [Attribute] {
-        if let array = self as? HGARRAY { return Attribute.decodeArray(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return Attribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute] mapable, returning []", type: .error)
         return []
     }
     
     var attributeSet: Set<Attribute> {
-        if let array = self as? HGARRAY { return Attribute.decodeSet(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return Attribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute2] mapable, returning []", type: .error)
         return []
     }
@@ -91,13 +89,13 @@ extension Optional {
     }
     
     var entityAttributeArray: [EntityAttribute] {
-        if let array = self as? HGARRAY { return EntityAttribute.decodeArray(objects: array) }
+        if let array = self as? HGARRAY { return EntityAttribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [EntityAttribute] mapable, returning []", type: .error)
         return []
     }
     
     var entityAttributeSet: Set<EntityAttribute> {
-        if let array = self as? HGARRAY { return EntityAttribute.decodeSet(objects: array) }
+        if let array = self as? HGARRAY { return EntityAttribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<EntityAttribute> mapable, returning []", type: .error)
         return []
     }
@@ -109,13 +107,13 @@ extension Optional {
     }
     
     var enumAttributeArray: [EnumAttribute] {
-        if let array = self as? HGARRAY { return EnumAttribute.decodeArray(objects: array) }
+        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [EnumAttribute] mapable, returning []", type: .error)
         return []
     }
     
     var enumAttributeSet: Set<EnumAttribute> {
-        if let array = self as? HGARRAY { return EnumAttribute.decodeSet(objects: array) }
+        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<EnumAttribute> mapable, returning []", type: .error)
         return []
     }
@@ -127,13 +125,13 @@ extension Optional {
     }
     
     var usedNameArray: [UsedName] {
-        if let array = self as? HGARRAY { return UsedName.decodeArray(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return UsedName.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [UsedName] mapable, returning []", type: .error)
         return []
     }
     
     var usedNameSet: Set<UsedName> {
-        if let array = self as? HGARRAY { return UsedName.decodeSet(objects: array as [AnyObject]) }
+        if let array = self as? HGARRAY { return UsedName.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<UsedName> mapable, returning []", type: .error)
         return []
     }
@@ -145,13 +143,13 @@ extension Optional {
     }
     
     var enumArray: [Enum] {
-        if let array = self as? HGARRAY { return Enum.decodeArray(objects: array) }
+        if let array = self as? HGARRAY { return Enum.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Enum] mapable, returning []", type: .error)
         return []
     }
     
     var enumSet: Set<Enum> {
-        if let array = self as? HGARRAY { return Enum.decodeSet(objects: array) }
+        if let array = self as? HGARRAY { return Enum.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<Enum> mapable, returning []", type: .error)
         return []
     }
@@ -163,13 +161,13 @@ extension Optional {
     }
     
     var enumCaseArray: [EnumCase] {
-        if let array = self as? HGARRAY { return EnumCase.decodeArray(objects: array) }
+        if let array = self as? HGARRAY { return EnumCase.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [EnumCase] mapable, returning []", type: .error)
         return []
     }
     
     var enumCaseSet: Set<EnumCase> {
-        if let array = self as? HGARRAY { return EnumCase.decodeSet(objects: array) }
+        if let array = self as? HGARRAY { return EnumCase.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<EnumCase> mapable, returning []", type: .error)
         return []
     }
@@ -203,12 +201,6 @@ extension Optional {
         return 0
     }
     
-    var int: Int {
-        if let int = self as? Int { return int }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not Int mapable, using 0", type: .error)
-        return 0
-    }
-    
     var int16: Int16 {
         if let int = self as? Int {
             if abs(int) > Int(Int16.max) { return Int16(int) }
@@ -223,19 +215,6 @@ extension Optional {
         }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Int32 mapable, using 0", type: .error)
         return 0
-    }
-    
-    var string: String {
-        if let string = self as? String { return string }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not String mapable, using Empty String", type: .error)
-        return ""
-    }
-    
-    var stringOptional: String? {
-        if self == nil { return nil }
-        if let string = self as? String { return string }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not Optional String mapable, using nil String?", type: .error)
-        return nil
     }
     
     var stringArray: [String] {
@@ -266,20 +245,6 @@ extension Optional {
         if let array = self as? [Int] { return array }
         HGReport.shared.report("optional: |\(String(describing: self))| is not [Int] String mapable, using Empty [Int]", type: .error)
         return []
-    }
-    
-    var bool: Bool {
-        
-        if let bool = self as? Bool { return bool }
-        if let string = self as? String {
-            switch string {
-            case "YES", "TRUE", "Yes", "1", "true", "True", "yes": return true
-            case "NO", "FALSE", "No", "0", "false", "False",  "no": return false
-            default: break;
-            }
-        }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not Bool mapable, using false", type: .error)
-        return false
     }
 }
 

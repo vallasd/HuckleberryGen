@@ -54,7 +54,7 @@ enum DeletionRule: Int8 {
         }
     }
     
-    // MARK: - HGEncodable
+    // MARK: - HGCodable
     
     static var encodeError: DeletionRule {
         return .nullify

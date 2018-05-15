@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UsedName: HGEncodable, Hashable, Equatable {
+struct UsedName: HGCodable, Hashable, Equatable {
     
     let name: String
     
@@ -29,7 +29,7 @@ struct UsedName: HGEncodable, Hashable, Equatable {
         return set
     }
     
-    // MARK: - HGEncodable
+    // MARK: - HGCodable
     
     static var encodeError: UsedName {
         return UsedName(name: "***Error***")
@@ -42,7 +42,7 @@ struct UsedName: HGEncodable, Hashable, Equatable {
     }
     
     static func decode(object: Any) -> UsedName {
-        let dict = HG.decode(hgdict: object, decoderName: "UsedName")
+        let dict = HG.decode(hgdict: object, decoder: UsedName.self)
         let n = dict["name"].string
         return UsedName(name: n)
     }

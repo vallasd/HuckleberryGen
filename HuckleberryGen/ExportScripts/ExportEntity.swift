@@ -121,7 +121,7 @@ class ExportEntity {
         return string
     }
     
-    /// creates a HGEncodable extensions for the Entity in string format
+    /// creates a HGCodable extensions for the Entity in string format
     fileprivate func encodableExtension(_ entity: Entity) -> String {
         
         // get indent
@@ -131,8 +131,8 @@ class ExportEntity {
         let primitives = Primitive.array.map { $0.name }
         let primitivesDefault = Primitive.array.map { $0.defaultRep }
         
-        // begin hgencodable stanza
-        var string = "extension \(entity.name): HGEncodable {\n"
+        // begin HGCodable stanza
+        var string = "extension \(entity.name): HGCodable {\n"
         string += "\n"
         
         // new variable
@@ -195,7 +195,7 @@ class ExportEntity {
         string += ")\n"
         string += "\(ind)}\n"
         
-        // end hgencodable stanza
+        // end HGCodable stanza
         string += "}\n"
         
         return string

@@ -57,7 +57,7 @@ struct Enum {
     }
 }
 
-extension Enum: HGEncodable {
+extension Enum: HGCodable {
     
     static var encodeError: Enum {
         return Enum(name: "Error", value1Name: "", value1Type: "", value2Name: "", value2Type: "", cases: [])
@@ -75,7 +75,7 @@ extension Enum: HGEncodable {
     }
     
     static func decode(object: Any) -> Enum {
-        let dict = HG.decode(hgdict: object, decoderName: "Enum")
+        let dict = HG.decode(hgdict: object, decoder: Enum.self)
         let name = dict["name"].string
         let value1Name = dict["value1Name"].string
         let value1Type = dict["value1Type"].string

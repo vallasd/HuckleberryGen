@@ -54,7 +54,11 @@ struct HGReport {
     }
     
     func optionalFailed<T>(_ decoder: T, object: Any?, returning: Any?) {
-        HGReport.shared.report("|\(decoder)| |OPTIONAL UNWRAP FAILED| object: |\(String(describing: object))|, returning: |\(String(describing: returning))|", type: .error)
+        HGReport.shared.report("Optional: |\(String(describing: object))| is not |\(decoder)| mapable, returning: |\(String(describing: returning))|", type: .error)
+    }
+    
+    func mappingFailed<T>(_ decoder: T, object: Any?, returning: Any?) {
+        HGReport.shared.report("|\(decoder)| |MAPPING FAILED| object: |\(String(describing: object))|, returning: |\(String(describing: returning))|", type: .error)
     }
     
     func defaultsFailed<T>(_ decoder: T, key: String) {

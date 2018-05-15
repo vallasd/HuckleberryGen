@@ -44,7 +44,7 @@ final class Project {
 
 // MARK: Encoding
 
-extension Project: HGEncodable {
+extension Project: HGCodable {
     
     static var new: Project {
         return Project(name: Project.newName, enums: [], entities: [], enumAttributes: [], entityAttributes: [], usedNames: UsedName.initialNames)
@@ -66,7 +66,7 @@ extension Project: HGEncodable {
     }
     
     static func decode(object: Any) -> Project {
-        let dict = HG.decode(hgdict: object, decoderName: "Project")
+        let dict = HG.decode(hgdict: object, decoder: Project.self)
         let name = dict["name"].string
         let enums = dict["enums"].enumSet
         let entities = dict["entities"].entitySet

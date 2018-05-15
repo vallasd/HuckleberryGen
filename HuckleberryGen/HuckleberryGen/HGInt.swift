@@ -25,15 +25,4 @@ extension Int {
 		return .info
 	}
     
-    /// returns HGErrorTypes.  Logs error and returns Info if not a valid Int.
-    var hGType: HGType {
-        switch self {
-        case 0: return .primitive
-        case 1: return .enuM
-        case 2: return .entity
-        default:
-            HGReport.shared.report("int: |\(self)| is not enum |HGType| mapable, using Info", type: .error)
-        }
-        return .primitive
-    }
 }

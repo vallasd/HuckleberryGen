@@ -33,16 +33,16 @@ class ExportProtocols {
     /// creates an entity file for the given Entity.  Returns false if error.
     func exportFiles() -> Bool {
         
-        exportHGEncodable()
+        exportHGCodable()
         
         return true
     }
     
-    func exportHGEncodable() {
-        let name = "HGEncodable"
+    func exportHGCodable() {
+        let name = "HGCodable"
         let filePath = path + "/\(name).swift"
         let header = licenseInfo.string(projectName, fileName: name)
-        let code = ExportProject.read(file: "XP_PRO_HGEncodable")
+        let code = ExportProject.read(file: "XP_PRO_HGCodable")
         let file = header + "\n" + code
         let _ = ExportProject.write(file: file, toPath: filePath)
     }

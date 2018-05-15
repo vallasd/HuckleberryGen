@@ -37,7 +37,7 @@ final class HuckleberryGen {
     
     /// Checks defaults to see if a Huckleberry Gen was saved with same identifier and opens that data if available, else returns a blank project with identifier
     init(uniqIdentifier uniqID: String) {
-        let file = HuckleberryGen.openDefaults(uniqID, reportError: true) ?? HuckleberryGen.new
+        let file = HuckleberryGen.openDefaults(uniqID) ?? HuckleberryGen.new
         uniqIdentifier = uniqID
         licenseInfo = file.licenseInfo
         importPath = file.importPath
@@ -156,7 +156,7 @@ final class HuckleberryGen {
         let key = Project.saveKey(withUniqID: uniqIdentifier, name: savedProjects[index])
         
         // opens project from defaults
-        project =? Project.openDefaults(key, reportError: true)
+        project =? Project.openDefaults(key)
         
         return true
     }
@@ -233,7 +233,7 @@ final class HuckleberryGen {
     }
 }
 
-extension HuckleberryGen: HGEncodable {
+extension HuckleberryGen: HGCodable {
     
     static var new: HuckleberryGen {
         let uuid = UUID().uuidString
@@ -257,7 +257,7 @@ extension HuckleberryGen: HGEncodable {
     }
     
     static func decode(object: Any) -> HuckleberryGen {
-        let dict = HG.decode(hgdict: object, decoderName: "HuckleberryGen")
+        let dict = HG.decode(hgdict: object, decoder: HuckleberryGen.self)
         let uniqIdentifier = dict["uniqIdentifier"].string
         let licenseInfo = dict["licenseInfo"].licenseInfo
         let importPath = dict["importPath"].string

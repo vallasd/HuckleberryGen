@@ -8,25 +8,32 @@
 
 import Foundation
 
-enum HGType: Int, HGEncodable {
+enum HGType: Int8, HGCodable {
     
     case primitive = 0
     case enuM = 1
     case entity = 2
     
-    // MARK - HGEncodable
+    // MARK - HGCodable
     
     static var encodeError: HGType {
         return .primitive
     }
     
     var encode: Any {
-        return self.rawValue
+        return Int(self.rawValue)
     }
     
     static func decode(object: Any) -> HGType {
-        let int: Int = HG.decode(int: object, decoderName: "HGType")
-        return int.hGType
+        let int8 = HG.decode(int8: object, decoder: HGType.self)
+        switch int8 {
+        case 0: return .primitive
+        case 1: return .enuM
+        case 2: return .entity
+        default:
+            HGReport.shared.report("int8: |\(int8)| is not |HGType| mapable, using .primitive", type: .error)
+        }
+        return .primitive
     }
     
     

@@ -23,7 +23,7 @@ struct Folder {
     }
 }
 
-extension Folder: HGEncodable {
+extension Folder: HGCodable {
     
     static var new: Folder {
         return Folder(name: "New Folder", path: "/", importFiles: [] )
@@ -42,7 +42,7 @@ extension Folder: HGEncodable {
     }
     
     static func decode(object: Any) -> Folder {
-        let dict = HG.decode(hgdict: object, decoderName: "Folder")
+        let dict = HG.decode(hgdict: object, decoder: Folder.self)
         let name = dict["name"].string
         let path = dict["path"].string
         let importFiles = dict["importFiles"].importFiles

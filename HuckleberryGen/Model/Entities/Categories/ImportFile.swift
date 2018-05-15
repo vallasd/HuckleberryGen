@@ -58,7 +58,7 @@ extension ImportFile: Hashable { var hashValue: Int { return path.hashValue } }
 extension ImportFile: Equatable {}; func ==(lhs: ImportFile, rhs: ImportFile) -> Bool { return lhs.path == rhs.path }
 
 
-extension ImportFile: HGEncodable {
+extension ImportFile: HGCodable {
     
     static var new: ImportFile {
         let date = Date()
@@ -82,7 +82,7 @@ extension ImportFile: HGEncodable {
     }
     
     static func decode(object: Any) -> ImportFile {
-        let dict = HG.decode(hgdict: object, decoderName: "ImportFile")
+        let dict = HG.decode(hgdict: object, decoder: ImportFile.self)
         let name = dict["name"] as! String
         let lastUpdate = dict["lastUpdate"].interval.date()
         let modificationDate = dict["modificationDate"].interval.date()

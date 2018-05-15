@@ -17,7 +17,7 @@ enum EntityKey {
 typealias EntityKeyDict = Dictionary<EntityKey, Any>
 
 /// a struct that represents a model entity
-struct Entity: HGEncodable {
+struct Entity: HGCodable {
     
     let name: String
     fileprivate(set) var attributes: Set<Attribute>
@@ -37,7 +37,7 @@ struct Entity: HGEncodable {
         return NSImage.image(named: "entityIcon", title: name)
     }
     
-    // MARK: HGEncodable
+    // MARK: HGCodable
     
     static var encodeError: Entity {
         return Entity(name: "Error", attributes: [])
@@ -51,7 +51,7 @@ struct Entity: HGEncodable {
     }
     
     static func decode(object: Any) -> Entity {
-        let dict = HG.decode(hgdict: object, decoderName: "Entity")
+        let dict = HG.decode(hgdict: object, decoder: Entity.self)
         let n = dict["name"].string
         let a = dict["attributes"].attributeSet
         return Entity(name: n, attributes: a)

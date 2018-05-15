@@ -17,7 +17,7 @@ enum EntityAttributeKey {
 
 typealias EntityAttributeKeyDict = Dictionary<EntityAttributeKey, Any>
 
-struct EntityAttribute: HGEncodable {
+struct EntityAttribute: HGCodable {
     
     let name: String
     let entityName1: String
@@ -38,7 +38,7 @@ struct EntityAttribute: HGEncodable {
                             deletionRule: deletionRule)
     }
     
-    // MARK: - HGEncodable
+    // MARK: - HGCodable
     
     static var encodeError: EntityAttribute {
         let e = "Error"
@@ -56,7 +56,7 @@ struct EntityAttribute: HGEncodable {
     }
     
     static func decode(object: Any) -> EntityAttribute {
-        let dict = HG.decode(hgdict: object, decoderName: "EntityAttribute")
+        let dict = HG.decode(hgdict: object, decoder: EntityAttribute.self)
         let name = dict["name"].string
         let entityName1 = dict["entityName1"].string
         let entityName2 = dict["entityName2"].string
