@@ -21,25 +21,25 @@ extension Optional {
     }
     
     var huckleberryGen: HuckleberryGen {
-        if let dict = self as? HGDICT { return HuckleberryGen.decode(object: dict as AnyObject) }
+        if let dict = self as? HGDICT { return HuckleberryGen.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not HuckleberryGen mapable, returning new HuckleberryGen", type: .error)
         return HuckleberryGen.new
     }
     
     var project: Project {
-        if let dict = self as? HGDICT { return Project.decode(object: dict as AnyObject) }
+        if let dict = self as? HGDICT { return Project.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Project mapable, returning new Project", type: .error)
         return Project.new
     }
     
     var licenseInfo: LicenseInfo {
-        if let dict = self as? HGDICT { return LicenseInfo.decode(object: dict as AnyObject) }
+        if let dict = self as? HGDICT { return LicenseInfo.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not License mapable, returning new Attribute", type: .error)
         return LicenseInfo.new
     }
     
     var entity: Entity {
-        if let dict = self as? HGDICT { return Entity.decode(object: dict as AnyObject) }
+        if let dict = self as? HGDICT { return Entity.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Entity mapable, returning new Entity", type: .error)
         return Entity.encodeError
     }
@@ -53,6 +53,24 @@ extension Optional {
     var entitySet: Set<Entity> {
         if let array = self as? HGARRAY { return Entity.decode(object: array) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not Set<Entity> mapable, returning []", type: .error)
+        return []
+    }
+    
+    var join: Join {
+        if let dict = self as? HGDICT { return Join.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Join mapable, returning new Entity", type: .error)
+        return Join.encodeError
+    }
+    
+    var joinArray: [Join] {
+        if let array = self as? HGARRAY { return Join.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [Join] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var joinSet: Set<Join> {
+        if let array = self as? HGARRAY { return Join.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<Join> mapable, returning []", type: .error)
         return []
     }
     

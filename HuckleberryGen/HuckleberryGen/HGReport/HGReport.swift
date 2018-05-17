@@ -101,6 +101,10 @@ struct HGReport {
         HGReport.shared.report("|\(decoder)| |USED NAME| name: |\(name)| already used", type: .error)
     }
     
+    func noEntities<T>(decoder: T) {
+        HGReport.shared.report("|\(decoder)| |NO ENTITIES|", type: .error)
+    }
+    
     func validateFailed<T,U>(decoder: T, value: Any, key: Any, expectedType: U) {
         HGReport.shared.report("|\(decoder)| |VALIDATION FAILED| for key: |\(key)| value: |\(value)| expected type: |\(expectedType)|", type: .error)
     }

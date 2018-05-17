@@ -16,14 +16,16 @@ final class Project {
     var name: String
     fileprivate(set) var enums: Set<Enum>
     fileprivate(set) var entities: Set<Entity>
+    fileprivate(set) var joins: Set<Join>
     fileprivate(set) var enumAttributes: Set<EnumAttribute> // entity enum join
     fileprivate(set) var entityAttributes: Set<EntityAttribute> // enity entity join
     fileprivate(set) var usedNames: Set<UsedName>
     
-    init(name: String, enums:Set<Enum>, entities: Set<Entity>, enumAttributes: Set<EnumAttribute>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
+    init(name: String, enums:Set<Enum>, entities: Set<Entity>, joins: Set<Join>, enumAttributes: Set<EnumAttribute>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
         self.name = name
         self.enums = enums
         self.entities = entities
+        self.joins = joins
         self.enumAttributes = enumAttributes
         self.entityAttributes = entityAttributes
         self.usedNames = usedNames
@@ -47,11 +49,11 @@ final class Project {
 extension Project: HGCodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: [], entities: [], enumAttributes: [], entityAttributes: [], usedNames: UsedName.initialNames)
+        return Project(name: Project.newName, enums: [], entities: [], joins: [], enumAttributes: [], entityAttributes: [], usedNames: UsedName.initialNames)
     }
     
     static var encodeError: Project {
-        return Project(name: Project.newName, enums: [], entities: [], enumAttributes: [], entityAttributes: [], usedNames: [])
+        return Project(name: Project.newName, enums: [], entities: [], joins: [], enumAttributes: [], entityAttributes: [], usedNames: [])
     }
     
     var encode: Any {
@@ -61,6 +63,7 @@ extension Project: HGCodable {
         dict["entities"] = entities.encode
         dict["enumAttributs"] = enumAttributes.encode
         dict["entityAttributes"] = entityAttributes.encode
+        dict["joins"] = joins.encode
         dict["usedNames"] = usedNames.encode
         return dict as AnyObject
     }
@@ -70,12 +73,14 @@ extension Project: HGCodable {
         let name = dict["name"].string
         let enums = dict["enums"].enumSet
         let entities = dict["entities"].entitySet
+        let joins = dict["joins"].joinSet
         let enumAttributes = dict["enumAttributes"].enumAttributeSet
         let entityAttributes = dict["entityAttributes"].entityAttributeSet
         let usedNames = dict["usedNames"].usedNameSet
         let project = Project(name: Project.newName,
                               enums: enums,
                               entities: entities,
+                              joins: joins,
                               enumAttributes: enumAttributes,
                               entityAttributes: entityAttributes,
                               usedNames: usedNames)
@@ -97,7 +102,16 @@ extension Project {
     
     func deleteEntity(name n: String) -> Bool {
         if entities.delete(name: n) {
+        
+            // delete the Entity from usedNames
             let _ = usedNames.delete(name: n)
+            
+            // delete joins with EntityName
+            let js = joins.filter { $0.entityName1 == n || $0.entityName2 == n }
+            for join in js {
+                let _ = project.deleteJoin(name: join.name)
+            }
+            
             return true
         }
         return false
@@ -121,7 +135,53 @@ extension Project {
         return entity
     }
     
+    // Joins
     
+    func createIteratedJoin() -> Join? {
+        
+        if entities.count == 0 {
+            HGReport.shared.noEntities(decoder: Join.self)
+            return nil
+        }
+        
+        let e = entities.sorted { $0.name < $1.name }
+        
+        let en1 = e.first!.name
+        let en2 = e.last!.name
+        
+        if let join = joins.createIterated(entityName1: en1, entityName2: en2) {
+            let _ = usedNames.create(name: join.name)
+            return join
+        }
+        
+        return nil
+    }
+    
+    func deleteJoin(name n: String) -> Bool {
+        if joins.delete(name: n) {
+            let _ = usedNames.delete(name: n)
+            return true
+        }
+        return false
+    }
+    
+    func updateJoin(keyDict: JoinKeyDict, name n: String) -> Join? {
+        
+        // check if key values contain a usedName
+        if usedNameIn(values: keyDict.map { $0.1 }) {
+            return nil
+        }
+        
+        let join = joins.update(keyDict: keyDict, name: n)
+        
+        // replace names in usedName if we changed a name
+        if keyDict.keys.contains(.name), let j = join {
+            let _ = usedNames.delete(name: n)
+            let _ = usedNames.create(name: j.name)
+        }
+        
+        return join
+    }
     
     // EntityAttributes
     
