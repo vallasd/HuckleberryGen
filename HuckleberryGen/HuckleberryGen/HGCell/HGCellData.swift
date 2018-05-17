@@ -78,10 +78,10 @@ struct HGCellData {
     }
     
     /// returns a HGCellData object that can populate a mixedCell1 nib
-    static func mixedCell1(field0: HGFieldData, field1: HGFieldData, field2: HGFieldData, field3: HGFieldData, field4: HGFieldData, image0: HGImageData) -> HGCellData {
-        return HGCellData(fields: [field0, field1, field2, field3, field4],
+    static func mixedCell1(field0: HGFieldData, field1: HGFieldData, field2: HGFieldData, image0: HGImageData, check0: HGCheckData, check1: HGCheckData) -> HGCellData {
+        return HGCellData(fields: [field0, field1, field2],
                           images: [image0],
-                          checks: [],
+                          checks: [check0, check1],
                           numImages: 0)
     }
     

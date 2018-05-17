@@ -121,6 +121,7 @@
 		03FFD8CD208D58C000CE2CB8 /* NSRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FFD8CC208D58C000CE2CB8 /* NSRect.swift */; };
 		03FFD8CF208DFB4F00CE2CB8 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */; };
 		104382522093B3B6002BF38A /* Attribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104382512093B3B6002BF38A /* Attribute_EXT.swift */; };
+		104BD46320AB379F0043EAAD /* MixedCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 104BD46220AB379F0043EAAD /* MixedCell1.xib */; };
 		108DDE0420A5B6E10020733A /* HGOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108DDE0120A5B6E10020733A /* HGOptional.swift */; };
 		108DDE0520A5B6E10020733A /* HGJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108DDE0220A5B6E10020733A /* HGJSON.swift */; };
 		108DDE0620A5B6E10020733A /* HGCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108DDE0320A5B6E10020733A /* HGCodable.swift */; };
@@ -272,6 +273,7 @@
 		03FFD8CC208D58C000CE2CB8 /* NSRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRect.swift; sourceTree = "<group>"; };
 		03FFD8CE208DFB4F00CE2CB8 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		104382512093B3B6002BF38A /* Attribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute_EXT.swift; sourceTree = "<group>"; };
+		104BD46220AB379F0043EAAD /* MixedCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MixedCell1.xib; sourceTree = "<group>"; };
 		108DDE0120A5B6E10020733A /* HGOptional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGOptional.swift; sourceTree = "<group>"; };
 		108DDE0220A5B6E10020733A /* HGJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGJSON.swift; sourceTree = "<group>"; };
 		108DDE0320A5B6E10020733A /* HGCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGCodable.swift; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 				03F25EE71B9C16EA0048B0A0 /* HGTable.swift */,
 				03F25EE21B9C16EA0048B0A0 /* HGCell.swift */,
 				036E329F1BB2DED00024AA4E /* DefaultCell.xib */,
+				104BD46220AB379F0043EAAD /* MixedCell1.xib */,
 				10D37B5320A4DDDF007C1E69 /* FieldCell1.xib */,
 				10D37B5120A4DDDF007C1E69 /* FieldCell2.xib */,
 				10D37B5220A4DDDF007C1E69 /* FieldCell3.xib */,
@@ -849,6 +852,7 @@
 				03F7E33F1BA891A90053BA6B /* Board.storyboard in Resources */,
 				10D37B5520A4DDDF007C1E69 /* FieldCell3.xib in Resources */,
 				035E4A091C582FD10005E28A /* XP_CLA_HGErrorTrack.txt in Resources */,
+				104BD46320AB379F0043EAAD /* MixedCell1.xib in Resources */,
 				03D56F251C4F41C500A3A8DC /* XP_PRO_HGEncodable.txt in Resources */,
 				036C7C101B5143A0004EC724 /* Main.storyboard in Resources */,
 				035E49D31C57F75F0005E28A /* XP_CLA_HGObject.txt in Resources */,

@@ -16,6 +16,7 @@ enum CellType {
     case fieldCell1
     case fieldCell2
     case fieldCell3
+    case mixedCell1
     
     /// The nib identifier
     var identifier: String {
@@ -25,13 +26,14 @@ enum CellType {
         case .fieldCell1: return "FieldCell1"
         case .fieldCell2: return "FieldCell2"
         case .fieldCell3: return "FieldCell3"
+        case .mixedCell1: return "MixedCell1"
         }
     }
     
     /// number of image buttons per row for given cell type
     func imagesPerRow(rowWidth: CGFloat) -> Int {
         switch self {
-        case .defaultCell: return 1
+        case .defaultCell, .mixedCell1: return 1
         case .imageCell:
             let imageWidth = rowHeight - HGCellImageBorder
             let numImages = Int(rowWidth / imageWidth)
@@ -46,7 +48,7 @@ enum CellType {
     /// returns an suggested row height for HGCell given a Table
     var rowHeight: CGFloat {
         switch (self) {
-        case .imageCell: return 60
+        case .imageCell, .fieldCell3, .mixedCell1: return 60
         default: return 50
         }
     }

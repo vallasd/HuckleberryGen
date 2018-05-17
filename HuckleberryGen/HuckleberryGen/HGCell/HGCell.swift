@@ -144,6 +144,11 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
         }
     }
     
+    /// function called when user selects an check button
+    @objc func didSelectCheck(_ sender: NSButton!) {
+        delegate?.hgcell(self, didSelectTypeIndex: sender.tag, type: .check)
+    }
+    
     /// function called when a user selects a field (if field is selectable)
     @objc func didSelectField(_ sender: NSTextField!) {
         delegate?.hgcell(self, didSelectTypeIndex: sender.tag, type: .field)
@@ -192,6 +197,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     fileprivate func set(checkbutton button: NSButton?, withTag tag: Int) {
         guard let button = button else { return }
         button.target = self
+        button.action = #selector(HGCell.didSelectCheck(_:))
         button.tag = tag
     }
     
@@ -223,9 +229,7 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// Updates a field with appropriate HGFieldData and makes field ready for custom display
     fileprivate func update(field: NSTextField?, withData data: HGFieldData) {
-        
         guard let field = field else { return }
-        
         field.stringValue = data.title
         field.isEnabled = true
         field.isHidden = false
@@ -250,13 +254,12 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     
     /// Updates an check with appropriate HGCheckData and makes check ready for custom display
     fileprivate func update(check: NSButton?, withData data: HGCheckData) {
-        
         guard let check = check else { return }
-        
         check.title = data.title
         check.state = NSControl.StateValue(rawValue: data.state == true ? 1 : 0)
         check.isEnabled = true
         check.isHidden = false
+        selectionSetup(check: check)
     }
     
     // MARK: Disable Cells
@@ -429,6 +432,18 @@ class HGCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     // MARK: Field Select Button
+    
+    fileprivate func selectionSetup(check: NSButton) {
+        
+        let shouldSelect = delegate?.hgcell(self, shouldSelectTypeIndex: check.tag, type: .check) ?? false
+        
+        if shouldSelect {
+            check.isEnabled = true
+            return
+        }
+        
+        check.isEnabled = false
+    }
     
     /// Sets up appropriate field selection button, edit ability, and field text color for a field by polling delegate
     fileprivate func selectionSetup(field: NSTextField) {

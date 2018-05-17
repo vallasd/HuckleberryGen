@@ -39,16 +39,17 @@ extension EnumVC: HGTableDisplayable {
     }
     
     func cellType(fortable table: HGTable) -> CellType {
-        return CellType.defaultCell
+        return CellType.mixedCell1
     }
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         let enuM = enums[index]
-        return HGCellData.defaultCell(
-            field0: HGFieldData(title: enuM.name),
-            field1: HGFieldData(title: ""),
-            image0: HGImageData(title: "", image: #imageLiteral(resourceName: "enumIcon"))
-        )
+        return HGCellData.mixedCell1(field0: HGFieldData(title: enuM.name),
+                                     field1: HGFieldData(title: enuM.value1Name),
+                                     field2: HGFieldData(title: enuM.value2Name),
+                                     image0: HGImageData(title: "", image: #imageLiteral(resourceName: "enumIcon")),
+                                     check0: HGCheckData(title: "isString", state: enuM.value1String),
+                                     check1: HGCheckData(title: "isString", state: enuM.value2String))
     }
 }
 
@@ -72,12 +73,29 @@ extension EnumVC: HGTablePostable {
 extension EnumVC: HGTableLocationSelectable {
     
     func hgtable(_ table: HGTable, shouldSelectLocation loc: HGTableLocation) -> Bool {
-        if loc.type == .row { return true }
+        if loc.type == .row || loc.type == .check { return true }
         return false
     }
     
     func hgtable(_ table: HGTable, didSelectLocation loc: HGTableLocation) {
-        // do nothing
+        
+        if loc.type == .check {
+            let enuM = enums[loc.index]
+            let isString = loc.typeIndex == 0 ? enuM.value1String : enuM.value2String
+            var keyDict: EnumKeyDict!
+            
+            switch loc.typeIndex {
+            case 0: keyDict = isString ? [.value1String: false] : [.value1String: true]
+            case 1: keyDict = isString ? [.value2String: false] : [.value2String: true]
+            default:
+                HGReport.shared.mappingFailed(HGCell.self, object: loc.index, returning: "nothing")
+            }
+            
+            let enuM2 = project.updateEnum(keyDict: keyDict, name: enuM.name)
+            if enuM2 != nil {
+                enums[loc.index] = enuM2!
+            }
+        }
     }
 }
 
@@ -88,8 +106,18 @@ extension EnumVC: HGTableFieldEditable {
     }
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
+        
         let enumName = enums[row].name
-        let keyDict: EnumKeyDict = [.name: string]
+        var keyDict: EnumKeyDict!
+        
+        switch field {
+        case 0: keyDict = [.name: string]
+        case 1: keyDict = [.value1Name: string]
+        case 2: keyDict = [.value2Name: string]
+        default:
+            HGReport.shared.mappingFailed(HGCell.self, object: field, returning: "nothing")
+        }
+        
         let enuM = project.updateEnum(keyDict: keyDict, name: enumName)
         if enuM != nil {
             enums[row] = enuM!
