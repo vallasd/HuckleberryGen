@@ -17,7 +17,6 @@ class HGSplitVC: NSViewController {
         super.viewDidLoad()
         controlSplits(inView: view)
         hgsplit.openall(false)
-        
     }
     
     fileprivate func controlSplits(inView view: NSView) {

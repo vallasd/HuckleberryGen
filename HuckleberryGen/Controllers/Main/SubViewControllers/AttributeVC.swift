@@ -38,11 +38,12 @@ class AttributeVC: NSViewController {
 extension AttributeVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        
         if table.parentName != "", let entity = project.entities.get(name: table.parentName) {
-            attributes = entity.attributes.sorted { $0.name < $1.name }
-            enumAttributes = project.enumAttributes.filter { $0.entityName == entity.name }.sorted { $0.name < $1.name }
-            entityAttributes = project.entityAttributes.filter { $0.entityName1 == entity.name }.sorted { $0.name < $1.name }
+            let ea = project.entities.filter { $0.name == table.parentName }.first?.attributes.sorted { $0.name < $1.name } ?? []
+            let ja = project.joins.filter { $0.name == table.parentName }.first?.attributes.sorted { $0.name < $1.name } ?? []
+            attributes = ea + ja
+            enumAttributes = project.enumAttributes.filter { $0.entityName == table.parentName }.sorted { $0.name < $1.name }
+            entityAttributes = project.entityAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
             return attributes.count + enumAttributes.count + entityAttributes.count
         }
         
@@ -125,7 +126,7 @@ extension AttributeVC: HGTableRowAppendable {
                     enumAttributes.remove(at: row - firstEnumIndex)
                 }
             } else {
-                let success = project.deleteEntityAttribute(name: n, entityName1: table.parentName)
+                let success = project.deleteEntityAttribute(name: n, holderName: table.parentName)
                 if success {
                     enumAttributes.remove(at: row - firstEntityIndex)
                 }
@@ -192,7 +193,7 @@ extension AttributeVC: HGTableFieldEditable {
         // create entityAttribute data cell
         let n = name(givenIndex: row)
         let keyDict: EntityAttributeKeyDict = [.name: string]
-        let entityAttribute = project.updateEntityAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+        let entityAttribute = project.updateEntityAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
         if entityAttribute != nil {
             entityAttributes[row - firstEntityIndex] = entityAttribute!
         }
@@ -202,7 +203,7 @@ extension AttributeVC: HGTableFieldEditable {
 
 extension AttributeVC: SBD_AttributeDelegate {
     
-    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType) {
+    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType) {aa
         hgtable.update()
     }
     

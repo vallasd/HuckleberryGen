@@ -73,7 +73,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             // delete enumAttribute or entityAttribute if they exist, we dont want to report error because one will not exist
             HGReport.shared.isOn = false
             let _ = project.deleteEnumAttribute(name: name, entityName: entityName)
-            let _ = project.deleteEntityAttribute(name: name, entityName1: entityName)
+            let _ = project.deleteEntityAttribute(name: name, holderName: entityName)
             HGReport.shared.isOn = true
             
             // create attribute
@@ -98,7 +98,7 @@ class SBD_Attributes: SelectionBoardDelegate {
             // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
             HGReport.shared.isOn = false
             let _ = project.deleteAttribute(name: name, entityName: entityName)
-            let _ = project.deleteEntityAttribute(name: name, entityName1: entityName)
+            let _ = project.deleteEntityAttribute(name: name, holderName: entityName)
             HGReport.shared.isOn = true
             
             // create enumAttribute
@@ -113,8 +113,8 @@ class SBD_Attributes: SelectionBoardDelegate {
         // object was an entityAttribute, we just need to update its entityName2
         let isEntityAttribute = project.entityAttributes.filter { $0.name == name }.count > 0
         if isEntityAttribute {
-            let keyDict: EntityAttributeKeyDict = [.entityName2: typeName]
-            let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, entityName: entityName)
+            let keyDict: EntityAttributeKeyDict = [.entityName: typeName]
+            let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, holderName: entityName)
             delegate?.sbd_attribute(self, didUpdateType: .entity)
             return
         }
@@ -126,7 +126,7 @@ class SBD_Attributes: SelectionBoardDelegate {
         HGReport.shared.isOn = true
         
         // create enumAttribute
-        let ea = EntityAttribute(name: name, entityName1: entityName, entityName2: typeName, isArray: false, deletionRule: .nullify)
+        let ea = EntityAttribute(name: name, holderName: entityName, entityName: typeName, isArray: false, deletionRule: .nullify)
         let _ = project.createEntityAttribute(entityAttribute: ea)
         delegate?.sbd_attribute(self, didUpdateType: .entity)
         return

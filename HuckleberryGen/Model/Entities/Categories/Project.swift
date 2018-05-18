@@ -195,26 +195,26 @@ extension Project {
         return entityAttributes.create(entityAttribute: entityAttribute)
     }
     
-    func createIteratedEntityAttribute(entityName1 en1: String, entityName2 en2: String) -> EntityAttribute? {
-        return entityAttributes.createIterated(entityName1: en1, entityName1: en2)
+    func createIteratedEntityAttribute(holderName: String, entityName: String) -> EntityAttribute? {
+        return entityAttributes.createIterated(holderName: holderName, entityName: entityName)
     }
     
-    func deleteEntityAttribute(entityName en: String) -> Bool {
-        return entityAttributes.delete(entityName: en)
+    func deleteEntityAttribute(name: String) -> Bool {
+        return entityAttributes.delete(name: name)
     }
     
-    func deleteEntityAttribute(name n: String, entityName1 en1: String) -> Bool {
-        return entityAttributes.delete(name: n, entityName1: en1)
+    func deleteEntityAttribute(name: String, holderName: String) -> Bool {
+        return entityAttributes.delete(name: name, holderName: holderName)
     }
     
-    func updateEntityAttribute(keyDict: EntityAttributeKeyDict, name n: String, entityName en: String) -> EntityAttribute? {
+    func updateEntityAttribute(keyDict: EntityAttributeKeyDict, name: String, holderName: String) -> EntityAttribute? {
         
         // check if key values contain a usedName
         if usedNameIn(values: keyDict.map { $0.1 }) {
             return nil
         }
         
-        return entityAttributes.update(keyDict: keyDict, name: n, entityName1: en)
+        return entityAttributes.update(keyDict: keyDict, name: name, holderName: holderName)
     }
     
     // Attribute
