@@ -16,16 +16,16 @@ class AttributeVC: NSViewController {
     
     var hgtable: HGTable!
     
-    var attributes: [Attribute] = []
+    var primitiveAttributes: [PrimitiveAttribute] = []
     var enumAttributes: [EnumAttribute] = []
     var entityAttributes: [EntityAttribute] = []
-    var firstEnumIndex: Int { return attributes.count }
-    var firstEntityIndex: Int { return attributes.count + enumAttributes.count }
+    var firstEnumIndex: Int { return primitiveAttributes.count }
+    var firstEntityIndex: Int { return primitiveAttributes.count + enumAttributes.count }
     
     fileprivate func name(givenIndex index: Int) -> String {
-        if index < firstEnumIndex { return attributes[index].name }
-        if index < firstEntityIndex { return enumAttributes[index - attributes.count].name }
-        return entityAttributes[index - attributes.count - enumAttributes.count].name
+        if index < firstEnumIndex { return primitiveAttributes[index].name }
+        if index < firstEntityIndex { return enumAttributes[index - primitiveAttributes.count].name }
+        return entityAttributes[index - primitiveAttributes.count - enumAttributes.count].name
     }
     
     // MARK: View Lifecycle
@@ -38,13 +38,11 @@ class AttributeVC: NSViewController {
 extension AttributeVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
-        if table.parentName != "", let entity = project.entities.get(name: table.parentName) {
-            let ea = project.entities.filter { $0.name == table.parentName }.first?.attributes.sorted { $0.name < $1.name } ?? []
-            let ja = project.joins.filter { $0.name == table.parentName }.first?.attributes.sorted { $0.name < $1.name } ?? []
-            attributes = ea + ja
-            enumAttributes = project.enumAttributes.filter { $0.entityName == table.parentName }.sorted { $0.name < $1.name }
+        if table.parentName != "" {
+            primitiveAttributes = project.primitiveAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
+            enumAttributes = project.enumAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
             entityAttributes = project.entityAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
-            return attributes.count + enumAttributes.count + entityAttributes.count
+            return primitiveAttributes.count + enumAttributes.count + entityAttributes.count
         }
         
         return 0
@@ -56,7 +54,7 @@ extension AttributeVC: HGTableDisplayable {
     
     func hgtable(_ table: HGTable, dataForIndex index: Int) -> HGCellData {
         
-        // create attribute data cell
+        // create primitive attribute data cell
         if index < firstEnumIndex {
             let attribute = attributes[index]
             let image = attribute.image
@@ -121,7 +119,7 @@ extension AttributeVC: HGTableRowAppendable {
                     attributes.remove(at: row)
                 }
             } else if row < firstEntityIndex {
-                let success = project.deleteEnumAttribute(name: n, entityName: table.parentName)
+                let success = project.deleteEnumAttribute(name: n, holderName: table.parentName)
                 if success {
                     enumAttributes.remove(at: row - firstEnumIndex)
                 }
@@ -146,7 +144,7 @@ extension AttributeVC: HGTableLocationSelectable {
         // present a selection board to update current Attribute
         if loc.type == .image && loc.typeIndex == 0 {
             let n = name(givenIndex: loc.index)
-            let context = SBD_Attributes(entityName: table.parentName, name: n)
+            let context = SBD_Attributes(holderName: table.parentName, name: n)
             context.delegate = self
             let boarddata = SelectionBoard.boardData(withContext: context)
             appDelegate.mainWindowController.boardHandler.start(withBoardData: boarddata)
@@ -183,7 +181,7 @@ extension AttributeVC: HGTableFieldEditable {
         if row < firstEnumIndex {
             let n = name(givenIndex: row)
             let keyDict: EnumAttributeKeyDict = [.name: string]
-            let enumAttribute = project.updateEnumAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
+            let enumAttribute = project.updateEnumAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
             if enumAttribute != nil {
                 enumAttributes[row - firstEnumIndex] = enumAttribute!
             }
@@ -203,7 +201,7 @@ extension AttributeVC: HGTableFieldEditable {
 
 extension AttributeVC: SBD_AttributeDelegate {
     
-    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType) {aa
+    func sbd_attribute(_: SBD_Attributes, didUpdateType: HGType) {
         hgtable.update()
     }
     

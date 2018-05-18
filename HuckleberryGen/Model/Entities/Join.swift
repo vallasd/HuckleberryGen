@@ -10,7 +10,6 @@ enum JoinKey {
     case name
     case entityName1
     case entityName2
-    case attributes
 }
 
 typealias JoinKeyDict = Dictionary<JoinKey, Any>
@@ -20,17 +19,14 @@ struct Join: HGCodable {
     let name: String
     let entityName1: String
     let entityName2: String
-    fileprivate(set) var attributes: Set<Attribute>
     
-    fileprivate func update(name n: String?, entityName1 en1: String?, entityName2 en2: String?, attributes a: Set<Attribute>?) -> Join {
+    fileprivate func update(name n: String?, entityName1 en1: String?, entityName2 en2: String?) -> Join {
         let name = n == nil ? self.name : n!
         let entityName1 = en1 == nil ? self.entityName1 : en1!
         let entityName2 = en2 == nil ? self.entityName2 : en2!
-        let attributes = a == nil ? self.attributes : a!
         return Join(name: name,
                     entityName1: entityName1,
-                    entityName2: entityName2,
-                    attributes: attributes)
+                    entityName2: entityName2)
     }
     
     // MARK: - HGCodable
@@ -39,8 +35,7 @@ struct Join: HGCodable {
         let e = "Error"
         return Join(name: e,
                     entityName1: e,
-                    entityName2: e,
-                    attributes: [])
+                    entityName2: e)
     }
     
     var encode: Any {
@@ -48,7 +43,6 @@ struct Join: HGCodable {
         dict["name"] = name
         dict["entityName1"] = entityName1
         dict["entityName2"] = entityName2
-        dict["attributes"] = attributes.encode
         return dict
     }
     
@@ -57,31 +51,9 @@ struct Join: HGCodable {
         let name = dict["name"].string
         let entityName1 = dict["entityName1"].string
         let entityName2 = dict["entityName2"].string
-        let attributes = dict["attributes"].attributeSet
         return Join(name: name,
                     entityName1: entityName1,
-                    entityName2: entityName2,
-                    attributes: attributes)
-    }
-    
-    mutating func createAttribute(attribute a: Attribute) -> Attribute? {
-        return attributes.create(attribute: a)
-    }
-    
-    mutating func createIteratedAttribute() -> Attribute? {
-        return attributes.createIterated()
-    }
-    
-    mutating func deleteAttribute(name: String) -> Bool {
-        return attributes.delete(name: name)
-    }
-    
-    func getAttribute(name: String) -> Attribute? {
-        return attributes.get(name: name)
-    }
-    
-    mutating func updateAttribute(keyDict: AttributeKeyDict, name: String) -> Attribute? {
-        return attributes.update(keyDict: keyDict, name: name)
+                    entityName2: entityName2)
     }
 }
 
@@ -104,14 +76,13 @@ extension Set where Element == Join {
         
         let join = Join(name: name,
                         entityName1: en1,
-                        entityName2: en2,
-                        attributes: [])
+                        entityName2: en2)
         
         return create(join: join)
     }
     
     mutating func delete(name n: String) -> Bool {
-        let join = Join(name: n, entityName1: "", entityName2: "", attributes: [])
+        let join = Join(name: n, entityName1: "", entityName2: "")
         let o = remove(join)
         if o == nil {
             HGReport.shared.deleteFailed(set: Join.self, object: join)
@@ -137,7 +108,7 @@ extension Set where Element == Join {
         }
         
         // set key variables to nil
-        var name: String?, entityName1: String?, entityName2: String?, attributes: Set<Attribute>?
+        var name: String?, entityName1: String?, entityName2: String?
         
         // validate and assign properties
         for key in keyDict.keys {
@@ -145,7 +116,6 @@ extension Set where Element == Join {
             case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Join.self)
             case .entityName1: entityName1 = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Join.self)
             case .entityName2: entityName2 = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Join.self)
-            case .attributes: attributes = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Join.self)
             }
         }
         
@@ -155,8 +125,7 @@ extension Set where Element == Join {
         // use traditional update
         let newJoin = oldJoin.update(name: name,
                                      entityName1: entityName1,
-                                     entityName2: entityName2,
-                                     attributes: attributes)
+                                     entityName2: entityName2)
         let _ = delete(name: oldJoin.name)
         let updated = create(join: newJoin)
         

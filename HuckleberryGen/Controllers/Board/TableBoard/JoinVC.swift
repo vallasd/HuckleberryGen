@@ -116,7 +116,7 @@ extension JoinVC: HGTableRowAppendable {
         
         for row in rows {
             let join = joins[row]
-            if join.attributes.count > 0 {
+            if project.holderHasConnections(holderName: join.name) {
                 return .askUser
             }
         }

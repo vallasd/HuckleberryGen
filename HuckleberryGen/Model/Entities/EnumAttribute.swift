@@ -12,6 +12,7 @@ enum EnumAttributeKey {
     case name
     case enumName
     case isHash
+    case isArray
 }
 
 typealias EnumAttributeKeyDict = Dictionary<EnumAttributeKey, Any>
@@ -19,41 +20,49 @@ typealias EnumAttributeKeyDict = Dictionary<EnumAttributeKey, Any>
 struct EnumAttribute: HGCodable {
     
     let name: String
-    let entityName: String
+    let holderName: String
     let enumName: String
     let isHash: Bool
+    let isArray: Bool
     
-    fileprivate func update(name n: String?, entityName en: String?, enumName enn: String?, isHash i: Bool?) -> EnumAttribute {
+    fileprivate func update(name n: String?, holderName hn: String?, enumName en: String?, isHash i: Bool?, isArray ia: Bool?) -> EnumAttribute {
         let name = n == nil ? self.name : n!
-        let entityName = en == nil ? self.entityName : en!
-        let enumName = enn == nil ? self.enumName : enn!
+        let holderName = hn == nil ? self.holderName : hn!
+        let enumName = en == nil ? self.enumName : en!
         let isHash = i == nil ? self.isHash : i!
-        return EnumAttribute(name: name, entityName: entityName, enumName: enumName, isHash: isHash)
+        let isArray = ia == nil ? self.isArray : ia!
+        return EnumAttribute(name: name,
+                             holderName: holderName,
+                             enumName: enumName,
+                             isHash: isHash,
+                             isArray: isArray)
     }
     
     // MARK: - HGCodable
     
     static var encodeError: EnumAttribute {
         let e = "Error"
-        return EnumAttribute(name: e, entityName: e, enumName: e, isHash: false)
+        return EnumAttribute(name: e, holderName: e, enumName: e, isHash: false, isArray: false)
     }
     
     var encode: Any {
         var dict = HGDICT()
         dict["name"] = name
-        dict["entityName"] = entityName
+        dict["holderName"] = holderName
         dict["enumName"] = enumName
         dict["isHash"] = isHash
+        dict["isArray"] = isArray
         return dict
     }
     
     static func decode(object: Any) -> EnumAttribute {
         let dict = HG.decode(hgdict: object, decoder: EnumAttribute.self)
         let name = dict["name"].string
-        let entityName = dict["entityName"].string
+        let holderName = dict["holderName"].string
         let enumName = dict["enumName"].string
         let isHash = dict["isHash"].bool
-        return EnumAttribute(name: name, entityName: entityName, enumName: enumName, isHash: isHash)
+        let isArray = dict["isArray"].bool
+        return EnumAttribute(name: name, holderName: holderName, enumName: enumName, isHash: isHash, isArray: isArray)
     }
 }
 
@@ -68,34 +77,35 @@ extension Set where Element == EnumAttribute {
     }
     
     // creates EnumAttribute and its inverse iterated if names already exist
-    mutating func createIterated(entityName en1: String, enumName en2: String) -> EnumAttribute? {
+    mutating func createIterated(holderName: String, enumName: String) -> EnumAttribute? {
         
         // create iterated versions of EnumAttributes names
-        let name = iterated(name: en1, entityName: en1)
+        let name = iterated(name: enumName, holderName: holderName)
         
         let entityAttribute = EnumAttribute(name: name,
-                                            entityName: en1,
-                                            enumName: en2,
-                                            isHash: false)
+                                            holderName: holderName,
+                                            enumName: enumName,
+                                            isHash: false,
+                                            isArray: false)
         
         return create(enumAttribute: entityAttribute)
     }
     
     /// deletes All EnumAttribute with EntityName
-    mutating func delete(entityName en: String) -> Bool {
+    mutating func delete(holderName: String) -> Bool {
         
         var deleted = false
         
-        let entities = self.filter { $0.entityName == en }
+        let holders = self.filter { $0.holderName == holderName }
         
-        for entity in entities {
-            if remove(entity) != nil {
+        for holder in holders {
+            if remove(holder) != nil {
                 deleted = true
             }
         }
         
         if !deleted {
-            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: en)
+            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: holderName)
             return false
         }
         
@@ -103,11 +113,11 @@ extension Set where Element == EnumAttribute {
     }
     
     /// deletes All EnumAttribute with EnumName
-    mutating func delete(enumName en: String) -> Bool {
+    mutating func delete(enumName: String) -> Bool {
         
         var deleted = false
         
-        let enums = self.filter { $0.enumName == en }
+        let enums = self.filter { $0.enumName == enumName }
         
         for enuM in enums {
             if remove(enuM) != nil {
@@ -116,7 +126,7 @@ extension Set where Element == EnumAttribute {
         }
         
         if !deleted {
-            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: en)
+            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: enumName)
             return false
         }
         
@@ -124,14 +134,14 @@ extension Set where Element == EnumAttribute {
     }
     
     /// deletes EnumAttribute with name and enityName
-    mutating func delete(name n: String, entityName en: String) -> Bool {
+    mutating func delete(name: String, holderName: String) -> Bool {
         
-        guard let entityRelationship  = get(name: n, entityName: en) else {
+        guard let enumAttribute  = get(name: name, holderName: holderName) else {
             return false
         }
         
-        if remove(entityRelationship) != nil {
-            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: entityRelationship)
+        if remove(enumAttribute) != nil {
+            HGReport.shared.deleteFailed(set: EnumAttribute.self, object: enumAttribute)
             return false
         }
         
@@ -139,24 +149,24 @@ extension Set where Element == EnumAttribute {
     }
     
     /// gets EnumAttribute
-    func get(name n: String, entityName en: String) -> EnumAttribute? {
-        let entities = self.filter { $0.name == n && $0.entityName == en }
-        if entities.count == 0 {
-            HGReport.shared.getFailed(set: EnumAttribute.self, keys: ["name"], values: [n])
+    func get(name: String, holderName: String) -> EnumAttribute? {
+        let holders = self.filter { $0.name == name && $0.holderName == holderName }
+        if holders.count == 0 {
+            HGReport.shared.getFailed(set: EnumAttribute.self, keys: ["name"], values: [name])
             return nil
         }
-        return entities.first!
+        return holders.first!
     }
     
-    mutating func update(keyDict: EnumAttributeKeyDict, name n: String, entityName en: String) -> EnumAttribute? {
+    mutating func update(keyDict: EnumAttributeKeyDict, name n: String, holderName hn: String) -> EnumAttribute? {
         
         // get the entity that you want to update
-        guard let oldEnumAttribute = get(name: n, entityName: en) else {
+        guard let oldEnumAttribute = get(name: n, holderName: hn) else {
             return nil
         }
         
         // set key variables to nil
-        var name: String?, enumName: String?, isHash: Bool?
+        var name: String?, enumName: String?, isHash: Bool?, isArray: Bool?
         
         // validate and assign properties
         for key in keyDict.keys {
@@ -164,26 +174,28 @@ extension Set where Element == EnumAttribute {
             case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
             case .enumName: enumName = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
             case .isHash: isHash = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
+            case .isArray: isArray = HGValidate.validate(value: keyDict[key]!, key: key, decoder: EnumAttribute.self)
             }
         }
         
         // delete old EnumAttributes
-        let _ = delete(name: oldEnumAttribute.name, entityName: oldEnumAttribute.entityName)
+        let _ = delete(name: oldEnumAttribute.name, holderName: oldEnumAttribute.holderName)
         
         // make new name iterated
-        if name != nil { name = iterated(name: name!, entityName: en) }
+        if name != nil { name = iterated(name: name!, holderName: hn) }
         
         let updatedEnumAttribute = oldEnumAttribute.update(name: name,
-                                                           entityName: nil,
+                                                           holderName: nil,
                                                            enumName: enumName,
-                                                           isHash: isHash)
+                                                           isHash: isHash,
+                                                           isArray: isArray)
         
         return create(enumAttribute: updatedEnumAttribute)
     }
     
-    fileprivate func iterated(name n: String, entityName en: String) -> String {
+    fileprivate func iterated(name n: String, holderName: String) -> String {
         var name = n.varRepresentable
-        let filtered = self.filter { $0.entityName == en }
+        let filtered = self.filter { $0.holderName == holderName }
         let names = filtered.map { $0.name }
         if names.contains(name) {
             let largestNum = names.largestNum(string: name)
@@ -195,6 +207,6 @@ extension Set where Element == EnumAttribute {
 
 // MARK: Hashing
 
-extension EnumAttribute: Hashable { var hashValue: Int { return (name + entityName).hashValue } }
+extension EnumAttribute: Hashable { var hashValue: Int { return (name + holderName).hashValue } }
 extension EnumAttribute: Equatable {};
-func ==(lhs: EnumAttribute, rhs: EnumAttribute) -> Bool { return lhs.name == rhs.name && lhs.entityName == rhs.entityName}
+func ==(lhs: EnumAttribute, rhs: EnumAttribute) -> Bool { return lhs.name == rhs.name && lhs.holderName == rhs.holderName }

@@ -82,21 +82,21 @@ extension Optional {
         return HGType.decode(object: self as Any)
     }
     
-    var attribute: Attribute {
-        if let dict = self as? HGDICT { return Attribute.decode(object: dict) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not Attribute mapable, returning new Attribute", type: .error)
-        return Attribute.encodeError
+    var primitiveAttribute: PrimitiveAttribute {
+        if let dict = self as? HGDICT { return PrimitiveAttribute.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not PrimitiveAttribute mapable, returning new Attribute", type: .error)
+        return PrimitiveAttribute.encodeError
     }
     
-    var attributeArray: [Attribute] {
-        if let array = self as? HGARRAY { return Attribute.decode(object: array) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute] mapable, returning []", type: .error)
+    var primitiveAttributeArray: [PrimitiveAttribute] {
+        if let array = self as? HGARRAY { return PrimitiveAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [PrimitiveAttribute] mapable, returning []", type: .error)
         return []
     }
     
-    var attributeSet: Set<Attribute> {
-        if let array = self as? HGARRAY { return Attribute.decode(object: array) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not [Attribute2] mapable, returning []", type: .error)
+    var primitiveAttributeSet: Set<PrimitiveAttribute> {
+        if let array = self as? HGARRAY { return PrimitiveAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<PrimitiveAttribute> mapable, returning []", type: .error)
         return []
     }
     

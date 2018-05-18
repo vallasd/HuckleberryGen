@@ -135,6 +135,8 @@
 		10D37B5A20A4E6A7007C1E69 /* HGReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D37B5720A4E6A7007C1E69 /* HGReport.swift */; };
 		10D37B5B20A4E6A7007C1E69 /* HGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D37B5820A4E6A7007C1E69 /* HGError.swift */; };
 		10D37B5C20A4E6A7007C1E69 /* HGErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D37B5920A4E6A7007C1E69 /* HGErrorType.swift */; };
+		10D66B4620AF5BFD005959B3 /* PrimitiveAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D66B4520AF5BFD005959B3 /* PrimitiveAttribute.swift */; };
+		10D66B4820AF5FDC005959B3 /* PrimitiveAttribute_EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D66B4720AF5FDC005959B3 /* PrimitiveAttribute_EXT.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -289,6 +291,8 @@
 		10D37B5720A4E6A7007C1E69 /* HGReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGReport.swift; sourceTree = "<group>"; };
 		10D37B5820A4E6A7007C1E69 /* HGError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGError.swift; sourceTree = "<group>"; };
 		10D37B5920A4E6A7007C1E69 /* HGErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HGErrorType.swift; sourceTree = "<group>"; };
+		10D66B4520AF5BFD005959B3 /* PrimitiveAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveAttribute.swift; sourceTree = "<group>"; };
+		10D66B4720AF5FDC005959B3 /* PrimitiveAttribute_EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveAttribute_EXT.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,15 +458,17 @@
 			children = (
 				03B0AF232092D7C700180EB0 /* Entity.swift */,
 				104BD46620AE12190043EAAD /* Join.swift */,
+				037EDFA81B84B4C6002527EE /* Enum.swift */,
+				03B0AF252094B42C00180EB0 /* EnumCase.swift */,
 				03B0AF1920924DA000180EB0 /* Attribute.swift */,
 				104382512093B3B6002BF38A /* Attribute_EXT.swift */,
+				10D66B4520AF5BFD005959B3 /* PrimitiveAttribute.swift */,
+				10D66B4720AF5FDC005959B3 /* PrimitiveAttribute_EXT.swift */,
 				03B0AF272096187D00180EB0 /* EnumAttribute.swift */,
 				03B0AF2B209865DE00180EB0 /* EnumAttribute_EXT.swift */,
-				037EDFA81B84B4C6002527EE /* Enum.swift */,
 				03B0AF17209245C100180EB0 /* EntityAttribute.swift */,
 				03B0AF29209865D300180EB0 /* EntityAttribute_EXT.swift */,
 				03B0AF1B2092575500180EB0 /* UsedName.swift */,
-				03B0AF252094B42C00180EB0 /* EnumCase.swift */,
 				036C7C701B514AF9004EC724 /* Folder.swift */,
 				036C7CC71B52A17F004EC724 /* LicenseInfo.swift */,
 				036C7C6C1B514AF9004EC724 /* ImportFile.swift */,
@@ -912,6 +918,7 @@
 				036C7CC31B529A84004EC724 /* HuckleberryGen.swift in Sources */,
 				03B0AF282096187D00180EB0 /* EnumAttribute.swift in Sources */,
 				03E9AFD11C5D4CAF00013925 /* HuckleberryGen_EXT.swift in Sources */,
+				10D66B4820AF5FDC005959B3 /* PrimitiveAttribute_EXT.swift in Sources */,
 				03B0AF18209245C100180EB0 /* EntityAttribute.swift in Sources */,
 				03660AE11BBE444C00DE41D5 /* EnumCasesVC.swift in Sources */,
 				039731E41C443A44003DA4F4 /* SBD_Attributes.swift in Sources */,
@@ -955,6 +962,7 @@
 				0322FA3B1B586F6500CB132B /* HGColor.swift in Sources */,
 				034985091C56D5220048F44C /* ExportInt.swift in Sources */,
 				033F3DEC1BBAC4920089AEC2 /* HGTabView.swift in Sources */,
+				10D66B4620AF5BFD005959B3 /* PrimitiveAttribute.swift in Sources */,
 				039731E61C4565C5003DA4F4 /* SBD_Entities.swift in Sources */,
 				035A56131C7E1C7D002BFC8F /* InfoBoard.swift in Sources */,
 				03C2230F209155C000D5E02B /* AttributeType.swift in Sources */,

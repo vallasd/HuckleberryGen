@@ -11,7 +11,6 @@ import Cocoa
 
 enum EntityKey {
     case name
-    case attributes
 }
 
 typealias EntityKeyDict = Dictionary<EntityKey, Any>
@@ -20,17 +19,14 @@ typealias EntityKeyDict = Dictionary<EntityKey, Any>
 struct Entity: HGCodable {
     
     let name: String
-    fileprivate(set) var attributes: Set<Attribute>
     
-    init(name n: String, attributes a: Set<Attribute>) {
+    init(name n: String) {
         name = n
-        attributes = a
     }
     
-    fileprivate func update(name n: String?, attributes a: Set<Attribute>?) -> Entity {
+    fileprivate func update(name n: String?) -> Entity {
         let name = n == nil ? self.name : n!
-        let attributes = a == nil ? self.attributes : a!
-        return Entity(name: name, attributes: attributes)
+        return Entity(name: name)
     }
     
     static func image(withName name: String) -> NSImage {
@@ -40,41 +36,19 @@ struct Entity: HGCodable {
     // MARK: HGCodable
     
     static var encodeError: Entity {
-        return Entity(name: "Error", attributes: [])
+        return Entity(name: "Error")
     }
     
     var encode: Any {
         var dict = HGDICT()
         dict["name"] = name
-        dict["attributes"] = attributes.encode
         return dict
     }
     
     static func decode(object: Any) -> Entity {
         let dict = HG.decode(hgdict: object, decoder: Entity.self)
         let n = dict["name"].string
-        let a = dict["attributes"].attributeSet
-        return Entity(name: n, attributes: a)
-    }
-    
-    mutating func createAttribute(attribute a: Attribute) -> Attribute? {
-        return attributes.create(attribute: a)
-    }
-    
-    mutating func createIteratedAttribute() -> Attribute? {
-        return attributes.createIterated()
-    }
-    
-    mutating func deleteAttribute(name: String) -> Bool {
-        return attributes.delete(name: name)
-    }
-    
-    func getAttribute(name: String) -> Attribute? {
-        return attributes.get(name: name)
-    }
-    
-    mutating func updateAttribute(keyDict: AttributeKeyDict, name: String) -> Attribute? {
-        return attributes.update(keyDict: keyDict, name: name)
+        return Entity(name: n)
     }
 }
 
@@ -90,12 +64,12 @@ extension Set where Element == Entity {
     
     mutating func createIterated() -> Entity? {
         let name = map { $0.name }.iteratedTypeRepresentable(string: "New Entity")
-        let e = Entity(name: name, attributes: [])
+        let e = Entity(name: name)
         return create(entity: e)
     }
     
     mutating func delete(name n: String) -> Bool {
-        let entity = Entity(name: n, attributes: [])
+        let entity = Entity(name: n)
         let o = remove(entity)
         if o == nil {
             HGReport.shared.deleteFailed(set: Entity.self, object: entity)
@@ -121,13 +95,12 @@ extension Set where Element == Entity {
         }
         
         // set key variables to nil
-        var name: String?, attributes: Set<Attribute>?
+        var name: String?
         
         // validate and assign properties
         for key in keyDict.keys {
             switch key {
             case .name: name = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Entity.self)
-            case .attributes: attributes = HGValidate.validate(value: keyDict[key]!, key: key, decoder: Entity.self)
             }
         }
         
@@ -135,7 +108,7 @@ extension Set where Element == Entity {
         if name != nil { name = self.map { $0.name }.iteratedTypeRepresentable(string: name!) }
         
         // use traditional update
-        let newEntity = oldEntity.update(name: name, attributes: attributes)
+        let newEntity = oldEntity.update(name: name)
         let _ = delete(name: oldEntity.name)
         let updated = create(entity: newEntity)
         

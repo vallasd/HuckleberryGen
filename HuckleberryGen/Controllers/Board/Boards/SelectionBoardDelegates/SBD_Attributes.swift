@@ -19,8 +19,8 @@ class SBD_Attributes: SelectionBoardDelegate {
     /// delegate for SBD_Attributes
     weak var delegate: SBD_AttributeDelegate?
     
-    /// name of entity to be edited
-    let entityName: String
+    /// name of holder to be edited
+    let holderName: String
     
     /// name of attribute name
     let name: String
@@ -40,8 +40,8 @@ class SBD_Attributes: SelectionBoardDelegate {
         return NSImage.image(named: "entityIcon", title: name)
     }
     
-    init(entityName: String, name: String) {
-        self.entityName = entityName
+    init(holderName: String, name: String) {
+        self.holderName = holderName
         self.name = name
         let primitives = Primitive.names.sorted { $0 < $1 }
         let enums = project.enums.map { $0.name }.sorted { $0 < $1 }
@@ -56,7 +56,7 @@ class SBD_Attributes: SelectionBoardDelegate {
         
         // get the name of the type and entity
         let typeName = typeNames[loc.index]
-        let entity = project.entities.get(name: entityName)!
+        let entity = project.entities.get(name: holderName)!
         
         // create attribute or update attribute
         if loc.index < firstEnumIndex {
@@ -65,20 +65,20 @@ class SBD_Attributes: SelectionBoardDelegate {
             let isAttribute = entity.attributes.filter { $0.name == name }.count > 0
             if isAttribute {
                 let keyDict: AttributeKeyDict = [.typeName: typeName]
-                let _ = project.updateAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                let _ = project.updateAttribute(keyDict: keyDict, name: name, entityName: holderName)
                 delegate?.sbd_attribute(self, didUpdateType: .primitive)
                 return
             }
             
             // delete enumAttribute or entityAttribute if they exist, we dont want to report error because one will not exist
             HGReport.shared.isOn = false
-            let _ = project.deleteEnumAttribute(name: name, entityName: entityName)
-            let _ = project.deleteEntityAttribute(name: name, holderName: entityName)
+            let _ = project.deleteEnumAttribute(name: name, holderName: holderName)
+            let _ = project.deleteEntityAttribute(name: name, holderName: holderName)
             HGReport.shared.isOn = true
             
             // create attribute
             let a = Attribute(name: name, typeName: typeName, isHash: false)
-            let _ = project.createAttribute(attribute: a, entityName: entityName)
+            let _ = project.createAttribute(attribute: a, entityName: holderName)
             delegate?.sbd_attribute(self, didUpdateType: .primitive)
             return
         }
@@ -90,19 +90,19 @@ class SBD_Attributes: SelectionBoardDelegate {
             let isEnumAttribute = project.enumAttributes.filter { $0.name == name }.count > 0
             if isEnumAttribute {
                 let keyDict: EnumAttributeKeyDict = [.enumName: typeName]
-                let _ = project.updateEnumAttribute(keyDict: keyDict, name: name, entityName: entityName)
+                let _ = project.updateEnumAttribute(keyDict: keyDict, name: name, holderName: holderName)
                 delegate?.sbd_attribute(self, didUpdateType: .enuM)
                 return
             }
             
             // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
             HGReport.shared.isOn = false
-            let _ = project.deleteAttribute(name: name, entityName: entityName)
-            let _ = project.deleteEntityAttribute(name: name, holderName: entityName)
+            let _ = project.deleteAttribute(name: name, entityName: holderName)
+            let _ = project.deleteEntityAttribute(name: name, holderName: holderName)
             HGReport.shared.isOn = true
             
             // create enumAttribute
-            let ea = EnumAttribute(name: name, entityName: entityName, enumName: typeName, isHash: false)
+            let ea = EnumAttribute(name: name, holderName: holderName, enumName: typeName, isHash: false)
             let _ = project.createEnumAttribute(enumAttribute: ea)
             delegate?.sbd_attribute(self, didUpdateType: .enuM)
             return
@@ -114,19 +114,19 @@ class SBD_Attributes: SelectionBoardDelegate {
         let isEntityAttribute = project.entityAttributes.filter { $0.name == name }.count > 0
         if isEntityAttribute {
             let keyDict: EntityAttributeKeyDict = [.entityName: typeName]
-            let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, holderName: entityName)
+            let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, holderName: holderName)
             delegate?.sbd_attribute(self, didUpdateType: .entity)
             return
         }
         
         // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
         HGReport.shared.isOn = false
-        let _ = project.deleteAttribute(name: name, entityName: entityName)
-        let _ = project.deleteEnumAttribute(name: name, entityName: entityName)
+        let _ = project.deleteAttribute(name: name, entityName: holderName)
+        let _ = project.deleteEnumAttribute(name: name, holderName: holderName)
         HGReport.shared.isOn = true
         
         // create enumAttribute
-        let ea = EntityAttribute(name: name, holderName: entityName, entityName: typeName, isArray: false, deletionRule: .nullify)
+        let ea = EntityAttribute(name: name, holderName: holderName, entityName: typeName, isArray: false, deletionRule: .nullify)
         let _ = project.createEntityAttribute(entityAttribute: ea)
         delegate?.sbd_attribute(self, didUpdateType: .entity)
         return

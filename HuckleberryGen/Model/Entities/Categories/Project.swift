@@ -17,15 +17,17 @@ final class Project {
     fileprivate(set) var enums: Set<Enum>
     fileprivate(set) var entities: Set<Entity>
     fileprivate(set) var joins: Set<Join>
-    fileprivate(set) var enumAttributes: Set<EnumAttribute> // entity enum join
-    fileprivate(set) var entityAttributes: Set<EntityAttribute> // enity entity join
+    fileprivate(set) var primitiveAttributes: Set<PrimitiveAttribute>
+    fileprivate(set) var enumAttributes: Set<EnumAttribute>
+    fileprivate(set) var entityAttributes: Set<EntityAttribute>
     fileprivate(set) var usedNames: Set<UsedName>
     
-    init(name: String, enums:Set<Enum>, entities: Set<Entity>, joins: Set<Join>, enumAttributes: Set<EnumAttribute>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
+    init(name: String, enums:Set<Enum>, entities: Set<Entity>, joins: Set<Join>, primitiveAttributes: Set<PrimitiveAttribute>, enumAttributes: Set<EnumAttribute>, entityAttributes: Set<EntityAttribute>, usedNames: Set<UsedName>) {
         self.name = name
         self.enums = enums
         self.entities = entities
         self.joins = joins
+        self.primitiveAttributes = primitiveAttributes
         self.enumAttributes = enumAttributes
         self.entityAttributes = entityAttributes
         self.usedNames = usedNames
@@ -49,11 +51,25 @@ final class Project {
 extension Project: HGCodable {
     
     static var new: Project {
-        return Project(name: Project.newName, enums: [], entities: [], joins: [], enumAttributes: [], entityAttributes: [], usedNames: UsedName.initialNames)
+        return Project(name: Project.newName,
+                       enums: [],
+                       entities: [],
+                       joins: [],
+                       primitiveAttributes: [],
+                       enumAttributes: [],
+                       entityAttributes: [],
+                       usedNames: UsedName.initialNames)
     }
     
     static var encodeError: Project {
-        return Project(name: Project.newName, enums: [], entities: [], joins: [], enumAttributes: [], entityAttributes: [], usedNames: [])
+        return Project(name: Project.newName,
+                       enums: [],
+                       entities: [],
+                       joins: [],
+                       primitiveAttributes: [],
+                       enumAttributes: [],
+                       entityAttributes: [],
+                       usedNames: [])
     }
     
     var encode: Any {
@@ -61,6 +77,7 @@ extension Project: HGCodable {
         dict["name"] = name
         dict["enums"] = enums.encode
         dict["entities"] = entities.encode
+        dict["primitiveAttributes"] = primitiveAttributes.encode
         dict["enumAttributs"] = enumAttributes.encode
         dict["entityAttributes"] = entityAttributes.encode
         dict["joins"] = joins.encode
@@ -74,6 +91,7 @@ extension Project: HGCodable {
         let enums = dict["enums"].enumSet
         let entities = dict["entities"].entitySet
         let joins = dict["joins"].joinSet
+        let primitiveAttributes = dict["primitiveAttributes"].primitiveAttributeSet
         let enumAttributes = dict["enumAttributes"].enumAttributeSet
         let entityAttributes = dict["entityAttributes"].entityAttributeSet
         let usedNames = dict["usedNames"].usedNameSet
@@ -81,6 +99,7 @@ extension Project: HGCodable {
                               enums: enums,
                               entities: entities,
                               joins: joins,
+                              primitiveAttributes: primitiveAttributes,
                               enumAttributes: enumAttributes,
                               entityAttributes: entityAttributes,
                               usedNames: usedNames)
@@ -89,6 +108,18 @@ extension Project: HGCodable {
 }
 
 extension Project {
+    
+    // Generics
+    
+    func holderHasConnections(holderName: String) -> Bool {
+        let primitives = primitiveAttributes.map { $0.holderName }.filter { $0 == holderName }
+        if primitives.count > 0 { return true }
+        let enums = enumAttributes.map { $0.holderName }.filter { $0 == holderName }
+        if enums.count > 0 { return true }
+        let entities = entityAttributes.map { $0.holderName }.filter { $0 == holderName }
+        if entities.count > 0 { return true }
+        return false
+    }
     
     // Entities
     
@@ -183,6 +214,80 @@ extension Project {
         return join
     }
     
+    // PrimitiveAttributes
+    
+    func createPrimitiveAttribute(primitiveAttribute: PrimitiveAttribute) -> PrimitiveAttribute? {
+        
+        let values = [primitiveAttribute.name]
+        if usedNameIn(values: values) {
+            return nil
+        }
+        
+        return primitiveAttributes.create(primitiveAttribute: primitiveAttribute)
+    }
+    
+    func createIteratedPrimitiveAttribute(holderName: String, primitiveName: String) -> PrimitiveAttribute? {
+        return primitiveAttributes.createIterated(holderName: holderName, primitiveName: primitiveName)
+    }
+    
+    func deletePrimitiveAttribute(holderName: String) -> Bool {
+        return primitiveAttributes.delete(holderName: holderName)
+    }
+    
+    func deletePrimitiveAttribute(primitiveName: String) -> Bool {
+        return primitiveAttributes.delete(primitiveName: primitiveName)
+    }
+    
+    func deletePrimitiveAttribute(name: String, holderName: String) -> Bool {
+        return primitiveAttributes.delete(name: name, holderName: holderName)
+    }
+    
+    func updatePrimitiveAttribute(keyDict: PrimitiveAttributeKeyDict, name: String, holderName: String) -> PrimitiveAttribute? {
+        
+        if usedNameIn(values: keyDict.map { $0.1 }) {
+            return nil
+        }
+        
+        return primitiveAttributes.update(keyDict: keyDict, name: name, holderName: holderName)
+    }
+    
+    // EnumAttributes
+    
+    func createEnumAttribute(enumAttribute: EnumAttribute) -> EnumAttribute? {
+        
+        let values = [enumAttribute.name]
+        if usedNameIn(values: values) {
+            return nil
+        }
+        
+        return enumAttributes.create(enumAttribute: enumAttribute)
+    }
+    
+    func createIteratedEnumAttribute(holderName: String, enumName: String) -> EnumAttribute? {
+        return enumAttributes.createIterated(holderName: holderName, enumName: enumName)
+    }
+    
+    func deleteEnumAttribute(holderName: String) -> Bool {
+        return enumAttributes.delete(holderName: holderName)
+    }
+    
+    func deleteEnumAttribute(enumName: String) -> Bool {
+        return enumAttributes.delete(enumName: enumName)
+    }
+    
+    func deleteEnumAttribute(name: String, holderName: String) -> Bool {
+        return enumAttributes.delete(name: name, holderName: holderName)
+    }
+    
+    func updateEnumAttribute(keyDict: EnumAttributeKeyDict, name: String, holderName: String) -> EnumAttribute? {
+        
+        if usedNameIn(values: keyDict.map { $0.1 }) {
+            return nil
+        }
+        
+        return enumAttributes.update(keyDict: keyDict, name: name, holderName: holderName)
+    }
+    
     // EntityAttributes
     
     func createEntityAttribute(entityAttribute: EntityAttribute) -> EntityAttribute? {
@@ -215,105 +320,6 @@ extension Project {
         }
         
         return entityAttributes.update(keyDict: keyDict, name: name, holderName: holderName)
-    }
-    
-    // Attribute
-    
-    func createAttribute(attribute a: Attribute, entityName: String) -> Attribute? {
-        
-        
-        let values = [a.name]
-        if usedNameIn(values: values) {
-            return nil
-        }
-        
-        if var entity = entities.get(name: entityName) {
-            let attribute = entity.createAttribute(attribute: a)
-            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
-            if entities.update(keyDict: keyDict, name: entityName) != nil {
-                return attribute
-            }
-        }
-        
-        return nil
-    }
-    
-    func createIteratedAttribute(entityName: String) -> Attribute? {
-        
-        if var entity = entities.get(name: entityName) {
-            let attribute = entity.createIteratedAttribute()
-            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
-            if entities.update(keyDict: keyDict, name: entityName) != nil {
-                return attribute
-            }
-        }
-        
-        return nil
-    }
-    
-    func deleteAttribute(name n: String, entityName: String) -> Bool {
-        
-        if var entity = entities.get(name: entityName) {
-            let deleted = entity.deleteAttribute(name: n)
-            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
-            if entities.update(keyDict: keyDict, name: entityName) != nil {
-                return deleted
-            }
-        }
-        
-        return false
-    }
-    
-    func updateAttribute(keyDict: AttributeKeyDict, name n: String, entityName: String) -> Attribute? {
-        
-        //
-        
-        if var entity = entities.get(name: entityName) {
-            let updatedAttribute = entity.updateAttribute(keyDict: keyDict, name: n)
-            let keyDict: EntityKeyDict = [.attributes: entity.attributes]
-            if entities.update(keyDict: keyDict, name: entityName) != nil {
-                return updatedAttribute
-            }
-        }
-        
-        return nil
-    }
-    
-    // EnumAttributes
-    
-    func createEnumAttribute(enumAttribute: EnumAttribute) -> EnumAttribute? {
-        
-        let values = [enumAttribute.name]
-        if usedNameIn(values: values) {
-            return nil
-        }
-        
-        return enumAttributes.create(enumAttribute: enumAttribute)
-    }
-    
-    func createIteratedEnumAttribute(entityName1 en1: String, entityName2 en2: String) -> EnumAttribute? {
-        return enumAttributes.createIterated(entityName: en1, enumName: en2)
-    }
-    
-    func deleteEnumAttribute(entityName en: String) -> Bool {
-        return enumAttributes.delete(entityName: en)
-    }
-    
-    func deleteEnumAttribute(enumName en: String) -> Bool {
-        return enumAttributes.delete(enumName: en)
-    }
-    
-    func deleteEnumAttribute(name n: String, entityName en: String) -> Bool {
-        return enumAttributes.delete(name: n, entityName: en)
-    }
-    
-    func updateEnumAttribute(keyDict: EnumAttributeKeyDict, name n: String, entityName en: String) -> EnumAttribute? {
-        
-        if usedNameIn(values: keyDict.map { $0.1 }) {
-            return nil
-        }
-        
-        return enumAttributes.update(keyDict: keyDict, name: n, entityName: en)
     }
     
     // Enums
