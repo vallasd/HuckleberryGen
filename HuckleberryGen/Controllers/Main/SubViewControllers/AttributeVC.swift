@@ -19,13 +19,16 @@ class AttributeVC: NSViewController {
     var primitiveAttributes: [PrimitiveAttribute] = []
     var enumAttributes: [EnumAttribute] = []
     var entityAttributes: [EntityAttribute] = []
+    var joinAttributes: [JoinAttribute] = []
     var firstEnumIndex: Int { return primitiveAttributes.count }
     var firstEntityIndex: Int { return primitiveAttributes.count + enumAttributes.count }
+    var firstJoinIndex: Int { return primitiveAttributes.count + enumAttributes.count + entityAttributes.count }
     
     fileprivate func name(givenIndex index: Int) -> String {
         if index < firstEnumIndex { return primitiveAttributes[index].name }
         if index < firstEntityIndex { return enumAttributes[index - primitiveAttributes.count].name }
-        return entityAttributes[index - primitiveAttributes.count - enumAttributes.count].name
+        if index < firstJoinIndex { return entityAttributes[index - primitiveAttributes.count - enumAttributes.count].name }
+        return joinAttributes[index - primitiveAttributes.count - enumAttributes.count - entityAttributes.count].name
     }
     
     // MARK: View Lifecycle
@@ -38,11 +41,13 @@ class AttributeVC: NSViewController {
 extension AttributeVC: HGTableDisplayable {
     
     func numberOfItems(fortable table: HGTable) -> Int {
+        
         if table.parentName != "" {
             primitiveAttributes = project.primitiveAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
             enumAttributes = project.enumAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
             entityAttributes = project.entityAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
-            return primitiveAttributes.count + enumAttributes.count + entityAttributes.count
+            joinAttributes = project.joinAttributes.filter { $0.holderName == table.parentName }.sorted { $0.name < $1.name }
+            return primitiveAttributes.count + enumAttributes.count + entityAttributes.count + joinAttributes.count
         }
         
         return 0
@@ -56,7 +61,7 @@ extension AttributeVC: HGTableDisplayable {
         
         // create primitive attribute data cell
         if index < firstEnumIndex {
-            let attribute = attributes[index]
+            let attribute = primitiveAttributes[index]
             let image = attribute.image
             return HGCellData.defaultCell(
                 field0: HGFieldData(title: attribute.name),
@@ -77,10 +82,21 @@ extension AttributeVC: HGTableDisplayable {
         }
         
         // create entityAttribute data cell
-        let entityAttribute = entityAttributes[index - firstEntityIndex]
-        let image = entityAttribute.image
+        if index < firstJoinIndex {
+            let entityAttribute = entityAttributes[index - firstEntityIndex]
+            let image = entityAttribute.image
+            return HGCellData.defaultCell(
+                field0: HGFieldData(title: entityAttribute.name),
+                field1: HGFieldData(title: ""),
+                image0: HGImageData(image: image)
+            )
+        }
+        
+        // create joinAttribute data cell
+        let joinAttribute = joinAttributes[index - firstJoinIndex]
+        let image = joinAttribute.image
         return HGCellData.defaultCell(
-            field0: HGFieldData(title: entityAttribute.name),
+            field0: HGFieldData(title: joinAttribute.name),
             field1: HGFieldData(title: ""),
             image0: HGImageData(image: image)
         )
@@ -101,8 +117,8 @@ extension AttributeVC: HGTableRowAppendable {
     }
     
     func hgtable(willAddRowToTable table: HGTable) {
-        let attribute = project.createIteratedAttribute(entityName: table.parentName) ?? Attribute.encodeError
-        attributes.append(attribute)
+        let pa = project.createIteratedPrimitiveAttribute(holderName: table.parentName, primitiveName: "Int") ?? PrimitiveAttribute.encodeError
+        primitiveAttributes.append(pa)
     }
     
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
@@ -114,19 +130,24 @@ extension AttributeVC: HGTableRowAppendable {
         for row in rows {
             let n = name(givenIndex: row)
             if row < firstEnumIndex {
-                let success = project.deleteAttribute(name: n, entityName: table.parentName)
+                let success = project.deletePrimitiveAttribute(name: n, holderName: table.parentName)
                 if success {
-                    attributes.remove(at: row)
+                    primitiveAttributes.remove(at: row)
                 }
             } else if row < firstEntityIndex {
                 let success = project.deleteEnumAttribute(name: n, holderName: table.parentName)
                 if success {
                     enumAttributes.remove(at: row - firstEnumIndex)
                 }
-            } else {
+            } else if row < firstJoinIndex {
                 let success = project.deleteEntityAttribute(name: n, holderName: table.parentName)
                 if success {
                     enumAttributes.remove(at: row - firstEntityIndex)
+                }
+            } else {
+                let success = project.deleteJoinAttribute(name: n, holderName: table.parentName)
+                if success {
+                    joinAttributes.remove(at: row - firstEntityIndex)
                 }
             }
         }
@@ -166,18 +187,18 @@ extension AttributeVC: HGTableFieldEditable {
     
     func hgtable(_ table: HGTable, didEditRow row: Int, field: Int, withString string: String) {
         
-        // create attribute data cell
+        // update primitive attribute
         if row < firstEnumIndex {
             let n = name(givenIndex: row)
-            let keyDict: AttributeKeyDict = [.name: string]
-            let attribute = project.updateAttribute(keyDict: keyDict, name: n, entityName: table.parentName)
-            if attribute != nil {
-                attributes[row] = attribute!
+            let keyDict: PrimitiveAttributeKeyDict = [.name: string]
+            let pa = project.updatePrimitiveAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
+            if pa != nil {
+                primitiveAttributes[row] = pa!
             }
             return
         }
         
-        // create enumAttribute data cell
+        // update enum attribute
         if row < firstEnumIndex {
             let n = name(givenIndex: row)
             let keyDict: EnumAttributeKeyDict = [.name: string]
@@ -188,14 +209,26 @@ extension AttributeVC: HGTableFieldEditable {
             return
         }
         
-        // create entityAttribute data cell
+        // update entity attribute
+        if row < firstJoinIndex {
+            let n = name(givenIndex: row)
+            let keyDict: EntityAttributeKeyDict = [.name: string]
+            let entityAttribute = project.updateEntityAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
+            if entityAttribute != nil {
+                entityAttributes[row - firstEntityIndex] = entityAttribute!
+            }
+            return
+        }
+        
+        // update join attribute
         let n = name(givenIndex: row)
-        let keyDict: EntityAttributeKeyDict = [.name: string]
-        let entityAttribute = project.updateEntityAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
-        if entityAttribute != nil {
-            entityAttributes[row - firstEntityIndex] = entityAttribute!
+        let keyDict: JoinAttributeKeyDict = [.name: string]
+        let joinAttribute = project.updateJoinAttribute(keyDict: keyDict, name: n, holderName: table.parentName)
+        if joinAttribute != nil {
+            joinAttributes[row - firstJoinIndex] = joinAttribute!
         }
         return
+        
     }
 }
 

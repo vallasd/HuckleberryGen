@@ -34,10 +34,10 @@ class ExportEntity {
     func exportFile(forEntity entity: Entity) -> Bool {
         
         // return immediately if enum attributes and relationships are both 0
-        if entity.attributes.count == 0 {
-            HGReport.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .error)
-            return false
-        }
+//        if entity.attributes.count == 0 {
+//            HGReport.shared.report("ExportEntity |\(entity.name)| failed, no attributes and relationships for entity", type: .error)
+//            return false
+//        }
         
         // set default variables
         let name = entity.name
@@ -80,9 +80,9 @@ class ExportEntity {
         string += "\n"
         
         // add attributes to entity stanza
-        for attribute in entity.attributes {
-            string += "\(ind)let \(attribute.name): \(attribute.typeName)\n"
-        }
+//        for attribute in entity.attributes {
+//            string += "\(ind)let \(attribute.name): \(attribute.typeName)\n"
+//        }
         
         string += "\n"
         
@@ -93,12 +93,12 @@ class ExportEntity {
         var assigns: [String] = []
         
         // new variable attributes
-        for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.typeName), "
-            let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
-            assigns.append(attAssign)
-            
-        }
+//        for attribute in entity.attributes {
+//            string += "\(attribute.name): \(attribute.typeName), "
+//            let attAssign = "\(ind)\(ind)self.\(attribute.name) = \(attribute.name)\n"
+//            assigns.append(attAssign)
+//
+//        }
         
         // remove last , from init statement
         string = String(string.dropLast())
@@ -140,12 +140,12 @@ class ExportEntity {
         string += "\(ind)\(ind)return \(entity.name)("
         
         // new variable attributes
-        for attribute in entity.attributes {
-            let type = attribute.typeName
-            let index = primitives.index(of: type)
-            if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
-            else { string += "\(attribute.name): \(attribute.name).new, " }
-        }
+//        for attribute in entity.attributes {
+//            let type = attribute.typeName
+//            let index = primitives.index(of: type)
+//            if let index = index { string += "\(attribute.name): \(primitivesDefault[index]), " }
+//            else { string += "\(attribute.name): \(attribute.name).new, " }
+//        }
         
         // remove last , from new var
         string = String(string.dropLast())
@@ -160,9 +160,9 @@ class ExportEntity {
         string += "\(ind)\(ind)var dict = HGDICT()\n"
         
         // encode variable attributes
-        for attribute in entity.attributes {
-            string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
-        }
+//        for attribute in entity.attributes {
+//            string += "\(ind)\(ind)dict[\"\(attribute.name)\"] = \(attribute.name)\n"
+//        }
         
         // end encode variable
         string += "\(ind)\(ind)return dict\n"
@@ -174,18 +174,18 @@ class ExportEntity {
         string += "\(ind)\(ind)let dict = HG.decode(hgdict: object, decoderName: \"\(entity.name)\")\n"
         
         // decode function attributes
-        for attribute in entity.attributes {
-            string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name)\n"
-        }
+//        for attribute in entity.attributes {
+//            string += "\(ind)\(ind)let \(attribute.name) = dict[\"\(attribute.name)\"].\(attribute.name)\n"
+//        }
         
         // decode function return statement
         string += "\(ind)\(ind)HGReport.shared.untrack()\n"
         string += "\(ind)\(ind)return \(entity.name)("
         
         // decode function return statement attributes
-        for attribute in entity.attributes {
-            string += "\(attribute.name): \(attribute.name), "
-        }
+//        for attribute in entity.attributes {
+//            string += "\(attribute.name): \(attribute.name), "
+//        }
         
         // decode function return statement cleanup , from last object
         string = String(string.dropLast())

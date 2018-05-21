@@ -11,7 +11,7 @@ import Cocoa
 extension EntityAttribute {
     
     var image: NSImage {
-        return NSImage.image(named: "entityIcon", title: name)
+        return NSImage.image(named: "entityIcon", title: entityName)
     }
     
 }

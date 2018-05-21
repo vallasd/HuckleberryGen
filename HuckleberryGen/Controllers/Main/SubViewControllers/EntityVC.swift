@@ -115,9 +115,7 @@ extension EntityVC: HGTableRowAppendable {
     func hgtable(_ table: HGTable, shouldDeleteRows rows: [Int]) -> Option {
         
         for row in rows {
-            let entity = entities[row]
-            if project.primitiveAttributes.filter { $0.holder }
-            if entity.attributes.count > 0 {
+            if project.holderHasConnections(holderName: entities[row].name) {
                 return .askUser
             }
         }

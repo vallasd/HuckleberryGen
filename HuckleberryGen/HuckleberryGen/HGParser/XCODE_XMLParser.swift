@@ -66,7 +66,7 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
         if elementName == ParseType.Entity.rawValue {
             let name = attributeDict["name"]!
             if lastEntity != nil { entities.insert(lastEntity!) }
-            lastEntity = Entity(name: name, attributes: [])
+            lastEntity = Entity(name: name)
             return
         }
         
@@ -75,9 +75,6 @@ class XCODE_XMLParser: NSObject, XMLParserDelegate, HGImportParser {
             if lastEntity != nil {
                 let primitive = attributeDict["attributeType"].primitive
                 let name = attributeDict["name"].string
-                let attribute = Attribute(name: name, typeName: primitive.name, isHash: false)
-                // FIXME: this should be an create attribute class
-                lastEntity!.createIteratedAttribute()
                 return
             }
             

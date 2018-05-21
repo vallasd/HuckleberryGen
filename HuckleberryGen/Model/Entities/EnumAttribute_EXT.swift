@@ -11,7 +11,7 @@ import Cocoa
 extension EnumAttribute {
     
     var image: NSImage {
-        return NSImage.image(named: "enumIcon", title: name)
+        return NSImage.image(named: "enumIcon", title: enumName)
     }
     
 }

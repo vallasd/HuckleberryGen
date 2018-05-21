@@ -32,12 +32,14 @@ class SBD_Attributes: SelectionBoardDelegate {
     let typeNames: [String]
     let firstEnumIndex: Int
     let firstEntityIndex: Int
+    let firstJoinIndex: Int
     
     func image(forIndex index: Int) -> NSImage {
         let name = typeNames[index]
         if index < firstEnumIndex { return NSImage.image(named: "typeIcon", title: name) }
         if index < firstEntityIndex  { return NSImage.image(named: "enumIcon", title: name) }
-        return NSImage.image(named: "entityIcon", title: name)
+        if index < firstJoinIndex { return NSImage.image(named: "entityIcon", title: name) }
+        return NSImage.image(named: "relationshipIcon", title: name)
     }
     
     init(holderName: String, name: String) {
@@ -46,9 +48,11 @@ class SBD_Attributes: SelectionBoardDelegate {
         let primitives = Primitive.names.sorted { $0 < $1 }
         let enums = project.enums.map { $0.name }.sorted { $0 < $1 }
         let entities = project.entities.map { $0.name }.sorted { $0 < $1 }
-        typeNames = primitives + enums + entities
+        let joins = project.joins.map { $0.name }.sorted { $0 < $1 }
+        typeNames = primitives + enums + entities + joins
         firstEnumIndex = primitives.count
         firstEntityIndex = primitives.count + enums.count
+        firstJoinIndex = primitives.count + enums.count + entities.count
     }
     
     /// SelectionBoardDelegate function
@@ -56,16 +60,15 @@ class SBD_Attributes: SelectionBoardDelegate {
         
         // get the name of the type and entity
         let typeName = typeNames[loc.index]
-        let entity = project.entities.get(name: holderName)!
         
-        // create attribute or update attribute
+        // create primitiveAttribute or update primitiveAttribute
         if loc.index < firstEnumIndex {
             
-            // object was an attribute, we just need to update its typeName
-            let isAttribute = entity.attributes.filter { $0.name == name }.count > 0
-            if isAttribute {
-                let keyDict: AttributeKeyDict = [.typeName: typeName]
-                let _ = project.updateAttribute(keyDict: keyDict, name: name, entityName: holderName)
+            // object was an primitiveAttribute, we just need to update its typeName
+            let isPrimitiveAttribute = project.primitiveAttributes.filter { $0.name == name }.count > 0
+            if isPrimitiveAttribute {
+                let keyDict: PrimitiveAttributeKeyDict = [.primitiveName: typeName]
+                let _ = project.updatePrimitiveAttribute(keyDict: keyDict, name: name, holderName: holderName)
                 delegate?.sbd_attribute(self, didUpdateType: .primitive)
                 return
             }
@@ -74,11 +77,12 @@ class SBD_Attributes: SelectionBoardDelegate {
             HGReport.shared.isOn = false
             let _ = project.deleteEnumAttribute(name: name, holderName: holderName)
             let _ = project.deleteEntityAttribute(name: name, holderName: holderName)
+            let _ = project.deleteJoinAttribute(name: name, holderName: holderName)
             HGReport.shared.isOn = true
             
             // create attribute
-            let a = Attribute(name: name, typeName: typeName, isHash: false)
-            let _ = project.createAttribute(attribute: a, entityName: holderName)
+            let pa = PrimitiveAttribute(name: name, holderName: holderName, primitiveName: typeName, isHash: false, isArray: false)
+            let _ = project.createPrimitiveAttribute(primitiveAttribute: pa)
             delegate?.sbd_attribute(self, didUpdateType: .primitive)
             return
         }
@@ -97,38 +101,65 @@ class SBD_Attributes: SelectionBoardDelegate {
             
             // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
             HGReport.shared.isOn = false
-            let _ = project.deleteAttribute(name: name, entityName: holderName)
+            let _ = project.deletePrimitiveAttribute(name: name, holderName: holderName)
             let _ = project.deleteEntityAttribute(name: name, holderName: holderName)
+            let _ = project.deleteJoinAttribute(name: name, holderName: holderName)
             HGReport.shared.isOn = true
             
             // create enumAttribute
-            let ea = EnumAttribute(name: name, holderName: holderName, enumName: typeName, isHash: false)
+            let ea = EnumAttribute(name: name, holderName: holderName, enumName: typeName, isHash: false, isArray: false)
             let _ = project.createEnumAttribute(enumAttribute: ea)
             delegate?.sbd_attribute(self, didUpdateType: .enuM)
             return
         }
         
         // create entityAttribute or update entityAttribute
+        if loc.index < firstJoinIndex {
+            
+            // object was an entityAttribute, we just need to update its entityName
+            let isEntityAttribute = project.entityAttributes.filter { $0.name == name }.count > 0
+            if isEntityAttribute {
+                let keyDict: EntityAttributeKeyDict = [.entityName: typeName]
+                let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, holderName: holderName)
+                delegate?.sbd_attribute(self, didUpdateType: .entity)
+                return
+            }
+            
+            // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
+            HGReport.shared.isOn = false
+            let _ = project.deletePrimitiveAttribute(name: name, holderName: holderName)
+            let _ = project.deleteEnumAttribute(name: name, holderName: holderName)
+            let _ = project.deleteJoinAttribute(name: name, holderName: holderName)
+            HGReport.shared.isOn = true
+            
+            // create entityAttribute
+            let ea = EntityAttribute(name: name, holderName: holderName, entityName: typeName, isArray: false, deletionRule: .nullify)
+            let _ = project.createEntityAttribute(entityAttribute: ea)
+            delegate?.sbd_attribute(self, didUpdateType: .entity)
+            return
+        }
         
-        // object was an entityAttribute, we just need to update its entityName2
-        let isEntityAttribute = project.entityAttributes.filter { $0.name == name }.count > 0
-        if isEntityAttribute {
-            let keyDict: EntityAttributeKeyDict = [.entityName: typeName]
-            let _ = project.updateEntityAttribute(keyDict: keyDict, name: name, holderName: holderName)
+        // create joinAttribute or update joinAttribute
+        // object was an joinAttribute, we just need to update its joinName
+        let isJoinAttribute = project.joinAttributes.filter { $0.name == name }.count > 0
+        if isJoinAttribute {
+            let keyDict: JoinAttributeKeyDict = [.joinName: typeName]
+            let _ = project.updateJoinAttribute(keyDict: keyDict, name: name, holderName: holderName)
             delegate?.sbd_attribute(self, didUpdateType: .entity)
             return
         }
         
         // delete attribute or entityAttribute if they exist, we dont want to report error because one will not exist
         HGReport.shared.isOn = false
-        let _ = project.deleteAttribute(name: name, entityName: holderName)
+        let _ = project.deletePrimitiveAttribute(name: name, holderName: holderName)
         let _ = project.deleteEnumAttribute(name: name, holderName: holderName)
+        let _ = project.deleteEntityAttribute(name: name, holderName: holderName)
         HGReport.shared.isOn = true
         
         // create enumAttribute
-        let ea = EntityAttribute(name: name, holderName: holderName, entityName: typeName, isArray: false, deletionRule: .nullify)
-        let _ = project.createEntityAttribute(entityAttribute: ea)
-        delegate?.sbd_attribute(self, didUpdateType: .entity)
+        let ja = JoinAttribute(name: name, holderName: holderName, joinName: typeName, isArray: false, deletionRule: .nullify)
+        let _ = project.createJoinAttribute(joinAttribute: ja)
+        delegate?.sbd_attribute(self, didUpdateType: .join)
         return
     }
 }

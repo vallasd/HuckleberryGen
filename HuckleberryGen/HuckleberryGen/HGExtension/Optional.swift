@@ -100,6 +100,24 @@ extension Optional {
         return []
     }
     
+    var enumAttribute: EnumAttribute {
+        if let dict = self as? HGDICT { return EnumAttribute.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not EntityAttribute mapable, returning new Attribute", type: .error)
+        return EnumAttribute.encodeError
+    }
+    
+    var enumAttributeArray: [EnumAttribute] {
+        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [EnumAttribute] mapable, returning []", type: .error)
+        return []
+    }
+    
+    var enumAttributeSet: Set<EnumAttribute> {
+        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<EnumAttribute> mapable, returning []", type: .error)
+        return []
+    }
+    
     var entityAttribute: EntityAttribute {
         if let dict = self as? HGDICT { return EntityAttribute.decode(object: dict) }
         HGReport.shared.report("optional: |\(String(describing: self))| is not EntityAttribute mapable, returning new Attribute", type: .error)
@@ -118,21 +136,21 @@ extension Optional {
         return []
     }
     
-    var enumAttribute: EnumAttribute {
-        if let dict = self as? HGDICT { return EnumAttribute.decode(object: dict) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not EntityAttribute mapable, returning new Attribute", type: .error)
-        return EnumAttribute.encodeError
+    var joinAttribute: JoinAttribute {
+        if let dict = self as? HGDICT { return JoinAttribute.decode(object: dict) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not JoinAttribute mapable, returning new Attribute", type: .error)
+        return JoinAttribute.encodeError
     }
     
-    var enumAttributeArray: [EnumAttribute] {
-        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not [EnumAttribute] mapable, returning []", type: .error)
+    var joinAttributeArray: [JoinAttribute] {
+        if let array = self as? HGARRAY { return JoinAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not [JoinAttribute] mapable, returning []", type: .error)
         return []
     }
     
-    var enumAttributeSet: Set<EnumAttribute> {
-        if let array = self as? HGARRAY { return EnumAttribute.decode(object: array) }
-        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<EnumAttribute> mapable, returning []", type: .error)
+    var joinAttributeSet: Set<JoinAttribute> {
+        if let array = self as? HGARRAY { return JoinAttribute.decode(object: array) }
+        HGReport.shared.report("optional: |\(String(describing: self))| is not Set<JoinAttribute> mapable, returning []", type: .error)
         return []
     }
     

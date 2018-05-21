@@ -38,6 +38,7 @@ struct AttributeType: HGCodable  {
         case .primitive: return NSImage.image(named: "typeIcon", title: name)
         case .enuM: return NSImage.image(named: "enumIcon", title: name)
         case .entity: return NSImage.image(named: "entityIcon", title: name)
+        case .join: return NSImage.image(named: "relationshipIcon", title: name)
         }
     }
     

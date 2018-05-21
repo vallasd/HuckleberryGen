@@ -13,6 +13,7 @@ enum HGType: Int8, HGCodable {
     case primitive = 0
     case enuM = 1
     case entity = 2
+    case join = 3
     
     // MARK - HGCodable
     
@@ -30,6 +31,7 @@ enum HGType: Int8, HGCodable {
         case 0: return .primitive
         case 1: return .enuM
         case 2: return .entity
+        case 3: return .join
         default:
             HGReport.shared.report("int8: |\(int8)| is not |HGType| mapable, using .primitive", type: .error)
         }
